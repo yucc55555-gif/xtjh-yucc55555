@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>白雪公主與七矮人：平行四邊形森林</title>
+    <style>
+        :root {
+            --forest-green: #1b4d3e;
+            --wood-brown: #5d4037;
+            --apple-red: #d32f2f;
+            --magic-gold: #fbc02d;
+            --snow-white: #f5f5f5;
+        }
+
+        * { box-sizing: border-box; font-family: "Microsoft JhengHei", sans-serif; }
+
+        body {
+            margin: 0;
+            background-color: var(--forest-green);
+            color: var(--snow-white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .screen { display: none; }
+        .active { display: flex; flex-direction: column; }
+
+        /* 登入畫面 */
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid var(--magic-gold);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid var(--wood-brown);
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            background: linear-gradient(to bottom, var(--magic-gold), #f9a825);
+            color: #3e2723;
+            border: 2px solid var(--wood-brown);
+            padding: 12px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 10px;
+            box-shadow: 0 4px #a1887f;
+        }
+
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px #a1887f; }
+        .btn:disabled { background: #9e9e9e; color: #616161; box-shadow: none; cursor: not-allowed; }
+
+        /* 大廳 */
+        .status-bar {
+            background: var(--wood-brown);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 2px solid var(--magic-gold);
+        }
+
+        .hp-bar { width: 120px; height: 18px; background: #333; border-radius: 9px; display: inline-block; overflow: hidden; vertical-align: middle; }
+        .hp-fill { height: 100%; background: #4caf50; width: 100%; transition: width 0.3s; }
+
+        .level-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* 戰鬥 */
+        .monster { font-size: 70px; margin: 15px 0; transition: all 0.3s; display: inline-block; }
+        .shake { animation: shake 0.4s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            line-height: 1.6;
+        }
+
+        .option-btn {
+            background: var(--snow-white);
+            color: var(--wood-brown);
+            border: 2px solid var(--wood-brown);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover { background: var(--magic-gold); }
+
+        /* 彈窗修正 */
+        .modal {
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 85%; max-width: 450px; padding: 25px;
+            border-radius: 20px; z-index: 100; display: none; text-align: center;
+            border: 4px solid var(--wood-brown);
+        }
+        .hint-modal { background: #fffde7; color: #5d4037; }
+        .exp-modal { background: #e8f5e9; color: #1b5e20; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 90; display: none; }
+
+        .segment { text-decoration: overline; margin: 0 2px; }
+        .q-img { max-width: 100%; border-radius: 5px; margin: 10px 0; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- 登入 -->
+        <div id="login-screen" class="screen active">
+            <div class="login-box">
+                <h1 style="color: var(--magic-gold); text-shadow: 2px 2px #3e2723;">🍎 森林救援行動</h1>
+                <p>邪惡皇后的魔咒封印了森林，<br>請小矮人們輸入座號開始解謎！</p>
+                <input type="text" id="stu-class" placeholder="班級 (如: 801)">
+                <input type="number" id="stu-no" placeholder="座號">
+                <br>
+                <button class="btn" onclick="startGame()">踏入魔法森林</button>
+            </div>
+        </div>
+
+        <!-- 大廳 -->
+        <div id="lobby-screen" class="screen">
+            <div class="status-bar">
+                <div id="display-info" style="font-weight:bold; color: var(--magic-gold); margin-bottom: 5px;"></div>
+                <div>能源 HP: <div class="hp-bar"><div id="hp-fill" class="hp-fill"></div></div></div>
+            </div>
+            <h3 style="text-align:center;">💎 收集寶石解開詛咒</h3>
+            <div id="level-list"></div>
+        </div>
+
+        <!-- 戰鬥 -->
+        <div id="battle-screen" class="screen">
+            <div style="text-align:center;">
+                <div id="level-title" style="font-weight:bold; color: var(--magic-gold);"></div>
+                <div id="monster-icon" class="monster">🍎</div>
+                <div id="battle-progress">任務進度: 1 / 10</div>
+            </div>
+            <div id="question-box" class="question-box"></div>
+            <div id="option-container" style="display: flex; flex-direction: column;"></div>
+        </div>
+    </div>
+
+    <!-- 彈窗 -->
+    <div id="overlay" class="overlay"></div>
+    <div id="hint-modal" class="modal hint-modal">
+        <h3>💡 森林的提示</h3>
+        <p id="hint-text"></p>
+        <button class="btn" onclick="closeModal()">我再試試</button>
+    </div>
+    <div id="exp-modal" class="modal exp-modal">
+        <h3>✨ 淨化成功</h3>
+        <p id="exp-text"></p>
+        <button class="btn" onclick="nextQuestion()">前往下個區域</button>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwYHDPDsgCKUFNfFlYPruhUF-f9XNjHcszHlJcimYc65sFdHidFUObbd69T8PA0AwsWhg/exec";
+        
+        let stuClass = "", stuNo = "";
+        let hp = 100;
+        let medals = 0;
+        let completed = [];
+        let curLvl = 0, curQue = 0, curScore = 100;
+
+        const levels = [
+            {
+                name: "4-2-11 平行四邊形的性質",
+                monsters: ["🍎", "🧙‍♀️", "🪞"],
+                questions: [
+                    { q: "在平行四邊形 <i>ABCD</i> 中，若 ∠<i>B</i> = (5<i>x</i> + 34)°，∠<i>D</i> = (8<i>x</i> - 23)°，則 ∠<i>C</i> 為多少度？", options: ["51°", "129°", "19°", "34°"], ans: 0, hint: "平行四邊形的對角相等，先求出 <i>x</i>，再用鄰角互補求出 ∠<i>C</i>。", exp: "5<i>x</i> + 34 = 8<i>x</i> - 23 → 3<i>x</i> = 57 → <i>x</i> = 19。∠<i>B</i> = 5(19) + 34 = 129°。∠<i>C</i> = 180° - 129° = 51°。" },
+                    { q: "在平行四邊形 <i>ABCD</i> 中，若 ∠<i>B</i> = (9<i>x</i> - 56)°，∠<i>D</i> = (5<i>x</i> + 28)°，則 ∠<i>C</i> 為多少度？", options: ["47°", "133°", "21°", "56°"], ans: 0, hint: "利用對角相等：9<i>x</i> - 56 = 5<i>x</i> + 28 求出 <i>x</i>。", exp: "4<i>x</i> = 84 → <i>x</i> = 21。∠<i>B</i> = 9(21) - 56 = 133°。∠<i>C</i> = 180° - 133° = 47°。" },
+                    { q: "在平行四邊形 <i>ABCD</i> 中，若 ∠<i>A</i> = (4<i>x</i> + 31)°，∠<i>C</i> = (7<i>x</i> - 5)°，則 ∠<i>B</i> 為多少度？", options: ["101°", "79°", "12°", "31°"], ans: 0, hint: "對角 ∠<i>A</i> = ∠<i>C</i>。", exp: "4<i>x</i> + 31 = 7<i>x</i> - 5 → 3<i>x</i> = 36 → <i>x</i> = 12。∠<i>A</i> = 4(12) + 31 = 79°。∠<i>B</i> = 180° - 79° = 101°。" },
+                    { q: "在平行四邊形 <i>ABCD</i> 中，若 ∠<i>C</i> = 43°，則 ∠<i>B</i> 為多少度？", options: ["137°", "43°", "180°", "90°"], ans: 0, hint: "平行四邊形的鄰角互補（相加為 180°）。", exp: "∠<i>B</i> = 180° - ∠<i>C</i> = 180° - 43° = 137°。" },
+                    { q: "在平行四邊形 <i>ABCD</i> 中，若 ∠<i>D</i> = 66°，則 ∠<i>A</i> 為多少度？", options: ["114°", "66°", "180°", "24°"], ans: 0, hint: "鄰角互補性質。", exp: "∠<i>A</i> = 180° - 66° = 114°。" },
+                    { q: "已知平行四邊形 <i>ABCD</i> 的周長為 30 公分，且 <span class='segment'>CD</span> = 2<span class='segment'>AD</span>，則 <span class='segment'>AB</span> 為多少公分？", options: ["10", "5", "15", "7.5"], ans: 0, hint: "平行四邊形對邊相等，周長 = 2 × (<span class='segment'>AD</span> + <span class='segment'>CD</span>)。", exp: "設 <span class='segment'>AD</span> = <i>x</i>，則 <span class='segment'>CD</span> = 2<i>x</i>。2(<i>x</i> + 2<i>x</i>) = 30 → 6<i>x</i> = 30 → <i>x</i> = 5。<span class='segment'>AB</span> = <span class='segment'>CD</span> = 10 公分。" },
+                    { q: "平行四邊形 <i>ABCD</i> 周長 42 公分，<span class='segment'>AB</span> = 2<span class='segment'>BC</span>，則 <span class='segment'>BC</span> 長度為？", options: ["7", "14", "21", "10.5"], ans: 0, hint: "周長 = 2 × (<span class='segment'>AB</span> + <span class='segment'>BC</span>)。", exp: "2(2<i>x</i> + <i>x</i>) = 42 → 6<i>x</i> = 42 → <i>x</i> = 7。故 <span class='segment'>BC</span> = 7 公分。" },
+                    { q: "平行四邊形 <i>ABCD</i> 周長 32 公分，<span class='segment'>AB</span> = 3<span class='segment'>BC</span>，則 <span class='segment'>CD</span> 長度為？", options: ["12", "4", "8", "16"], ans: 0, hint: "<span class='segment'>CD</span> 的長度等於 <span class='segment'>AB</span>。", exp: "2(3<i>x</i> + <i>x</i>) = 32 → 8<i>x</i> = 32 → <i>x</i> = 4。<span class='segment'>CD</span> = <span class='segment'>AB</span> = 3(4) = 12 公分。" },
+                    { q: "平行四邊形 <i>ABCD</i>，<span class='segment'>AB</span> 比 <span class='segment'>BC</span> 的 2 倍多 1 公分，<span class='segment'>CD</span> 比 <span class='segment'>AD</span> 的 5 倍少 8 公分，周長為何？", options: ["20", "10", "40", "30"], ans: 0, hint: "對邊相等：<span class='segment'>AB</span> = <span class='segment'>CD</span>，且 <span class='segment'>BC</span> = <span class='segment'>AD</span>。", exp: "設 <span class='segment'>BC</span> = <i>x</i>，則 2<i>x</i> + 1 = 5<i>x</i> - 8 → 3<i>x</i> = 9 → <i>x</i> = 3。邊長為 3 與 7。周長 = 2(3+7) = 20 公分。" },
+                    { q: "平行四邊形 <i>ABCD</i> 中，對角線互相垂直。若 <span class='segment'>AD</span> = 17，<span class='segment'>OD</span> = 8 (<i>O</i> 為交點)，則兩條對角線長度之和為？", options: ["46", "23", "30", "16"], ans: 0, hint: "利用畢氏定理求出 <span class='segment'>OA</span>，對角線長度為 2<span class='segment'>OA</span> 與 2<span class='segment'>OD</span>。", exp: "<span class='segment'>OA</span> = √(17² - 8²) = 15。<span class='segment'>AC</span> = 30，<span class='segment'>BD</span> = 16。和 = 30 + 16 = 46 公分。" }
+                ]
+            },
+            {
+                name: "4-2-21 平行四邊形的判別",
+                monsters: ["🐺", "🌲"],
+                questions: [
+                    { q: "下列哪組內角依序排列可構成平行四邊形？", options: ["80°, 100°, 80°, 100°", "65°, 115°, 115°, 65°", "105°, 75°, 100°, 80°", "90°, 90°, 80°, 100°"], ans: 0, hint: "平行四邊形的兩雙對角要分別相等，且鄰角要互補。", exp: "對角相等且鄰角互補 (80+100=180)，符合性質。" },
+                    { q: "小蕙用木棍排四邊形，下列哪組邊長(依序)可構成平行四邊形？", options: ["3cm, 2cm, 3cm, 2cm", "3cm, 4cm, 4cm, 3cm", "2cm, 4cm, 3cm, 5cm", "5cm, 5cm, 6cm, 6cm"], ans: 0, hint: "平行四邊形的兩雙對邊要分別相等。", exp: "兩雙對邊分別相等 (3=3, 2=2)，符合判別性質。" },
+                    { q: "四邊形 <i>ABCD</i> 對角線交於 <i>O</i>。若 <span class='segment'>OA</span>=7, <span class='segment'>OB</span>=4, <span class='segment'>AC</span>=14, <span class='segment'>BD</span>=8，這是平行四邊形嗎？", options: ["是", "否", "不一定", "條件不足"], ans: 0, hint: "檢查對角線是否互相平分 (<span class='segment'>OA</span>=<span class='segment'>OC</span>, <span class='segment'>OB</span>=<span class='segment'>OD</span>)。", exp: "<span class='segment'>OC</span> = 14 - 7 = 7 = <span class='segment'>OA</span>；<span class='segment'>OD</span> = 8 - 4 = 4 = <span class='segment'>OB</span>。對角線互相平分，故是平行四邊形。" },
+                    { q: "若四邊形 <i>ABCD</i> 的對角線 <span class='segment'>OA</span>=6, <span class='segment'>OB</span>=7, <span class='segment'>OC</span>=8, <span class='segment'>OD</span>=9，這是平行四邊形嗎？", options: ["否", "是", "不一定", "是長方形"], ans: 0, hint: "對角線是否互相平分？", exp: "<span class='segment'>OA</span> ≠ <span class='segment'>OC</span> 且 <span class='segment'>OB</span> ≠ <span class='segment'>OD</span>，故不是平行四邊形。" },
+                    { q: "若四邊形 <i>ABCD</i> 的對角線 <span class='segment'>OA</span>=5, <span class='segment'>OB</span>=5, <span class='segment'>OC</span>=5, <span class='segment'>OD</span>=5，這是平行四邊形嗎？", options: ["是", "否", "是梯形", "不一定"], ans: 0, hint: "對角線相等且互相平分。", exp: "對角線互相平分，所以是平行四邊形（這同時也是長方形）。" }
+                ]
+            },
+            {
+                name: "4-2-22 平行四邊形的作圖",
+                monsters: ["💎", "✨"],
+                questions: [
+                    { q: "以 <i>A</i>、<i>C</i> 為圓心，<span class='segment'>BC</span>、<span class='segment'>AB</span> 為半徑畫弧交於 <i>D</i>，連 <i>AD</i>、<i>CD</i>。這是利用哪種性質作圖？", options: ["兩雙對邊分別相等", "兩雙對角分別相等", "對角線互相平分", "一組對邊平行且相等"], ans: 0, hint: "步驟中使用了邊長作為半徑。", exp: "分別以對邊長度作弧，是利用兩雙對邊分別相等來判別。" },
+                    { q: "作平行四邊形 <i>DEFG</i>，若以 <i>D</i>、<i>F</i> 為圓心，<span class='segment'>EF</span>、<span class='segment'>ED</span> 為半徑畫弧。這保證了？", options: ["<span class='segment'>DG</span>=<span class='segment'>EF</span> 且 <span class='segment'>FG</span>=<span class='segment'>ED</span>", "∠<i>E</i>=∠<i>G</i>", "<span class='segment'>DF</span> 垂直 <span class='segment'>EG</span>", "<span class='segment'>DE</span> // <span class='segment'>FG</span>"], ans: 0, hint: "圓規畫弧是確定長度的方法。", exp: "畫弧交點 <i>G</i> 到 <i>D</i> 的距離即為半徑 <span class='segment'>EF</span>，確保對邊相等。" },
+                    { q: "下列哪種作圖法「不能」保證畫出平行四邊形？", options: ["作一組對邊平行，另一組對邊相等", "作兩雙對邊分別相等", "作對角線互相平分", "作一組對邊平行且相等"], ans: 0, hint: "有一種情況可能會畫成等腰梯形。", exp: "「一組對邊平行，另一組對邊相等」可能是等腰梯形，不能保證是平行四邊形。" },
+                    { q: "作平行四邊形 <i>ABCD</i> 時，若先畫出 △<i>ABC</i>，再取 <span class='segment'>AC</span> 中點 <i>O</i>，延長 <span class='segment'>BO</span> 到 <i>D</i> 使 <span class='segment'>OD</span>=<span class='segment'>OB</span>，這是利用？", options: ["對角線互相平分", "對角相等", "對邊平行", "鄰角互補"], ans: 0, hint: "<i>O</i> 點是兩線段的中點。", exp: "使 <i>O</i> 同時為兩對角線中點，利用對角線互相平分性質。" },
+                    { q: "在直線 <i>L</i> 上取 <span class='segment'>PQ</span>，在 <i>L</i> 外取 <i>R</i>。若作 <span class='segment'>RS</span> // <span class='segment'>PQ</span> 且 <span class='segment'>RS</span> = <span class='segment'>PQ</span>，則 <i>PQSR</i> 是平行四邊形，這是利用？", options: ["一組對邊平行且相等", "兩組對邊分別平行", "對角相等", "對角線平分"], ans: 0, hint: "題目同時提到了「平行」與「相等」。", exp: "一組對邊 (<span class='segment'>PQ</span> 與 <span class='segment'>RS</span>) 平行且相等，是平行四邊形的判別性質之一。" }
+                ]
+            }
+        ];
+
+        function startGame() {
+            stuClass = document.getElementById("stu-class").value;
+            stuNo = document.getElementById("stu-no").value;
+            if (!stuClass || !stuNo) return alert("請輸入資訊！");
+            document.getElementById("login-screen").classList.remove("active");
+            document.getElementById("lobby-screen").classList.add("active");
+            document.getElementById("display-info").innerText = `🏰 小矮人助手：${stuClass} 班 ${stuNo} 號`;
+            renderLobby();
+        }
+
+        function renderLobby() {
+            const list = document.getElementById("level-list");
+            list.innerHTML = "";
+            levels.forEach((lvl, i) => {
+                const done = completed.includes(i);
+                list.innerHTML += `
+                    <div class="level-card">
+                        <span>${done ? '💎' : '⚪'} ${lvl.name}</span>
+                        <button class="btn" onclick="startLevel(${i})" ${done ? 'disabled' : ''}>
+                            ${done ? '已完成' : '開始探索'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function startLevel(idx) {
+            curLvl = idx; curQue = 0; curScore = 100;
+            document.getElementById("lobby-screen").classList.remove("active");
+            document.getElementById("battle-screen").classList.add("active");
+            document.getElementById("level-title").innerText = levels[idx].name;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = levels[curLvl].questions[curQue];
+            document.getElementById("battle-progress").innerText = `任務進度: ${curQue + 1} / ${levels[curLvl].questions.length}`;
+            document.getElementById("monster-icon").innerText = levels[curLvl].monsters[curQue % levels[curLvl].monsters.length];
+            document.getElementById("question-box").innerHTML = q.q;
+            
+            const options = q.options.map((text, i) => ({ text, correct: i === q.ans }));
+            options.sort(() => Math.random() - 0.5);
+            
+            const container = document.getElementById("option-container");
+            container.innerHTML = "";
+            options.forEach(opt => {
+                const b = document.createElement("button");
+                b.className = "option-btn";
+                b.innerHTML = opt.text;
+                b.onclick = () => checkAns(opt.correct);
+                container.appendChild(b);
+            });
+        }
+
+        function checkAns(isCorrect) {
+            const q = levels[curLvl].questions[curQue];
+            if (isCorrect) {
+                document.getElementById("exp-text").innerHTML = q.exp;
+                showModal("exp-modal");
+            } else {
+                hp -= 10; curScore -= 10;
+                document.getElementById("hp-fill").style.width = hp + "%";
+                document.getElementById("monster-icon").classList.add("shake");
+                setTimeout(() => document.getElementById("monster-icon").classList.remove("shake"), 400);
+                document.getElementById("hint-text").innerHTML = q.hint;
+                showModal("hint-modal");
+                if (hp <= 0) { alert("能源耗盡！白雪公主陷入沉睡..."); location.reload(); }
+            }
+        }
+
+        function showModal(id) {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById(id).style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("hint-modal").style.display = "none";
+            document.getElementById("exp-modal").style.display = "none";
+        }
+
+        function nextQuestion() {
+            closeModal();
+            curQue++;
+            if (curQue < levels[curLvl].questions.length) {
+                loadQuestion();
+            } else {
+                finishLevel();
+            }
+        }
+
+        function finishLevel() {
+            completed.push(curLvl);
+            uploadScore(levels[curLvl].name, Math.max(0, curScore));
+            document.getElementById("battle-screen").classList.remove("active");
+            document.getElementById("lobby-screen").classList.add("active");
+            renderLobby();
+        }
+
+        function uploadScore(lvl, score) {
+            const data = new FormData();
+            data.append('time', new Date().toLocaleString());
+            data.append('class', stuClass);
+            data.append('no', stuNo);
+            data.append('level', lvl);
+            data.append('score', score);
+            fetch(API_URL, { method: 'POST', mode: 'no-cors', body: data }).catch(e => console.log(e));
+        }
+    </script>
+</body>
+</html>
