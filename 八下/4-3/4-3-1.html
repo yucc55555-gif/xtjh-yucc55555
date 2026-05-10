@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈利波特：特殊四邊形的考驗</title>
+    <style>
+        :root {
+            --gryffindor-red: #740001;
+            --gryffindor-gold: #d3a625;
+            --magic-black: #1a1a1a;
+            --parchment: #f4e4bc;
+            --success-green: #2e7d32;
+        }
+
+        * { box-sizing: border-box; font-family: "Microsoft JhengHei", serif; }
+
+        body {
+            margin: 0;
+            background-color: var(--magic-black);
+            color: var(--parchment);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle, #2c3e50 0%, #000 100%);
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .screen { display: none; }
+        .active { display: flex; flex-direction: column; }
+
+        /* 登入畫面 */
+        .login-box {
+            background: rgba(116, 0, 1, 0.2);
+            border: 3px double var(--gryffindor-gold);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(211, 166, 37, 0.3);
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            background: var(--parchment);
+            border: 2px solid var(--gryffindor-red);
+            border-radius: 5px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .btn {
+            background: linear-gradient(to bottom, var(--gryffindor-red), #500000);
+            color: var(--gryffindor-gold);
+            border: 2px solid var(--gryffindor-gold);
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover:not(:disabled) { background: #900000; filter: brightness(1.2); }
+        .btn:disabled { background: #444; color: #888; border-color: #666; cursor: not-allowed; }
+
+        /* 大廳 */
+        .status-bar {
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid var(--gryffindor-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hp-bar { width: 100px; height: 15px; background: #333; border-radius: 10px; overflow: hidden; display: inline-block; vertical-align: middle; }
+        .hp-fill { height: 100%; background: #c62828; width: 100%; transition: width 0.3s; }
+
+        .level-list { max-height: 60vh; overflow-y: auto; }
+        .level-item {
+            background: rgba(244, 228, 188, 0.1);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(211, 166, 37, 0.3);
+        }
+
+        /* 戰鬥畫面 */
+        .monster { font-size: 80px; margin: 20px 0; transition: transform 0.3s; display: inline-block; }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+        .question-box {
+            background: var(--parchment);
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            min-height: 100px;
+            border: 5px double #5d4037;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            line-height: 1.6;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .option-container { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .option-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--gryffindor-gold);
+            color: var(--parchment);
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .option-btn:hover { background: rgba(211, 166, 37, 0.2); }
+
+        /* 彈窗 */
+        .modal {
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 85%; max-width: 450px; padding: 25px;
+            border-radius: 10px; z-index: 100; display: none; text-align: center;
+            border: 4px solid var(--gryffindor-gold);
+        }
+        .hint-modal { background: #2c3e50; color: #ecf0f1; }
+        .exp-modal { background: #1b5e20; color: #e8f5e9; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 90; display: none; }
+
+        .segment { text-decoration: overline; margin: 0 2px; }
+        .q-svg { display: block; margin: 15px auto; max-width: 280px; height: auto; background: white; border-radius: 5px; border: 1px solid #ddd; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- 登入畫面 -->
+        <div id="login-screen" class="screen active">
+            <div class="login-box">
+                <h1 style="color: var(--gryffindor-gold); text-shadow: 2px 2px #000;">✨ 霍格華茲：幾何巫師試煉</h1>
+                <p>佛地魔的黑魔法封印了幾何禁忌森林，<br>請巫師們輸入座號，領取你的魔杖！</p>
+                <input type="text" id="stu-class" placeholder="學院/班級 (如: 葛來分多801)">
+                <input type="number" id="stu-no" placeholder="座號">
+                <br>
+                <button class="btn" onclick="startGame()">開啟現現形</button>
+            </div>
+        </div>
+
+        <!-- 大廳畫面 -->
+        <div id="lobby-screen" class="screen">
+            <div class="status-bar">
+                <div id="display-info"></div>
+                <div>法力 HP: <div class="hp-bar"><div id="hp-fill" class="hp-fill"></div></div></div>
+            </div>
+            <h2 style="text-align:center; color: var(--gryffindor-gold);">📜 魔法任務清單</h2>
+            <div id="level-list" class="level-list"></div>
+        </div>
+
+        <!-- 戰鬥畫面 -->
+        <div id="battle-screen" class="screen">
+            <div style="text-align:center;">
+                <div id="level-title" style="color: var(--gryffindor-gold); font-size: 1.2rem;"></div>
+                <div id="monster-icon" class="monster">👻</div>
+                <div id="battle-progress">咒語進度: 1 / 5</div>
+            </div>
+            <div id="question-box" class="question-box"></div>
+            <div id="option-container" class="option-container"></div>
+        </div>
+    </div>
+
+    <!-- 彈窗系統 -->
+    <div id="overlay" class="overlay"></div>
+    <div id="hint-modal" class="modal hint-modal">
+        <h3>🔮 催狂魔的低語 (提示)</h3>
+        <p id="hint-text"></p>
+        <button class="btn" onclick="closeModal()">再次施法</button>
+    </div>
+    <div id="exp-modal" class="modal exp-modal">
+        <h3>⚡ 疾疾，護法現身！</h3>
+        <p id="exp-text"></p>
+        <button class="btn" onclick="nextQuestion()">繼續前進</button>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwYHDPDsgCKUFNfFlYPruhUF-f9XNjHcszHlJcimYc65sFdHidFUObbd69T8PA0AwsWhg/exec";
+        
+        let stuClass = "", stuNo = "";
+        let hp = 100;
+        let medals = 0;
+        let completed = [];
+        let curLvl = 0, curQue = 0, curScore = 100;
+
+        const monsters = ["👻", "💀", "🐉", "👹", "🦅", "🐍"];
+
+        const levels = [
+            {
+                name: "4-3-11 長方形的性質",
+                questions: [
+                    { q: "關於長方形的性質，下列何者「錯誤」？", options: ["對角線互相垂直", "四個內角皆為直角", "對角線長度相等", "兩組對邊分別相等"], ans: 0, hint: "長方形的對角線一定要互相垂直嗎？那是菱形的特徵喔！", exp: "長方形的對角線「相等」且「互相平分」，但除非是正方形，否則不一定「互相垂直」。" },
+                    { q: "長方形 <i>ABCD</i> 中，<span class='segment'>AB</span>=6, <span class='segment'>BC</span>=8，則對角線 <span class='segment'>AC</span> 的長度為何？", options: ["10", "14", "7", "24"], ans: 0, hint: "長方形的內角是直角，可以使用畢氏定理。", exp: "根據畢氏定理，<span class='segment'>AC</span> = √(6² + 8²) = √100 = 10。" },
+                    { q: "若一個平行四邊形的一個內角為 90°，則此四邊形必為何者？", options: ["長方形", "菱形", "箏形", "梯形"], ans: 0, hint: "平行四邊形只要有一個角是直角，對角也會是直角，鄰角也會互補變成直角。", exp: "平行四邊形只要任一內角為 90°，四個角都會變成 90°，符合長方形定義。" },
+                    { q: "長方形 <i>ABCD</i> 對角線交於 <i>O</i>。若 <span class='segment'>AC</span>=20，則 <span class='segment'>OB</span> 長度為何？", options: ["10", "20", "5", "15"], ans: 0, hint: "長方形對角線相等且互相平分。", exp: "長方形對角線 <span class='segment'>AC</span> = <span class='segment'>BD</span> = 20，互相平分後 <span class='segment'>OB</span> = 20 / 2 = 10。" },
+                    { q: "長方形具有下列哪一種特性，是一般平行四邊形「不一定」具備的？", options: ["對角線相等", "對邊平行", "對角相等", "對角線互相平分"], ans: 0, hint: "想想看，一般的平行四邊形對角線會等長嗎？", exp: "平行四邊形的對角線只有「互相平分」，只有在長方形中對角線才會「相等」。" },
+                    { q: "如圖，長方形 <i>ABCD</i> 中，對角線交於 <i>O</i>。若 ∠<i>AOB</i> = 120°，則 ∠<i>OBC</i> = ？<svg class='q-svg' viewBox='0 0 200 120'><rect x='20' y='20' width='160' height='80' fill='none' stroke='#000'/><line x1='20' y1='20' x2='180' y2='100' stroke='#000'/><line x1='180' y1='20' x2='20' y2='100' stroke='#000'/><text x='15' y='20' font-size='12'>A</text><text x='185' y='20' font-size='12'>D</text><text x='185' y='110' font-size='12'>C</text><text x='15' y='110' font-size='12'>B</text><text x='105' y='58' font-size='12'>O</text><path d='M95,55 Q80,60 95,65' fill='none' stroke='red'/><text x='65' y='65' font-size='10' fill='red'>120°</text></svg>", options: ["30°", "60°", "45°", "15°"], ans: 1, hint: "∠<i>AOB</i> = 120°，則其鄰角 ∠<i>BOC</i> = 180° - 120° = 60°。在長方形中，對角線互相平分且相等，因此 △<i>OBC</i> 為等腰三角形。", exp: "因 ∠<i>BOC</i> = 180° - 120° = 60°，且 <i>OB</i> = <i>OC</i>，故 △<i>OBC</i> 為正三角形，∠<i>OBC</i> = 60°。" },
+                    { q: "如圖，長方形 <i>ABCD</i> 的面積為 48，<span class='segment'>AB</span> = 6，則對角線 <span class='segment'>BD</span> = ？<svg class='q-svg' viewBox='0 0 200 120'><rect x='20' y='20' width='160' height='80' fill='none' stroke='#000'/><line x1='20' y1='100' x2='180' y2='20' stroke='#000'/><text x='15' y='20' font-size='12'>A</text><text x='185' y='20' font-size='12'>D</text><text x='185' y='110' font-size='12'>C</text><text x='15' y='110' font-size='12'>B</text><text x='5' y='65' font-size='12'>6</text></svg>", options: ["10", "8", "12", "14"], ans: 0, hint: "先利用面積與一邊求出鄰邊，再用畢氏定理求對角線。", exp: "<span class='segment'>BC</span> = 48 / 6 = 8。對角線 <span class='segment'>BD</span> = √(6² + 8²) = 10。" }
+                ]
+            },
+            {
+                name: "4-3-12 菱形的性質",
+                questions: [
+                    { q: "菱形 <i>ABCD</i> 中，若對角線 <span class='segment'>AC</span>=10, <span class='segment'>BD</span>=24，則其面積為何？", options: ["120", "240", "60", "2400"], ans: 0, hint: "菱形面積公式為：(對角線1 × 對角線2) / 2。", exp: "面積 = (10 × 24) / 2 = 120。" },
+                    { q: "菱形具有下列哪一種特殊性質？", options: ["對角線互相垂直平分", "四個內角皆相等", "對角線長度必相等", "鄰角不互補"], ans: 0, hint: "菱形是四邊等長的四邊形，這會導致對角線交角發生什麼事？", exp: "菱形的對角線不僅互相平分，更因為四邊等長而「互相垂直」。" },
+                    { q: "若菱形的周長為 40，則其邊長為何？", options: ["10", "20", "5", "40"], ans: 0, hint: "菱形的四個邊都相等。", exp: "邊長 = 周長 / 4 = 40 / 4 = 10。" },
+                    { q: "菱形 <i>ABCD</i> 中，若對角線 <span class='segment'>AC</span>=12, <span class='segment'>BD</span>=16，則邊長 <span class='segment'>AB</span> 為何？", options: ["10", "14", "20", "28"], ans: 0, hint: "菱形對角線互相垂直且平分，可以切成四個直角三角形。", exp: "對角線一半分別為 6 與 8。邊長 = √(6² + 8²) = 10。" },
+                    { q: "關於菱形與平行四邊形的關係，下列敘述何者正確？", options: ["菱形必為平行四邊形", "平行四邊形必為菱形", "菱形的四角必為 90°", "菱形只有一組對邊平行"], ans: 0, hint: "菱形滿足平行四邊形的所有定義嗎？", exp: "菱形具有兩組對邊平行且相等，因此一定是平行四邊形的一種。" }
+                ]
+            },
+            {
+                name: "4-3-13 箏形的性質",
+                questions: [
+                    { q: "關於箏形（鳶形）的對角線性質，下列何者正確？", options: ["只有一條對角線被另一條平分", "兩條對角線互相平分", "對角線一定相等", "對角線互不垂直"], ans: 0, hint: "箏形是兩組鄰邊等長，這使得其中一條對角線成為對稱軸。", exp: "箏形的對角線「互相垂直」，且只有「其中一條」會被另一條平分。" },
+                    { q: "箏形 <i>ABCD</i> 中，若對角線 <span class='segment'>AC</span>=10, <span class='segment'>BD</span>=16，則面積為何？", options: ["80", "160", "40", "100"], ans: 0, hint: "箏形面積公式與菱形相同：(對角線乘積) / 2。", exp: "面積 = (10 × 16) / 2 = 80。" },
+                    { q: "若箏形的一組對角相等，下列何者「錯誤」？", options: ["它一定是平行四邊形", "它有一條對角線是角平分線", "它兩對鄰邊相等", "它的對角線互相垂直"], ans: 0, hint: "箏形雖然有一組對角相等，但它通常只有一組對邊平行嗎？", exp: "箏形不是平行四邊形（除非它是菱形），因為它的兩組對邊並不一定平行。" },
+                    { q: "箏形 <i>ABCD</i>，<span class='segment'>AB</span>=<span class='segment'>AD</span>=5，<span class='segment'>CB</span>=<span class='segment'>CD</span>=12。若 ∠<i>ABC</i>=90°，則對角線 <span class='segment'>AC</span> 長度？", options: ["13", "17", "7", "60"], ans: 0, hint: "∠<i>B</i> 是直角，所以 △<i>ABC</i> 是直角三角形。", exp: "在直角 △<i>ABC</i> 中，<span class='segment'>AC</span> = √(5² + 12²) = 13。" },
+                    { q: "箏形中被平分的對角線，其長度與面積的關係為何？", options: ["面積 = (平分線×另一線)/2", "面積 = 平分線×另一線", "面積 = 兩倍平分線", "無關"], ans: 0, hint: "所有的對角線互相垂直的四邊形面積公式都一樣。", exp: "只要對角線互相垂直，面積就是兩對角線乘積的一半。" },
+                    { q: "如圖，箏形 <i>ABCD</i> 中，若對角線 <span class='segment'>BD</span> 被 <span class='segment'>AC</span> 平分於 <i>O</i> 點，且 <span class='segment'>BD</span>=16, <span class='segment'>OA</span>=6, <span class='segment'>OC</span>=15，則此箏形的面積為何？<svg class='q-svg' viewBox='0 0 200 220'><polygon points='100,20 180,80 100,200 20,80' fill='none' stroke='#000'/><line x1='100' y1='20' x2='100' y2='200' stroke='#000'/><line x1='20' y1='80' x2='180' y2='80' stroke='#000'/><text x='95' y='15' font-size='12'>A</text><text x='185' y='85' font-size='12'>D</text><text x='95' y='215' font-size='12'>C</text><text x='5' y='85' font-size='12'>B</text><text x='105' y='95' font-size='12'>O</text></svg>", options: ["168", "126", "252", "84"], ans: 0, hint: "面積 = (對角線1 × 對角線2) / 2。<span class='segment'>AC</span> = 6 + 15 = 21。", exp: "面積 = (21 × 16) / 2 = 168。" },
+                    { q: "如圖，箏形 <i>ABCD</i> 中，∠<i>A</i>=110°, ∠<i>C</i>=30°，則 ∠<i>B</i> 的度數為何？<svg class='q-svg' viewBox='0 0 200 220'><polygon points='100,20 170,90 100,200 30,90' fill='none' stroke='#000'/><text x='95' y='15' font-size='12'>A</text><text x='175' y='95' font-size='12'>D</text><text x='95' y='215' font-size='12'>C</text><text x='15' y='95' font-size='12'>B</text><text x='90' y='45' font-size='10' fill='red'>110°</text><text x='90' y='180' font-size='10' fill='red'>30°</text></svg>", options: ["110°", "100°", "120°", "220°"], ans: 0, hint: "箏形有一組對角相等，內角和 360°。", exp: "∠<i>B</i> = ∠<i>D</i> = (360° - 110° - 30°) / 2 = 110°。" }
+                ]
+            },
+            {
+                name: "4-3-14 正方形的性質",
+                questions: [
+                    { q: "正方形同時具備哪兩種圖形的性質？", options: ["長方形與菱形", "箏形與梯形", "長方形與箏形", "菱形與梯形"], ans: 0, hint: "正方形既要四角直角，又要四邊等長。", exp: "正方形集合了長方形（四角直角）與菱形（四邊等長）的所有特性。" },
+                    { q: "正方形的對角線性質，下列何者「錯誤」？", options: ["只有互相平分但不垂直", "長度相等", "互相垂直", "平分各個內角"], ans: 0, hint: "正方形是「最完美」的四邊形，對角線應具備所有優點。", exp: "正方形的對角線必須「相等」、「互相平分」且「互相垂直」。" },
+                    { q: "正方形 <i>ABCD</i> 邊長為 10，則對角線長度為何？", options: ["10√2", "10", "20", "100"], ans: 0, hint: "1:1:√2 的直角三角形比例。", exp: "對角線 = √(10² + 10²) = 10√2。" },
+                    { q: "若一個四邊形的對角線「相等、互相垂直且平分」，則它必為？", options: ["正方形", "長方形", "菱形", "箏形"], ans: 0, hint: "想一想，哪種圖形能同時滿足這三個對角線條件？", exp: "同時滿足相等（長方形）、互相垂直（菱形）、互相平分（平行四邊形）的即為正方形。" },
+                    { q: "正方形 <i>ABCD</i> 面積為 64，則周長為何？", options: ["32", "64", "16", "8"], ans: 0, hint: "先求出邊長 (邊長² = 面積)。", exp: "邊長 = √64 = 8。周長 = 8 × 4 = 32。" },
+                    { q: "如圖，正方形 <i>ABCD</i> 的對角線長為 14，則其面積為何？<svg class='q-svg' viewBox='0 0 200 200'><rect x='40' y='40' width='120' height='120' fill='none' stroke='#000'/><line x1='40' y1='40' x2='160' y2='160' stroke='#000'/><text x='35' y='35' font-size='12'>A</text><text x='165' y='35' font-size='12'>D</text><text x='165' y='175' font-size='12'>C</text><text x='35' y='175' font-size='12'>B</text><text x='90' y='90' font-size='12' transform='rotate(45 90,90)'>14</text></svg>", options: ["98", "196", "49", "28"], ans: 0, hint: "正方形也是菱形，面積 = (對角線1 × 對角線2) / 2。", exp: "面積 = (14 × 14) / 2 = 98。" },
+                    { q: "如圖，正方形 <i>ABCD</i> 內有一正三角形 <i>PAB</i>，求 ∠<i>PDC</i> 的度數？<svg class='q-svg' viewBox='0 0 200 200'><rect x='40' y='40' width='120' height='120' fill='none' stroke='#000'/><polygon points='40,160 160,160 100,56' fill='none' stroke='#000'/><line x1='100' y1='56' x2='160' y2='40' stroke='#000' stroke-dasharray='4'/><text x='35' y='35' font-size='12'>D</text><text x='165' y='35' font-size='12'>C</text><text x='165' y='175' font-size='12'>B</text><text x='35' y='175' font-size='12'>A</text><text x='95' y='50' font-size='12'>P</text></svg>", options: ["15°", "30°", "45°", "25°"], ans: 0, hint: "△<i>APD</i> 是等腰三角形，且 ∠<i>DAP</i> = 90° - 60° = 30°。", exp: "∠<i>DAP</i> = 30°。在等腰 △<i>APD</i> 中，∠<i>ADP</i> = (180°-30°)/2 = 75°。故 ∠<i>PDC</i> = 90° - 75° = 15°。" }
+                ]
+            },
+            {
+                name: "4-3-21 梯形兩腰中點連線段的性質",
+                questions: [
+                    { q: "梯形兩腰中點連線段的長度，等於下列何者？", options: ["(上底 + 下底) / 2", "上底 + 下底", "下底 - 上底", "高 / 2"], ans: 0, hint: "中點連線段位於梯形的中間，長度是底邊的平均值。", exp: "公式：中點連線段長 = (上底 + 下底) / 2。" },
+                    { q: "一梯形上底為 8，下底為 12，則其兩腰中點連線段長度為何？", options: ["10", "20", "4", "96"], ans: 0, hint: "(8 + 12) / 2。", exp: "中點連線 = (8 + 12) / 2 = 10。" },
+                    { q: "梯形面積除了可以用 (上底+下底)×高/2 計算，也可以用下列何者？", options: ["兩腰中點連線段 × 高", "兩腰中點連線段 × 高 / 2", "上底 × 高", "下底 × 高"], ans: 0, hint: "因為 (上底+下底)/2 就是中點連線段。", exp: "面積 = [(上底+下底)/2] × 高 = 中點連線段長 × 高。" },
+                    { q: "若梯形的中點連線段長為 15，高為 10，則其面積為何？", options: ["150", "75", "300", "25"], ans: 0, hint: "直接利用「中點連線段 × 高」即可。", exp: "面積 = 15 × 10 = 150。" },
+                    { q: "梯形上底為 <i>x</i>，下底為 20，中點連線段長為 16，求 <i>x</i>？", options: ["12", "14", "18", "16"], ans: 0, hint: "(<i>x</i> + 20) / 2 = 16。", exp: "<i>x</i> + 20 = 32 → <i>x</i> = 12。" },
+                    { q: "如圖，梯形 <i>ABCD</i> 中，<span class='segment'>AD</span> // <span class='segment'>BC</span>，<span class='segment'>EF</span> 為中線。若 <span class='segment'>AD</span>=5, <span class='segment'>BC</span>=13，則 <span class='segment'>EF</span>=？<svg class='q-svg' viewBox='0 0 200 120'><polygon points='60,20 140,20 180,100 20,100' fill='none' stroke='#000'/><line x1='40' y1='60' x2='160' y2='60' stroke='#000' stroke-dasharray='4'/><text x='95' y='15' font-size='12'>5</text><text x='95' y='115' font-size='12'>13</text><text x='30' y='65' font-size='12'>E</text><text x='165' y='65' font-size='12'>F</text></svg>", options: ["9", "18", "8", "6.5"], ans: 0, hint: "套用中線公式：(上底+下底)/2。", exp: "(5 + 13) / 2 = 9。" },
+                    { q: "如圖，梯形 <i>ABCD</i> 中，中線 <span class='segment'>EF</span>=15，高為 8，則此梯形面積為何？<svg class='q-svg' viewBox='0 0 200 120'><polygon points='50,20 130,20 180,100 20,100' fill='none' stroke='#000'/><line x1='35' y1='60' x2='155' y2='60' stroke='blue'/><line x1='50' y1='20' x2='50' y2='100' stroke='red' stroke-dasharray='2'/><text x='85' y='55' font-size='12' fill='blue'>15</text><text x='35' y='65' font-size='12' fill='red'>8</text></svg>", options: ["120", "60", "240", "15"], ans: 0, hint: "面積 = 中線 × 高。", exp: "15 × 8 = 120。" }
+                ]
+            },
+            {
+                name: "4-3-22 等腰梯形的性質",
+                questions: [
+                    { q: "關於等腰梯形的性質，下列何者「錯誤」？", options: ["對角線互相平分", "兩底角相等", "對角線長度相等", "只有一組對邊平行"], ans: 0, hint: "等腰梯形只有一組對邊平行，它的對角線會平分嗎？", exp: "等腰梯形的對角線「相等」，但「不互相平分」（除了長方形以外）。" },
+                    { q: "等腰梯形 <i>ABCD</i> 中，<span class='segment'>AD</span> // <span class='segment'>BC</span>，∠<i>B</i>=70°，則 ∠<i>D</i> 為多少度？", options: ["110°", "70°", "180°", "20°"], ans: 0, hint: "等腰梯形底角相等，且鄰角（上、下底角）互補。", exp: "∠<i>C</i> = ∠<i>B</i> = 70°。因平行關係，∠<i>D</i> = 180° - 70° = 110°。" },
+                    { q: "等腰梯形具有幾條對稱軸？", options: ["1 條", "2 條", "0 條", "4 條"], ans: 0, hint: "想想看通過兩底中點的直線。", exp: "等腰梯形只有一條對稱軸，即通過兩底中點的直線。" },
+                    { q: "等腰梯形上底為 6，下底為 10，腰長為 5，則其高為何？", options: ["√21", "4", "3", "5"], ans: 0, hint: "作垂直線，底邊切出的直角三角形底邊長為 (10-6)/2。", exp: "直角三角形底邊 = (10-6)/2 = 2。高 = √(5² - 2²) = √21。" },
+                    { q: "若一梯形對角線相等，則此梯形必為何者？", options: ["等腰梯形", "一般梯形", "直角梯形", "平行四邊形"], ans: 0, hint: "對角線相等是等腰梯形的獨有性質（相對於一般梯形）。", exp: "在梯形中，只有等腰梯形的對角線會相等。" },
+                    { q: "如圖，等腰梯形 <i>ABCD</i> 中，<span class='segment'>AD</span>=7, <span class='segment'>BC</span>=17，腰長為 13，求此梯形的高？<svg class='q-svg' viewBox='0 0 200 120'><polygon points='60,20 110,20 160,100 10,100' fill='none' stroke='#000'/><text x='80' y='15' font-size='12'>7</text><text x='80' y='115' font-size='12'>17</text><text x='25' y='60' font-size='12'>13</text></svg>", options: ["12", "5", "13", "10"], ans: 0, hint: "利用畢氏定理求高。底部三角形底邊 = (17-7)/2 = 5。", exp: "高 = √(13² - 5²) = 12。" },
+                    { q: "如圖，等腰梯形 <i>ABCD</i> 中，<span class='segment'>AD</span> // <span class='segment'>BC</span>，∠<i>A</i>=120°，則 ∠<i>C</i>=？<svg class='q-svg' viewBox='0 0 200 120'><polygon points='60,20 140,20 180,100 20,100' fill='none' stroke='#000'/><text x='65' y='35' font-size='10' fill='red'>120°</text></svg>", options: ["60°", "120°", "180°", "30°"], ans: 0, hint: "等腰梯形底角相等，上、下底角互補。", exp: "∠<i>B</i> = 180° - 120° = 60°。∠<i>C</i> = ∠<i>B</i> = 60°。" }
+                ]
+            }
+        ];
+
+        function startGame() {
+            stuClass = document.getElementById("stu-class").value;
+            stuNo = document.getElementById("stu-no").value;
+            if (!stuClass || !stuNo) return alert("請輸入巫師資訊以通過屏障！");
+            document.getElementById("login-screen").classList.remove("active");
+            document.getElementById("lobby-screen").classList.add("active");
+            document.getElementById("display-info").innerText = `⚡ 巫師：${stuClass} ${stuNo} 號`;
+            renderLobby();
+        }
+
+        function renderLobby() {
+            const list = document.getElementById("level-list");
+            list.innerHTML = "";
+            levels.forEach((lvl, i) => {
+                const isDone = completed.includes(i);
+                list.innerHTML += `
+                    <div class="level-item">
+                        <span>${isDone ? '✨' : '🕯️'} ${lvl.name}</span>
+                        <button class="btn" onclick="startBattle(${i})" ${isDone ? 'disabled' : ''}>
+                            ${isDone ? '已淨化' : '挑戰任務'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function startBattle(idx) {
+            curLvl = idx; curQue = 0; curScore = 100;
+            document.getElementById("lobby-screen").classList.remove("active");
+            document.getElementById("battle-screen").classList.add("active");
+            document.getElementById("level-title").innerText = levels[idx].name;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qCount = levels[curLvl].questions.length;
+            const q = levels[curLvl].questions[curQue];
+            document.getElementById("battle-progress").innerText = `咒語進度: ${curQue + 1} / ${qCount}`;
+            document.getElementById("monster-icon").innerText = monsters[curLvl % monsters.length];
+            document.getElementById("question-box").innerHTML = q.q;
+            
+            let opts = q.options.map((t, i) => ({ t, c: i === q.ans }));
+            opts.sort(() => Math.random() - 0.5);
+            
+            const container = document.getElementById("option-container");
+            container.innerHTML = "";
+            opts.forEach(o => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerHTML = o.t;
+                btn.onclick = () => checkAns(o.c);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAns(correct) {
+            const q = levels[curLvl].questions[curQue];
+            if (correct) {
+                document.getElementById("exp-text").innerHTML = q.exp;
+                showModal("exp-modal");
+            } else {
+                hp -= 10; curScore -= 15;
+                document.getElementById("hp-fill").style.width = hp + "%";
+                document.getElementById("monster-icon").classList.add("shake");
+                setTimeout(() => document.getElementById("monster-icon").classList.remove("shake"), 500);
+                document.getElementById("hint-text").innerHTML = q.hint;
+                showModal("hint-modal");
+                if (hp <= 0) { alert("法力耗盡！你被送回醫療翼..."); location.reload(); }
+            }
+        }
+
+        function showModal(id) {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById(id).style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("hint-modal").style.display = "none";
+            document.getElementById("exp-modal").style.display = "none";
+        }
+
+        function nextQuestion() {
+            closeModal();
+            curQue++;
+            if (curQue < levels[curLvl].questions.length) loadQuestion();
+            else finishLevel();
+        }
+
+        function finishLevel() {
+            completed.push(curLvl);
+            uploadScore(levels[curLvl].name, Math.max(0, curScore));
+            document.getElementById("battle-screen").classList.remove("active");
+            document.getElementById("lobby-screen").classList.add("active");
+            renderLobby();
+        }
+
+        function uploadScore(lvl, score) {
+            const data = new FormData();
+            data.append('time', new Date().toLocaleString());
+            data.append('class', stuClass);
+            data.append('no', stuNo);
+            data.append('level', lvl);
+            data.append('score', score);
+            fetch(API_URL, { method: 'POST', mode: 'no-cors', body: data }).catch(e => console.log(e));
+        }
+    </script>
+</body>
+</html>
