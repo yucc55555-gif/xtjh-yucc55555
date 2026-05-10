@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-5 三角形的邊角關係 - 寶可夢大賽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .pokemon-red { background-color: #FF0000; }
+        .pokemon-blue { background-color: #3B4CCA; }
+        .pokemon-yellow { background-color: #FFDE00; }
+        .pokemon-gold { background-color: #B3A125; }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #3B4CCA;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .hp-bar-bg {
+            background: #eee;
+            height: 20px;
+            border-radius: 10px;
+            border: 2px solid #333;
+            overflow: hidden;
+        }
+
+        .hp-bar-fill {
+            background: linear-gradient(to right, #4ade80, #22c55e);
+            height: 100%;
+            transition: width 0.5s ease-out;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .monster-flash {
+            animation: flash 0.2s 3;
+        }
+
+        @keyframes flash {
+            50% { opacity: 0; transform: scale(1.1); filter: brightness(2); }
+        }
+
+        .btn-option {
+            transition: all 0.2s;
+            border: 2px solid #3B4CCA;
+        }
+
+        .btn-option:hover {
+            transform: translateY(-2px);
+            background-color: #FFDE00;
+            color: #3B4CCA;
+        }
+
+        .modal-bg {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .badge-locked { filter: grayscale(1); opacity: 0.3; }
+
+        .scroll-area {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        
+        .scroll-area::-webkit-scrollbar { width: 6px; }
+        .scroll-area::-webkit-scrollbar-thumb { background: #3B4CCA; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="app" class="flex flex-col items-center justify-center min-h-screen p-4">
+    <!-- 登入畫面 -->
+    <div id="login-view" class="game-card w-full max-w-md p-8 text-center">
+        <h1 class="text-3xl font-bold text-red-600 mb-6">🐾 寶可夢數學大賽 🐾</h1>
+        <p class="mb-6 text-gray-600">挑戰者，請報上名號進入大會！</p>
+        <div class="space-y-4">
+            <input type="text" id="class-name" placeholder="請輸入班級 (如: 801)" class="w-full p-3 border-2 border-blue-600 rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 text-center">
+            <input type="text" id="student-no" placeholder="請輸入座號 (如: 01)" class="w-full p-3 border-2 border-blue-600 rounded-lg outline-none focus:ring-2 focus:ring-yellow-400 text-center">
+            <button onclick="startGame()" class="pokemon-blue text-white font-bold py-3 px-8 rounded-full w-full hover:bg-blue-700 transition">
+                進入遊戲
+            </button>
+        </div>
+    </div>
+
+    <!-- 大廳畫面 -->
+    <div id="lobby-view" class="hidden w-full max-w-4xl">
+        <div class="game-card p-6 mb-4 flex flex-col md:flex-row justify-between items-center bg-white">
+            <div class="text-left mb-4 md:mb-0">
+                <h2 class="text-xl font-bold text-blue-800">挑戰者：<span id="display-info" class="text-red-600"></span></h2>
+                <div class="flex items-center mt-2">
+                    <span class="mr-2 font-bold">HP:</span>
+                    <div class="hp-bar-bg w-48"><div id="lobby-hp" class="hp-bar-fill" style="width: 100%;"></div></div>
+                </div>
+            </div>
+            <div class="flex space-x-2" id="medal-container">
+                <!-- 勳章會動態生成 -->
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="level-list">
+            <!-- 關卡按鈕動態生成 -->
+        </div>
+    </div>
+
+    <!-- 戰鬥畫面 -->
+    <div id="battle-view" class="hidden w-full max-w-3xl game-card overflow-hidden">
+        <div class="pokemon-red p-4 text-white flex justify-between items-center">
+            <span id="level-title" class="font-bold">關卡挑戰</span>
+            <span id="question-count" class="text-sm">題目 1 / 5</span>
+        </div>
+        
+        <div class="p-6">
+            <!-- 怪物區域 -->
+            <div class="flex justify-around items-center mb-8 bg-blue-50 rounded-xl p-4 border-2 border-dashed border-blue-200">
+                <div class="text-center">
+                    <div id="player-avatar" class="text-6xl mb-2">🧑‍🌾</div>
+                    <div class="text-xs font-bold text-blue-800">YOU</div>
+                </div>
+                <div class="text-4xl text-gray-300">VS</div>
+                <div class="text-center" id="monster-area">
+                    <div id="monster-emoji" class="text-6xl mb-2">🔥</div>
+                    <div class="text-xs font-bold text-red-600" id="monster-name">怪獸</div>
+                </div>
+            </div>
+
+            <!-- 題目區域 -->
+            <div class="scroll-area mb-6">
+                <div id="question-text" class="text-lg font-bold text-gray-800 leading-relaxed">
+                    題目載入中...
+                </div>
+                <div id="question-img-container" class="mt-4 hidden text-center">
+                    <!-- 圖片會顯示在這裡 -->
+                </div>
+            </div>
+
+            <!-- 選項區域 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="options-grid">
+                <!-- 按鈕動態生成 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 提示/詳解 彈窗 -->
+<div id="feedback-modal" class="hidden fixed inset-0 modal-bg flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center border-4" id="modal-border">
+        <div id="modal-icon" class="text-5xl mb-4">💡</div>
+        <h3 id="modal-title" class="text-2xl font-bold mb-2">提示</h3>
+        <div id="modal-content" class="text-gray-700 mb-6 leading-loose"></div>
+        <button id="modal-btn" class="py-2 px-8 rounded-full text-white font-bold transition"></button>
+    </div>
+</div>
+
+<script>
+    // 遊戲資料
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwYHDPDsgCKUFNfFlYPruhUF-f9XNjHcszHlJcimYc65sFdHidFUObbd69T8PA0AwsWhg/exec";
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'triangle-geometry-rpg';
+    
+    let playerName = "";
+    let playerNo = "";
+    let playerHP = 100;
+    let currentLevelIndex = 0;
+    let currentQuestionIndex = 0;
+    let currentScore = 100;
+    let completedLevels = new Set();
+
+    const levels = [
+        {
+            name: "三邊關係判斷賽",
+            emoji: "🐾",
+            monster: "🔥",
+            questions: [
+                { q: "下列各組的 3 個數代表三線段長，哪組可以構成三角形？(1) 9, 9, 18 (2) 9, 12, 15 (3) 10, 12, 24", options: ["(1)", "(2)", "(3)"], ans: 1, hint: "三角形兩邊之和必須大於第三邊。9+9等於18，不符合大於。", exp: "9+12=21 > 15，符合兩小邊之和大於最大邊。" },
+                { q: "下列各組代表三線段長度，哪組可構成三角形？(1) 3, 3, 6 (2) 3, 4, 6 (3) 4, 5, 9", options: ["(1)", "(2)", "(3)"], ans: 1, hint: "檢查兩小邊之和是否大於最大邊。3+3=6不符合。", exp: "3+4=7 > 6，符合條件。" },
+                { q: "下列各組代表三線段長度，哪組可構成三角形？(1) 13, 14, 27 (2) 12, 12, 25 (3) 11, 15, 21", options: ["(1)", "(2)", "(3)"], ans: 2, hint: "13+14=27，剛好等於第三邊，無法形成。", exp: "11+15=26 > 21，符合條件。" },
+                { q: "下列各組代表三線段長度，哪組可構成三角形？(1) 1, 2, 3 (2) 2, 2, 4 (3) 4, 5, 6", options: ["(1)", "(2)", "(3)"], ans: 2, hint: "檢查最短的兩邊。1+2=3，不行。", exp: "4+5=9 > 6，符合條件。" },
+                { q: "下列各組代表三線段長度，哪組可構成三角形？(1) 5, 6, 11 (2) 3, 8, 10 (3) 5, 5, 10", options: ["(1)", "(2)", "(3)"], ans: 1, hint: "5+6=11，等於第三邊，三角形會變成一條線。", exp: "3+8=11 > 10，符合條件。" }
+            ]
+        },
+        {
+            name: "邊長範圍挑戰賽",
+            emoji: "🌊",
+            monster: "🐢",
+            questions: [
+                { q: "若 2、14 是一個三角形的兩邊長，且第三邊長度是整數，下列何者可能是第三邊？", options: ["11", "12", "13", "16"], ans: 2, hint: "第三邊長度範圍為：(14-2) < x < (14+2)，即 12 < x < 16。", exp: "範圍是 12 到 16 之間，整數包含 13, 14, 15。" },
+                { q: "若 3、12 是一個三角形的兩邊長，且第三邊是整數，則第三邊長度範圍為何？", options: ["9 < x < 15", "9 <= x <= 15", "3 < x < 12", "12 < x < 15"], ans: 0, hint: "兩邊之差 < 第三邊 < 兩邊之和。", exp: "12-3=9，12+3=15，所以是 9 < x < 15。" },
+                { q: "有一個三角形頂點為甲、乙、丙，甲到乙距離 2.4，乙到丙 6.7，丙到甲為整數，可能是多少？", options: ["4", "5", "10", "3"], ans: 1, hint: "差：6.7-2.4=4.3；和：6.7+2.4=9.1。整數介於 4.3 與 9.1 之間。", exp: "可能整數為 5, 6, 7, 8, 9。" },
+                { q: "已知 <i>a</i>, <i>b</i> 為 5, 12，且第三邊 <i>c</i> 為整數，則 <i>c</i> 的最大值是多少？", options: ["16", "17", "18", "19"], ans: 0, hint: "c < 5+12=17。比 17 小的最大整數是？", exp: "c 的範圍是 7 < c < 17，故最大值為 16。" },
+                { q: "若三角形兩邊長為 5、5，則第三邊長度的範圍？", options: ["0 < x < 10", "5 < x < 10", "0 < x < 5", "x = 10"], ans: 0, hint: "5-5 < x < 5+5。", exp: "範圍是 0 到 10 之間。" }
+            ]
+        },
+        {
+            name: "多邊共邊進階賽",
+            emoji: "⚡",
+            monster: "🐭",
+            questions: [
+                { q: "如圖，已知 <span style='text-decoration: overline;'>AB</span>=<span style='text-decoration: overline;'>BC</span>=9, <span style='text-decoration: overline;'>AD</span>=8, <span style='text-decoration: overline;'>CD</span>=9，若 <span style='text-decoration: overline;'>AC</span> 為整數，則其最大值為何？<br><img src='img_q11.png' alt='請截圖PDF第2頁第6題' style='max-width:200px;'>", options: ["16", "17", "18", "19"], ans: 0, hint: "AC必須同時滿足兩個三角形。在ΔABC中，AC < 9+9=18；在ΔADC中，AC < 8+9=17。", exp: "AC < 18 且 AC < 17，故 AC < 17。最大整數為 16。" },
+                { q: "已知 <span style='text-decoration: overline;'>AB</span>=15, <span style='text-decoration: overline;'>BC</span>=9, <span style='text-decoration: overline;'>CD</span>=11, <span style='text-decoration: overline;'>AD</span>=10，則 <span style='text-decoration: overline;'>AC</span> 為整數時的最大值與最小值？<br><img src='img_q12.png' alt='請截圖PDF第2頁第8題' style='max-width:200px;'>", options: ["大20, 小7", "大21, 小6", "大19, 小8", "大24, 小5"], ans: 0, hint: "ΔABC中：6 < AC < 24；ΔADC中：1 < AC < 21。取重疊範圍。", exp: "取 6 < AC < 24 與 1 < AC < 21 的交集，得 6 < AC < 21。最大 20，最小 7。" },
+                { q: "在四邊形 ABCD 中，<span style='text-decoration: overline;'>AC</span> 為對角線。若 AB=15, BC=23, CD=12, AD=19，AC 為整數，則 AC 最大值？<br><img src='img_q13.png' alt='請截圖PDF第2頁第8題' style='max-width:200px;'>",  options: ["30", "31", "32", "33"], ans: 0, hint: "AC < 15+23=38 且 AC < 12+19=31。", exp: "AC 必須小於 31，最大整數為 30。" },
+                { q: "在四邊形 ABCD 中，<span style='text-decoration: overline;'>AC</span> 為對角線。若 AB=15, BC=23, CD=12, AD=19，AC 為整數，則 AC 最小值？<br><img src='img_q13.png' alt='請截圖PDF第2頁第8題' style='max-width:200px;'>", options: ["7", "8", "9", "10"], ans: 2, hint: "AC > |15-23|=8 且 AC > |12-19|=7。取大的限制。", exp: "AC 必須大於 8，最小整數為 9。" },
+                { q: "一個四邊形被對角線分成兩個三角形，邊長分別為 5, 8, 10, 12，對角線長度不可為？", options: ["14", "15", "16", "20"], ans: 3, hint: "對角線必須小於 5+8=13 或 10+12=22。若大於13則有一邊無法構成三角形。", exp: "在 5, 8 那側，對角線必須小於 13，20 不可能。" }
+            ]
+        },
+        {
+            name: "大邊對大角賽",
+            emoji: "🍃",
+            monster: "🦖",
+            questions: [
+                { q: "ΔABC 中，已知 <span style='text-decoration: overline;'>AC</span> > <span style='text-decoration: overline;'>BC</span>，則 ∠B 與 ∠A 的大小關係為何？", options: ["∠B > ∠A", "∠B < ∠A", "∠B = ∠A", "無法判斷"], ans: 0, hint: "大邊對大角。<span style='text-decoration: overline;'>AC</span> 對面是哪個角？", exp: "<span style='text-decoration: overline;'>AC</span> 對 ∠B，<span style='text-decoration: overline;'>BC</span> 對 ∠A。邊長 AC 大，所以 ∠B 大。" },
+                { q: "ΔABC 中，<span style='text-decoration: overline;'>AB</span>=11, <span style='text-decoration: overline;'>BC</span>=13, <span style='text-decoration: overline;'>AC</span>=15，比較三內角大小？", options: ["∠B > ∠A > ∠C", "∠C > ∠B > ∠A", "∠A > ∠B > ∠C", "∠B > ∠C > ∠A"], ans: 0, hint: "找出最長邊對最大角。最長邊是 <span style='text-decoration: overline;'>AC</span>(15)。", exp: "AC(15)>BC(13)>AB(11)，對應角為 ∠B > ∠A > ∠C。" },
+                { q: "ΔABC 中，<span style='text-decoration: overline;'>AB</span>=16, <span style='text-decoration: overline;'>BC</span>=20, <span style='text-decoration: overline;'>AC</span>=12，哪個角最大？", options: ["∠A", "∠B", "∠C", "一樣大"], ans: 0, hint: "最長邊是 BC=20。", exp: "BC 對應 ∠A，故 ∠A 最大。" },
+                { q: "ΔABC 中，<span style='text-decoration: overline;'>AB</span>=17, <span style='text-decoration: overline;'>BC</span>=13, <span style='text-decoration: overline;'>AC</span>=10，試比較大小。", options: ["∠C > ∠A > ∠B", "∠A > ∠B > ∠C", "∠B > ∠A > ∠C", "∠C > ∠B > ∠A"], ans: 0, hint: "AB(17) 是最大邊。", exp: "AB(17)>BC(13)>AC(10)，故對應角為 ∠C > ∠A > ∠B。" },
+                { q: "若等腰 ΔABC 中，<span style='text-decoration: overline;'>AB</span>=<span style='text-decoration: overline;'>AC</span>，且 <span style='text-decoration: overline;'>BC</span> 最長，則下列何者正確？", options: ["∠A > ∠B = ∠C", "∠A < ∠B = ∠C", "∠A = ∠B = ∠C", "∠B > ∠A = ∠C"], ans: 0, hint: "BC 最長，它對應的角 ∠A 就最大。", exp: "BC 對 ∠A，AB 對 ∠C，AC 對 ∠B。因 BC 最長，∠A 最大，且 ∠B=∠C。" }
+            ]
+        },
+        {
+            name: "垂線分角應用賽",
+            emoji: "🦇",
+            monster: "👻",
+            questions: [
+                { q: "ΔABC 中，<span style='text-decoration: overline;'>BC</span> > <span style='text-decoration: overline;'>AB</span>，若 <span style='text-decoration: overline;'>BH</span> 垂直 <span style='text-decoration: overline;'>AC</span> 且 H 在 AC 上，則 ∠ABH 與 ∠CBH 大小？", options: ["∠CBH > ∠ABH", "∠CBH < ∠ABH", "相等", "不一定"], ans: 0, hint: "利用大邊對大角，∠A > ∠C。在直角三角形 ABH 與 CBH 中，∠ABH=90-∠A，∠CBH=90-∠C。", exp: "因為 ∠A > ∠C，所以 (90-∠A) < (90-∠C)，即 ∠ABH < ∠CBH。" },
+                { q: "如圖，正方形 ABCD 與 AEFG。G 在 BC 上，連接 DE，判斷 ∠1(∠ADE) 與 ∠2(∠GDE) 大小？<br><img src='img_q21.png' alt='請截圖PDF第4頁第1題' style='max-width:200px;'>", options: ["∠2 > ∠1", "∠1 > ∠2", "相等", "無法判斷"], ans: 0, hint: "在 ΔDGE 中，∠DGE 是鈍角，對邊 DE 最長。", exp: "在 ΔDGE 中，根據圖形判定，∠2 所對的邊長於 ∠1 對應部分。" },
+                { q: "正方形 ABCD 中，E 在 BC 上，則 ∠1 與 ∠2 的關係？<br><img src='img_q22.png' alt='請截圖PDF第4頁第4題' style='max-width:200px;'>", options: ["∠1 > ∠2", "∠1 < ∠2", "相等", "不一定"], ans: 0, hint: "比較 ΔABE 與 ΔACE，邊長 AB=AD。", exp: "根據大邊對大角原理分析，∠1 大於 ∠2。" },
+                { q: "等腰 ΔABC，AB=AC，頂角 ∠A=50°，比較 AB 與 BC？", options: ["AB > BC", "AB < BC", "相等", "無法判斷"], ans: 0, hint: "底角 ∠B = ∠C = (180-50)/2 = 65°。比較 ∠A=50° 與 ∠B=65°。", exp: "∠B(65°) > ∠A(50°)，故對邊 AB > BC。" },
+                { q: "等腰 ΔABC，AB=AC，頂角 ∠A=70°，比較 AB 與 BC？", options: ["AB > BC", "AB < BC", "相等", "無法判斷"], ans: 1, hint: "底角 = (180-70)/2 = 55°。比較 ∠A=70° 與 ∠B=55°。", exp: "∠A(70°) > ∠B(55°)，故對邊 BC > AB。" }
+            ]
+        },
+        {
+            name: "大角對大邊實戰",
+            emoji: "🔥",
+            monster: "🐲",
+            questions: [
+                { q: "ΔABC 中，∠A=62°, ∠B=58°，比較三邊長度？", options: ["BC > AB > AC", "AB > BC > AC", "AC > AB > BC", "BC > AC > AB"], ans: 0, hint: "先算出 ∠C = 180 - 62 - 58 = 60°。再由大角對大邊排列。", exp: "∠A(62) > ∠C(60) > ∠B(58)，故 BC > AB > AC。" },
+                { q: "ΔABC 中，∠A=80°, ∠C=30°，比較三邊長度？", options: ["BC > AC > AB", "AC > BC > AB", "AB > AC > BC", "BC > AB > AC"], ans: 0, hint: "∠B = 180 - 80 - 30 = 70°。排序：∠A > ∠B > ∠C。", exp: "對應邊為 BC > AC > AB。" },
+                { q: "ΔABC 中，∠A=50°, ∠C=50°，比較三邊長度？", options: ["AC > AB = BC", "AB = BC > AC", "AC = AB > BC", "三邊一樣長"], ans: 0, hint: "∠B = 180 - 50 - 50 = 80°。∠B 最大，∠A=∠C。", exp: "∠B 最大對應 AC，∠A=∠C 對應 BC=AB。故 AC > AB=BC。" },
+                { q: "如圖，判斷 AB, DB, DC 大小？<br><img src='img_q31.png' alt='請截圖PDF第6頁第4題' style='max-width:200px;'>", options: ["AB > DB = DC", "AB = DB > DC", "DC > DB > AB", "一樣大"], ans: 0, hint: "利用各三角形內角和與大角對大邊。", exp: "根據角度計算，∠ADB=80°，∠ABD=50°；ΔBDC為等腰。經比較得 AB > DB=DC。" },
+                { q: "四邊形 ABCD，∠A=55°, ∠ADB=60°, ∠BDC=75°, ∠C=55°，哪條最長？", options: ["BC", "AB", "AD", "CD"], ans: 0, hint: "分別在兩個三角形中找最長邊。", exp: "經角度計算與邊長傳遞，BC 為最長。" }
+            ]
+        },
+        {
+            name: "直角三角形判別",
+            emoji: "🏆",
+            monster: "🦄",
+            questions: [
+                { q: "線段長 7, 4, 8 是否可構成直角三角形？", options: ["可以，∠A是直角", "可以，∠C是直角", "不可以", "無法判斷"], ans: 2, hint: "檢查 a² + b² 是否等於 c²。7² + 4² = 49 + 16 = 65，8² = 64。", exp: "65 不等於 64，故不是直角三角形。" },
+                { q: "線段長 13, 12, 5 是否可構成直角三角形？若可以，哪個是直角？", options: ["可以，∠C是直角", "可以，∠A是直角", "可以，∠B是直角", "不可以"], ans: 0, hint: "5² + 12² = 25 + 144 = 169，13² = 169。最長邊 AB=13 的對角是？", exp: "符合勾股定理，最長邊 AB=13 對應 ∠C，故 ∠C 為直角。" },
+                { q: "線段長 5, 5, 5√2 是否可構成直角三角形？", options: ["可以，∠B是直角", "可以，∠A是直角", "不可以", "可以，∠C是直角"], ans: 0, hint: "5² + 5² = 50，(5√2)² = 25 * 2 = 50。", exp: "相等，故為等腰直角三角形，最長邊對角為直角。" },
+                { q: "線段長 4, 4√5, 8 是否可構成直角三角形？", options: ["可以，∠A是直角", "不可以", "可以，∠B是直角", "可以，∠C是直角"], ans: 0, hint: "4² + 8² = 16 + 64 = 80，(4√5)² = 16 * 5 = 80。", exp: "最長邊為 4√5 (約8.94)，其對角(假設為∠A)為直角。" },
+                { q: "線段長 9, 15, 12 是否可構成直角三角形？", options: ["可以，∠A是直角", "可以，∠B是直角", "可以，∠C是直角", "不可以"], ans: 0, hint: "檢查 9, 12, 15。9² + 12² = 81 + 144 = 225，15² = 225。", exp: "符合 3:4:5 的倍數，是直角三角形。" }
+            ]
+        }
+    ];
+
+    function startGame() {
+        const c = document.getElementById('class-name').value;
+        const n = document.getElementById('student-no').value;
+        if (!c || !n) {
+            alert("請完整輸入班級與座號！");
+            return;
+        }
+        playerName = c;
+        playerNo = n;
+        document.getElementById('display-info').innerText = `${playerName} 班 ${playerNo} 號`;
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('lobby-view').classList.remove('hidden');
+        renderLobby();
+    }
+
+    function renderLobby() {
+        const list = document.getElementById('level-list');
+        list.innerHTML = "";
+        const medalBox = document.getElementById('medal-container');
+        medalBox.innerHTML = "";
+
+        levels.forEach((lvl, idx) => {
+            const isDone = completedLevels.has(idx);
+            
+            // 勳章
+            const medal = document.createElement('span');
+            medal.className = `text-3xl ${isDone ? '' : 'badge-locked'}`;
+            medal.innerText = "🎖️";
+            medalBox.appendChild(medal);
+
+            // 關卡按鈕
+            const btn = document.createElement('button');
+            btn.className = `p-6 rounded-xl border-4 text-left transition relative ${isDone ? 'bg-gray-100 border-gray-300 opacity-70' : 'bg-white border-blue-600 hover:scale-105'}`;
+            if (isDone) btn.disabled = true;
+            btn.onclick = () => startLevel(idx);
+            
+            btn.innerHTML = `
+                <div class="text-4xl mb-2">${lvl.emoji}</div>
+                <div class="font-bold text-lg">${lvl.name}</div>
+                <div class="text-sm text-gray-500">挑戰 ${lvl.questions.length} 題</div>
+                ${isDone ? '<div class="absolute top-2 right-2 text-2xl">✅</div>' : ''}
+            `;
+            list.appendChild(btn);
+        });
+
+        if (completedLevels.size === levels.length) {
+            const winMsg = document.createElement('div');
+            winMsg.className = "col-span-full bg-yellow-100 p-6 rounded-xl border-4 border-yellow-500 text-center mt-4 animate-bounce";
+            winMsg.innerHTML = "<h2 class='text-2xl font-bold text-yellow-700'>🏆 恭喜成為幾何大師！所有勳章已收集！</h2>";
+            list.appendChild(winMsg);
+        }
+    }
+
+    function startLevel(idx) {
+        currentLevelIndex = idx;
+        currentQuestionIndex = 0;
+        currentScore = 100;
+        document.getElementById('lobby-view').classList.add('hidden');
+        document.getElementById('battle-view').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const lvl = levels[currentLevelIndex];
+        const q = lvl.questions[currentQuestionIndex];
+        
+        document.getElementById('level-title').innerText = lvl.name;
+        document.getElementById('monster-emoji').innerText = lvl.monster;
+        document.getElementById('question-count').innerText = `題目 ${currentQuestionIndex + 1} / ${lvl.questions.length}`;
+        document.getElementById('question-text').innerHTML = q.q;
+
+        // 處理圖片
+        const imgContainer = document.getElementById('question-img-container');
+        if (q.q.includes('<img')) {
+            imgContainer.classList.remove('hidden');
+        } else {
+            imgContainer.classList.add('hidden');
+        }
+
+        const grid = document.getElementById('options-grid');
+        grid.innerHTML = "";
+
+        // 隨機打亂選項
+        const indices = q.options.map((_, i) => i);
+        indices.sort(() => Math.random() - 0.5);
+
+        indices.forEach(idx => {
+            const btn = document.createElement('button');
+            btn.className = "btn-option bg-white p-4 rounded-xl font-bold text-gray-800 text-lg shadow-sm";
+            btn.innerText = q.options[idx];
+            btn.onclick = () => checkAnswer(idx);
+            grid.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIdx) {
+        const q = levels[currentLevelIndex].questions[currentQuestionIndex];
+        if (selectedIdx === q.ans) {
+            showFeedback(true, q.exp);
+        } else {
+            playerHP -= 10;
+            currentScore -= 20;
+            if (currentScore < 0) currentScore = 0;
+            updateHPDisplay();
+            showFeedback(false, q.hint);
+            triggerShake();
+        }
+    }
+
+    function showFeedback(isCorrect, text) {
+        const modal = document.getElementById('feedback-modal');
+        const border = document.getElementById('modal-border');
+        const icon = document.getElementById('modal-icon');
+        const title = document.getElementById('modal-title');
+        const content = document.getElementById('modal-content');
+        const btn = document.getElementById('modal-btn');
+
+        modal.classList.remove('hidden');
+        content.innerHTML = text;
+
+        if (isCorrect) {
+            border.className = "bg-white rounded-2xl max-w-md w-full p-6 text-center border-4 border-green-500";
+            icon.innerText = "🎉";
+            title.innerText = "太棒了！答對了";
+            btn.innerText = "下一題";
+            btn.className = "py-2 px-8 rounded-full bg-green-500 hover:bg-green-600 text-white font-bold transition";
+            btn.onclick = () => {
+                modal.classList.add('hidden');
+                nextQuestion();
+            };
+        } else {
+            border.className = "bg-white rounded-2xl max-w-md w-full p-6 text-center border-4 border-yellow-500";
+            icon.innerText = "💡";
+            title.innerText = "提示：再想一下";
+            btn.innerText = "我懂了，再試一次";
+            btn.className = "py-2 px-8 rounded-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold transition";
+            btn.onclick = () => modal.classList.add('hidden');
+        }
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        const lvl = levels[currentLevelIndex];
+        if (currentQuestionIndex < lvl.questions.length) {
+            loadQuestion();
+        } else {
+            finishLevel();
+        }
+    }
+
+    function finishLevel() {
+        completedLevels.add(currentLevelIndex);
+        uploadScore(levels[currentLevelIndex].name, currentScore);
+        
+        document.getElementById('battle-view').classList.add('hidden');
+        document.getElementById('lobby-view').classList.remove('hidden');
+        renderLobby();
+    }
+
+    function updateHPDisplay() {
+        const percent = Math.max(0, playerHP) + "%";
+        document.getElementById('lobby-hp').style.width = percent;
+        if (playerHP <= 0) {
+            alert("HP 耗盡！請重新開始挑戰。");
+            location.reload();
+        }
+    }
+
+    function triggerShake() {
+        const battle = document.getElementById('battle-view');
+        const monster = document.getElementById('monster-emoji');
+        battle.classList.add('shake');
+        monster.classList.add('monster-flash');
+        setTimeout(() => {
+            battle.classList.remove('shake');
+            monster.classList.remove('monster-flash');
+        }, 500);
+    }
+
+    async function uploadScore(lvlName, score) {
+        if (!GAS_URL) return;
+        const formData = new URLSearchParams();
+        formData.append('timestamp', new Date().toLocaleString());
+        formData.append('class', playerName);
+        formData.append('no', playerNo);
+        formData.append('level', lvlName);
+        formData.append('score', score);
+
+        try {
+            await fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            });
+        } catch (e) {
+            console.error("Score submission failed", e);
+        }
+    }
+</script>
+
+</body>
+</html>
