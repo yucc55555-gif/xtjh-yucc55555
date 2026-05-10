@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星際探險：平行線之謎</title>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --deep-space: #050b18;
+            --star-gold: #ffd700;
+            --laser-red: #ff0055;
+            --success-green: #00ff88;
+        }
+
+        * { box-sizing: border-box; font-family: "Microsoft JhengHei", sans-serif; }
+
+        body {
+            margin: 0;
+            background-color: var(--deep-space);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 50% 50%, #1a2a44 0%, #050b18 100%);
+            background-attachment: fixed;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* 隱藏/顯示控制 */
+        .screen { display: none; }
+        .active { display: flex; flex-direction: column; }
+
+        /* 登入畫面 */
+        .login-box {
+            background: rgba(0, 243, 255, 0.05);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #111;
+            border: 1px solid var(--neon-blue);
+            color: white;
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+
+        /* 按鈕風格 */
+        .btn {
+            background: linear-gradient(45deg, #0066ff, #00f3ff);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--neon-blue);
+        }
+
+        .btn:disabled {
+            background: #444;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* 大廳 */
+        .status-bar {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--neon-blue);
+        }
+
+        .hp-bar {
+            width: 100px;
+            height: 15px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .hp-fill {
+            height: 100%;
+            background: var(--success-green);
+            width: 100%;
+            transition: width 0.3s;
+        }
+
+        .level-list {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        /* 戰鬥畫面 */
+        .battle-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .monster {
+            font-size: 80px;
+            margin: 20px 0;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .monster.shake { animation: shake 0.5s; }
+        .monster.hit { filter: hue-rotate(90deg) brightness(1.5); }
+        .monster.die { transform: scale(0); opacity: 0; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .question-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--neon-blue);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .option-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s;
+        }
+
+        .option-btn:hover { background: rgba(0, 243, 255, 0.15); }
+
+        /* 彈窗 */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 15px;
+            z-index: 100;
+            display: none;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .hint-modal { background: #554400; border: 2px solid var(--star-gold); color: white; }
+        .exp-modal { background: #004422; border: 2px solid var(--success-green); color: white; }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 90;
+            display: none;
+        }
+
+        .q-img {
+            display: block;
+            margin: 10px auto;
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .segment { text-decoration: overline; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- 登入畫面 -->
+        <div id="login-screen" class="screen active">
+            <div class="login-box">
+                <h1 style="color: var(--neon-blue);">🚀 星際探險</h1>
+                <p>請輸入登機資訊以開始任務</p>
+                <input type="text" id="stu-class" placeholder="班級 (例如: 801)">
+                <input type="number" id="stu-no" placeholder="座號">
+                <br>
+                <button class="btn" onclick="startGame()">進入遊戲艙</button>
+            </div>
+        </div>
+
+        <!-- 大廳畫面 -->
+        <div id="lobby-screen" class="screen">
+            <div class="status-bar">
+                <div>
+                    <span id="display-info"></span><br>
+                    能源 HP: <div class="hp-bar" style="display:inline-block; vertical-align:middle;"><div id="hp-fill" class="hp-fill"></div></div>
+                </div>
+                <div style="text-align:right;">
+                    🎖️ 勳章: <span id="medal-count">0</span> / 5
+                </div>
+            </div>
+            <h2 style="text-align:center; color: var(--star-gold);">🌌 星系任務大廳</h2>
+            <div id="level-list" class="level-list">
+                <!-- 關卡按鈕動態生成 -->
+            </div>
+        </div>
+
+        <!-- 戰鬥畫面 -->
+        <div id="battle-screen" class="screen">
+            <div class="battle-header">
+                <div id="level-title" style="color: var(--neon-blue); font-weight: bold;"></div>
+                <div id="monster-icon" class="monster">🛸</div>
+                <div id="question-progress">進度: 1 / 5</div>
+            </div>
+            
+            <div id="question-box" class="question-box"></div>
+            
+            <div id="option-container" class="option-container">
+                <!-- 選項按鈕 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示/詳解彈窗 -->
+    <div id="overlay" class="overlay"></div>
+    <div id="hint-modal" class="modal hint-modal">
+        <h3>💡 系統提示</h3>
+        <p id="hint-text"></p>
+        <button class="btn" style="background: var(--star-gold); color: black;" onclick="closeModal()">重試</button>
+    </div>
+    <div id="exp-modal" class="modal exp-modal">
+        <h3>🎉 任務成功</h3>
+        <p id="exp-text"></p>
+        <button class="btn" style="background: var(--success-green); color: black;" onclick="nextQuestion()">下一題</button>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwYHDPDsgCKUFNfFlYPruhUF-f9XNjHcszHlJcimYc65sFdHidFUObbd69T8PA0AwsWhg/exec";
+        
+        let studentClass = "";
+        let studentNo = "";
+        let currentHP = 100;
+        let medals = 0;
+        let completedLevels = [];
+        let currentLevelIndex = 0;
+        let currentQuestionIndex = 0;
+        let currentScore = 100;
+
+        const monsters = ["🛸", "👾", "👽", "🤖", "☄️"];
+
+        const levels = [
+            {
+                name: "4-1-1 平行線間的距離與面積",
+                questions: [
+                    {
+                        q: "如圖，<i>L</i> // <i>M</i>，且 <i>A</i>、<i>B</i>、<i>C</i> 在直線 <i>L</i> 上，<i>D</i>、<i>E</i> 在直線 <i>M</i> 上，則 △<i>ADE</i>、△<i>BDE</i>、△<i>CDE</i> 中，哪一個面積最大？<img src='img_q1.png' class='q-img'>",
+                        options: ["一樣大", "△ADE", "△BDE", "△CDE"],
+                        ans: 0,
+                        hint: "平行線之間的距離（高）是處處相等的。",
+                        exp: "因為平行線 <i>L</i>、<i>M</i> 之間的距離相等，且這三個三角形共用底邊 <span class='segment'>DE</span>，所以面積皆相等。"
+                    },
+                    {
+                        q: "如圖，<i>L</i> // <i>M</i>，且 <span class='segment'>AB</span> = <span class='segment'>CD</span> = <span class='segment'>EF</span>，則 △<i>ABG</i>、△<i>CDH</i>、△<i>EFI</i> 中，哪一個面積最大？<img src='img_q2.png' class='q-img'>",
+                        options: ["一樣大", "△ABG", "△CDH", "△EFI"],
+                        ans: 0,
+                        hint: "這三個三角形的底邊長度相等，高也都在平行線之間。",
+                        exp: "底相等（<span class='segment'>AB</span>=<span class='segment'>CD</span>=<span class='segment'>EF</span>），且高（平行線距離）也相等，故面積一樣大。"
+                    },
+                    {
+                        q: "如圖，<i>L<sub>1</sub></i> // <i>L<sub>2</sub></i>，<span class='segment'>AB</span> = 3 ‧ <span class='segment'>BC</span> = 5，若 △<i>BCD</i> 的面積為 10，則 △<i>ACE</i> 的面積為多少？<img src='img_q3.png' class='q-img'>",
+                        options: ["16", "15", "10", "12"],
+                        ans: 0,
+                        hint: "先求出 <span class='segment'>AC</span> 的長度，再利用同高的三角形面積比等於底邊比。",
+                        exp: "<span class='segment'>AC</span> = <span class='segment'>AB</span> + <span class='segment'>BC</span> = 3 + 5 = 8。面積比 △<i>ACE</i> : △<i>BCD</i> = 8 : 5。10 × (8/5) = 16。"
+                    },
+                    {
+                        q: "如圖，<i>L<sub>1</sub></i> // <i>L<sub>2</sub></i>，<span class='segment'>AB</span> = 6，<span class='segment'>BC</span> = 2，若 △<i>ABD</i> 的面積為 30，則 △<i>ACE</i> 的面積為多少？<img src='img_q4.png' class='q-img'>",
+                        options: ["40", "30", "10", "50"],
+                        ans: 0,
+                        hint: "△<i>ABD</i> 的底是 6，△<i>ACE</i> 的底是 <i>AB</i>+<i>BC</i>=8。",
+                        exp: "高相同，面積比等於底邊比。△<i>ACE</i> 的底為 8，故面積為 30 × (8/6) = 40。"
+                    },
+                    {
+                        q: "如圖，<i>L<sub>1</sub></i> // <i>L<sub>2</sub></i>，<span class='segment'>CD</span> = 6，<span class='segment'>DE</span> = 4，若 △<i>ACD</i> 的面積為 12，則 △<i>BCE</i> 的面積為多少？<img src='img_q5.png' class='q-img'>",
+                        options: ["20", "12", "18", "24"],
+                        ans: 0,
+                        hint: "△<i>ACD</i> 與 △<i>BCE</i> 在平行線間，其面積比為其底邊 <span class='segment'>CD</span> 與 <span class='segment'>CE</span> 的比嗎？請注意 △<i>BCE</i> 的底。",
+                        exp: "△<i>ACD</i> 底為 6 面積 12；△<i>BCE</i> 底為 <span class='segment'>CE</span> = 6+4=10。面積比 6:10 = 12:20。"
+                    }
+                ]
+            },
+            {
+                name: "4-2-1 截線與截角的關係",
+                questions: [
+                    {
+                        q: "如圖，當直線 <i>L</i> 截過 <i>L<sub>1</sub></i> 與 <i>L<sub>2</sub></i> 時，若 ∠7 與 ∠3 位於截線的同側，且都在兩條直線的下方，則 ∠7 是 ∠3 的？<img src='img_q21.png' class='q-img'>",
+                        options: ["同位角", "內錯角", "同側內角", "對頂角"],
+                        ans: 0,
+                        hint: "位置相同的角稱為同位角。",
+                        exp: "∠7 與 ∠3 所在位置相對相同，故互為同位角。"
+                    },
+                    {
+                        q: "如圖，∠3 的「內錯角」是指位於截線兩側，且在兩條被截直線之間的角。若圖中 ∠3 與 ∠5 滿足此條件，則 ∠5 是 ∠3 的？<img src='img_q21.png' class='q-img'>",
+                        options: ["內錯角", "同位角", "同側內角", "補角"],
+                        ans: 0,
+                        hint: "內部且交錯位置。",
+                        exp: "位於兩直線內部且在截線兩側的角為內錯角。"
+                    },
+                    {
+                        q: "如圖，∠6 與 ∠3 位於截線的同一側，且都在兩條被截直線的內部，則這兩個角互稱為？<img src='img_q21.png' class='q-img'>",
+                        options: ["同側內角", "同位角", "內錯角", "鄰角"],
+                        ans: 0,
+                        hint: "同側且在內部。",
+                        exp: "位於截線同側且在兩直線內部的角即為同側內角。"
+                    },
+                    {
+                        q: "如圖，<i>L</i> 是 <i>L<sub>1</sub></i> 與 <i>L<sub>2</sub></i> 的截線，∠4 的同位角是哪一個？<img src='img_q21.png' class='q-img'>",
+                        options: ["∠8", "∠6", "∠5", "∠2"],
+                        ans: 0,
+                        hint: "找在截線同側且相對位置相同的角。",
+                        exp: "根據定義，∠4 的同位角為 ∠8。"
+                    },
+                    {
+                        q: "若兩直線被一截線所截，產生的「內錯角」總共有幾對？",
+                        options: ["2 對", "4 對", "1 對", "8 對"],
+                        ans: 0,
+                        hint: "看兩直線中間內部的區域。",
+                        exp: "內部有四個角，可組成兩對內錯角（例如 ∠3 與 ∠5，∠4 與 ∠6）。"
+                    }
+                ]
+            },
+            {
+                name: "4-2-2 平行線的截角性質",
+                questions: [
+                    {
+                        q: "已知 <i>L<sub>1</sub></i> // <i>L<sub>2</sub></i>，若 ∠4 = 65°，則 ∠2 等於多少度？<img src='img_q11.png' class='q-img'>",
+                        options: ["115°", "65°", "180°", "25°"],
+                        ans: 0,
+                        hint: "∠2 與 ∠4 是互補的鄰角。",
+                        exp: "∠2 + ∠4 = 180°，故 ∠2 = 180° - 65° = 115°。"
+                    },
+                    {
+                        q: "已知 <i>L<sub>1</sub></i> // <i>L<sub>2</sub></i>，∠2 = 50°，求 ∠3 的度數？<img src='img_q12.png' class='q-img'>",
+                        options: ["130°", "50°", "40°", "180°"],
+                        ans: 0,
+                        hint: "平行線的同側內角互補。",
+                        exp: "∠2 的同位角是 50°，與 ∠3 互補；或直接利用同側內角性質，∠3 = 180° - 50° = 130°。"
+                    },
+                    {
+                        q: "如圖，<i>L<sub>1</sub></i> // <i>L<sub>2</sub></i> 且 <i>M<sub>1</sub></i> // <i>M<sub>2</sub></i>,求 ∠1？<img src='img_q13.png' class='q-img'>",
+                        options: ["130°", "150°", "50°", "30°"],
+                        ans: 0,
+                        hint: "直接利用同側內角性質",
+                        exp: "直接利用同側內角性質，∠1 = 180° - 50° = 130°。"
+                    },
+                    {
+                        q: "如圖，<i>L<sub>1</sub></i> // <i>L<sub>2</sub></i>，已知 ∠1 = 40°，∠2 = 58°，求 ∠<i>ABC</i> 的度數？<img src='img_q14.png' class='q-img'>",
+                        options: ["98°", "18°", "40°", "80°"],
+                        ans: 0,
+                        hint: "過 <i>B</i> 點畫一條與 <i>L<sub>1</sub></i> 平行的輔助線。",
+                        exp: "∠<i>ABC</i> = ∠1 + ∠2 = 40° + 58° = 98°。"
+                    },
+                    {
+                        q: "如圖，<i>L</i> // <i>M</i>，已知 ∠<i>APB</i> = 115°，∠2 = 81°，求 ∠1 的度數？<img src='img_q15.png' class='q-img'>",
+                        options: ["34°", "115°", "81°", "196°"],
+                        ans: 0,
+                        hint: "∠<i>APB</i> = ∠1 + ∠2。",
+                        exp: "115° - 81° = 34°。"
+                    }
+                ]
+            },
+            {
+                name: "4-3-1 平行線的判別性質",
+                questions: [
+                    {
+                        q: "下列哪一個條件能使直線 <i>L<sub>1</sub></i> 與 <i>L<sub>2</sub></i> 互相平行？",
+                        options: ["內錯角相等", "對頂角相等", "同側內角相等", "同位角互補"],
+                        ans: 0,
+                        hint: "回憶平行線的三大判別性質。",
+                        exp: "內錯角相等、同位角相等、同側內角互補，皆可判定平行。"
+                    },
+                    {
+                        q: "圖中標示兩個同位角皆為 80°，則 <i>L<sub>1</sub></i> 與 <i>L<sub>2</sub></i> 的關係為何？<img src='img_q17.png' class='q-img'>",
+                        options: ["平行，因為同位角相等", "不平行，因為角度太小", "平行，因為同側內角相等", "垂直"],
+                        ans: 0,
+                        hint: "同位角相等是平行的充分條件。",
+                        exp: "因為同位角皆為 80° (相等)，故兩直線平行。"
+                    },
+                    {
+                        q: "若兩直線被一截線所截，其「同側內角」分別為 51° 與 129°，則這兩直線？",
+                        options: ["互相平行", "互相垂直", "相交於一點", "重合"],
+                        ans: 0,
+                        hint: "相加看看是不是 180°。",
+                        exp: "51° + 129° = 180°。同側內角互補，故兩直線平行。"
+                    },
+                    {
+                        q: "若 ∠2 = 59°，∠8 = 59°，且這兩個角互為「內錯角」，則兩直線關係為？",
+                        options: ["平行", "不平行", "垂直", "不確定"],
+                        ans: 0,
+                        hint: "內錯角相等的意義。",
+                        exp: "內錯角相等則兩直線平行。"
+                    },
+                    {
+                        q: "如果同位角不相等，則這兩條直線？",
+                        options: ["不平行", "平行", "垂直", "可能平行"],
+                        ans: 0,
+                        hint: "平行線的必要條件是同位角要相等。",
+                        exp: "同位角相等是平行的性質；若不相等則不平行。"
+                    }
+                ]
+            },
+            {
+                name: "4-3-2 平行線的製作",
+                questions: [
+                    {
+                        q: "利用尺規作圖，畫一直線通過 <i>C</i> 點且與 <span class='segment'>AB</span> 平行，其原理是利用？",
+                        options: ["內錯角相等", "對頂角相等", "邊長相等", "垂直平分線"],
+                        ans: 0,
+                        hint: "通常會作一個與已知角相等的角，使其互為內錯角。",
+                        exp: "藉由作一個相等的角作為內錯角，可確保兩直線平行。"
+                    },
+                    {
+                        q: "在 △<i>ABC</i> 中，想作出一條通過 <i>A</i> 點且平行 <span class='segment'>BC</span> 的直線，下列何者正確？",
+                        options: ["作 ∠<i>DAB</i> = ∠<i>ABC</i> (內錯角)", "作 ∠<i>A</i> 的角平分線", "作 <span class='segment'>BC</span> 的中垂線", "連接 <i>A</i> 與 <i>BC</i> 中點"],
+                        ans: 0,
+                        hint: "利用平行線判別性質來施工。",
+                        exp: "使內錯角相等即可得平行線。"
+                    },
+                    {
+                        q: "欲在直線 <i>L</i> 外一點 <i>P</i> 作一平行線 <i>M</i>，第一步通常是？",
+                        options: ["過 P 點作一條截線交 L 於 A", "在 L 上找兩點", "作 P 點到 L 的垂線", "隨便畫一條線"],
+                        ans: 0,
+                        hint: "需要先有一條截線才能產生截角。",
+                        exp: "先建立截線，再複製角度以產生同位角或內錯角。"
+                    },
+                    {
+                        q: "若利用「同位角相等」原理作平行線，所複製的角度必須與原截角位置？",
+                        options: ["相同", "相反", "在內部", "在外部"],
+                        ans: 0,
+                        hint: "同位角的名稱含義。",
+                        exp: "同位角是指相對位置相同的角。"
+                    },
+                    {
+                        q: "已知 △<i>ABC</i>，<i>D</i> 為 <span class='segment'>AB</span> 上一點。欲在 <span class='segment'>AC</span> 上找一點 <i>E</i> 使 <span class='segment'>DE</span> // <span class='segment'>BC</span>，這是在複製哪個角？",
+                        options: ["∠ABC", "∠A", "∠C", "∠ADC"],
+                        ans: 0,
+                        hint: "要讓 ∠<i>ADE</i> = ∠<i>ABC</i>。",
+                        exp: "複製 ∠<i>ABC</i> 使其成為同位角，即可確保 <span class='segment'>DE</span> // <span class='segment'>BC</span>。"
+                    }
+                ]
+            }
+        ];
+
+        function startGame() {
+            studentClass = document.getElementById("stu-class").value;
+            studentNo = document.getElementById("stu-no").value;
+
+            if (!studentClass || !studentNo) {
+                alert("請輸入班級與座號！");
+                return;
+            }
+
+            document.getElementById("login-screen").classList.remove("active");
+            document.getElementById("lobby-screen").classList.add("active");
+            document.getElementById("display-info").innerText = `${studentClass} 班 ${studentNo} 號 探險家`;
+            renderLobby();
+        }
+
+        function renderLobby() {
+            const list = document.getElementById("level-list");
+            list.innerHTML = "";
+            levels.forEach((lvl, index) => {
+                const isCompleted = completedLevels.includes(index);
+                const btn = document.createElement("button");
+                btn.className = "btn";
+                btn.style.width = "100%";
+                btn.innerHTML = `${isCompleted ? "🎖️ " : ""}${lvl.name}`;
+                if (isCompleted) btn.disabled = true;
+                btn.onclick = () => startBattle(index);
+                list.appendChild(btn);
+            });
+
+            if (completedLevels.length === 5) {
+                const winMsg = document.createElement("h2");
+                winMsg.innerHTML = "🏆 獲得終極榮譽勳章！你已征服平行星系！";
+                winMsg.style.textAlign = "center";
+                winMsg.style.color = "var(--success-green)"; 
+                list.appendChild(winMsg);
+            }
+        }
+
+        function startBattle(index) {
+            currentLevelIndex = index;
+            currentQuestionIndex = 0;
+            currentScore = 100;
+            document.getElementById("lobby-screen").classList.remove("active");
+            document.getElementById("battle-screen").classList.add("active");
+            document.getElementById("level-title").innerText = levels[index].name;
+            document.getElementById("monster-icon").innerText = monsters[index % monsters.length];
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qData = levels[currentLevelIndex].questions[currentQuestionIndex];
+            document.getElementById("question-progress").innerText = `進度: ${currentQuestionIndex + 1} / 5`;
+            document.getElementById("question-box").innerHTML = qData.q;
+            
+            const container = document.getElementById("option-container");
+            container.innerHTML = "";
+            
+            // 隨機打亂選項
+            let opts = qData.options.map((o, i) => ({ text: o, isCorrect: i === qData.ans }));
+            opts.sort(() => Math.random() - 0.5);
+
+            opts.forEach(opt => {
+                const btn = document.createElement("div");
+                btn.className = "option-btn";
+                btn.innerHTML = opt.text;
+                btn.onclick = () => checkAnswer(opt.isCorrect);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(isCorrect) {
+            if (isCorrect) {
+                const qData = levels[currentLevelIndex].questions[currentQuestionIndex];
+                // 修正：使用 innerHTML 以正確渲染數學符號格式
+                document.getElementById("exp-text").innerHTML = qData.exp;
+                document.getElementById("monster-icon").classList.add("hit");
+                setTimeout(() => document.getElementById("monster-icon").classList.remove("hit"), 500);
+                showModal("exp-modal");
+            } else {
+                currentHP -= 10;
+                currentScore -= 20;
+                updateHP();
+                document.getElementById("monster-icon").classList.add("shake");
+                setTimeout(() => document.getElementById("monster-icon").classList.remove("shake"), 500);
+                
+                const qData = levels[currentLevelIndex].questions[currentQuestionIndex];
+                // 修正：使用 innerHTML 以正確渲染數學符號格式
+                document.getElementById("hint-text").innerHTML = qData.hint;
+                showModal("hint-modal");
+
+                if (currentHP <= 0) {
+                    alert("能源耗盡！撤回基地修復...");
+                    location.reload();
+                }
+            }
+        }
+
+        function updateHP() {
+            document.getElementById("hp-fill").style.width = currentHP + "%";
+        }
+
+        function showModal(id) {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById(id).style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("hint-modal").style.display = "none";
+            document.getElementById("exp-modal").style.display = "none";
+        }
+
+        function nextQuestion() {
+            closeModal();
+            currentQuestionIndex++;
+            if (currentQuestionIndex < 5) {
+                loadQuestion();
+            } else {
+                finishLevel();
+            }
+        }
+
+        function finishLevel() {
+            medals++;
+            completedLevels.push(currentLevelIndex);
+            document.getElementById("medal-count").innerText = medals;
+            
+            // 上傳成績
+            const finalScore = Math.max(0, currentScore);
+            const levelName = levels[currentLevelIndex].name;
+            uploadResult(levelName, finalScore);
+
+            document.getElementById("battle-screen").classList.remove("active");
+            document.getElementById("lobby-screen").classList.add("active");
+            renderLobby();
+        }
+
+        function uploadResult(lvlName, score) {
+            const formData = new FormData();
+            formData.append('time', new Date().toLocaleString());
+            formData.append('class', studentClass);
+            formData.append('no', studentNo);
+            formData.append('level', lvlName);
+            formData.append('score', score);
+
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            }).catch(e => console.error("Upload failed", e));
+        }
+    </script>
+</body>
+</html>
