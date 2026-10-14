@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新北市立新泰國中 115學年度第一學期 第一次段考 數學科試卷與詳解導覽</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --primary-bg: #eff6ff;
+            --accent: #d97706;
+            --success: #059669;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --card-bg: #ffffff;
+            --bg-color: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 30px 16px;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 44px 36px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.2);
+            margin-bottom: 36px;
+        }
+
+        .banner h1 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .banner p {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Features Bar */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .feature-item {
+            background: white;
+            border-radius: 10px;
+            padding: 18px 20px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 0.98rem;
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        /* Grade Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        .grade-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+        }
+
+        .grade-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-color: #cbd5e1;
+        }
+
+        .card-header {
+            padding: 22px 24px;
+            color: white;
+        }
+
+        .header-g7 { background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); }
+        .header-g8 { background: linear-gradient(135deg, #059669 0%, #34d399 100%); }
+        .header-g9 { background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%); }
+
+        .grade-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(4px);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .card-body {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .info-list li {
+            padding: 6px 0;
+            font-size: 0.95rem;
+            color: #334155;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .btn-enter {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.02rem;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-g7 { background: #0284c7; }
+        .btn-g7:hover { background: #0369a1; }
+
+        .btn-g8 { background: #059669; }
+        .btn-g8:hover { background: #047857; }
+
+        .btn-g9 { background: #d97706; }
+        .btn-g9:hover { background: #b45309; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Banner -->
+    <header class="banner">
+        <h1>新北市立新泰國民中學 115 學年度</h1>
+        <p>第一學期 第一次段考 數學科試卷與逐步詳細解析系統</p>
+    </header>
+
+    <!-- Features -->
+    <section class="features-grid">
+        <div class="feature-item">
+            <div class="feature-icon">📑</div>
+            <div>
+                <div class="feature-title">原卷 100% 忠實還原</div>
+                <div class="feature-desc">保留原試卷所有題號、配分表、選項與排版</div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">📐</div>
+            <div>
+                <div class="feature-title">原稿高清圖表截圖</div>
+                <div class="feature-desc">所有幾何圖、數線與圖表均裁切提取並支援點擊放大</div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">💡</div>
+            <div>
+                <div class="feature-title">互動式解析切換</div>
+                <div class="feature-desc">每題皆有獨立「解析」按鈕，支援單題與一鍵全展開</div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🖨️</div>
+            <div>
+                <div class="feature-title">友善列印模式</div>
+                <div class="feature-desc">支援一鍵列印純題目卷或含詳細解析卷</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grade Cards Grid -->
+    <section class="cards-grid">
+        <!-- Grade 7 -->
+        <div class="grade-card">
+            <div class="card-header header-g7">
+                <span class="grade-tag">國中七年級</span>
+                <div class="card-title">七年級 數學科試卷</div>
+                <div>第一學期 第一次段考</div>
+            </div>
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><b>📌 範圍：</b>負數與數線、整數四則、絕對值、指數與科學記號</li>
+                    <li><b>📝 題量：</b>選擇題 10 題、填充題 6 大題（12 格）</li>
+                    <li><b>📊 配分：</b>22 格對應百分制配分級距表</li>
+                    <li><b>🖼️ 包含圖表：</b>翡翠水庫水位表、正方形連續對摺圖、數線圖等 4 張</li>
+                </ul>
+                <a href="七年級數學第一次段考.html" class="btn-enter btn-g7">進入七年級試卷與解析 ➜</a>
+            </div>
+        </div>
+
+        <!-- Grade 8 -->
+        <div class="grade-card">
+            <div class="card-header header-g8">
+                <span class="grade-tag">國中八年級</span>
+                <div class="card-title">八年級 數學科試題</div>
+                <div>第一學期 第一次段考</div>
+            </div>
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><b>📌 範圍：</b>乘法公式、多項式四則運算、平方根與近似值估算</li>
+                    <li><b>📝 題量：</b>選擇題 15 題、填充題 5 題、計算題 2 題</li>
+                    <li><b>📊 配分：</b>選擇與填充滿分 90 分，非選計算題 10 分（總分 100 分）</li>
+                    <li><b>🖼️ 包含圖表：</b>萬聖節面具挖孔示意圖、氣象預報颱風風速圖等 2 張</li>
+                </ul>
+                <a href="八年級數學第一次段考.html" class="btn-enter btn-g8">進入八年級試卷與解析 ➜</a>
+            </div>
+        </div>
+
+        <!-- Grade 9 -->
+        <div class="grade-card">
+            <div class="card-header header-g9">
+                <span class="grade-tag">國中九年級</span>
+                <div class="card-title">九年級 數學科試題</div>
+                <div>第一學期 第一次段考</div>
+            </div>
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><b>📌 範圍：</b>連比與比例式、相似多邊形、相似三角形判定、截比例線段</li>
+                    <li><b>📝 題量：</b>選擇題 21 題、非選計算題 2 大題</li>
+                    <li><b>📊 配分：</b>選擇題 94 分，計算題 6 分（總分 100 分）</li>
+                    <li><b>🖼️ 包含圖表：</b>圖(一)至圖(十五)共 15 張完整幾何圖與坐標圖</li>
+                </ul>
+                <a href="九年級數學第一次段考.html" class="btn-enter btn-g9">進入九年級試卷與解析 ➜</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        新北市立新泰國民中學 115 學年度 第一學期 第一次段考 數學科試題與詳解資料庫
+    </footer>
+</div>
+
+</body>
+</html>

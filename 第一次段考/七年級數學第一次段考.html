@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>七年級數學科第一次段考試卷及詳解</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --primary-bg: #eff6ff;
+            --accent: #d97706;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --border-color: #cbd5e1;
+            --card-bg: #ffffff;
+            --bg-color: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 36px 44px;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        /* Header */
+        .exam-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+
+        .school-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .exam-sub {
+            font-size: 1.22rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 16px;
+        }
+
+        .student-info-row {
+            display: flex;
+            justify-content: center;
+            gap: 36px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 14px;
+        }
+
+        .info-field {
+            border-bottom: 1px solid #64748b;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        /* Score Table */
+        .score-table-wrap {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        .score-table th, .score-table td {
+            border: 1px solid #94a3b8;
+            padding: 6px 3px;
+        }
+
+        .score-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .score-table td {
+            background-color: #ffffff;
+        }
+
+        /* Sticky Control Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .toolbar-left, .toolbar-right {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-print {
+            background: #047857;
+            color: white;
+        }
+        .btn-print:hover {
+            background: #059669;
+        }
+
+        /* Section Headings */
+        .section-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            border-left: 5px solid var(--primary);
+            padding-left: 12px;
+            margin: 32px 0 18px 0;
+            background: #f8fafc;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Question Cards */
+        .question-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            transition: box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .question-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1e293b;
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        .question-num {
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 6px;
+        }
+
+        .btn-toggle-solution {
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #3b82f6;
+            background: #eff6ff;
+            color: #1d4ed8;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-toggle-solution:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-toggle-solution.opened {
+            background: #2563eb;
+            color: white;
+        }
+
+        .question-body {
+            font-size: 1rem;
+            color: #334155;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px 16px;
+            margin: 14px 0;
+            padding-left: 6px;
+        }
+
+        .option-item {
+            font-size: 0.98rem;
+            color: #334155;
+            display: flex;
+            align-items: center;
+        }
+
+        .opt-label {
+            font-weight: 700;
+            margin-right: 6px;
+            color: #475569;
+        }
+
+        /* Diagrams */
+        .diagram-container {
+            text-align: center;
+            margin: 16px 0;
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .diagram-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            cursor: zoom-in;
+            transition: transform 0.2s;
+        }
+
+        .diagram-img:hover {
+            transform: scale(1.015);
+        }
+
+        .diagram-caption {
+            font-size: 0.86rem;
+            color: #64748b;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Solutions Panel */
+        .solution-panel {
+            display: none;
+            margin-top: 16px;
+            border-top: 2px dashed #93c5fd;
+            padding-top: 16px;
+            background: #f8fafc;
+            border-radius: 0 0 6px 6px;
+            padding: 16px 20px;
+        }
+
+        .solution-panel.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #059669;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .sol-block {
+            margin-bottom: 12px;
+        }
+
+        .sol-block-title {
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sol-content {
+            font-size: 0.96rem;
+            color: #334155;
+            padding-left: 8px;
+            line-height: 1.7;
+        }
+
+        .sol-step {
+            margin-bottom: 6px;
+        }
+
+        /* Modal for Image Zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .modal-content img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Print Style */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .nav-bar, .toolbar, .btn-toggle-solution {
+                display: none !important;
+            }
+            .question-card {
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+                margin-bottom: 12px;
+                padding: 12px;
+            }
+            .solution-panel {
+                display: block !important;
+                background: #f9f9f9;
+                border: 1px solid #ddd;
+            }
+            body.print-exam-only .solution-panel {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 18px 16px;
+            }
+            .student-info-row {
+                gap: 16px;
+                flex-direction: column;
+                align-items: center;
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Nav -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-btn">🏠 段考導覽首頁</a>
+        <a href="七年級數學第一次段考.html" class="nav-btn active">📘 七年級試卷</a>
+        <a href="八年級數學第一次段考.html" class="nav-btn ">📗 八年級試卷</a>
+        <a href="九年級數學第一次段考.html" class="nav-btn ">📙 九年級試卷</a>
+    </nav>
+
+    <!-- Exam Header -->
+    <header class="exam-header">
+        <div class="school-title">新北市立新泰國中 115 學年度 第一學期 第一次段考</div>
+        <div class="exam-sub">七年級 數學科試卷與詳細解析</div>
+        <div class="student-info-row">
+            <div>班級：<span class="info-field">&nbsp;</span></div>
+            <div>座號：<span class="info-field">&nbsp;</span></div>
+            <div>姓名：<span class="info-field">&nbsp;</span></div>
+        </div>
+
+        <!-- Score Table -->
+        <div class="score-table-wrap">
+            <div style="font-weight: 600; text-align: left; margin-bottom: 4px; color: #334155;">配分如下：</div>
+            
+<table class="score-table">
+    <thead>
+        <tr>
+            <th>答對題數</th>
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="background:#f8fafc;">分數</th>
+            <td>5</td><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td><td>35</td><td>40</td><td>45</td><td>50</td><td>55</td>
+        </tr>
+        <tr>
+            <th style="background:#f1f5f9;">答對題數</th>
+            <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th>
+        </tr>
+        <tr>
+            <th style="background:#f8fafc;">分數</th>
+            <td>60</td><td>64</td><td>68</td><td>72</td><td>76</td><td>80</td><td>84</td><td>88</td><td>92</td><td>96</td><td>100</td>
+        </tr>
+    </tbody>
+</table>
+
+        </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <button class="btn btn-primary" onclick="toggleAllSolutions(true)">💡 全部展開解析</button>
+            <button class="btn btn-outline" onclick="toggleAllSolutions(false)">📁 全部收合解析</button>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn btn-print" onclick="printExam(false)">🖨️ 列印試卷 (含解析)</button>
+            <button class="btn btn-outline" onclick="printExam(true)">📄 列印空白試卷</button>
+        </div>
+    </div>
+
+    <!-- Questions Content -->
+    <div class="section-header">一、選擇題</div>
+
+        <div class="question-card" id="card-g7-c-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>在數線上將 0 與 -1 兩點間的部分分成 10 等分後，得 9 個等分點，那麼由右起向左數第 5 個等分點所表示的數為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-1" onclick="toggleSolution('g7-c-1')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> -0.4</div><div class="option-item"><span class="opt-label">(B)</span> -0.5</div><div class="option-item"><span class="opt-label">(C)</span> -0.6</div><div class="option-item"><span class="opt-label">(D)</span> -0.2</div></div>
+            
+            <div id="g7-c-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) -0.5</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">數線上的等分點意義與負小數的位置表示。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">0 與 -1 兩點之間的距離為 $|0 - (-1)| = 1$。</div><div class="sol-step">將長度 1 的線段平分成 10 等分，每 1 個等分的長度為 $\frac{1}{10} = 0.1$。</div><div class="sol-step">題目要求「由右向左數」（即從較大的數 0 往負方向移動），數第 5 個等分點：<br>坐標為 $0 - 5 \times 0.1 = -0.5$。</div><div class="sol-step">故該等分點所代表的數為 -0.5。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">由右向左數第 1、2、3、4、5 個等分點分別表示 -0.1、-0.2、-0.3、-0.4、-0.5。因此答案選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>某城市去年 1 月的平均溫度為 -3.5℃，今年 1 月因遇寒流來襲，平均溫度比去年降低 2.1℃，則該城市今年 1 月的平均溫度為多少℃？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-2" onclick="toggleSolution('g7-c-2')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> -5.6</div><div class="option-item"><span class="opt-label">(B)</span> -4.7</div><div class="option-item"><span class="opt-label">(C)</span> -2.6</div><div class="option-item"><span class="opt-label">(D)</span> -1.4</div></div>
+            
+            <div id="g7-c-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) -5.6</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">負數的減法運算：降低溫度即減去該溫度數值。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">根據題意，今年平均溫度比去年降低 2.1℃，因此以去年的溫度減去 2.1℃：</div><div class="sol-step">算式：$(-3.5) - 2.1$。</div><div class="sol-step">同號數相減相當於負數相加：$(-3.5) - 2.1 = -(3.5 + 2.1) = -5.6$（℃）。</div><div class="sol-step">因此今年 1 月的平均溫度為 -5.6℃。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">若誤計算成加法 $(-3.5) + 2.1$ 會得到 -1.4℃（選項 D）；正確運算為減法，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-3">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">3.</span>翡翠水庫某日水位變化如下表：請問下午 6 點水庫的水位與下午 1 點水庫的水位變化為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-3" onclick="toggleSolution('g7-c-3')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g7_q3_table.png" alt="翡翠水庫某日水位變化表（+表示上升，-表示下降）" class="diagram-img" onclick="openModal('images/g7_q3_table.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：翡翠水庫某日水位變化表（+表示上升，-表示下降）</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 上升 2 公分</div><div class="option-item"><span class="opt-label">(B)</span> 下降 2 公分</div><div class="option-item"><span class="opt-label">(C)</span> 上升 3 公分</div><div class="option-item"><span class="opt-label">(D)</span> 下降 3 公分</div></div>
+            
+            <div id="g7-c-3" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 下降 3 公分</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">表格數據判讀與正負數變化量的差值計算。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">由水位變化對照表可知：<br>下午 1 點（13:00）的水位記錄為 <b>-2</b> 公分；<br>下午 6 點（18:00）的水位記錄為 <b>-5</b> 公分。</div><div class="sol-step">比較「下午 6 點」相對於「下午 1 點」的水位變化量：<br>算式：$(-5) - (-2) = -5 + 2 = -3$（公分）。</div><div class="sol-step">結果為負數（-3），代表水位「下降 3 公分」。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">若以 18:00 數值 -5 減去 13:00 數值 -2 得 -3，即下降 3 公分，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-4">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">4.</span>數線上 A、C 兩點，分別表示 -3、1，則 $\overline{AC} =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-4" onclick="toggleSolution('g7-c-4')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 4</div><div class="option-item"><span class="opt-label">(B)</span> 3</div><div class="option-item"><span class="opt-label">(C)</span> 2</div><div class="option-item"><span class="opt-label">(D)</span> 1</div></div>
+            
+            <div id="g7-c-4" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 4</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">數線上兩點距離公式：$\overline{AB} = |a - b|$（較大坐標減較小坐標）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">數線上兩點所表示的數分別為 A(-3) 與 C(1)。</div><div class="sol-step">線段長度即為兩數差的絕對值：<br>$\overline{AC} = |1 - (-3)| = |1 + 3| = |4| = 4$。</div><div class="sol-step">也可以直接用「右邊坐標減左邊坐標」：$1 - (-3) = 1 + 3 = 4$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">兩點相距 4 個單位長，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-5">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">5.</span>下列各算式，何者是錯誤的？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-5" onclick="toggleSolution('g7-c-5')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $(-1) \times (-2) = 2$</div><div class="option-item"><span class="opt-label">(B)</span> $(-1) \times (-2) \times (-3) = 6$</div><div class="option-item"><span class="opt-label">(C)</span> $(-1) \times (-2) \times (-3) \times (-4) = 24$</div><div class="option-item"><span class="opt-label">(D)</span> $(-5) \times (-6) \times (-7) = -210$</div></div>
+            
+            <div id="g7-c-5" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) (-1)×(-2)×(-3) = 6</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">連乘積的性質：奇數個負數連乘結果為負數，偶數個負數連乘結果為正數。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">檢驗各選項：</div><div class="sol-step"><b>(A)</b> $(-1) \times (-2) = +2$（2個負數，結果為正，正確）。</div><div class="sol-step"><b>(B)</b> $(-1) \times (-2) \times (-3) = 2 \times (-3) = -6 \ne 6$（3個負數，結果應為負數，<b>錯誤</b>）。</div><div class="sol-step"><b>(C)</b> $(-1) \times (-2) \times (-3) \times (-4) = (-6) \times (-4) = +24$（4個負數，結果為正，正確）。</div><div class="sol-step"><b>(D)</b> $(-5) \times (-6) \times (-7) = 30 \times (-7) = -210$（3個負數，結果為負，正確）。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (B) 符號判定錯誤，其值應為 -6，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-6">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">6.</span>小華將一張正方形計算紙連續對摺，下圖是他前三次對摺後再攤開來的情形，其中虛線代表摺痕。(連續兩次的摺痕都互相垂直) 若小華將該紙張連續對摺 8 次後再展開，那麼這些摺痕會把原紙張分割成多少塊長方形區域？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-6" onclick="toggleSolution('g7-c-6')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g7_q6_fold.png" alt="正方形紙張前三次對摺展開情形示意圖" class="diagram-img" onclick="openModal('images/g7_q6_fold.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：正方形紙張前三次對摺展開情形示意圖</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $2^6$ 塊</div><div class="option-item"><span class="opt-label">(B)</span> $2^7$ 塊</div><div class="option-item"><span class="opt-label">(C)</span> $2^8$ 塊</div><div class="option-item"><span class="opt-label">(D)</span> $2^9$ 塊</div></div>
+            
+            <div id="g7-c-6" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 2^8 塊</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">對摺次數與分割區域個數的指數翻倍關係。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">觀察規律：</div><div class="sol-step">第 1 次對摺展開後：分割成 $2 = 2^1$ 塊區域。</div><div class="sol-step">第 2 次垂直對摺展開後：分割成 $2 \times 2 = 4 = 2^2$ 塊區域。</div><div class="sol-step">第 3 次垂直對摺展開後：分割成 $4 \times 2 = 8 = 2^3$ 塊區域。</div><div class="sol-step">每次對摺皆將原有所有小區域各再對摺切半，因此每增加一次對摺，區域總數即乘以 2。</div><div class="sol-step">推廣至連續對摺 $n$ 次後展開，區域總數為 $2^n$ 塊。</div><div class="sol-step">故對摺 8 次展開後，分割成的長方形區域數為 $2^8$ 塊。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">對摺 8 次產生 $2^8 = 256$ 個區域，答案選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-7">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">7.</span>下列哪些數其值為正數？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-7" onclick="toggleSolution('g7-c-7')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $(-2)^{19}$</div><div class="option-item"><span class="opt-label">(B)</span> $-2^{19}$</div><div class="option-item"><span class="opt-label">(C)</span> $-2^{20}$</div><div class="option-item"><span class="opt-label">(D)</span> $-(-2)^{19}$</div></div>
+            
+            <div id="g7-c-7" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) -(-2)^19</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">指數次方與負號的優先級及正負判定：$(-a)^{\text{奇數}} < 0$，$-a^n = -(a^n) < 0$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>(A) $(-2)^{19}$：</b> 底數為負數，指數 19 為奇數，負數的奇數次方結果為負數（$< 0$）。</div><div class="sol-step"><b>(B) $-2^{19}$：</b> 運算順序為先算 $2^{19}$ 再加負號，即 $-(2^{19}) < 0$ 為負數。</div><div class="sol-step"><b>(C) $-2^{20}$：</b> 運算順序為先算 $2^{20}$ 再加負號，即 $-(2^{20}) < 0$ 為負數（注意底數沒有括號）。</div><div class="sol-step"><b>(D) $-(-2)^{19}$：</b> 括號內的 $(-2)^{19}$ 為負數，外面再乘上一個負號，負負得正，結果為正數（$> 0$）。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">只有 (D) 選項負負得正為正數，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-8">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">8.</span>如圖所示，有甲、乙、丙、丁四點，試問哪一個點所代表的數其絕對值最大？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-8" onclick="toggleSolution('g7-c-8')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g7_q8_line.png" alt="數線圖：點 乙、丙、0、甲、丁" class="diagram-img" onclick="openModal('images/g7_q8_line.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：數線圖：點 乙、丙、0、甲、丁</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 甲</div><div class="option-item"><span class="opt-label">(B)</span> 乙</div><div class="option-item"><span class="opt-label">(C)</span> 丙</div><div class="option-item"><span class="opt-label">(D)</span> 丁</div></div>
+            
+            <div id="g7-c-8" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 乙</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">絕對值的幾何意義：數線上某點到原點 0 的直線距離即為該點數值的絕對值。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">數線上一個數的「絕對值」，在幾何圖形上表示該點與原點（0）之間的距離。</div><div class="sol-step">觀察圖形中各點與原點 0 的距離大小：</div><div class="sol-step">甲點在 0 的右側，距離原點較近；丁點也在 0 的右側；丙點在 0 的左側，離原點很近；</div><div class="sol-step">乙點在最左側，與原點 0 之間的線段長度最長，即 $|\text{乙}| > |\text{丁}| > |\text{甲}| > |\text{丙}|$。</div><div class="sol-step">因此乙點所代表的數絕對值最大。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">與 0 距離最遠的點即為絕對值最大的點，圖中乙點距離原點最遠，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-9">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">9.</span>算式 $801 \times (-25)$ 與下列哪一個算式的答案相同？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-9" onclick="toggleSolution('g7-c-9')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $800 \times (-25) + 1 \times (-25)$</div><div class="option-item"><span class="opt-label">(B)</span> $800 \times (-25) - 1 \times (-25)$</div><div class="option-item"><span class="opt-label">(C)</span> $800 \times (-20) - 1 \times (-5)$</div><div class="option-item"><span class="opt-label">(D)</span> $800 \times (-20) + 1 \times (-5)$</div></div>
+            
+            <div id="g7-c-9" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 800×(-25)+1×(-25)</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">乘法分配律：$(a + b) \times c = a \times c + b \times c$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">將整數 801 拆分成便於計算的整百數與零頭：$801 = 800 + 1$。</div><div class="sol-step">利用乘法對加法的分配律展開：<br>$801 \times (-25) = (800 + 1) \times (-25) = 800 \times (-25) + 1 \times (-25)$。</div><div class="sol-step">比對各選項，(A) 完全相符。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (B) 拆成減法符號錯誤；(C)、(D) 的分解不符合乘法分配律。故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-c-10">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">10.</span>下列哪一個選項可以表示「十萬分之一」？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-c-10" onclick="toggleSolution('g7-c-10')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $10^{100000}$</div><div class="option-item"><span class="opt-label">(B)</span> $10^6$</div><div class="option-item"><span class="opt-label">(C)</span> $10^{-5}$</div><div class="option-item"><span class="opt-label">(D)</span> $10^{-6}$</div></div>
+            
+            <div id="g7-c-10" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 10^-5</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">10 的負整數次方定義：$10^{-n} = \frac{1}{10^n}$，以及十進位數值位名。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">「十萬」為整數 100,000，其以 10 的乘方表示為：<br>$100,000 = 10^5$（1 後面有 5 個零）。</div><div class="sol-step">「十萬分之一」即十萬的倒數：<br>$\frac{1}{100,000} = \frac{1}{10^5} = 10^{-5}$。</div><div class="sol-step">因此十萬分之一可表示為 $10^{-5}$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">$10^6$ 為一百萬，$10^{-6}$ 為百萬分之一；十萬分之一為 $10^{-5}$，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+<div class="section-header">二、填充題</div>
+
+        <div class="question-card" id="card-g7-f-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>若以年齡 25 歲為基準，爸爸 40 歲記為 +15，則媽媽 37 歲，可記為 __(11)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-f-1" onclick="toggleSolution('g7-f-1')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g7-f-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：+12（或 12）</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">以基準量為 0，正負數表示相對量的大小關係。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">基準為 25 歲，因此記為 0。</div><div class="sol-step">爸爸年齡 40 歲，比基準多 $40 - 25 = 15$ 歲，記為 +15。</div><div class="sol-step">媽媽年齡 37 歲，比基準多 $37 - 25 = 12$ 歲，因此記為 <b>+12</b>（或 12）。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-f-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>寫出下圖數線上 A、B、C 三點的坐標。<br>A：__(12)__，B：__(13)__，C：__(14)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-f-2" onclick="toggleSolution('g7-f-2')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g7_fill_q2_line.png" alt="數線上 A、B、C 三點標示" class="diagram-img" onclick="openModal('images/g7_fill_q2_line.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：數線上 A、B、C 三點標示</div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="g7-f-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(12) 1.6 或 1又3/5； (13) -2/3； (14) -2.5</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">數線刻度劃分、分數與小數在數線上的對應坐標判讀。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>A 點坐標判讀 (12)：</b><br>A 點介於 1 與 2 之間，1 到 2 區間被等分成 5 格，每格長度為 $\frac{1}{5} = 0.2$。<br>A 點從 1 往右數第 3 個等分點：$1 + 3 \times 0.2 = 1.6 = 1\frac{3}{5} = \frac{8}{5}$。</div><div class="sol-step"><b>B 點坐標判讀 (13)：</b><br>B 點介於 0 與 -1 之間，0 到 -1 區間被等分成 3 格，每格長度為 $\frac{1}{3}$。<br>B 點由 0 往左數第 2 個等分點，因此坐標為 $-\frac{2}{3}$。</div><div class="sol-step"><b>C 點坐標判讀 (14)：</b><br>C 點介於 -2 與 -3 的正中央，將區間平分成 2 格，每格長度 0.5。<br>由 -2 往左數 1 格，坐標為 $-2 - 0.5 = -2.5$（或 $-2\frac{1}{2}$、$-\frac{5}{2}$）。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-f-3">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">3.</span>計算下列各式之值：<br>(1) $85 + (-53) + (-89) =$ __(15)__。<br>(2) $(-117) + 25 + (-16) =$ __(16)__。<br>(3) $|13 - (-9)| - |(-17) - 25| =$ __(17)__。<br>(4) $1234 \times (-2005) \times 0 \times 94 =$ __(18)__。<br>(5) $13 - 4^2 \times [5 - (-3)^2] + 7 =$ __(19)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-f-3" onclick="toggleSolution('g7-f-3')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g7-f-3" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(15) -57； (16) -108； (17) -20； (18) 0； (19) 84</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">整數四則運算規則、絕對值、乘方法則與運算優先順序。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>(1) 第 (15) 格：</b><br>$85 + (-53) + (-89) = (85 - 53) - 89 = 32 - 89 = -57$。</div><div class="sol-step"><b>(2) 第 (16) 格：</b><br>$(-117) + 25 + (-16) = (-117 + 25) - 16 = -92 - 16 = -108$。</div><div class="sol-step"><b>(3) 第 (17) 格：</b><br>先算絕對值內的值：<br>$13 - (-9) = 13 + 9 = 22 \Rightarrow |22| = 22$<br>$(-17) - 25 = -42 \Rightarrow |-42| = 42$<br>相減：$22 - 42 = -20$。</div><div class="sol-step"><b>(4) 第 (18) 格：</b><br>連乘算式中含有一個因數為 0，依乘法性質，任何數乘以 0 皆為 0。<br>因此值為 $0$。</div><div class="sol-step"><b>(5) 第 (19) 格：</b><br>依運算順序「括號、乘方優先，先乘除後加減」：<br>1. 括號內乘方：$(-3)^2 = 9$<br>2. 中括號內計算：$5 - 9 = -4$<br>3. 乘方計算：$4^2 = 16$<br>4. 乘法運算：$16 \times (-4) = -64$<br>5. 代回原式計算：$13 - (-64) + 7 = 13 + 64 + 7 = 84$。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-f-4">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">4.</span>在數線上，A 點表示的數是 23，且 A、B 兩點的距離為 30，則若 B 點在 A 點右邊，則 B 點表示 __(20)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-f-4" onclick="toggleSolution('g7-f-4')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g7-f-4" class="solution-panel">
+                <div class="answer-badge">✓ 正解：53</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">數線上兩點距離與移動方向之坐標計算。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">A 點坐標為 23。</div><div class="sol-step">因為 B 點在 A 點的「右邊」（正方向），且兩點相距 30 個單位長，</div><div class="sol-step">所以由 A 點向右移動 30 單位：<br>B 點坐標 $= 23 + 30 = 53$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">（若 B 點在 A 點左邊則為 23 - 30 = -7；題目已明確指定在右邊，故為 53）。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-f-5">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">5.</span>某倉庫有 3 個特大號紙盒，每個特大號紙盒內裝有 3 個大號紙盒，每個大號紙盒內裝有 3 個中號紙盒，每個中號紙盒內又裝有 3 個小號紙盒，問此倉庫內總共有 __(21)__ 個紙盒。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-f-5" onclick="toggleSolution('g7-f-5')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g7-f-5" class="solution-panel">
+                <div class="answer-badge">✓ 正解：120</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">連乘倍數求各層數量與等比數列總和計算。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">分別計算各個規格紙盒的數量：</div><div class="sol-step">1. 特大號紙盒：$3$ 個（即 $3^1$ 個）。</div><div class="sol-step">2. 大號紙盒：每個特大號裝 3 個，共有 $3 \times 3 = 9$ 個（即 $3^2$ 個）。</div><div class="sol-step">3. 中號紙盒：每個大號裝 3 個，共有 $9 \times 3 = 27$ 個（即 $3^3$ 個）。</div><div class="sol-step">4. 小號紙盒：每個中號裝 3 個，共有 $27 \times 3 = 81$ 個（即 $3^4$ 個）。</div><div class="sol-step">此倉庫內「總共有」多少個紙盒，需將各尺寸紙盒數量全部相加：<br>總數 $= 3 + 9 + 27 + 81 = 120$ 個。<br>（備註：原解答卷初版誤寫為只有小紙盒的 81 個，已於答案卷上紅筆訂正為 120 個）</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g7-f-6">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">6.</span>已知 a 為正整數，若 $5.27 \times 10^a$ 展開後是 6 位數，則 $a =$ __(22)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g7-f-6" onclick="toggleSolution('g7-f-6')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g7-f-6" class="solution-panel">
+                <div class="answer-badge">✓ 正解：5</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">科學記號的位數判別：$A \times 10^n$ 當 $1 \le A < 10$ 且 $n$ 為正整數時，展開後為 $(n + 1)$ 位數。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">科學記號標準式為 $A \times 10^a$，其中 $1 \le A < 10$（本題 $A = 5.27$）。</div><div class="sol-step">當 $a$ 為正整數時，$5.27 \times 10^a$ 展開後的整數位數恰為 $a + 1$ 位數。</div><div class="sol-step">根據題意，展開後為 6 位數，因此：<br>$a + 1 = 6 \Rightarrow a = 5$。</div><div class="sol-step">驗算：當 $a = 5$ 時，$5.27 \times 10^5 = 527,000$，共有 6 位數，符合題意。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+</div>
+
+<!-- Modal for image zoom -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+    <span class="modal-close">&times;</span>
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <img id="modalImg" src="" alt="放大檢視">
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    });
+
+    function toggleSolution(id) {
+        const panel = document.getElementById(id);
+        const btn = document.getElementById('btn-' + id);
+        if (panel.classList.contains('show')) {
+            panel.classList.remove('show');
+            if(btn) {
+                btn.classList.remove('opened');
+                btn.innerHTML = '💡 查看解析';
+            }
+        } else {
+            panel.classList.add('show');
+            if(btn) {
+                btn.classList.add('opened');
+                btn.innerHTML = '收起解析';
+            }
+        }
+    }
+
+    function toggleAllSolutions(expand) {
+        const panels = document.querySelectorAll('.solution-panel');
+        const buttons = document.querySelectorAll('.btn-toggle-solution');
+        panels.forEach(p => {
+            if (expand) {
+                p.classList.add('show');
+            } else {
+                p.classList.remove('show');
+            }
+        });
+        buttons.forEach(b => {
+            if (expand) {
+                b.classList.add('opened');
+                b.innerHTML = '收起解析';
+            } else {
+                b.classList.remove('opened');
+                b.innerHTML = '💡 查看解析';
+            }
+        });
+    }
+
+    function printExam(examOnly) {
+        if (examOnly) {
+            document.body.classList.add('print-exam-only');
+        } else {
+            document.body.classList.remove('print-exam-only');
+        }
+        window.print();
+    }
+
+    function openModal(src) {
+        const modal = document.getElementById('imgModal');
+        const img = document.getElementById('modalImg');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('imgModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

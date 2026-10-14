@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八年級數學科第一次段考試卷及詳解</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --primary-bg: #eff6ff;
+            --accent: #d97706;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --border-color: #cbd5e1;
+            --card-bg: #ffffff;
+            --bg-color: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 36px 44px;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        /* Header */
+        .exam-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+
+        .school-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .exam-sub {
+            font-size: 1.22rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 16px;
+        }
+
+        .student-info-row {
+            display: flex;
+            justify-content: center;
+            gap: 36px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 14px;
+        }
+
+        .info-field {
+            border-bottom: 1px solid #64748b;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        /* Score Table */
+        .score-table-wrap {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        .score-table th, .score-table td {
+            border: 1px solid #94a3b8;
+            padding: 6px 3px;
+        }
+
+        .score-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .score-table td {
+            background-color: #ffffff;
+        }
+
+        /* Sticky Control Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .toolbar-left, .toolbar-right {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-print {
+            background: #047857;
+            color: white;
+        }
+        .btn-print:hover {
+            background: #059669;
+        }
+
+        /* Section Headings */
+        .section-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            border-left: 5px solid var(--primary);
+            padding-left: 12px;
+            margin: 32px 0 18px 0;
+            background: #f8fafc;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Question Cards */
+        .question-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            transition: box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .question-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1e293b;
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        .question-num {
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 6px;
+        }
+
+        .btn-toggle-solution {
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #3b82f6;
+            background: #eff6ff;
+            color: #1d4ed8;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-toggle-solution:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-toggle-solution.opened {
+            background: #2563eb;
+            color: white;
+        }
+
+        .question-body {
+            font-size: 1rem;
+            color: #334155;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px 16px;
+            margin: 14px 0;
+            padding-left: 6px;
+        }
+
+        .option-item {
+            font-size: 0.98rem;
+            color: #334155;
+            display: flex;
+            align-items: center;
+        }
+
+        .opt-label {
+            font-weight: 700;
+            margin-right: 6px;
+            color: #475569;
+        }
+
+        /* Diagrams */
+        .diagram-container {
+            text-align: center;
+            margin: 16px 0;
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .diagram-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            cursor: zoom-in;
+            transition: transform 0.2s;
+        }
+
+        .diagram-img:hover {
+            transform: scale(1.015);
+        }
+
+        .diagram-caption {
+            font-size: 0.86rem;
+            color: #64748b;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Solutions Panel */
+        .solution-panel {
+            display: none;
+            margin-top: 16px;
+            border-top: 2px dashed #93c5fd;
+            padding-top: 16px;
+            background: #f8fafc;
+            border-radius: 0 0 6px 6px;
+            padding: 16px 20px;
+        }
+
+        .solution-panel.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #059669;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .sol-block {
+            margin-bottom: 12px;
+        }
+
+        .sol-block-title {
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sol-content {
+            font-size: 0.96rem;
+            color: #334155;
+            padding-left: 8px;
+            line-height: 1.7;
+        }
+
+        .sol-step {
+            margin-bottom: 6px;
+        }
+
+        /* Modal for Image Zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .modal-content img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Print Style */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .nav-bar, .toolbar, .btn-toggle-solution {
+                display: none !important;
+            }
+            .question-card {
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+                margin-bottom: 12px;
+                padding: 12px;
+            }
+            .solution-panel {
+                display: block !important;
+                background: #f9f9f9;
+                border: 1px solid #ddd;
+            }
+            body.print-exam-only .solution-panel {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 18px 16px;
+            }
+            .student-info-row {
+                gap: 16px;
+                flex-direction: column;
+                align-items: center;
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Nav -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-btn">🏠 段考導覽首頁</a>
+        <a href="七年級數學第一次段考.html" class="nav-btn ">📘 七年級試卷</a>
+        <a href="八年級數學第一次段考.html" class="nav-btn active">📗 八年級試卷</a>
+        <a href="九年級數學第一次段考.html" class="nav-btn ">📙 九年級試卷</a>
+    </nav>
+
+    <!-- Exam Header -->
+    <header class="exam-header">
+        <div class="school-title">新北市立新泰國民中學 115 學年度 第一學期 第一次段考</div>
+        <div class="exam-sub">八年級 數學科試卷與詳細解析</div>
+        <div class="student-info-row">
+            <div>班級：<span class="info-field">&nbsp;</span></div>
+            <div>座號：<span class="info-field">&nbsp;</span></div>
+            <div>姓名：<span class="info-field">&nbsp;</span></div>
+        </div>
+
+        <!-- Score Table -->
+        <div class="score-table-wrap">
+            <div style="font-weight: 600; text-align: left; margin-bottom: 4px; color: #334155;">配分如下：</div>
+            
+<table class="score-table">
+    <thead>
+        <tr>
+            <th>答對題數</th>
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="background:#f8fafc;">分數</th>
+            <td>5</td><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td><td>35</td><td>40</td><td>45</td><td>50</td>
+        </tr>
+        <tr>
+            <th style="background:#f1f5f9;">答對題數</th>
+            <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
+        </tr>
+        <tr>
+            <th style="background:#f8fafc;">分數</th>
+            <td>55</td><td>60</td><td>64</td><td>68</td><td>72</td><td>76</td><td>80</td><td>84</td><td>87</td><td>90</td>
+        </tr>
+    </tbody>
+</table>
+<div style="font-size:0.86rem; color:#64748b; margin-top:4px; text-align:right;">※ 選擇題與填充題共 20 題（滿分 90 分），非選計算題 2 題共 10 分，總分 100 分。</div>
+
+        </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <button class="btn btn-primary" onclick="toggleAllSolutions(true)">💡 全部展開解析</button>
+            <button class="btn btn-outline" onclick="toggleAllSolutions(false)">📁 全部收合解析</button>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn btn-print" onclick="printExam(false)">🖨️ 列印試卷 (含解析)</button>
+            <button class="btn btn-outline" onclick="printExam(true)">📄 列印空白試卷</button>
+        </div>
+    </div>
+
+    <!-- Questions Content -->
+    <div class="section-header">一、選擇題</div>
+
+        <div class="question-card" id="card-g8-c-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>(　) 下列哪一個算式的展開或計算結果是正確的？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-1" onclick="toggleSolution('g8-c-1')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $(a + b)^2 = a^2 + b^2$</div><div class="option-item"><span class="opt-label">(B)</span> $(a - b)^2 = a^2 - 2ab - b^2$</div><div class="option-item"><span class="opt-label">(C)</span> $(a + b)(a - b) = a^2 - b^2$</div><div class="option-item"><span class="opt-label">(D)</span> $98 \times 102 = 100^2 + 2^2$</div></div>
+            
+            <div id="g8-c-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) (a + b)(a - b) = a^2 - b^2</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">乘法公式（和的平方、差的平方、平方差公式）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">檢驗各選項之乘法公式：</div><div class="sol-step"><b>(A)</b> $(a + b)^2 = a^2 + 2ab + b^2 \ne a^2 + b^2$（漏掉了中間項 $2ab$）。</div><div class="sol-step"><b>(B)</b> $(a - b)^2 = a^2 - 2ab + b^2 \ne a^2 - 2ab - b^2$（最後一項應為 $+b^2$）。</div><div class="sol-step"><b>(C)</b> $(a + b)(a - b) = a^2 - b^2$（平方差公式，<b>正確</b>）。</div><div class="sol-step"><b>(D)</b> $98 \times 102 = (100 - 2)(100 + 2) = 100^2 - 2^2 \ne 100^2 + 2^2$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (C) 符合平方差乘法公式，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>(　) 關於多項式 $3x^2 - 4x + 5$ 的敘述，下列何者錯誤？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-2" onclick="toggleSolution('g8-c-2')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 此多項式為二次多項式</div><div class="option-item"><span class="opt-label">(B)</span> $x^2$ 項的係數為 3</div><div class="option-item"><span class="opt-label">(C)</span> 常數項為 5</div><div class="option-item"><span class="opt-label">(D)</span> $x$ 項的係數為 4</div></div>
+            
+            <div id="g8-c-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) x 項的係數為 4</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式的次數、項與係數的判讀（注意正負符號）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">分析多項式 $3x^2 - 4x + 5$：</div><div class="sol-step">1. 最高次項為 $3x^2$，最高次數為 2，故為二次多項式，(A) 正確。</div><div class="sol-step">2. $x^2$ 項為 $3x^2$，其係數為 3，(B) 正確。</div><div class="sol-step">3. 不含未知數 $x$ 的項為常數項，其值為 5，(C) 正確。</div><div class="sol-step">4. 一次項為 $-4x$，係數包含負號，應為 <b>-4</b>，而不是 4，故 (D) <b>錯誤</b>。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">$x$ 項的係數為 -4，(D) 敘述錯誤，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-3">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">3.</span>(　) 計算 $(2x^2 + 5x - 3) + (x^2 - 3x + 2)$ 的結果為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-3" onclick="toggleSolution('g8-c-3')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $3x^2 + 2x - 1$</div><div class="option-item"><span class="opt-label">(B)</span> $3x^2 + 8x - 1$</div><div class="option-item"><span class="opt-label">(C)</span> $x^2 + 2x - 5$</div><div class="option-item"><span class="opt-label">(D)</span> $3x^2 + 2x + 1$</div></div>
+            
+            <div id="g8-c-3" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 3x^2 + 2x - 1</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式的加法運算：去括號並將同類項合併。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">去括號直接相加：<br>$(2x^2 + 5x - 3) + (x^2 - 3x + 2) = 2x^2 + 5x - 3 + x^2 - 3x + 2$。</div><div class="sol-step">將同類項分組整理：</div><div class="sol-step">1. 二次項：$2x^2 + x^2 = 3x^2$</div><div class="sol-step">2. 一次項：$5x - 3x = 2x$</div><div class="sol-step">3. 常數項：$-3 + 2 = -1$</div><div class="sol-step">合併結果為：$3x^2 + 2x - 1$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">各項係數分別為 3、2、-1，對應選項 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-4">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">4.</span>(　) $(-3x) \times (2x - 5)$ 的結果為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-4" onclick="toggleSolution('g8-c-4')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $-6x^2 - 15x$</div><div class="option-item"><span class="opt-label">(B)</span> $6x^2 + 15x$</div><div class="option-item"><span class="opt-label">(C)</span> $-6x^2 - 5$</div><div class="option-item"><span class="opt-label">(D)</span> $-6x^2 + 15x$</div></div>
+            
+            <div id="g8-c-4" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) -6x^2 + 15x</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">單項式乘以多項式的乘法分配律與符號法則（負負得正）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">利用分配律展開：<br>$(-3x) \times (2x - 5) = (-3x) \times (2x) + (-3x) \times (-5)$。</div><div class="sol-step">計算各項：</div><div class="sol-step">1. 第一項：$(-3) \times 2 \times x \times x = -6x^2$</div><div class="sol-step">2. 第二項：$(-3) \times (-5) \times x = +15x$（負負得正）</div><div class="sol-step">合併結果為：$-6x^2 + 15x$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">常數相乘 $(-3) \times (-5) = +15$，第二項為 $+15x$，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-5">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">5.</span>(　) 下列何者為 $\sqrt{196}$ 的值？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-5" onclick="toggleSolution('g8-c-5')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 13</div><div class="option-item"><span class="opt-label">(B)</span> 14</div><div class="option-item"><span class="opt-label">(C)</span> 16</div><div class="option-item"><span class="opt-label">(D)</span> 18</div></div>
+            
+            <div id="g8-c-5" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 14</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">正整數的完全平方數與算術平方根（根號）之定義。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">根號記號 $\sqrt{a}$ 代表 $a$ 的正平方根（或算術平方根）。</div><div class="sol-step">檢驗常用完全平方數：<br>$13^2 = 169$<br>$14^2 = 196$<br>$16^2 = 256$<br>$18^2 = 324$。</div><div class="sol-step">因為 $14^2 = 196$，所以 $\sqrt{196} = 14$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">14 的平方為 196，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-6">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">6.</span>(　) 關於平方根的敘述，下列何者正確？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-6" onclick="toggleSolution('g8-c-6')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> -25 的平方根是 -5</div><div class="option-item"><span class="opt-label">(B)</span> 0.3 是 0.9 的平方根</div><div class="option-item"><span class="opt-label">(C)</span> 0 的平方根是 0</div><div class="option-item"><span class="opt-label">(D)</span> 若 $a^2 = 7$，則 $a$ 一定是 $\sqrt{7}$</div></div>
+            
+            <div id="g8-c-6" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 0 的平方根是 0</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平方根的定義、正負數平方根的個數與性質。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>(A) 錯誤：</b> 負數在實數範圍內沒有平方根（任何實數的平方皆不小於 0）。</div><div class="sol-step"><b>(B) 錯誤：</b> $0.3^2 = 0.09 \ne 0.9$，因此 0.3 是 0.09 的平方根，不是 0.9 的平方根。</div><div class="sol-step"><b>(C) 正確：</b> 因為 $0^2 = 0$，0 的平方根只有 0 一個。</div><div class="sol-step"><b>(D) 錯誤：</b> 若 $a^2 = 7$，則 $a$ 可能為正也可能為負，即 $a = \pm\sqrt{7}$，不一定是 $\sqrt{7}$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">只有 (C) 選項敘述正確無誤，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-7">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">7.</span>(　) 利用乘法公式計算 $499^2 - 2 \times 499 + 1$ 的值，其結果為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-7" onclick="toggleSolution('g8-c-7')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 248000</div><div class="option-item"><span class="opt-label">(B)</span> 248004</div><div class="option-item"><span class="opt-label">(C)</span> 248008</div><div class="option-item"><span class="opt-label">(D)</span> 249001</div></div>
+            
+            <div id="g8-c-7" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 248004</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">差的平方公式：$a^2 - 2ab + b^2 = (a - b)^2$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">觀察算式：$499^2 - 2 \times 499 + 1$ 可寫成 $499^2 - 2 \times 499 \times 1 + 1^2$。</div><div class="sol-step">此算式完全符合差的平方公式：$a^2 - 2ab + b^2 = (a - b)^2$，其中 $a = 499, b = 1$。</div><div class="sol-step">因此原式 $= (499 - 1)^2 = 498^2$。</div><div class="sol-step">計算 $498^2$：將 498 寫為 $(500 - 2)$，再次運用差的平方公式：<br>$498^2 = (500 - 2)^2 = 500^2 - 2 \times 500 \times 2 + 2^2$<br>$= 250000 - 2000 + 4 = 248004$。<br>（備註：段考解答卷原印製為 D，老師閱卷時已於解答卡上方紅筆訂正為 B）</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">計算結果為 248004，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-8">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">8.</span>(　) 若多項式 A 減去 $3x^2 - 2x + 4$ 得 $2x^2 + 5x - 1$，則多項式 A 為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-8" onclick="toggleSolution('g8-c-8')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $5x^2 + 3x + 3$</div><div class="option-item"><span class="opt-label">(B)</span> $x^2 - 7x + 5$</div><div class="option-item"><span class="opt-label">(C)</span> $5x^2 - 3x + 3$</div><div class="option-item"><span class="opt-label">(D)</span> $-x^2 + 7x - 5$</div></div>
+            
+            <div id="g8-c-8" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 5x^2 + 3x + 3</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式加減運算的移項與還原：若 $A - B = C$，則 $A = B + C$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">由題意列式：$A - (3x^2 - 2x + 4) = 2x^2 + 5x - 1$。</div><div class="sol-step">將減式移到等號右邊變為加法：<br>$A = (2x^2 + 5x - 1) + (3x^2 - 2x + 4)$。</div><div class="sol-step">同類項合併：<br>1. 二次項：$2x^2 + 3x^2 = 5x^2$<br>2. 一次項：$5x + (-2x) = 3x$<br>3. 常數項：$-1 + 4 = 3$<br>得多項式 $A = 5x^2 + 3x + 3$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">合併同類項後得到 (A) $5x^2 + 3x + 3$，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-9">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">9.</span>(　) 展開 $(2x - 3)(3x^2 - x + 4)$ 後，其 $x^2$ 項的係數為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-9" onclick="toggleSolution('g8-c-9')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> -11</div><div class="option-item"><span class="opt-label">(B)</span> 11</div><div class="option-item"><span class="opt-label">(C)</span> -7</div><div class="option-item"><span class="opt-label">(D)</span> 6</div></div>
+            
+            <div id="g8-c-9" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) -11</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式乘法展開中指定次數項的係數計算。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">不需要將全部各項都展開，只需尋找兩括號相乘能產生 $x^2$ 的項：</div><div class="sol-step">1. 前括號的一次項 $(2x)$ 乘以後括號的一次項 $(-x)$：<br>$(2x) \times (-x) = -2x^2$。</div><div class="sol-step">2. 前括號的常數項 $(-3)$ 乘以後括號的二次項 $(3x^2)$：<br>$(-3) \times (3x^2) = -9x^2$。</div><div class="sol-step">將這兩個 $x^2$ 項相加：<br>$(-2x^2) + (-9x^2) = -11x^2$。</div><div class="sol-step">因此 $x^2$ 項的係數為 <b>-11</b>。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">係數為 -11，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-10">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">10.</span>(　) 若 $(3x^2 + 2x - 9)$ 除以多項式 B，得到商式為 $x - 2$，餘式為 7，則多項式 B 為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-10" onclick="toggleSolution('g8-c-10')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $3x - 8$</div><div class="option-item"><span class="opt-label">(B)</span> $3x + 8$</div><div class="option-item"><span class="opt-label">(C)</span> $3x - 4$</div><div class="option-item"><span class="opt-label">(D)</span> $3x + 4$</div></div>
+            
+            <div id="g8-c-10" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 3x + 8</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式除法原理：被除式 $=$ 除式 $\times$ 商式 $+$ 餘式。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">根據除法原理：$3x^2 + 2x - 9 = B \times (x - 2) + 7$。</div><div class="sol-step">兩邊同時減去餘式 7：<br>$B \times (x - 2) = (3x^2 + 2x - 9) - 7 = 3x^2 + 2x - 16$。</div><div class="sol-step">因此除式 $B = (3x^2 + 2x - 16) \div (x - 2)$。</div><div class="sol-step">進行除法或十字交乘因式分解：<br>$3x^2 + 2x - 16 = (x - 2)(3x + 8)$。</div><div class="sol-step">所以多項式 $B = 3x + 8$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">除式 B 為 $3x + 8$，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-11">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">11.</span>(　) 若 k 為正整數，且滿足 $k - 1 < \sqrt{135} < k$，則 k 的值為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-11" onclick="toggleSolution('g8-c-11')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 10</div><div class="option-item"><span class="opt-label">(B)</span> 11</div><div class="option-item"><span class="opt-label">(C)</span> 12</div><div class="option-item"><span class="opt-label">(D)</span> 13</div></div>
+            
+            <div id="g8-c-11" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 12</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">根號數值的大小估算與連續完全平方數夾擠法。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">找出夾住 135 的兩個相鄰完全平方數：</div><div class="sol-step">$11^2 = 121$</div><div class="sol-step">$12^2 = 144$</div><div class="sol-step">因為 $121 < 135 < 144$，所以 $11 < \sqrt{135} < 12$。</div><div class="sol-step">比對題目條件 $k - 1 < \sqrt{135} < k$：<br>$k - 1 = 11$，且 $k = 12$。</div><div class="sol-step">因此正整數 $k = 12$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">k 為 12，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-12">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">12.</span>(　) 判斷 $\sqrt{2026}$ 的值介於哪兩個連續整數之間？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-12" onclick="toggleSolution('g8-c-12')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 39 與 40</div><div class="option-item"><span class="opt-label">(B)</span> 40 與 41</div><div class="option-item"><span class="opt-label">(C)</span> 44 與 45</div><div class="option-item"><span class="opt-label">(D)</span> 45 與 46</div></div>
+            
+            <div id="g8-c-12" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 45 與 46</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">大數平方根的估算技巧（熟記常用平方數：$45^2 = 2025$）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">計算各整數之平方值：</div><div class="sol-step">1. $44^2 = 1936$</div><div class="sol-step">2. $45^2 = (40 + 5)^2 = 2025$</div><div class="sol-step">3. $46^2 = (50 - 4)^2 = 2116$</div><div class="sol-step">顯然 $2025 < 2026 < 2116$，即 $45^2 < 2026 < 46^2$。</div><div class="sol-step">兩邊開根號得：$45 < \sqrt{2026} < 46$。</div><div class="sol-step">因此 $\sqrt{2026}$ 的值介於 45 與 46 之間。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">因為 $45^2 = 2025$，極度接近 2026 但未超過，所以介於 45 與 46 之間，選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-13">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">13.</span>(　) 設 A、B 為兩個多項式，若 $A + B = 5x^2 - 3x + 1$ 且 $A - 2B = -4x^2 + 9x + 7$，求多項式 $A + 2B$ 為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-13" onclick="toggleSolution('g8-c-13')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $8x^2 - 7x - 1$</div><div class="option-item"><span class="opt-label">(B)</span> $7x^2 - 4x + 3$</div><div class="option-item"><span class="opt-label">(C)</span> $2x^2 - 5x + 1$</div><div class="option-item"><span class="opt-label">(D)</span> $3x^2 - 4x - 5$</div></div>
+            
+            <div id="g8-c-13" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 8x^2 - 7x - 1</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">二元多項式聯立方程組的加減消去法。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">設聯立方程組：<br>① $A + B = 5x^2 - 3x + 1$<br>② $A - 2B = -4x^2 + 9x + 7$</div><div class="sol-step">以 ① 式減去 ② 式消去 A：<br>$(A + B) - (A - 2B) = 3B$<br>$3B = (5x^2 - 3x + 1) - (-4x^2 + 9x + 7) = 9x^2 - 12x - 6$<br>兩邊同除以 3 得：$B = 3x^2 - 4x - 2$。</div><div class="sol-step">將 B 代回 ① 式求 A：<br>$A = (5x^2 - 3x + 1) - B = (5x^2 - 3x + 1) - (3x^2 - 4x - 2) = 2x^2 + x + 3$。</div><div class="sol-step">計算題目所求 $A + 2B$：<br>$A + 2B = (2x^2 + x + 3) + 2(3x^2 - 4x - 2)$<br>$= 2x^2 + x + 3 + 6x^2 - 8x - 4$<br>$= 8x^2 - 7x - 1$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">算得 $A + 2B = 8x^2 - 7x - 1$，答案選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-14">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">14.</span>(　) 計算 $(250 + 0.9 + 0.8 + 0.7)^2 - (250 - 0.9 - 0.8 - 0.7)^2$ 的值為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-14" onclick="toggleSolution('g8-c-14')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 1200</div><div class="option-item"><span class="opt-label">(B)</span> 2400</div><div class="option-item"><span class="opt-label">(C)</span> 11.52</div><div class="option-item"><span class="opt-label">(D)</span> 23.04</div></div>
+            
+            <div id="g8-c-14" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 2400</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">乘法公式簡化運算：$(a + b)^2 - (a - b)^2 = 4ab$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">令 $a = 250$。<br>觀察小數部分：$0.9 + 0.8 + 0.7 = 2.4$，令 $b = 2.4$。</div><div class="sol-step">則原式第二個括號可改寫為：<br>$(250 - (0.9 + 0.8 + 0.7)) = (a - b)$。</div><div class="sol-step">因此原式即為：$(a + b)^2 - (a - b)^2$。</div><div class="sol-step">利用乘法公式展開化簡：<br>$(a + b)^2 - (a - b)^2 = (a^2 + 2ab + b^2) - (a^2 - 2ab + b^2) = 4ab$。</div><div class="sol-step">代入 $a = 250, b = 2.4$：<br>$4ab = 4 \times 250 \times 2.4 = 1000 \times 2.4 = 2400$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">巧妙化簡為 $4ab = 1000 \times 2.4 = 2400$，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-c-15">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">15.</span>(　) 已知 $2a + 6$ 的正平方根為 4，$2a + b + 5$ 的負平方根為 -5，則 $2a + 2b + 6$ 的平方根為何？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-c-15" onclick="toggleSolution('g8-c-15')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 6</div><div class="option-item"><span class="opt-label">(B)</span> -6</div><div class="option-item"><span class="opt-label">(C)</span> $\pm 6$</div><div class="option-item"><span class="opt-label">(D)</span> $\pm 36$</div></div>
+            
+            <div id="g8-c-15" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) ±6</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">正負平方根的定義：若 $x$ 為 $N$ 的平方根，則 $x^2 = N$；正數有兩個平方根互為相反數（$\pm$）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 由「$2a + 6$ 的正平方根為 4」：<br>$\sqrt{2a + 6} = 4 \Rightarrow 2a + 6 = 4^2 = 16 \Rightarrow 2a = 10 \Rightarrow a = 5$。</div><div class="sol-step">2. 由「$2a + b + 5$ 的負平方根為 -5」：<br>$(-\sqrt{2a + b + 5}) = -5 \Rightarrow 2a + b + 5 = (-5)^2 = 25$。<br>代入 $2a = 10$：$10 + b + 5 = 25 \Rightarrow b + 15 = 25 \Rightarrow b = 10$。</div><div class="sol-step">3. 計算待求代數式的值：<br>$2a + 2b + 6 = 10 + 2(10) + 6 = 10 + 20 + 6 = 36$。</div><div class="sol-step">4. 題目要求 36 的「平方根」：<br>一個正數有正、負兩個平方根，因此 36 的平方根為 $\pm\sqrt{36} = \pm 6$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">注意題目問的是「平方根」，包含一正一負，故選 (C)。若選 (A) 則漏掉了負平方根。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+<div class="section-header">二、填充題 (每格 4 分，共 40 分)</div>
+
+        <div class="question-card" id="card-g8-f-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>利用平方差公式計算 $293 \times 307 =$ __(16)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-f-1" onclick="toggleSolution('g8-f-1')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g8-f-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：89951</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平方差公式：$(a - b)(a + b) = a^2 - b^2$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">以中間對稱數 300 為基準：<br>$293 = 300 - 7$<br>$307 = 300 + 7$。</div><div class="sol-step">套用平方差公式：<br>$293 \times 307 = (300 - 7)(300 + 7) = 300^2 - 7^2$。</div><div class="sol-step">計算平方值：<br>$300^2 = 90000$<br>$7^2 = 49$</div><div class="sol-step">相減得：$90000 - 49 = 89951$。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-f-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>計算多項式 $(5x + 6) - (x^2 - 5x - 6) =$ __(17)__（請按降冪排列）。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-f-2" onclick="toggleSolution('g8-f-2')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g8-f-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：-x^2 + 10x + 12</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式減法去括號變號與降冪同類項整理。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">減去後括號，括號內每一項皆需變號：<br>$(5x + 6) - (x^2 - 5x - 6) = 5x + 6 - x^2 + 5x + 6$。</div><div class="sol-step">按照降冪順序（二次項、一次項、常數項）排列合併同類項：<br>1. 二次項：$-x^2$<br>2. 一次項：$5x + 5x = 10x$<br>3. 常數項：$6 + 6 = 12$</div><div class="sol-step">整理得：$-x^2 + 10x + 12$。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-f-3">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">3.</span>若多項式 $(a - 3)x^2 + (b - 2)x + 3$ 為常數多項式，則 $a + b =$ __(18)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-f-3" onclick="toggleSolution('g8-f-3')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g8-f-3" class="solution-panel">
+                <div class="answer-badge">✓ 正解：5</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">常數多項式的定義：未知數各項係數皆為 0。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">若多項式為常數多項式，表示該多項式中所有含變數 $x$ 的項（二次項、一次項）都不存在，其係數必須為 0。</div><div class="sol-step">1. 二次項係數：$a - 3 = 0 \Rightarrow a = 3$</div><div class="sol-step">2. 一次項係數：$b - 2 = 0 \Rightarrow b = 2$</div><div class="sol-step">常數項為 3（不為 0，符合零次常數多項式）。</div><div class="sol-step">所求 $a + b = 3 + 2 = 5$。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-f-4">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">4.</span>已知 -3 是 $8a + 1$ 的負平方根，則 $a =$ __(19)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-f-4" onclick="toggleSolution('g8-f-4')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g8-f-4" class="solution-panel">
+                <div class="answer-badge">✓ 正解：1</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">負平方根的定義：若 $-k$ 為 $N$ 的負平方根，則 $(-k)^2 = N$。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">因為 -3 是 $8a + 1$ 的負平方根，所以：<br>$(-3)^2 = 8a + 1$。</div><div class="sol-step">計算平方：$9 = 8a + 1$。</div><div class="sol-step">移項解一元一次方程式：<br>$8a = 9 - 1 = 8 \Rightarrow a = 1$。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-f-5">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">5.</span>多項式 F 除以多項式 G，得到的商式為 Q，餘式為 R。若改以 3F 除以 G，則其餘式應為 __(20)__。
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-f-5" onclick="toggleSolution('g8-f-5')">💡 查看解析</button>
+            </div>
+            
+            
+            
+            <div id="g8-f-5" class="solution-panel">
+                <div class="answer-badge">✓ 正解：3R</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式除法原理：被除式放大倍數對餘式的影響。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">由多項式除法原理：<br>$F = G \times Q + R$，其中餘式次數滿足 $\deg(R) < \deg(G)$（或 $R = 0$）。</div><div class="sol-step">現在改以 3F 被 G 除，等號兩邊同乘以 3：<br>$3F = 3(G \times Q + R) = G \times (3Q) + 3R$。</div><div class="sol-step">檢驗新餘式 $3R$ 的次數：<br>常數倍不改變多項式次數，故 $\deg(3R) = \deg(R) < \deg(G)$，完全符合除法原理定義。</div><div class="sol-step">因此商式變為 $3Q$，餘式為 <b>3R</b>。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+<div class="section-header">三、計算題 (每題 5 分，共 10 分)</div>
+
+        <div class="question-card" id="card-g8-a-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>阿倫為萬聖節設計了一個正方形面具（如右圖概念）：邊長為 $(2x + 5)$ 公分的正方形紙板，挖去 4 個邊長為 $(x - 1)$ 公分的小正方形作為眼、鼻、口。<br>(1) 請以含 $x$ 的多項式表示剩餘面具的面積。(3 分)<br>(2) 若 $x = 5$，則此面具的實際面積為多少平方公分？(2 分)
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-a-1" onclick="toggleSolution('g8-a-1')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g8_calc_q1_mask.png" alt="萬聖節正方形面具（邊長 2x+5 cm，挖去 4 個邊長 x-1 cm 的正方形）" class="diagram-img" onclick="openModal('images/g8_calc_q1_mask.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：萬聖節正方形面具（邊長 2x+5 cm，挖去 4 個邊長 x-1 cm 的正方形）</div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="g8-a-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(1) (28x + 21) 平方公分； (2) 161 平方公分</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多項式的幾何面積應用：整體面積減去挖空面積，以及代數式的求值。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>(1) 剩餘面具面積多項式 (3 分)：</b><br>• 原正方形紙板邊長為 $(2x + 5)$ 公分，其面積為：<br>$\text{面積}_\text{大} = (2x + 5)^2 = (2x)^2 + 2 \times (2x) \times 5 + 5^2 = 4x^2 + 20x + 25$。<br>• 挖去的 4 個小正方形邊長皆為 $(x - 1)$ 公分，總挖去面積為：<br>$\text{面積}_\text{挖} = 4 \times (x - 1)^2 = 4 \times (x^2 - 2x + 1) = 4x^2 - 8x + 4$。<br>• 剩餘面積即兩者相減：<br>$\text{剩餘面積} = (4x^2 + 20x + 25) - (4x^2 - 8x + 4)$<br>$= 4x^2 - 4x^2 + 20x - (-8x) + 25 - 4$<br>$= 28x + 21$（平方公分）。</div><div class="sol-step"><br><b>(2) 代入 $x = 5$ 求實際面積 (2 分)：</b><br>將 $x = 5$ 代入面積多項式 $28x + 21$：<br>$\text{實際面積} = 28 \times 5 + 21 = 140 + 21 = 161$（平方公分）。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g8-a-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>氣象預報與颱風風速估算<br>根據氣象學的風力模型，颱風中心附近的最大風速 V（單位：公尺/秒）與颱風中心氣壓與周圍環境氣壓的差值 P（單位：百帕，hPa）之間，存在著如下的近似關係式：$V = 6 \times \sqrt{P}$<br>某日中央氣象署發布強烈颱風警報，觀測資料顯示當時颱風中心氣壓與周圍環境氣壓的差值為 P = 55 hPa。<br>氣象署的風級對照表如下：<br>• 11 級風：風速介於 $28.5\text{ m/s} \le V < 32.6\text{ m/s}$<br>• 12 級風：風速介於 $32.6\text{ m/s} \le V < 37.0\text{ m/s}$<br>• 13 級風：風速介於 $37.0\text{ m/s} \le V < 41.4\text{ m/s}$<br>• 14 級風：風速介於 $41.4\text{ m/s} \le V < 46.1\text{ m/s}$<br>【問題】<br>(1) 請以十分逼近法估算 $\sqrt{55}$ 的近似值至小數點後第一位（以四捨五入法計算）。<br>(2) 請計算此時颱風中心附近的預估風速 V，並根據氣象署的風級對照表，判斷此風速相當於幾級風？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g8-a-2" onclick="toggleSolution('g8-a-2')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g8_calc_q2_typhoon.png" alt="氣象預報與颱風風速估算示意圖（含暴風圈、路徑預測與風級對照表）" class="diagram-img" onclick="openModal('images/g8_calc_q2_typhoon.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：氣象預報與颱風風速估算示意圖（含暴風圈、路徑預測與風級對照表）</div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="g8-a-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(1) 7.4； (2) 14 級風</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平方根的十分逼近法、代數關係式代入求值與實務生活區間比對判讀。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>(1) 利用「十分逼近法」估算 $\sqrt{55}$ 至小數第一位：</b><br>• 步驟 1（決定整數部分）：<br>　$7^2 = 49 < 55 < 8^2 = 64 \Rightarrow 7 < \sqrt{55} < 8$。<br>• 步驟 2（決定十分位小數）：<br>　計算小數十分位之平方：<br>　$7.4^2 = 54.76 < 55$<br>　$7.5^2 = 56.25 > 55$<br>　因為 $54.76 < 55 < 56.25$，所以 $7.4 < \sqrt{55} < 7.5$。<br>• 步驟 3（四捨五入判定）：<br>　取區間中點 7.45 進行平方判定：<br>　$7.45^2 = 55.5025 > 55$<br>　因為 $54.76 < 55 < 55.5025$，得知 $7.40 < \sqrt{55} < 7.45$。<br>　因此小數第二位未滿 5，四捨五入至小數點後第一位為 <b>7.4</b>。</div><div class="sol-step"><br><b>(2) 預估風速 V 計算與風級判斷：</b><br>• 代入風速公式 $V = 6 \times \sqrt{P} = 6 \times \sqrt{55}$：<br>　若代入 (1) 之近似值 7.4：$V = 6 \times 7.4 = 44.4\text{ m/s}$。<br>　（若以高精確值 $\sqrt{55} \approx 7.4162$ 計算：$V \approx 6 \times 7.4162 \approx 44.5\text{ m/s}$）。<br>• 對照中央氣象署風級表：<br>　14 級風範圍為 $41.4\text{ m/s} \le V < 46.1\text{ m/s}$。<br>　因為 $41.4 \le 44.4 < 46.1$，所以此預估風速相當於 <b>14 級風</b>。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+</div>
+
+<!-- Modal for image zoom -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+    <span class="modal-close">&times;</span>
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <img id="modalImg" src="" alt="放大檢視">
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    });
+
+    function toggleSolution(id) {
+        const panel = document.getElementById(id);
+        const btn = document.getElementById('btn-' + id);
+        if (panel.classList.contains('show')) {
+            panel.classList.remove('show');
+            if(btn) {
+                btn.classList.remove('opened');
+                btn.innerHTML = '💡 查看解析';
+            }
+        } else {
+            panel.classList.add('show');
+            if(btn) {
+                btn.classList.add('opened');
+                btn.innerHTML = '收起解析';
+            }
+        }
+    }
+
+    function toggleAllSolutions(expand) {
+        const panels = document.querySelectorAll('.solution-panel');
+        const buttons = document.querySelectorAll('.btn-toggle-solution');
+        panels.forEach(p => {
+            if (expand) {
+                p.classList.add('show');
+            } else {
+                p.classList.remove('show');
+            }
+        });
+        buttons.forEach(b => {
+            if (expand) {
+                b.classList.add('opened');
+                b.innerHTML = '收起解析';
+            } else {
+                b.classList.remove('opened');
+                b.innerHTML = '💡 查看解析';
+            }
+        });
+    }
+
+    function printExam(examOnly) {
+        if (examOnly) {
+            document.body.classList.add('print-exam-only');
+        } else {
+            document.body.classList.remove('print-exam-only');
+        }
+        window.print();
+    }
+
+    function openModal(src) {
+        const modal = document.getElementById('imgModal');
+        const img = document.getElementById('modalImg');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('imgModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

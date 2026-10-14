@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九年級數學科第一次段考試卷及詳解</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --primary-bg: #eff6ff;
+            --accent: #d97706;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --border-color: #cbd5e1;
+            --card-bg: #ffffff;
+            --bg-color: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 36px 44px;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        /* Header */
+        .exam-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+
+        .school-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .exam-sub {
+            font-size: 1.22rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 16px;
+        }
+
+        .student-info-row {
+            display: flex;
+            justify-content: center;
+            gap: 36px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 14px;
+        }
+
+        .info-field {
+            border-bottom: 1px solid #64748b;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        /* Score Table */
+        .score-table-wrap {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        .score-table th, .score-table td {
+            border: 1px solid #94a3b8;
+            padding: 6px 3px;
+        }
+
+        .score-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .score-table td {
+            background-color: #ffffff;
+        }
+
+        /* Sticky Control Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .toolbar-left, .toolbar-right {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-print {
+            background: #047857;
+            color: white;
+        }
+        .btn-print:hover {
+            background: #059669;
+        }
+
+        /* Section Headings */
+        .section-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            border-left: 5px solid var(--primary);
+            padding-left: 12px;
+            margin: 32px 0 18px 0;
+            background: #f8fafc;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Question Cards */
+        .question-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            transition: box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .question-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1e293b;
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        .question-num {
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 6px;
+        }
+
+        .btn-toggle-solution {
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #3b82f6;
+            background: #eff6ff;
+            color: #1d4ed8;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-toggle-solution:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-toggle-solution.opened {
+            background: #2563eb;
+            color: white;
+        }
+
+        .question-body {
+            font-size: 1rem;
+            color: #334155;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px 16px;
+            margin: 14px 0;
+            padding-left: 6px;
+        }
+
+        .option-item {
+            font-size: 0.98rem;
+            color: #334155;
+            display: flex;
+            align-items: center;
+        }
+
+        .opt-label {
+            font-weight: 700;
+            margin-right: 6px;
+            color: #475569;
+        }
+
+        /* Diagrams */
+        .diagram-container {
+            text-align: center;
+            margin: 16px 0;
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .diagram-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            cursor: zoom-in;
+            transition: transform 0.2s;
+        }
+
+        .diagram-img:hover {
+            transform: scale(1.015);
+        }
+
+        .diagram-caption {
+            font-size: 0.86rem;
+            color: #64748b;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Solutions Panel */
+        .solution-panel {
+            display: none;
+            margin-top: 16px;
+            border-top: 2px dashed #93c5fd;
+            padding-top: 16px;
+            background: #f8fafc;
+            border-radius: 0 0 6px 6px;
+            padding: 16px 20px;
+        }
+
+        .solution-panel.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #059669;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .sol-block {
+            margin-bottom: 12px;
+        }
+
+        .sol-block-title {
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sol-content {
+            font-size: 0.96rem;
+            color: #334155;
+            padding-left: 8px;
+            line-height: 1.7;
+        }
+
+        .sol-step {
+            margin-bottom: 6px;
+        }
+
+        /* Modal for Image Zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .modal-content img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Print Style */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .nav-bar, .toolbar, .btn-toggle-solution {
+                display: none !important;
+            }
+            .question-card {
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+                margin-bottom: 12px;
+                padding: 12px;
+            }
+            .solution-panel {
+                display: block !important;
+                background: #f9f9f9;
+                border: 1px solid #ddd;
+            }
+            body.print-exam-only .solution-panel {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 18px 16px;
+            }
+            .student-info-row {
+                gap: 16px;
+                flex-direction: column;
+                align-items: center;
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Nav -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-btn">🏠 段考導覽首頁</a>
+        <a href="七年級數學第一次段考.html" class="nav-btn ">📘 七年級試卷</a>
+        <a href="八年級數學第一次段考.html" class="nav-btn ">📗 八年級試卷</a>
+        <a href="九年級數學第一次段考.html" class="nav-btn active">📙 九年級試卷</a>
+    </nav>
+
+    <!-- Exam Header -->
+    <header class="exam-header">
+        <div class="school-title">新北市立新泰國民中學 115 學年度 第一學期 第一次段考</div>
+        <div class="exam-sub">九年級 數學科試題卷與詳細解析</div>
+        <div class="student-info-row">
+            <div>班級：<span class="info-field">&nbsp;</span></div>
+            <div>座號：<span class="info-field">&nbsp;</span></div>
+            <div>姓名：<span class="info-field">&nbsp;</span></div>
+        </div>
+
+        <!-- Score Table -->
+        <div class="score-table-wrap">
+            <div style="font-weight: 600; text-align: left; margin-bottom: 4px; color: #334155;">配分如下：</div>
+            
+<table class="score-table">
+    <thead>
+        <tr>
+            <th>答對題數</th>
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="background:#f8fafc;">分數</th>
+            <td>5</td><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td><td>35</td><td>40</td><td>45</td><td>50</td><td>55</td>
+        </tr>
+        <tr>
+            <th style="background:#f1f5f9;">答對題數</th>
+            <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th style="color:#94a3b8;">-</th>
+        </tr>
+        <tr>
+            <th style="background:#f8fafc;">分數</th>
+            <td>60</td><td>64</td><td>68</td><td>72</td><td>76</td><td>80</td><td>84</td><td>88</td><td>91</td><td>94</td><td style="color:#94a3b8;">-</td>
+        </tr>
+    </tbody>
+</table>
+<div style="font-size:0.86rem; color:#64748b; margin-top:4px; text-align:right;">※ 選擇題共 21 題（滿分 94 分），計算題 2 題共 6 分，全卷總分 100 分。</div>
+
+        </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <button class="btn btn-primary" onclick="toggleAllSolutions(true)">💡 全部展開解析</button>
+            <button class="btn btn-outline" onclick="toggleAllSolutions(false)">📁 全部收合解析</button>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn btn-print" onclick="printExam(false)">🖨️ 列印試卷 (含解析)</button>
+            <button class="btn btn-outline" onclick="printExam(true)">📄 列印空白試卷</button>
+        </div>
+    </div>
+
+    <!-- Questions Content -->
+    <div class="section-header">一、選擇題 (共 94 分)</div>
+
+        <div class="question-card" id="card-g9-c-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>(　) 下列哪一組的兩個圖形必為相似形？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-1" onclick="toggleSolution('g9-c-1')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 兩菱形</div><div class="option-item"><span class="opt-label">(B)</span> 兩等腰梯形</div><div class="option-item"><span class="opt-label">(C)</span> 兩長方形</div><div class="option-item"><span class="opt-label">(D)</span> 兩等腰直角三角形</div></div>
+            
+            <div id="g9-c-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 兩等腰直角三角形</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多邊形與三角形的相似條件（AAA 相似與形狀固定性）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">多邊形相似必須同時滿足：① 對應角相等，② 對應邊成比例。</div><div class="sol-step"><b>(A) 兩菱形：</b> 四邊等長（邊長成比例），但內角不一定相等（例如一個內角為 60°、120°，另一個為 80°、100°），故不一定相似。</div><div class="sol-step"><b>(B) 兩等腰梯形：</b> 底角不一定相等，各邊比例亦不一定相同，故不一定相似。</div><div class="sol-step"><b>(C) 兩長方形：</b> 四個內角皆為 90°（對應角相等），但長寬比不一定相同（例如 $2 \times 3$ 與 $1 \times 5$），故不一定相似。</div><div class="sol-step"><b>(D) 兩等腰直角三角形：</b> 任何等腰直角三角形的三個內角固定為 45°、45°、90°。由 AAA 相似性質，任意兩個等腰直角三角形必為相似形。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">等腰直角三角形形狀固定，角度完全一致，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>(　) 在 $\triangle ABC$ 中，D、E 兩點各在 $\overline{AB}$、$\overline{AC}$ 上，則下列哪一個條件不能說明 $\overline{DE}$ 一定平行 $\overline{BC}$？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-2" onclick="toggleSolution('g9-c-2')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $\overline{AD} : \overline{BD} = \overline{AE} : \overline{EC}$</div><div class="option-item"><span class="opt-label">(B)</span> $\overline{AE} : \overline{AC} = \overline{AD} : \overline{AB}$</div><div class="option-item"><span class="opt-label">(C)</span> $\overline{DE} : \overline{BC} = \overline{AD} : \overline{AB}$</div><div class="option-item"><span class="opt-label">(D)</span> $\overline{AB} : \overline{BD} = \overline{AC} : \overline{EC}$</div></div>
+            
+            <div id="g9-c-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) DE:BC = AD:AB</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平行線截比例線段定理之逆定理：僅有兩側截線段成比例能保證平行。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">根據平行線截線段定理之逆定理：</div><div class="sol-step">在 $\triangle ABC$ 中，若直線截兩邊 $\overline{AB}$、$\overline{AC}$ 所得的「兩側截線段成比例」，則該直線必平行於第三邊 $\overline{BC}$。</div><div class="sol-step">• (A) $\overline{AD}:\overline{BD} = \overline{AE}:\overline{EC}$（上比下 $=$ 上比下，能證明平行）。</div><div class="sol-step">• (B) $\overline{AE}:\overline{AC} = \overline{AD}:\overline{AB}$（上比全 $=$ 上比全，能證明平行）。</div><div class="sol-step">• (D) $\overline{AB}:\overline{BD} = \overline{AC}:\overline{EC}$（全比下 $=$ 全比下，能證明平行）。</div><div class="sol-step">• <b>(C) $\overline{DE}:\overline{BC} = \overline{AD}:\overline{AB}$：</b> 涉及底邊比與一側邊長比，由於存在 SSA（兩邊及其中一邊的對角）不確定全等/相似的幾何構造（圓弧可截出兩個不同方向的點），無法唯一確定 $\angle ADE = \angle B$，因此不能保證 $\overline{DE} // \overline{BC}$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (C) 屬於「底邊比」，不能反推平行，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-3">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">3.</span>(　) 若 $x : z = 2 : 3$，$y : z = 8 : 3$，則下列敘述何者錯誤？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-3" onclick="toggleSolution('g9-c-3')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $x : y : z = 2 : 8 : 3$</div><div class="option-item"><span class="opt-label">(B)</span> $\frac{x}{2} = \frac{y}{8} = \frac{z}{3}$</div><div class="option-item"><span class="opt-label">(C)</span> $2x = 8y = 3z$</div><div class="option-item"><span class="opt-label">(D)</span> $x : 2 = y : 8 = z : 3$</div></div>
+            
+            <div id="g9-c-3" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 2x = 8y = 3z</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">連比的求法、等比式性質與乘積關係式的轉化。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 求連比：兩已知比中 $z$ 的比值均為 3，因此 $x:y:z = 2:8:3$，(A) 正確。</div><div class="sol-step">2. 設參數：令 $\frac{x}{2} = \frac{y}{8} = \frac{z}{3} = k$ ($k \ne 0$)，(B) 正確。</div><div class="sol-step">3. 則 $x = 2k, y = 8k, z = 3k$。</div><div class="sol-step">4. 檢驗 (C)：$2x = 2(2k) = 4k$，$8y = 8(8k) = 64k$，$3z = 3(3k) = 9k$。<br>顯然 $4k \ne 64k \ne 9k$，因此 $2x = 8y = 3z$ <b>錯誤</b>（正確應為 $12x = 3y = 8z$ 等形式）。</div><div class="sol-step">5. 檢驗 (D)：由比的定義，$x:2 = y:8 = z:3 = k:1$ 成立，(D) 正確。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (C) 的乘積式與連比顛倒，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-4">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">4.</span>(　) 下列敘述何者不正確？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-4" onclick="toggleSolution('g9-c-4')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 兩三角形相似，則對應邊成比例</div><div class="option-item"><span class="opt-label">(B)</span> 兩多邊形相似，則對應角相等</div><div class="option-item"><span class="opt-label">(C)</span> 對應邊成比例的兩三角形必相似</div><div class="option-item"><span class="opt-label">(D)</span> 對應角相等的兩多邊形必相似</div></div>
+            
+            <div id="g9-c-4" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 對應角相等的兩多邊形必相似</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">多邊形相似的充分與必要條件 vs 三角形相似性質（SSS、AAA）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">• (A) 正確：由相似多邊形定義，對應邊必成比例。</div><div class="sol-step">• (B) 正確：由相似多邊形定義，對應角必相等。</div><div class="sol-step">• (C) 正確：由 SSS 相似性質，兩三角形對應邊成比例則必相似。</div><div class="sol-step">• <b>(D) 錯誤：</b> 對於四邊形（含）以上的多邊形，僅對應角相等「不能」保證相似。<br>　反例：正方形與長方形，各內角皆為 90°（對應角皆相等），但邊長不成比例，兩者不相似。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (D) 忽略了多邊形尚需對應邊成比例，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-5">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">5.</span>(　) 在 $\triangle ABC$ 與 $\triangle DEF$ 中，若 $\overline{AB} : \overline{DE} = \overline{BC} : \overline{DF}$，則再加上下列哪一個條件時，可得 $\triangle ABC$ 與 $\triangle DEF$ 為相似的三角形？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-5" onclick="toggleSolution('g9-c-5')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $\angle B = \angle D$</div><div class="option-item"><span class="opt-label">(B)</span> $\angle B = \angle E$</div><div class="option-item"><span class="opt-label">(C)</span> $\angle A = \angle F$</div><div class="option-item"><span class="opt-label">(D)</span> $\angle A = \angle D$</div></div>
+            
+            <div id="g9-c-5" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) ∠B = ∠D</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">SAS 相似性質：兩組對應邊成比例，且其「夾角」相等。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">觀察題目給定的兩組比例邊：</div><div class="sol-step">在 $\triangle ABC$ 中，兩邊為 $\overline{AB}$ 與 $\overline{BC}$，它們的<b>夾角為 $\angle B$</b>。</div><div class="sol-step">在 $\triangle DEF$ 中，對應兩邊為 $\overline{DE}$ 與 $\overline{DF}$，它們的<b>夾角為 $\angle D$</b>。</div><div class="sol-step">根據 SAS 相似性質，必須滿足「夾角相等」，即 $\angle B = \angle D$。</div><div class="sol-step">當 $\angle B = \angle D$ 時，$\triangle ABC \sim \triangle EDF$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">對應邊的夾角分別是 $\angle B$ 與 $\angle D$，故需條件 $\angle B = \angle D$，選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-6">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">6.</span>(　) 如圖(一)，$L_1 // L_2 // L_3$。若 $\overline{AC} = \frac{8}{5}\overline{BC}$，且 $\overline{CF} = 8$，$\overline{AD} = 20$，則 $\overline{BE} =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-6" onclick="toggleSolution('g9-c-6')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q6_fig1.png" alt="圖(一)：三平行線 L1 // L2 // L3 截兩直線" class="diagram-img" onclick="openModal('images/g9_q6_fig1.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(一)：三平行線 L1 // L2 // L3 截兩直線</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $\frac{21}{2}$</div><div class="option-item"><span class="opt-label">(B)</span> $\frac{31}{2}$</div><div class="option-item"><span class="opt-label">(C)</span> 14</div><div class="option-item"><span class="opt-label">(D)</span> 28</div></div>
+            
+            <div id="g9-c-6" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 31/2</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平行線截比例線段與梯形分比長度公式。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 由 $\overline{AC} = \frac{8}{5}\overline{BC}$：<br>$\overline{AB} = \overline{AC} - \overline{BC} = \frac{8}{5}\overline{BC} - \overline{BC} = \frac{3}{5}\overline{BC}$。<br>因此 $\overline{AB} : \overline{BC} = 3 : 5$。</div><div class="sol-step">2. 觀察四邊形 ADFC 為梯形，$\overline{AD} // \overline{BE} // \overline{CF}$，其中 $\overline{AD} = 20$，$\overline{CF} = 8$：<br>利用內分比公式（交叉乘積法）：<br>$\overline{BE} = \frac{\overline{AB} \times \overline{CF} + \overline{BC} \times \overline{AD}}{\overline{AB} + \overline{BC}}$。<br>代入比值 $3 : 5$：<br>$\overline{BE} = \frac{3 \times 8 + 5 \times 20}{3 + 5} = \frac{24 + 100}{8} = \frac{124}{8} = \frac{31}{2}$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">計算得 $\overline{BE} = \frac{31}{2}$，答案選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-7">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">7.</span>(　) 如圖(二)，是柏儀在 $\overline{AB}$ 上的作圖痕跡，若 $\overline{BC} = 15$，則 $\overline{AB} =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-7" onclick="toggleSolution('g9-c-7')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q7_fig2.png" alt="圖(二)：柏儀在線段 AB 上的尺規作圖痕跡" class="diagram-img" onclick="openModal('images/g9_q7_fig2.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(二)：柏儀在線段 AB 上的尺規作圖痕跡</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 22.5</div><div class="option-item"><span class="opt-label">(B)</span> 30</div><div class="option-item"><span class="opt-label">(C)</span> 37.5</div><div class="option-item"><span class="opt-label">(D)</span> 45</div></div>
+            
+            <div id="g9-c-7" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 37.5</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">尺規作圖（平行線法截比例線段）與線段比例求解。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">觀察圖(二)作圖痕跡：</div><div class="sol-step">1. 從 A 點作一射線，在射線上依序截取等長線段，標示出點 H 與點 K。</div><div class="sol-step">2. 圖中 $\overline{AH}$ 包含 3 個等長單位，$\overline{AK}$ 包含 5 個等長單位（$\overline{HK}$ 佔 2 個單位）。</div><div class="sol-step">3. 連接 $\overline{BK}$ 並過 H 作平行線交 $\overline{AB}$ 於 C，使得 $\overline{CH} // \overline{BK}$。</div><div class="sol-step">4. 根據平行線截線定理：<br>$\overline{AC} : \overline{CB} = \overline{AH} : \overline{HK} = 3 : (5 - 3) = 3 : 2$。</div><div class="sol-step">5. 已知 $\overline{BC} = 15$，即 2 份 $= 15 \Rightarrow 1$ 份 $= 7.5$。</div><div class="sol-step">6. $\overline{AC} = 3 \times 7.5 = 22.5$。</div><div class="sol-step">7. 全長 $\overline{AB} = \overline{AC} + \overline{BC} = 22.5 + 15 = 37.5$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">全長 $\overline{AB} = 37.5$，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-8">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">8.</span>(　) 如圖(三)，四邊形 ABCD 中，$\overline{BD}$ 平分 $\angle CDA$。若 $\overline{AD} = 16$，$\overline{BD} = 24$，$\overline{CD} = 36$。若 $\angle ADC = 58^\circ$，則 $\angle ABC =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-8" onclick="toggleSolution('g9-c-8')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q8_fig3.png" alt="圖(三)：四邊形 ABCD 與角平分線 BD" class="diagram-img" onclick="openModal('images/g9_q8_fig3.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(三)：四邊形 ABCD 與角平分線 BD</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $151^\circ$</div><div class="option-item"><span class="opt-label">(B)</span> $152^\circ$</div><div class="option-item"><span class="opt-label">(C)</span> $153^\circ$</div><div class="option-item"><span class="opt-label">(D)</span> $154^\circ$</div></div>
+            
+            <div id="g9-c-8" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 151°</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">SAS 相似三角形判定與三角形內角和性質。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 因為 $\overline{BD}$ 平分 $\angle CDA$，且 $\angle ADC = 58^\circ$：<br>$\angle ADB = \angle BDC = \frac{58^\circ}{2} = 29^\circ$。</div><div class="sol-step">2. 檢驗 $\triangle ADB$ 與 $\triangle BDC$ 的夾邊比例：<br>$\frac{\overline{AD}}{\overline{BD}} = \frac{16}{24} = \frac{2}{3}$<br>$\frac{\overline{BD}}{\overline{CD}} = \frac{24}{36} = \frac{2}{3}$<br>得 $\frac{\overline{AD}}{\overline{BD}} = \frac{\overline{BD}}{\overline{CD}}$，且夾角 $\angle ADB = \angle BDC = 29^\circ$。</div><div class="sol-step">3. 根據 SAS 相似性質：$\triangle ADB \sim \triangle BDC$。</div><div class="sol-step">4. 對應角相等：$\angle ABD = \angle BCD$，$\angle CBD = \angle BAD$。</div><div class="sol-step">5. 在 $\triangle ABD$ 中，三內角和為 $180^\circ$：<br>$\angle BAD + \angle ABD = 180^\circ - \angle ADB = 180^\circ - 29^\circ = 151^\circ$。</div><div class="sol-step">6. 所求 $\angle ABC = \angle ABD + \angle CBD = \angle ABD + \angle BAD = 151^\circ$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">計算得 $\angle ABC = 151^\circ$，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-9">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">9.</span>(　) 已知甲、乙、丙三人的錢數比為 2 : 5 : 6。若丙分別給甲、乙兩人各 30 元後，甲、乙、丙的錢數比變為 3 : 6 : 4，則此三人共有多少元？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-9" onclick="toggleSolution('g9-c-9')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 320</div><div class="option-item"><span class="opt-label">(B)</span> 360</div><div class="option-item"><span class="opt-label">(C)</span> 390</div><div class="option-item"><span class="opt-label">(D)</span> 480</div></div>
+            
+            <div id="g9-c-9" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 390</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">總量不變原則下的連比運算技巧。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">因為錢只是在三人之間流動，所以<b>三人的總錢數保持不變</b>。</div><div class="sol-step">1. 原來三人的比例總份數：$2 + 5 + 6 = 13$ 份。</div><div class="sol-step">2. 後來三人的比例總份數：$3 + 6 + 4 = 13$ 份。</div><div class="sol-step">巧妙之處：兩時期的總份數皆恰為 13 份，代表各份量之「每份價值」完全相等！</div><div class="sol-step">3. 觀察甲的份數變化：從 2 份增加為 3 份，淨增加 1 份。</div><div class="sol-step">而甲增加的錢正是丙給他的 30 元，因此：<br>1 份 $= 30$ 元。</div><div class="sol-step">4. 三人總錢數 $= 13 \times 30 = 390$ 元。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">總金額為 390 元，答案選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-10">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">10.</span>(　) 沛霏想要榨果汁，她有蘋果、芭樂、柳丁三種水果，且其顆數比為 16 : 9 : 10。沛霏榨完果汁後，蘋果、芭樂、柳丁的顆數比變為 4 : 3 : 2。已知沛霏榨果汁時沒有使用芭樂，若原有三種水果共 70 顆，請問後來剩下的水果還有幾顆？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-10" onclick="toggleSolution('g9-c-10')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 54</div><div class="option-item"><span class="opt-label">(B)</span> 56</div><div class="option-item"><span class="opt-label">(C)</span> 58</div><div class="option-item"><span class="opt-label">(D)</span> 60</div></div>
+            
+            <div id="g9-c-10" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 54</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">不變量（芭樂顆數不變）在連比例問題中的應用。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 原有水果總數為 70 顆，總份數為 $16 + 9 + 10 = 35$ 份。<br>每份為 $70 \div 35 = 2$ 顆。<br>因此原有水果數量分別為：<br>• 蘋果：$16 \times 2 = 32$ 顆<br>• 芭樂：$9 \times 2 = 18$ 顆<br>• 柳丁：$10 \times 2 = 20$ 顆</div><div class="sol-step">2. 關鍵條件：榨果汁時<b>沒有使用芭樂</b>，因此芭樂顆數依然為 18 顆。</div><div class="sol-step">3. 榨完果汁後，剩下顆數比為 蘋果 : 芭樂 : 柳丁 $= 4 : 3 : 2$。<br>此時芭樂佔 3 份，對應實際數量 18 顆：<br>新比例每份 $= 18 \div 3 = 6$ 顆。</div><div class="sol-step">4. 剩下水果總顆數為新比例總份數 $\times 6$：<br>總份數 $= 4 + 3 + 2 = 9$ 份。<br>剩下水果總顆數 $= 9 \times 6 = 54$ 顆。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">剩下水果共 54 顆，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-11">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">11.</span>(　) 設 $\triangle ABC$ 之三邊長各為 a、b、c，且各邊上的高分別為 $h_a : h_b : h_c$。若 $a : b = 3 : 5$，$b : c = 4 : 5$，則 $h_a : h_b : h_c =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-11" onclick="toggleSolution('g9-c-11')">💡 查看解析</button>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 3 : 4 : 5</div><div class="option-item"><span class="opt-label">(B)</span> 12 : 20 : 25</div><div class="option-item"><span class="opt-label">(C)</span> 20 : 15 : 12</div><div class="option-item"><span class="opt-label">(D)</span> 25 : 15 : 12</div></div>
+            
+            <div id="g9-c-11" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 25 : 15 : 12</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">三角形面積定值下，邊長與對應高成反比的連比求法。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 求三邊長連比 $a : b : c$：<br>$a : b = 3 : 5 = 12 : 20$<br>$b : c = 4 : 5 = 20 : 25$<br>得 $a : b : c = 12 : 20 : 25$。</div><div class="sol-step">2. 由三角形面積公式：$\text{面積} = \frac{1}{2}a h_a = \frac{1}{2}b h_b = \frac{1}{2}c h_c$。<br>因為面積為定值，所以各邊的高與邊長成反比：<br>$h_a : h_b : h_c = \frac{1}{a} : \frac{1}{b} : \frac{1}{c} = \frac{1}{12} : \frac{1}{20} : \frac{1}{25}$。</div><div class="sol-step">3. 取分母 12、20、25 的最小公倍數 300，同乘以 300 化為最簡整數比：<br>$h_a : h_b : h_c = \frac{300}{12} : \frac{300}{20} : \frac{300}{25} = 25 : 15 : 12$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">高的連比為 25 : 15 : 12，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-12">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">12.</span>(　) 如圖(四)，瑾竣想從一塊直角三角形玻璃，切割出一塊最大正方形玻璃，而且這塊正方形的兩個鄰邊恰好在直角三角形玻璃的兩股上，如附圖。若 $\triangle ABC$ 中，$\angle B = 90^\circ$，$\overline{AB} = 75$ 公分，$\overline{BC} = 50$ 公分，請問這塊正方形玻璃的面積是多少平方公分？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-12" onclick="toggleSolution('g9-c-12')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q12_fig4.png" alt="圖(四)：直角三角形中內接正方形" class="diagram-img" onclick="openModal('images/g9_q12_fig4.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(四)：直角三角形中內接正方形</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 625</div><div class="option-item"><span class="opt-label">(B)</span> 729</div><div class="option-item"><span class="opt-label">(C)</span> 900</div><div class="option-item"><span class="opt-label">(D)</span> 1024</div></div>
+            
+            <div id="g9-c-12" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) 900</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">直角三角形內接正方形的相似三角形邊長比應用。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 設內接正方形邊長為 $x$ 公分。</div><div class="sol-step">2. 正方形兩鄰邊在直角三角形的兩股上，則頂部留下一個小直角三角形，其兩股長度分別為 $(75 - x)$ 與 $x$。</div><div class="sol-step">3. 頂部小三角形與原直角三角形 $\triangle ABC$ 為相似形（AA 相似）：<br>$\frac{75 - x}{75} = \frac{x}{50}$。</div><div class="sol-step">4. 約分化簡：<br>$\frac{75 - x}{3} = \frac{x}{2} \Rightarrow 2(75 - x) = 3x$。<br>$150 - 2x = 3x \Rightarrow 5x = 150 \Rightarrow x = 30$（公分）。</div><div class="sol-step">5. 正方形玻璃面積 $= x^2 = 30^2 = 900$ 平方公分。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">面積為 900 平方公分，答案選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-13">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">13.</span>(　) 如圖(五)，平行四邊形 ABCD 中，F 是 $\overline{CD}$ 上的一點，且直線 AF 交 $\overline{BD}$ 於 G 點、交直線 BC 於 E 點。則下列哪一個選項中的兩個三角形不一定相似？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-13" onclick="toggleSolution('g9-c-13')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q13_fig5.png" alt="圖(五)：平行四邊形 ABCD 與直線截線" class="diagram-img" onclick="openModal('images/g9_q13_fig5.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(五)：平行四邊形 ABCD 與直線截線</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $\triangle ABG \sim \triangle FDG$</div><div class="option-item"><span class="opt-label">(B)</span> $\triangle AFD \sim \triangle EAB$</div><div class="option-item"><span class="opt-label">(C)</span> $\triangle FCE \sim \triangle FDG$</div><div class="option-item"><span class="opt-label">(D)</span> $\triangle AGD \sim \triangle EGB$</div></div>
+            
+            <div id="g9-c-13" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(C) △FCE ~ △FDG</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平行四邊形平行線對頂角、內錯角所構成的 AA 相似判別。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">• <b>(A) $\triangle ABG \sim \triangle FDG$：</b><br>　$\overline{AB} // \overline{CD} \Rightarrow \angle BAG = \angle DFG$（內錯角），$\angle AGB = \angle FGD$（對頂角），由 AA 相似成立。</div><div class="sol-step">• <b>(B) $\triangle AFD \sim \triangle EAB$：</b><br>　平行四邊形對角相等 $\angle D = \angle B$；又 $\overline{AD} // \overline{BC} \Rightarrow \angle DAF = \angle AEB$（內錯角），由 AA 相似成立。</div><div class="sol-step">• <b>(D) $\triangle AGD \sim \triangle EGB$：</b><br>　$\overline{AD} // \overline{BE} \Rightarrow \angle GAD = \angle GEB$（內錯角），$\angle AGD = \angle EGB$（對頂角），由 AA 相似成立。</div><div class="sol-step">• <b>(C) $\triangle FCE$ 與 $\triangle FDG$：</b><br>　兩三角形頂點 F 處僅有對頂角相等（$\angle CFE = \angle DFG$），但邊長不成比例且其餘角無平行內錯角關係保證相等，故<b>不一定相似</b>。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">選項 (C) 無足夠條件保證相似，故選 (C)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-14">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">14.</span>(　) 如圖(六)，S、R、Q 在 $\overline{AP}$ 上，B、C、D、E 在 $\overline{AF}$ 上，其中 $\overline{BS}$、$\overline{CR}$、$\overline{DQ}$ 皆垂直於 $\overline{AF}$，且 $\overline{AB} = \overline{BC} = \overline{CD} = \overline{DE}$。若 $\overline{SB} + \overline{RC} + \overline{QD} + \overline{PE} = 105$ 公尺，求 $\overline{PE}$ 的長是多少公尺？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-14" onclick="toggleSolution('g9-c-14')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q14_fig6.png" alt="圖(六)：多條同向垂直線段等距分佈" class="diagram-img" onclick="openModal('images/g9_q14_fig6.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(六)：多條同向垂直線段等距分佈</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 42</div><div class="option-item"><span class="opt-label">(B)</span> 40</div><div class="option-item"><span class="opt-label">(C)</span> 38</div><div class="option-item"><span class="opt-label">(D)</span> 36</div></div>
+            
+            <div id="g9-c-14" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 42</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平行線截比例線段與相似三角形高的倍數關係。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 由於 $\overline{BS} \perp \overline{AF}$、$\overline{CR} \perp \overline{AF}$、$\overline{DQ} \perp \overline{AF}$、$\overline{PE} \perp \overline{AF}$，因此各垂線段互相平行。</div><div class="sol-step">2. 底邊各段等長：設 $\overline{AB} = \overline{BC} = \overline{CD} = \overline{DE} = d$。<br>則各垂足到頂點 A 的距離分別為：<br>$\overline{AB} = d$, $\overline{AC} = 2d$, $\overline{AD} = 3d$, $\overline{AE} = 4d$。</div><div class="sol-step">3. 根據相似三角形（$\triangle ABS \sim \triangle ACR \sim \triangle ADQ \sim \triangle AEP$）：<br>垂線高度與底邊長度成正比：<br>設 $\overline{SB} = x$，則 $\overline{RC} = 2x$，$\overline{QD} = 3x$，$\overline{PE} = 4x$。</div><div class="sol-step">4. 四條線段長度之和為 105 公尺：<br>$x + 2x + 3x + 4x = 105 \Rightarrow 10x = 105 \Rightarrow x = 10.5$（公尺）。</div><div class="sol-step">5. 所求 $\overline{PE} = 4x = 4 \times 10.5 = 42$ 公尺。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">線段 PE 的長度為 42 公尺，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-15">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">15.</span>(　) 如圖(七)，$\triangle ABC$ 中，D、F 兩點在 $\overline{AB}$ 上，E 點在 $\overline{AC}$ 上，且 $\overline{DE} // \overline{BC}$，$\overline{EF} // \overline{CD}$。若 $\overline{AF} = 75$，$\overline{FD} = 45$，則 $\overline{AB} =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-15" onclick="toggleSolution('g9-c-15')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q15_fig7.png" alt="圖(七)：三角形雙重平行線截線" class="diagram-img" onclick="openModal('images/g9_q15_fig7.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(七)：三角形雙重平行線截線</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 225</div><div class="option-item"><span class="opt-label">(B)</span> 192</div><div class="option-item"><span class="opt-label">(C)</span> 144</div><div class="option-item"><span class="opt-label">(D)</span> 120</div></div>
+            
+            <div id="g9-c-15" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 192</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平行線截比例線段的連鎖傳遞性應用。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 在 $\triangle ADC$ 中，因為 $\overline{EF} // \overline{CD}$：<br>$\frac{\overline{AE}}{\overline{EC}} = \frac{\overline{AF}}{\overline{FD}} = \frac{75}{45} = \frac{5}{3}$。<br>且可知 $\overline{AD} = \overline{AF} + \overline{FD} = 75 + 45 = 120$。</div><div class="sol-step">2. 在 $\triangle ABC$ 中，因為 $\overline{DE} // \overline{BC}$：<br>$\frac{\overline{AD}}{\overline{DB}} = \frac{\overline{AE}}{\overline{EC}} = \frac{5}{3}$。</div><div class="sol-step">3. 代入 $\overline{AD} = 120$ 求 $\overline{DB}$：<br>$\frac{120}{\overline{DB}} = \frac{5}{3} \Rightarrow 5\overline{DB} = 360 \Rightarrow \overline{DB} = 72$。</div><div class="sol-step">4. 全長 $\overline{AB} = \overline{AD} + \overline{DB} = 120 + 72 = 192$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">計算得 $\overline{AB} = 192$，答案選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-16">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">16.</span>(　) 如圖(八)，將矩形 ABCD 分成甲、乙、丙三個矩形區域，若乙:丙面積比 = 1 : 3，甲:(乙+丙)面積比 = 2 : 5，求甲:乙:丙的面積比 = ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-16" onclick="toggleSolution('g9-c-16')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q16_fig8.png" alt="圖(八)：矩形 ABCD 分割為甲、乙、丙三區域" class="diagram-img" onclick="openModal('images/g9_q16_fig8.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(八)：矩形 ABCD 分割為甲、乙、丙三區域</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 8:5:15</div><div class="option-item"><span class="opt-label">(B)</span> 3:2:5</div><div class="option-item"><span class="opt-label">(C)</span> 2:1:5</div><div class="option-item"><span class="opt-label">(D)</span> 6:2:15</div></div>
+            
+            <div id="g9-c-16" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(A) 8:5:15</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">部分與整體的比例轉化、連比求法。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 設（乙 + 丙）的面積總共為 $5k$，則甲的面積為 $2k$。</div><div class="sol-step">2. 題目給定 乙 : 丙 $= 1 : 3$：<br>因此乙佔（乙 + 丙）的 $\frac{1}{1 + 3} = \frac{1}{4}$；丙佔 $\frac{3}{1 + 3} = \frac{3}{4}$。<br>• 乙 $= 5k \times \frac{1}{4} = \frac{5}{4}k$<br>• 丙 $= 5k \times \frac{3}{4} = \frac{15}{4}k$</div><div class="sol-step">3. 寫出甲、乙、丙的連比：<br>甲 : 乙 : 丙 $= 2k : \frac{5}{4}k : \frac{15}{4}k$。</div><div class="sol-step">4. 全體同乘以 4 去分母：<br>甲 : 乙 : 丙 $= 8 : 5 : 15$。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">面積比為 8 : 5 : 15，故選 (A)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-17">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">17.</span>(　) 如圖(九)，矩形 ABCD 中，E、F 為 $\overline{BC}$ 與 $\overline{AD}$ 的中點。若四邊形 ABEF 與四邊形 ABCD 相似，且 $\overline{AB} = a$，$\overline{AD} = b$，則 $\frac{b}{a} =$ ？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-17" onclick="toggleSolution('g9-c-17')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q17_fig9.png" alt="圖(九)：矩形 ABCD 與對摺中點矩形 ABEF 相似" class="diagram-img" onclick="openModal('images/g9_q17_fig9.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(九)：矩形 ABCD 與對摺中點矩形 ABEF 相似</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> $\sqrt{3}$</div><div class="option-item"><span class="opt-label">(B)</span> $\sqrt{2}$</div><div class="option-item"><span class="opt-label">(C)</span> $\frac{\sqrt{3}}{2}$</div><div class="option-item"><span class="opt-label">(D)</span> $\frac{\sqrt{2}}{2}$</div></div>
+            
+            <div id="g9-c-17" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) √2</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">相似矩形的對應長寬比（長比寬 $=$ 長比寬）與白銀比例原理。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 在矩形 ABCD 中：<br>長為 $\overline{AD} = b$，寬為 $\overline{AB} = a$，長寬比為 $\frac{b}{a}$。</div><div class="sol-step">2. 在矩形 ABEF 中：<br>$\overline{AB} = a$，而 $\overline{AF} = \frac{b}{2}$（F 為中點）。<br>因為對摺後長寬互換，其長為 $a$，寬為 $\frac{b}{2}$，長寬比為 $\frac{a}{\frac{b}{2}} = \frac{2a}{b}$。</div><div class="sol-step">3. 兩矩形相似，長寬比必相等：<br>$\frac{b}{a} = \frac{2a}{b}$。</div><div class="sol-step">4. 交叉相乘：<br>$b^2 = 2a^2 \Rightarrow \frac{b^2}{a^2} = 2$。<br>開平方根得 $\frac{b}{a} = \sqrt{2}$（長度比取正值）。<br>（此即 A4、A3 紙張之白銀比例長寬比 $\sqrt{2}$）</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">長寬比值為 $\sqrt{2}$，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-18">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">18.</span>(　) 如圖(十)，座標平面上，O 為原點，有一道路通過其東方 8 公里處的 A 鎮與北方 6 公里處的 B 鎮，今於 O 點西方 12 公里 C 鎮要鋪設一條道路到達 A、B 兩鎮的道路，且使這條道路(CD)為最短，則 $\overline{CD}$ 至少為多少公里？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-18" onclick="toggleSolution('g9-c-18')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q18_fig10.png" alt="圖(十)：平面坐標中道路 AB 與點 C 的最短距離 CD" class="diagram-img" onclick="openModal('images/g9_q18_fig10.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(十)：平面坐標中道路 AB 與點 C 的最短距離 CD</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 7.2</div><div class="option-item"><span class="opt-label">(B)</span> 8.4</div><div class="option-item"><span class="opt-label">(C)</span> 9</div><div class="option-item"><span class="opt-label">(D)</span> 12</div></div>
+            
+            <div id="g9-c-18" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 12</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">點到直線垂直線段最短定理、相似直角三角形面積法或點線距離公式。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 建立坐標：<br>原點 $O(0, 0)$，A 鎮在東方 8 公里即 $A(8, 0)$；<br>B 鎮在北方 6 公里即 $B(0, 6)$；<br>C 鎮在西方 12 公里即 $C(-12, 0)$。</div><div class="sol-step">2. 線段最短：最短道路 $\overline{CD}$ 即為自點 C 向直線 AB 所作之<b>垂直垂線段</b>（$\overline{CD} \perp \overline{AB}$）。</div><div class="sol-step">3. 方法一（三角形等面積法）：<br>• 在直角 $\triangle OAB$ 中，$\overline{OA} = 8, \overline{OB} = 6$，由畢氏定理：<br>　$\overline{AB} = \sqrt{8^2 + 6^2} = \sqrt{64 + 36} = 10$。<br>• 考慮大三角形 $\triangle CAB$：<br>　底邊 $\overline{CA} = 12 + 8 = 20$，高為 $\overline{OB} = 6$。<br>　$\triangle CAB$ 面積 $= \frac{1}{2} \times \overline{CA} \times \overline{OB} = \frac{1}{2} \times 20 \times 6 = 60$。<br>• 另一方面，以 $\overline{AB}$ 為底，$\overline{CD}$ 為高計算同一個三角形面積：<br>　面積 $= \frac{1}{2} \times \overline{AB} \times \overline{CD} = \frac{1}{2} \times 10 \times \overline{CD} = 5\overline{CD}$。<br>• 兩式相等：$5\overline{CD} = 60 \Rightarrow \overline{CD} = 12$ 公里。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">最短道路長度為 12 公里，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-19">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">19.</span>(　) 如圖(十一)，立禎練習踩高蹺，將兩根高蹺綁在腿上。已知她踩在高蹺上時高 232 公分，若身高的 $\overline{AB} : \overline{BC} = 5 : 2$，高蹺的 $\overline{BC} : \overline{CD} = 3 : 4$，則立禎原來的身高為多少公分？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-19" onclick="toggleSolution('g9-c-19')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q19_fig11.png" alt="圖(十一)：立禎踩高蹺身體與高蹺比例示意圖" class="diagram-img" onclick="openModal('images/g9_q19_fig11.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(十一)：立禎踩高蹺身體與高蹺比例示意圖</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 158</div><div class="option-item"><span class="opt-label">(B)</span> 162</div><div class="option-item"><span class="opt-label">(C)</span> 165</div><div class="option-item"><span class="opt-label">(D)</span> 168</div></div>
+            
+            <div id="g9-c-19" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(D) 168</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">連比整合、比例分配與實際生活情境模型。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 幾何位置說明：<br>A 點為頭頂，B 點為膝蓋綁點，C 點為腳底，D 點為高蹺著地點。<br>• 立禎原來身高為 $\overline{AC} = \overline{AB} + \overline{BC}$。<br>• 踩在高蹺上的總高度為 $\overline{AD} = \overline{AB} + \overline{BC} + \overline{CD} = 232$ 公分。</div><div class="sol-step">2. 求三段連比 $\overline{AB} : \overline{BC} : \overline{CD}$：<br>$\overline{AB} : \overline{BC} = 5 : 2 = 15 : 6$<br>$\overline{BC} : \overline{CD} = 3 : 4 = 6 : 8$<br>因此連比為 $\overline{AB} : \overline{BC} : \overline{CD} = 15 : 6 : 8$。</div><div class="sol-step">3. 總份數 $= 15 + 6 + 8 = 29$ 份。<br>每份長度 $= 232 \div 29 = 8$ 公分。</div><div class="sol-step">4. 立禎原來身高 $\overline{AC}$ 佔 $15 + 6 = 21$ 份：<br>原來身高 $= 21 \times 8 = 168$ 公分。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">原來身高為 168 公分，故選 (D)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-20">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">20.</span>(　) 如圖(十二)，有一個長 20 公分、寬 12 公分的長方形，若上下同時各減 2 公分，則左右需同時各減幾公分，所得的長方形才會是原長方形的縮小圖？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-20" onclick="toggleSolution('g9-c-20')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q20_fig12.png" alt="圖(十二)：長方形四周等距縮減相似圖" class="diagram-img" onclick="openModal('images/g9_q20_fig12.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(十二)：長方形四周等距縮減相似圖</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 2</div><div class="option-item"><span class="opt-label">(B)</span> $\frac{10}{3}$</div><div class="option-item"><span class="opt-label">(C)</span> $\frac{20}{3}$</div><div class="option-item"><span class="opt-label">(D)</span> $\frac{40}{3}$</div></div>
+            
+            <div id="g9-c-20" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 10/3</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">相似長方形對應邊成比例關係式之建立與解一元一次方程式。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 原長方形尺寸：長 20 公分，寬 12 公分。<br>原長寬比為 $20 : 12 = 5 : 3$。</div><div class="sol-step">2. 寬度變化：上下同時各減 2 公分，共減去 $2 \times 2 = 4$ 公分：<br>新寬度 $= 12 - 4 = 8$ 公分。</div><div class="sol-step">3. 長度變化：設左右同時各減 $x$ 公分，共減去 $2x$ 公分：<br>新長度 $= 20 - 2x$ 公分。</div><div class="sol-step">4. 新長方形是原長方形的縮小圖（形狀相似，長寬比例相同）：<br>$\frac{20 - 2x}{8} = \frac{5}{3}$。</div><div class="sol-step">5. 交叉相乘解方程式：<br>$3(20 - 2x) = 5 \times 8$<br>$60 - 6x = 40 \Rightarrow 6x = 20 \Rightarrow x = \frac{20}{6} = \frac{10}{3}$（公分）。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">左右各需減 $\frac{10}{3}$ 公分，故選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-c-21">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">21.</span>(　) 如圖(十三)，若 $\triangle ADF$ 面積 = 18，$\triangle BDF$ 面積 = 30，$\overline{BE} : \overline{CE} = 1 : 1$，求 $\triangle CEF$ 的面積？
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-c-21" onclick="toggleSolution('g9-c-21')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_q21_fig13.png" alt="圖(十三)：三角形面積分割與中點比例圖" class="diagram-img" onclick="openModal('images/g9_q21_fig13.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(十三)：三角形面積分割與中點比例圖</div>
+                </div>
+            </div>
+            
+            <div class="options-grid"><div class="option-item"><span class="opt-label">(A)</span> 30</div><div class="option-item"><span class="opt-label">(B)</span> 40</div><div class="option-item"><span class="opt-label">(C)</span> 50</div><div class="option-item"><span class="opt-label">(D)</span> 60</div></div>
+            
+            <div id="g9-c-21" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(B) 40</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">同頂點三角形面積比等於底邊比、中點性質與面積聯立求解。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">1. 在 $\triangle ABF$ 中，$\triangle ADF$ 與 $\triangle BDF$ 共用頂點 F，底邊在同一條直線上：<br>$\frac{\overline{AD}}{\overline{DB}} = \frac{\text{面積}(\triangle ADF)}{\text{面積}(\triangle BDF)} = \frac{18}{30} = \frac{3}{5}$。<br>且面積 $(\triangle ABF) = 18 + 30 = 48$。</div><div class="sol-step">2. 因為 $\overline{BE} : \overline{CE} = 1 : 1$，E 為 $\overline{BC}$ 中點：<br>$\triangle BEF$ 與 $\triangle CEF$ 等底同高，面積相等。設面積 $(\triangle CEF) = S$，則面積 $(\triangle BEF) = S$，即面積 $(\triangle BCF) = 2S$。</div><div class="sol-step">3. 考慮射線 AF 截底邊 $\overline{BC}$：<br>$\frac{\text{面積}(\triangle ABF)}{\text{面積}(\triangle ACF)} = \frac{\overline{BE}}{\overline{CE}} = 1 \Rightarrow \text{面積}(\triangle ACF) = \text{面積}(\triangle ABF) = 48$。</div><div class="sol-step">4. 考慮射線 CD 截底邊 $\overline{AB}$：<br>$\frac{\text{面積}(\triangle ADC)}{\text{面積}(\triangle BDC)} = \frac{\overline{AD}}{\overline{DB}} = \frac{3}{5}$。<br>其中：<br>• 面積 $(\triangle ADC) = \text{面積}(\triangle ADF) + \text{面積}(\triangle ACF) = 18 + 48 = 66$。<br>• 面積 $(\triangle BDC) = \text{面積}(\triangle BDF) + \text{面積}(\triangle BCF) = 30 + 2S$。</div><div class="sol-step">5. 代入比例式求解：<br>$\frac{66}{30 + 2S} = \frac{3}{5}$。<br>$3(30 + 2S) = 66 \times 5 = 330$<br>$90 + 6S = 330 \Rightarrow 6S = 240 \Rightarrow S = 40$。<br>因此 $\triangle CEF$ 的面積為 40。</div>
+                    </div>
+                </div>
+                
+                
+            <div class="sol-block">
+                <div class="sol-block-title">🔍 選項分析</div>
+                <div class="sol-content">計算得面積為 40，答案選 (B)。</div>
+            </div>
+            
+            </div>
+        </div>
+        
+<div class="section-header">二、計算題 (共 6 分)</div>
+
+        <div class="question-card" id="card-g9-a-1">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">1.</span>如圖(十四)，四邊形 ABCD 中，$\overline{AD} // \overline{BC}$，且 $\overline{AC}$、$\overline{BD}$ 相交於 G 點，過 G 點作一直線交 $\overline{AB}$ 於 E 點，交 $\overline{CD}$ 於 F 點，且 $\overline{EF} // \overline{BC}$。已知 $\overline{AE} : \overline{EB} = 3 : 5$，$\overline{BC} = 24$，回答下列問題：<br>(1) $\overline{AD} =$ ？ (1分)<br>(2) $\overline{EF} =$ ？ (2分)
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-a-1" onclick="toggleSolution('g9-a-1')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_calc_q1_fig14.png" alt="圖(十四)：梯形對角線交點作平行線 EF" class="diagram-img" onclick="openModal('images/g9_calc_q1_fig14.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(十四)：梯形對角線交點作平行線 EF</div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="g9-a-1" class="solution-panel">
+                <div class="answer-badge">✓ 正解：(1) 72/5（或 14.4）； (2) 18</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">平行線截比例線段、相似三角形性質（蝴蝶形 $\triangle AGD \sim \triangle CGB$）。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step"><b>(1) 求 $\overline{AD}$ 的長度 (1分)：</b><br>• 在 $\triangle ABC$ 中，因為 $\overline{EG} // \overline{BC}$：<br>　$\frac{\overline{AG}}{\overline{GC}} = \frac{\overline{AE}}{\overline{EB}} = \frac{3}{5}$。<br>• 因為 $\overline{AD} // \overline{BC}$，內錯角相等，故 $\triangle AGD \sim \triangle CGB$（AA 相似）。<br>• 對應邊成比例：$\frac{\overline{AD}}{\overline{BC}} = \frac{\overline{AG}}{\overline{GC}} = \frac{3}{5}$。<br>• 代入 $\overline{BC} = 24$：<br>　$\overline{AD} = \frac{3}{5} \times \overline{BC} = \frac{3}{5} \times 24 = \frac{72}{5}$（或 $14.4$）。</div><div class="sol-step"><br><b>(2) 求 $\overline{EF}$ 的長度 (2分)：</b><br>• 先求 $\overline{EG}$：<br>　在 $\triangle ABC$ 中，$\overline{EG} // \overline{BC}$，故 $\triangle AEG \sim \triangle ABC$：<br>　$\frac{\overline{EG}}{\overline{BC}} = \frac{\overline{AE}}{\overline{AB}} = \frac{3}{3 + 5} = \frac{3}{8}$。<br>　$\overline{EG} = \frac{3}{8} \times 24 = 9$。<br>• 再求 $\overline{GF}$：<br>　由 $\triangle AGD \sim \triangle CGB$ 知 $\frac{\overline{DG}}{\overline{GB}} = \frac{\overline{AG}}{\overline{GC}} = \frac{3}{5}$。<br>　在 $\triangle DBC$ 中，$\overline{GF} // \overline{BC}$，故 $\triangle DGF \sim \triangle DBC$：<br>　$\frac{\overline{GF}}{\overline{BC}} = \frac{\overline{DG}}{\overline{DB}} = \frac{3}{3 + 5} = \frac{3}{8}$。<br>　$\overline{GF} = \frac{3}{8} \times 24 = 9$。<br>• 總長 $\overline{EF} = \overline{EG} + \overline{GF} = 9 + 9 = 18$。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+
+        <div class="question-card" id="card-g9-a-2">
+            <div class="question-header">
+                <div class="question-title">
+                    <span class="question-num">2.</span>如圖(十五)，$\overline{AB} \perp \overline{BD}$，$\overline{CD} \perp \overline{BD}$，$\overline{AB} = 12$，$\overline{CD} = 8$，$\overline{BD} = 28$，現有一點 P 在 $\overline{BD}$ 上運動，並滿足條件 $\triangle ABP$ 和 $\triangle CDP$ 為兩個相似的三角形，試求出 $\overline{BP}$ 可能的長度？(3分)
+                </div>
+                <button class="btn-toggle-solution" id="btn-g9-a-2" onclick="toggleSolution('g9-a-2')">💡 查看解析</button>
+            </div>
+            
+            <div style="text-align:center;">
+                <div class="diagram-container">
+                    <img src="images/g9_calc_q2_fig15.png" alt="圖(十五)：線段 BD 上動點 P 構成相似直角三角形" class="diagram-img" onclick="openModal('images/g9_calc_q2_fig15.png')">
+                    <div class="diagram-caption">🔍 點擊圖片可放大檢視：圖(十五)：線段 BD 上動點 P 構成相似直角三角形</div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="g9-a-2" class="solution-panel">
+                <div class="answer-badge">✓ 正解：4 或 24 或 84/5 (16.8)</div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📌 核心觀念</div>
+                    <div class="sol-content">相似三角形對應頂點的兩種排列情況（對應邊成比例）與一元二次方程式求解。</div>
+                </div>
+                
+                <div class="sol-block">
+                    <div class="sol-block-title">📝 逐步詳細解析</div>
+                    <div class="sol-content">
+                        <div class="sol-step">設 $\overline{BP} = x$，則 $\overline{PD} = \overline{BD} - \overline{BP} = 28 - x$（其中 $0 < x < 28$）。<br>兩三角形均在 B、D 處為直角（$\angle B = \angle D = 90^\circ$）。<br>因為題目僅敘述「兩三角形相似」，未限定頂點對應順序，需討論兩種可能的對應情形：</div><div class="sol-step"><b>【情形一】$\triangle ABP \sim \triangle CDP$（頂點依序對應）：</b><br>• 對應邊成比例：$\frac{\overline{AB}}{\overline{CD}} = \frac{\overline{BP}}{\overline{DP}}$。<br>• 代入數值：$\frac{12}{8} = \frac{x}{28 - x} \Rightarrow \frac{3}{2} = \frac{x}{28 - x}$。<br>• 交叉相乘：$3(28 - x) = 2x \Rightarrow 84 - 3x = 2x \Rightarrow 5x = 84 \Rightarrow x = \frac{84}{5} = 16.8$。</div><div class="sol-step"><b>【情形二】$\triangle ABP \sim \triangle PDC$（直角邊長短顛倒對應）：</b><br>• 對應邊成比例：$\frac{\overline{AB}}{\overline{PD}} = \frac{\overline{BP}}{\overline{CD}}$。<br>• 代入數值：$\frac{12}{28 - x} = \frac{x}{8}$。<br>• 交叉相乘：$x(28 - x) = 12 \times 8 = 96$。<br>• 展開整理為標準一元二次方程式：$x^2 - 28x + 96 = 0$。<br>• 十字交乘因式分解：$(x - 4)(x - 24) = 0$。<br>• 得解 $x = 4$ 或 $x = 24$（均在 $0 < x < 28$ 範圍內）。</div><div class="sol-step"><b>【綜合結論】：</b><br>$\overline{BP}$ 可能的長度為 <b>4</b>、<b>24</b> 或 <b>$\frac{84}{5}$</b>（即 16.8）。</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+</div>
+
+<!-- Modal for image zoom -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+    <span class="modal-close">&times;</span>
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <img id="modalImg" src="" alt="放大檢視">
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    });
+
+    function toggleSolution(id) {
+        const panel = document.getElementById(id);
+        const btn = document.getElementById('btn-' + id);
+        if (panel.classList.contains('show')) {
+            panel.classList.remove('show');
+            if(btn) {
+                btn.classList.remove('opened');
+                btn.innerHTML = '💡 查看解析';
+            }
+        } else {
+            panel.classList.add('show');
+            if(btn) {
+                btn.classList.add('opened');
+                btn.innerHTML = '收起解析';
+            }
+        }
+    }
+
+    function toggleAllSolutions(expand) {
+        const panels = document.querySelectorAll('.solution-panel');
+        const buttons = document.querySelectorAll('.btn-toggle-solution');
+        panels.forEach(p => {
+            if (expand) {
+                p.classList.add('show');
+            } else {
+                p.classList.remove('show');
+            }
+        });
+        buttons.forEach(b => {
+            if (expand) {
+                b.classList.add('opened');
+                b.innerHTML = '收起解析';
+            } else {
+                b.classList.remove('opened');
+                b.innerHTML = '💡 查看解析';
+            }
+        });
+    }
+
+    function printExam(examOnly) {
+        if (examOnly) {
+            document.body.classList.add('print-exam-only');
+        } else {
+            document.body.classList.remove('print-exam-only');
+        }
+        window.print();
+    }
+
+    function openModal(src) {
+        const modal = document.getElementById('imgModal');
+        const img = document.getElementById('modalImg');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('imgModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
