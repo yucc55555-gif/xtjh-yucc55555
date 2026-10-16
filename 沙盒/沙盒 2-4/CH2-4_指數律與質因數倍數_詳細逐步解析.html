@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CH 2-4 指數律與因倍數・資優試題逐步解析全集</title>
+    
+    <!-- KaTeX CSS and JS for formula rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });"></script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-subtle: #eff6ff;
+            --accent: #d97706;
+            --accent-light: #fef3c7;
+            --success: #15803d;
+            --success-light: #f0fdf4;
+            --surface: #ffffff;
+            --bg: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding-bottom: 80px;
+        }
+
+        /* Sticky Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .logo-title h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box input {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            width: 200px;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            width: 250px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-outline:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 20px;
+        }
+
+        /* Category Filter Tabs */
+        .filter-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Page Section */
+        .page-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-badge {
+            background: var(--primary-subtle);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        /* Problem Card */
+        .problem-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s ease;
+            overflow: hidden;
+        }
+
+        .problem-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #cbd5e1;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .problem-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .problem-num-badge {
+            background: #1e293b;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .question-content {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-main);
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        .answer-pill {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid #bbf7d0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Trigger Button */
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 14px;
+        }
+
+        .toggle-btn:hover {
+            background: var(--primary-subtle);
+            border-color: var(--primary-light);
+        }
+
+        .toggle-btn .icon {
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-subtle);
+            border-color: var(--primary-light);
+        }
+
+        .toggle-btn.active .icon {
+            transform: rotate(180deg);
+        }
+
+        /* Solution Drawer */
+        .solution-drawer {
+            display: none;
+            padding: 20px 24px 24px;
+            background: #fafafa;
+            border-top: 1px dashed var(--border);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .solution-drawer.open {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Solution Blocks */
+        .solution-section {
+            margin-bottom: 16px;
+        }
+
+        .solution-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .sol-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sol-concept {
+            background: var(--primary-subtle);
+            border-left: 4px solid var(--primary-light);
+            padding: 10px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            color: #1e3a8a;
+        }
+
+        .sol-steps {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 0.98rem;
+        }
+
+        .sol-steps ul {
+            list-style: none;
+        }
+
+        .sol-steps li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .sol-steps li:last-child {
+            margin-bottom: 0;
+        }
+
+        .sol-tip {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 10px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.92rem;
+            color: #92400e;
+        }
+
+        .sol-answer-box {
+            background: #ecfdf5;
+            border: 2px solid #10b981;
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: #065f46;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            border: none;
+            opacity: 0.85;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .back-to-top:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header-inner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-controls {
+                justify-content: space-between;
+            }
+            .search-box input {
+                width: 100%;
+            }
+            .search-box input:focus {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo-title">
+                <h1>📐 CH 2-4 指數律與因倍數・資優試題逐步解析全集</h1>
+                <p>國中數學資優試題 / 數理競賽補充講義 全 11 頁 39 大題完全題解</p>
+            </div>
+            <div class="header-controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 搜尋題號或關鍵字..." oninput="handleSearch()">
+                </div>
+                <button class="btn btn-outline" onclick="expandAll()">全部展開</button>
+                <button class="btn btn-outline" onclick="collapseAll()">全部收合</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Category Filter -->
+        <nav class="filter-nav">
+            <button class="tab-btn active" onclick="filterCategory('all', this)">全部試題 (P.1 ~ P.11)</button>
+            <button class="tab-btn" onclick="filterCategory('基礎指數運算', this)">P.1 基礎運算</button>
+            <button class="tab-btn" onclick="filterCategory('指數比較與應用', this)">P.2 大小比較</button>
+            <button class="tab-btn" onclick="filterCategory('指數代數與數線', this)">P.3 代數與數線</button>
+            <button class="tab-btn" onclick="filterCategory('生活素養應用', this)">P.4 生活素養</button>
+            <button class="tab-btn" onclick="filterCategory('資優挑戰區', this)">P.5 資優試題挑戰</button>
+            <button class="tab-btn" onclick="filterCategory('高手過招與延伸', this)">P.6~11 高手過招與延伸</button>
+        </nav>
+
+        <!-- Pages Container -->
+        <main id="pagesContainer">
+            <!-- Dynamic Content Injected Here -->
+        </main>
+    </div>
+
+    <a href="#" class="back-to-top" title="回到頂部">▲</a>
+
+    <footer class="site-footer">
+        <p>115學年度 數理資優研習專案・CH 2-4 指數律與因倍數 互動式詳解手冊</p>
+        <p style="margin-top: 6px; font-size: 0.8rem; color: #94a3b8;">具備 LaTeX 數學公式解析與動態展開收合功能</p>
+    </footer>
+
+    <script>
+        const data = [{"page": 1, "title": "第 1 頁：2-4 指數律基礎運算", "category": "基礎指數運算", "problems": [{"id": "p1-1", "number": "1", "question": "計算下列各式的值：<br>(1) \\(\\frac{1}{-2} + \\frac{2}{(-2)^2} - \\frac{4}{(-2)^3} + \\frac{8}{(-2)^4}\\)<br>(2) \\(\\frac{1}{-4} + \\frac{4}{(-4)^2} + \\frac{16}{(-4)^3} + \\frac{64}{(-4)^4}\\)", "answer_preview": "(1) 1 ； (2) 0", "concept": "負數的次方符號律：負數的偶數次方為正數，負數的奇數次方為負數；以及分式正負號化簡與約分原則。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 第一項：\\(\\frac{1}{-2} = -\\frac{1}{2}\\)", "• 第二項：\\((-2)^2 = 4\\)，故 \\(\\frac{2}{(-2)^2} = \\frac{2}{4} = \\frac{1}{2}\\)", "• 第三項：\\((-2)^3 = -8\\)，故 \\(\\frac{4}{(-2)^3} = \\frac{4}{-8} = -\\frac{1}{2}\\)，前面帶有減號：\\(-\\left(-\\frac{1}{2}\\right) = +\\frac{1}{2}\\)", "• 第四項：\\((-2)^4 = 16\\)，故 \\(\\frac{8}{(-2)^4} = \\frac{8}{16} = \\frac{1}{2}\\)", "• 合併總和：\\(-\\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} + \\frac{1}{2} = 1\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 第一項：\\(\\frac{1}{-4} = -\\frac{1}{4}\\)", "• 第二項：\\((-4)^2 = 16\\)，故 \\(\\frac{4}{(-4)^2} = \\frac{4}{16} = \\frac{1}{4}\\)", "• 第三項：\\((-4)^3 = -64\\)，故 \\(\\frac{16}{(-4)^3} = \\frac{16}{-64} = -\\frac{1}{4}\\)", "• 第四項：\\((-4)^4 = 256\\)，故 \\(\\frac{64}{(-4)^4} = \\frac{64}{256} = \\frac{1}{4}\\)", "• 合併總和：\\(-\\frac{1}{4} + \\frac{1}{4} - \\frac{1}{4} + \\frac{1}{4} = 0\\)"], "tip": "注意第 (1) 小題中第三項前面本身帶有「減號」，負負得正，易漏看符號導致算成 0。"}, {"id": "p1-2", "number": "2", "question": "計算下列各式的值：<br>(1) \\(10 + 4.25^2 \\times \\left[ \\left(-\\frac{2}{3}\\right)^4 \\div \\left(1\\frac{8}{9}\\right)^2 \\right]\\)<br>(2) \\(\\left(-\\frac{4}{5}\\right)^2 \\div \\left(-1\\frac{3}{5}\\right) + \\left(-1\\frac{1}{2}\\right)^3 \\times 3\\frac{1}{5}\\)", "answer_preview": "(1) 11 ； (2) -56/5 (或 -11.2)", "concept": "小數、帶分數化為假分數進行指數運算，優先利用指數律 \\(a^n \\div b^n = (a/b)^n\\) 或相互約分，避免直接展開龐大數字。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 將小數與帶分數化為假分數：\\(4.25 = \\frac{17}{4}\\)，\\(1\\frac{8}{9} = \\frac{17}{9}\\)", "• 計算中括號內：\\(\\left(-\\frac{2}{3}\\right)^4 = \\frac{16}{81}\\)，\\(\\left(1\\frac{8}{9}\\right)^2 = \\left(\\frac{17}{9}\\right)^2 = \\frac{289}{81}\\)", "• 括號內除法變乘法：\\(\\frac{16}{81} \\div \\frac{289}{81} = \\frac{16}{81} \\times \\frac{81}{289} = \\frac{16}{289}\\)", "• 與外側相乘：\\(4.25^2 = \\left(\\frac{17}{4}\\right)^2 = \\frac{289}{16}\\)，故 \\(\\frac{289}{16} \\times \\frac{16}{289} = 1\\)", "• 最終加法：\\(10 + 1 = 11\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 前半部：\\(\\left(-\\frac{4}{5}\\right)^2 = \\frac{16}{25}\\)；\\(-1\\frac{3}{5} = -\\frac{8}{5}\\)", "  \\(\\frac{16}{25} \\div \\left(-\\frac{8}{5}\\right) = \\frac{16}{25} \\times \\left(-\\frac{5}{8}\\right) = -\\frac{2}{5}\\)", "• 後半部：\\(\\left(-1\\frac{1}{2}\\right)^3 = \\left(-\\frac{3}{2}\\right)^3 = -\\frac{27}{8}\\)；\\(3\\frac{1}{5} = \\frac{16}{5}\\)", "  \\(\\left(-\\frac{27}{8}\\right) \\times \\frac{16}{5} = -\\frac{27 \\times 2}{5} = -\\frac{54}{5}\\)", "• 兩部分相加：\\(-\\frac{2}{5} + \\left(-\\frac{54}{5}\\right) = -\\frac{56}{5} = -11\\frac{1}{5} = -11.2\\)"], "tip": "觀察到 \\(4.25 = 17/4\\) 且 \\(1\\frac{8}{9} = 17/9\\)，兩者皆含 17，能直接對消，千萬不要乘開成小數計算！"}, {"id": "p1-3", "number": "3", "question": "(1) 若 \\(3^3 \\times 27^5 \\times 9^4 \\div 81^3 = 3^a\\)，則 \\(a = ?\\)<br>(2) 若 \\(10^4 \\times 100^{-5} \\times 1000^4 = 2^b \\times 5^c\\)，則 \\(b + c = ?\\)", "answer_preview": "(1) a = 14 ； (2) b + c = 12", "concept": "化為同底數指數運算：\\((a^m)^n = a^{m \\times n}\\)，\\(a^m \\times a^n = a^{m+n}\\)，\\(a^m \\div a^n = a^{m-n}\\)。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 全數化為以 3 為底數：", "  \\(27^5 = (3^3)^5 = 3^{15}\\)", "  \\(9^4 = (3^2)^4 = 3^8\\)", "  \\(81^3 = (3^4)^3 = 3^{12}\\)", "• 依指數律運算：\\(3^3 \\times 3^{15} \\times 3^8 \\div 3^{12} = 3^{3 + 15 + 8 - 12} = 3^{14}\\)", "• 故 \\(a = 14\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 全數化為以 10 為底數：", "  \\(10^4 = 10^4\\)", "  \\(100^{-5} = (10^2)^{-5} = 10^{-10}\\)", "  \\(1000^4 = (10^3)^4 = 10^{12}\\)", "• 合併指數：\\(10^{4 + (-10) + 12} = 10^6\\)", "• 將 10 做質因數分解：\\(10^6 = (2 \\times 5)^6 = 2^6 \\times 5^6\\)", "• 對應指數得 \\(b = 6, c = 6\\)，故 \\(b + c = 6 + 6 = 12\\)"], "tip": "在第 (2) 小題中，記住 \\(10^n = 2^n \\times 5^n\\)，因此 2 與 5 的指數必定相等。"}, {"id": "p1-4", "number": "4", "question": "計算下列各式的值：<br>(1) \\(\\left(\\frac{9}{2}\\right)^{10} \\times \\left(-\\frac{16}{9}\\right)^5 \\div (-6)^7\\)<br>(2) \\(\\left(-\\frac{1}{7}\\right)^4 \\div \\left(\\frac{1}{42}\\right)^2 \\times \\left(\\frac{5}{6}\\right)^3 \\div \\left(-\\frac{5}{7}\\right)^2\\)", "answer_preview": "(1) 216 ； (2) 5/6", "concept": "質因數分解化簡冪次式：先定正負號，再將所有底數拆成質因數 2, 3, 5, 7 的乘冪並依指數律消去。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 符號判定：\\(\\left(-\\frac{16}{9}\\right)^5\\) 為負號，\\((-6)^7\\) 為負號，負除以負為正號（\\(+\\)）。", "• 質因數分解各底數：", "  \\(\\left(\\frac{9}{2}\\right)^{10} = \\frac{(3^2)^{10}}{2^{10}} = \\frac{3^{20}}{2^{10}}\\)", "  \\(\\left(\\frac{16}{9}\\right)^5 = \\frac{(2^4)^5}{(3^2)^5} = \\frac{2^{20}}{3^{10}}\\)", "  \\(6^7 = (2 \\times 3)^7 = 2^7 \\times 3^7\\)", "• 整體算式化簡：\\(\\frac{3^{20}}{2^{10}} \\times \\frac{2^{20}}{3^{10}} \\div (2^7 \\times 3^7) = \\frac{2^{20} \\times 3^{20}}{2^{10+7} \\times 3^{10+7}} = \\frac{2^{20} \\times 3^{20}}{2^{17} \\times 3^{17}} = 2^{3} \\times 3^3 = 8 \\times 27 = 216\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 符號判定：偶數次方均為正數，式子全為正號。", "• 拆解各項並將除法化為乘法倒數：", "  \\(\\left(-\\frac{1}{7}\\right)^4 = \\frac{1}{7^4}\\)", "  \\(\\div \\left(\\frac{1}{42}\\right)^2 = \\times 42^2 = \\times (6 \\times 7)^2 = \\times (6^2 \\times 7^2)\\)", "  \\(\\times \\left(\\frac{5}{6}\\right)^3 = \\times \\frac{5^3}{6^3}\\)", "  \\(\\div \\left(-\\frac{5}{7}\\right)^2 = \\times \\left(\\frac{7}{5}\\right)^2 = \\times \\frac{7^2}{5^2}\\)", "• 依各質因數合流整理：", "  • 7 的次方：\\(\\frac{7^2 \\times 7^2}{7^4} = \\frac{7^4}{7^4} = 1\\)", "  • 6 的次方：\\(\\frac{6^2}{6^3} = \\frac{1}{6}\\)", "  • 5 的次方：\\(\\frac{5^3}{5^2} = 5\\)", "• 相乘得到：\\(1 \\times \\frac{1}{6} \\times 5 = \\frac{5}{6}\\)"], "tip": "做繁分數與多重次方除法時，化成質因數乘冪是競賽中最穩健迅速的做法，能徹底杜絕通分計算失誤。"}]}, {"page": 2, "title": "第 2 頁：指數大小比較與應用", "category": "指數比較與應用", "problems": [{"id": "p2-5", "number": "5", "question": "比較下列各組數的大小：<br>(1) \\(2^{23}, 4^{11}, 8^8\\)<br>(2) \\(3^{44}, 5^{33}, 7^{22}\\)", "answer_preview": "(1) 8^8 > 2^23 > 4^11 ； (2) 5^33 > 3^44 > 7^22", "concept": "指數比大小兩大策略：(1) 化同底數比指數大小（底數 > 1 時指數越大值越大）；(2) 提最大公因數化同指數比底數大小。", "steps": ["<strong>第 (1) 小題逐步計算（化同底數）：</strong>", "• 全部轉為以 2 為底數：", "  \\(2^{23}\\)", "  \\(4^{11} = (2^2)^{11} = 2^{22}\\)", "  \\(8^8 = (2^3)^8 = 2^{24}\\)", "• 因為底數 2 > 1，指數大小為 \\(24 > 23 > 22\\)", "• 故 \\(8^8 > 2^{23} > 4^{11}\\)", "<hr>", "<strong>第 (2) 小題逐步計算（化同指數）：</strong>", "• 觀察三個指數 44, 33, 22，其最大公因數為 11：", "  \\(3^{44} = (3^4)^{11} = 81^{11}\\)", "  \\(5^{33} = (5^3)^{11} = 125^{11}\\)", "  \\(7^{22} = (7^2)^{11} = 49^{11}\\)", "• 指數皆為 11，直接比較底數：\\(125 > 81 > 49\\)", "• 故 \\(5^{33} > 3^{44} > 7^{22}\\)"], "tip": "當底數互質且不同時，尋找指數的最大公因數（GCD）轉換為 \\((a^m)^k\\) 是最標準的方法。"}, {"id": "p2-6", "number": "6", "question": "(1) 比較 \\(\\left(\\frac{1}{9}\\right)^{10}\\)、\\(\\left(\\frac{1}{27}\\right)^7\\)、\\(\\left(\\frac{1}{81}\\right)^5\\) 的大小關係。<br>(2) 比較 \\(\\left(\\frac{1}{7}\\right)^8\\)、\\(\\left(\\frac{1}{4}\\right)^{12}\\)、\\(\\left(\\frac{1}{3}\\right)^{16}\\) 的大小關係。", "answer_preview": "(1) (1/9)^10 = (1/81)^5 > (1/27)^7 ； (2) (1/7)^8 > (1/4)^12 > (1/3)^16", "concept": "真分數（0 < 底數 < 1）的大小比較：若指數相同，底數越大整體越大；若底數相同，指數越大值反而越小（或化為正整數倒數比較）。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 全部化為以 3 的負冪次或 \\(\\frac{1}{3}\\) 為底：", "  \\(\\left(\\frac{1}{9}\\right)^{10} = \\left(\\frac{1}{3^2}\\right)^{10} = \\frac{1}{3^{20}}\\)", "  \\(\\left(\\frac{1}{27}\\right)^7 = \\left(\\frac{1}{3^3}\\right)^7 = \\frac{1}{3^{21}}\\)", "  \\(\\left(\\frac{1}{81}\\right)^5 = \\left(\\frac{1}{3^4}\\right)^5 = \\frac{1}{3^{20}}\\)", "• 分母越小其分數值越大：\\(3^{20} < 3^{21} \\implies \\frac{1}{3^{20}} > \\frac{1}{3^{21}}\\)", "• 故 \\(\\left(\\frac{1}{9}\\right)^{10} = \\left(\\frac{1}{81}\\right)^5 > \\left(\\frac{1}{27}\\right)^7\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 指數 8, 12, 16 的最大公因數為 4，全部化為外層指數 4：", "  \\(\\left(\\frac{1}{7}\\right)^8 = \\left[ \\left(\\frac{1}{7}\\right)^2 \\right]^4 = \\left(\\frac{1}{49}\\right)^4\\)", "  \\(\\left(\\frac{1}{4}\\right)^{12} = \\left[ \\left(\\frac{1}{4}\\right)^3 \\right]^4 = \\left(\\frac{1}{64}\\right)^4\\)", "  \\(\\left(\\frac{1}{3}\\right)^{16} = \\left[ \\left(\\frac{1}{3}\\right)^4 \\right]^4 = \\left(\\frac{1}{81}\\right)^4\\)", "• 指數皆為 4，比較底數：\\(\\frac{1}{49} > \\frac{1}{64} > \\frac{1}{81}\\)", "• 故 \\(\\left(\\frac{1}{7}\\right)^8 > \\left(\\frac{1}{4}\\right)^{12} > \\left(\\frac{1}{3}\\right)^{16}\\)"], "tip": "特別注意第 (1) 小題中，\\((1/9)^{10}\\) 與 \\((1/81)^5\\) 算出來指數完全相等，大小關係要寫「等號」！"}, {"id": "p2-7", "number": "7", "question": "(1) 若 \\(2^{36} = 8^a = 16^b\\)，則 \\(a = ?\\ b = ?\\)<br>(2) 若 \\(a^5 = 3\\)，則 \\(a^{15} = ?\\)", "answer_preview": "(1) a = 12, b = 9 ； (2) 27", "concept": "利用冪的乘方性質：\\((x^m)^n = x^{m \\times n}\\)，以及代換求值 \\(a^{15} = (a^5)^3\\)。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 化為同底數 2：", "  \\(8^a = (2^3)^a = 2^{3a}\\)，已知等於 \\(2^{36}\\)，故 \\(3a = 36 \\implies a = 12\\)", "  \\(16^b = (2^4)^b = 2^{4b}\\)，已知等於 \\(2^{36}\\)，故 \\(4b = 36 \\implies b = 9\\)", "• 答：\\(a = 12, b = 9\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 觀察指數倍數關係：15 是 5 的 3 倍", "• 拆解成次方結構：\\(a^{15} = (a^5)^3\\)", "• 將已知條件 \\(a^5 = 3\\) 代入：\\(a^{15} = 3^3 = 27\\)"], "tip": "在第 (2) 題中，不需要去解 \\(a = \\sqrt[5]{3}\\)，直接把 \\(a^5\\) 當成一個整體打包代入！"}, {"id": "p2-8", "number": "8", "question": "已知某種細菌每經過 2 分鐘後，數量就會增加為原來的 3 倍，且假設細菌不會死，今有該種細菌 8 個，則：<br>(1) 10 分鐘後的細菌數是多少個？<br>(2) 42 分鐘後的細菌數是 34 分鐘後細菌數的幾倍？", "answer_preview": "(1) 1944 個 ； (2) 81 倍", "concept": "指數成長模型：若每週期時間為 \\(T\\)，增長率為 \\(k\\)，經過時間 \\(t\\) 後增長了 \\(n = t/T\\) 個週期，末數量為 \\(\\text{原數量} \\times k^n\\)。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 週期長度為 2 分鐘，增長倍數為 3 倍。", "• 10 分鐘經歷的增長週期次數：\\(n = \\frac{10}{2} = 5\\) 次。", "• 細菌總數計算：\\(8 \\times 3^5 = 8 \\times 243 = 1944\\) 個。", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 比較 42 分鐘與 34 分鐘的相差時間：\\(42 - 34 = 8\\) 分鐘。", "• 經過的增長週期次數：\\(n = \\frac{8}{2} = 4\\) 次。", "• 增長倍數：\\(3^4 = 81\\) 倍。（與起始數量無關）"], "tip": "第 (2) 題問的是兩時刻的倍數，直接拿「時間差」求週期數計算即可，千萬不要分別算出 42 分與 34 分的龐大天文數字再相除。"}, {"id": "p2-9", "number": "9", "question": "(1) 若 \\((-5)^8 \\times (-5)^6 \\div (-5)^3 = (-5)^a\\)，則 \\(a = ?\\)<br>(2) 若 \\(\\left(-\\frac{2}{7}\\right)^9 \\div \\left(\\frac{2}{7}\\right)^8 \\times \\left(-\\frac{2}{7}\\right)^{14} \\div \\left(\\frac{2}{7}\\right)^4 = -\\left(\\frac{2}{7}\\right)^b\\)，則 \\(b = ?\\)", "answer_preview": "(1) a = 11 ； (2) b = 11", "concept": "同底數乘除運算法則，以及正負底數符號拆解提公號法則。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 底數皆為 \\((-5)\\)，符合同底數運算：", "  指數相加減：\\(8 + 6 - 3 = 11\\)", "• 故 \\((-5)^{11} = (-5)^a \\implies a = 11\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 先處理負號：", "  \\(\\left(-\\frac{2}{7}\\right)^9 = -\\left(\\frac{2}{7}\\right)^9\\)（奇數次方保持負號）", "  \\(\\left(-\\frac{2}{7}\\right)^{14} = +\\left(\\frac{2}{7}\\right)^{14}\\)（偶數次方為正號）", "• 符號相乘除：\\((-)\\div(+)\\times(+)\\div(+) = (-)\\)，確定外面帶有負號。", "• 底數統一為 \\(\\frac{2}{7}\\)，指數依乘加除減合併：", "  \\(9 - 8 + 14 - 4 = 11\\)", "• 式子化為 \\(-\\left(\\frac{2}{7}\\right)^{11} = -\\left(\\frac{2}{7}\\right)^b\\)，故 \\(b = 11\\)"], "tip": "在第 (2) 題中，偶次方 \\((-2/7)^{14}\\) 會吃掉負號變成正值，而九次方保留負號，必須先分離正負號再行指數相減。"}, {"id": "p2-10", "number": "10", "question": "(1) 若 \\(20^8 \\div 2^{16} \\times 5^8 = a^8\\)，且 \\(a > 0\\)，則 \\(a = ?\\)<br>(2) 若 \\(\\left(\\frac{1}{45}\\right)^8 \\times 3^{24} \\div \\left(\\frac{1}{5}\\right)^{16} = b^8\\)，且 \\(b > 0\\)，則 \\(b = ?\\)", "answer_preview": "(1) a = 25 ； (2) b = 15", "concept": "利用指數律逆向打包：\\(x^n \\times y^n = (xy)^n\\)，\\(x^n \\div y^n = (x/y)^n\\)，將所有項改寫為以 8 為指數的形式。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 拆解 20：\\(20 = 4 \\times 5 = 2^2 \\times 5\\)", "  故 \\(20^8 = (2^2 \\times 5)^8 = (2^2)^8 \\times 5^8 = 2^{16} \\times 5^8\\)", "• 代回原式：\\((2^{16} \\times 5^8) \\div 2^{16} \\times 5^8 = 5^8 \\times 5^8 = 5^{16}\\)", "• 將 \\(5^{16}\\) 改寫為 8 次方：\\(5^{16} = (5^2)^8 = 25^8\\)", "• 已知其等於 \\(a^8\\) 且 \\(a > 0\\)，得 \\(a = 25\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 將每項皆轉換為 8 次方：", "  \\(3^{24} = (3^3)^8 = 27^8\\)", "  \\(\\left(\\frac{1}{5}\\right)^{16} = \\left[\\left(\\frac{1}{5}\\right)^2\\right]^8 = \\left(\\frac{1}{25}\\right)^8\\)", "• 全體提取 8 次方：", "  \\(\\left[ \\frac{1}{45} \\times 27 \\div \\frac{1}{25} \\right]^8 = \\left[ \\frac{27}{45} \\times 25 \\right]^8\\)", "• 括號內約分計算：\\(\\frac{27}{45} = \\frac{3}{5}\\)，\\(\\frac{3}{5} \\times 25 = 15\\)", "• 得整式為 \\(15^8 = b^8\\)，因 \\(b > 0\\)，故 \\(b = 15\\)"], "tip": "看到等號右邊是 8 次方，解題直覺就是把左側各項統統包裝成「某數的 8 次方」，省去繁複的質因數整理。"}]}, {"page": 3, "title": "第 3 頁：指數律進階代數與數線應用", "category": "指數代數與數線", "problems": [{"id": "p3-11", "number": "11", "question": "(1) 若 \\(3^a = 10\\)，則 \\(3^{a+2}\\) 的值為何？<br>(2) 若 \\(3^a = 10\\)，則 \\(3^{2a+3}\\) 的值為何？", "answer_preview": "(1) 90 ； (2) 2700", "concept": "指數加法拆解為同底數乘法：\\(x^{m+n} = x^m \\times x^n\\)，\\(x^{km+n} = (x^m)^k \\times x^n\\)。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 依指數律拆開：\\(3^{a+2} = 3^a \\times 3^2\\)", "• 代入 \\(3^a = 10\\)：\\(10 \\times 9 = 90\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 依指數律拆開：\\(3^{2a+3} = 3^{2a} \\times 3^3 = (3^a)^2 \\times 3^3\\)", "• 代入 \\(3^a = 10\\)：\\(10^2 \\times 27 = 100 \\times 27 = 2700\\)"], "tip": "國中常見代數送分題，重點是把複合指數拆成以已知項 \\(3^a\\) 為主體的乘積。"}, {"id": "p3-12", "number": "12", "question": "(1) 若 \\(\\left(\\frac{1}{5}\\right)^b = \\frac{1}{100}\\)，則 \\(\\left(\\frac{1}{5}\\right)^{b-2}\\) 的值為何？<br>(2) 若 \\(\\left(\\frac{1}{5}\\right)^b = \\frac{1}{100}\\)，則 \\(\\left(\\frac{1}{5}\\right)^{3b-2}\\) 的值為何？", "answer_preview": "(1) 1/4 ； (2) 1/40000", "concept": "指數減法轉化為除法或乘以負指數：\\(x^{b-2} = x^b \\div x^2 = x^b \\times x^{-2}\\)。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 拆解指數：\\(\\left(\\frac{1}{5}\\right)^{b-2} = \\left(\\frac{1}{5}\\right)^b \\div \\left(\\frac{1}{5}\\right)^2\\)", "• 計算除數：\\(\\left(\\frac{1}{5}\\right)^2 = \\frac{1}{25}\\)", "• 代入已知值：\\(\\frac{1}{100} \\div \\frac{1}{25} = \\frac{1}{100} \\times 25 = \\frac{25}{100} = \\frac{1}{4}\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 拆解指數：\\(\\left(\\frac{1}{5}\\right)^{3b-2} = \\left[\\left(\\frac{1}{5}\\right)^b\\right]^3 \\div \\left(\\frac{1}{5}\\right)^2\\)", "• 代入已知值：\\(\\left(\\frac{1}{100}\\right)^3 \\times 25 = \\frac{1}{1000000} \\times 25 = \\frac{25}{1000000} = \\frac{1}{40000}\\)"], "tip": "除以 \\((1/5)^2\\) 等於乘以 25，分母 100 與 25 約分後變成 4，非常乾淨。"}, {"id": "p3-13", "number": "13", "question": "(1) 若 \\(2^{20} \\times 2^{19} = 2^a\\)，則 \\(a = ?\\)<br>(2) 若 \\(2^{20} \\div 2^{19} = 2^b\\)，則 \\(b = ?\\)<br>(3) 若 \\(2^{20} + 2^{19} = c \\times 2^{19}\\)，則 \\(c = ?\\)<br>(4) 若 \\(2^{20} - 2^{19} = 2^d\\)，則 \\(d = ?\\)", "answer_preview": "(1) a = 39 ； (2) b = 1 ； (3) c = 3 ； (4) d = 19", "concept": "精確區分同底數的「乘法、除法」與「加法、減法」：乘除法用指數加減，加減法用「提出公因數」！", "steps": ["<strong>第 (1) 小題（乘法）：</strong>", "• \\(2^{20} \\times 2^{19} = 2^{20+19} = 2^{39} \\implies a = 39\\)", "<hr>", "<strong>第 (2) 小題（除法）：</strong>", "• \\(2^{20} \\div 2^{19} = 2^{20-19} = 2^1 \\implies b = 1\\)", "<hr>", "<strong>第 (3) 小題（加法提公因式）：</strong>", "• \\(2^{20} = 2^1 \\times 2^{19}\\)", "• \\(2^{20} + 2^{19} = 2 \\times 2^{19} + 1 \\times 2^{19} = (2 + 1) \\times 2^{19} = 3 \\times 2^{19}\\)", "• 故 \\(c = 3\\)", "<hr>", "<strong>第 (4) 小題（減法提公因式）：</strong>", "• \\(2^{20} - 2^{19} = (2 - 1) \\times 2^{19} = 1 \\times 2^{19} = 2^{19}\\)", "• 故 \\(2^{19} = 2^d \\implies d = 19\\)"], "tip": "常有初學者把 \\(2^{20} + 2^{19}\\) 誤寫成 \\(2^{39}\\) 或 \\(4^{39}\\)，牢記「加減法沒有指數相加的規則，必須提出公因式」！"}, {"id": "p3-14", "number": "14", "question": "計算下列各題的值：<br>(1) \\(-3^2 = ?\\)<br>(2) \\(3^{-2} = ?\\)<br>(3) \\(-3^{-2} = ?\\)", "answer_preview": "(1) -9 ； (2) 1/9 ； (3) -1/9", "concept": "基礎概念辨析：負指數代表倒數（\\(a^{-n} = \\frac{1}{a^n}\\)）；負號在括號外時先算次方再加負號（\\(-a^n = -(a^n)\\)）。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 負號沒有被括號包住，故次方只作用在 3 上：\\(-3^2 = -(3 \\times 3) = -9\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 依負指數定義：\\(3^{-2} = \\frac{1}{3^2} = \\frac{1}{9}\\)", "<hr>", "<strong>第 (3) 小題逐步計算：</strong>", "• 前方的負號保留在最外層，後方的 \\(3^{-2}\\) 轉為倒數：", "  \\(-3^{-2} = -\\left(\\frac{1}{3^2}\\right) = -\\frac{1}{9}\\)"], "tip": "絕對不要把負指數 \\(3^{-2}\\) 誤當成負數！負指數只改變數字的「倒數位置」，正負號是由最前面的正負號決定。"}, {"id": "p3-15", "number": "15", "question": "計算下列各題的值：<br>(1) \\(-\\left(\\frac{1}{3}\\right)^2 = ?\\)<br>(2) \\(\\left(\\frac{1}{3}\\right)^{-2} = ?\\)<br>(3) \\(-\\left(\\frac{1}{3}\\right)^{-2} = ?\\)", "answer_preview": "(1) -1/9 ； (2) 9 ； (3) -9", "concept": "分數的負指數性質：\\(\\left(\\frac{a}{b}\\right)^{-n} = \\left(\\frac{b}{a}\\right)^n\\)；負號在括號外則保持負號。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 括號內先平方，再加上外側負號：\\(-\\left(\\frac{1}{3}\\right)^2 = -\\left(\\frac{1}{9}\\right) = -\\frac{1}{9}\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 分數的負指數代表取倒數後再平方：", "  \\(\\left(\\frac{1}{3}\\right)^{-2} = \\left(3\\right)^2 = 9\\)", "<hr>", "<strong>第 (3) 小題逐步計算：</strong>", "• 外側負號保留，內側取倒數平方：", "  \\(-\\left(\\frac{1}{3}\\right)^{-2} = -(9) = -9\\)"], "tip": "分數的倒數就是分子分母對調，\\((1/3)^{-2} = 3^2 = 9\\)，口訣「負號變倒數，次方照樣乘」。"}, {"id": "p3-16", "number": "16", "question": "如圖，數線上 A 點的座標為 64，B 是 \\(\\overline{OA}\\) 中點，C 是 \\(\\overline{OB}\\) 中點，D 是 \\(\\overline{OC}\\) 中點，E 是 \\(\\overline{OD}\\) 中點，則 E 點座標為何？<br>(A) \\(64 \\times 2^4\\)　(B) \\(64 \\times 2^5\\)　(C) \\(64 \\times 2^{-4}\\)　(D) \\(64 \\times 2^{-5}\\)", "answer_preview": "選 (C) 64 × 2^-4 (數值為 4)", "concept": "取中點即為乘以 \\(\\frac{1}{2} = 2^{-1}\\)，連續對分 \\(n\\) 次相當於乘以 \\(2^{-n}\\)。", "steps": ["<strong>逐步推導各點坐標：</strong>", "• 原點 \\(O = 0\\)，\\(A = 64\\)", "• B 為 \\(\\overline{OA}\\) 中點：\\(B = 64 \\times \\frac{1}{2} = 64 \\times 2^{-1} = 32\\)", "• C 為 \\(\\overline{OB}\\) 中點：\\(C = B \\times \\frac{1}{2} = 64 \\times 2^{-2} = 16\\)", "• D 為 \\(\\overline{OC}\\) 中點：\\(D = C \\times \\frac{1}{2} = 64 \\times 2^{-3} = 8\\)", "• E 為 \\(\\overline{OD}\\) 中點：\\(E = D \\times \\frac{1}{2} = 64 \\times 2^{-4} = 4\\)", "• 比對選項，E 點座標為 \\(64 \\times 2^{-4}\\)，故選 (C)。"], "tip": "從 A 到 E 總共取了 4 次中點（A→B→C→D→E），所以次方是 \\(-4\\)，切忌誤數成 5 次。"}]}, {"page": 4, "title": "第 4 頁：指數律生活素養應用題", "category": "生活素養應用", "problems": [{"id": "p4-17", "number": "17", "question": "老陳有 8 塊地種植果樹，每塊地年產量為 \\(2^8\\) 噸；阿松有 3 塊地種植果樹，每塊地年產量為 \\(4^6\\) 噸。若阿松所種植果樹的總年產量為老陳所種植果樹總年產量的 \\(a\\) 倍，且 \\(a\\) 為整數，則 \\(a = ?\\) 請寫出完整的計算過程。", "answer_preview": "a = 6", "concept": "總量 = 塊數 × 每塊產量，化為同底數冪次後求比例商數。", "steps": ["<strong>完整解題與計算步驟：</strong>", "1. 計算老陳的果樹總年產量：", "   老陳有 8 塊地，每塊地年產量 \\(2^8\\) 噸", "   \\(\\text{老陳總年產量} = 8 \\times 2^8 = 2^3 \\times 2^8 = 2^{3+8} = 2^{11}\\) 噸", "<br>", "2. 計算阿松的果樹總年產量：", "   阿松有 3 塊地，每塊地年產量 \\(4^6\\) 噸", "   因為 \\(4^6 = (2^2)^6 = 2^{12}\\)", "   \\(\\text{阿松總年產量} = 3 \\times 4^6 = 3 \\times 2^{12}\\) 噸", "<br>", "3. 計算倍數 \\(a\\)：", "   \\(a = \\frac{\\text{阿松總年產量}}{\\text{老陳總年產量}} = \\frac{3 \\times 2^{12}}{2^{11}} = 3 \\times 2^{12 - 11} = 3 \\times 2^1 = 6\\)", "<br>", "答：\\(a = 6\\)"], "tip": "將 8 化為 \\(2^3\\)、4 化為 \\(2^2\\)，使底數完全一致，相除時指數直接相減，過程優雅無誤。"}, {"id": "p4-18", "number": "18", "question": "(1) 某種細菌每分鐘可分裂為原來數量的兩倍。今有一個此種細菌，若分裂過程中細菌都沒有死亡，則經過 10 分鐘後，細菌的數量為多少個？<br>(2) 承(1)，經過幾分鐘後，細菌的數量會超過一百萬個？", "answer_preview": "(1) 1024 個 ； (2) 20 分鐘", "concept": "二進制指數成長估算：熟悉 2 的常用次方（\\(2^{10} = 1024 \\approx 10^3\\)），估算大數等級。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 每 1 分鐘分裂成 2 倍，起始有 1 個細菌。", "• 經過 10 分鐘，經歷 10 次分裂：", "  數量 \\(= 1 \\times 2^{10} = 1024\\) 個。", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 目標：細菌數量 \\(> 1,000,000\\)（一百萬）", "• 利用已知值：\\(2^{10} = 1024\\)", "• 檢驗 \\(2^{20}\\)：\\(2^{20} = (2^{10})^2 = 1024 \\times 1024 = 1,048,576\\)", "• 檢驗 \\(2^{19}\\)：\\(2^{19} = \\frac{1048576}{2} = 524,288 < 1,000,000\\)", "• 因為第 19 分鐘只有 524,288 個，第 20 分鐘達到 1,048,576 個超過一百萬", "• 故經過 20 分鐘後細菌數量超過一百萬個。"], "tip": "電腦科學與數學資優常識：\\(2^{10} \\approx 10^3\\)（一千），\\(2^{20} \\approx 10^6\\)（一百萬），掌握此基準能瞬間鎖定答案。"}, {"id": "p4-19", "number": "19", "question": "每種藥物都有其「半衰期」，半衰期指的是藥物在體內吸收後，分布到血液中達到最高濃度，經代謝作用後，血中藥物濃度下降到原本一半所需的時間。若以常見的止痛藥普拿疼而言，其半衰期是 2.5 小時，所以服藥之後，平均經過 2.5 小時，血中藥物濃度就會從 100% 變為 50%。再經過 2.5 小時，其濃度下降為 25%。依據此規則 (即經過一個半衰期的藥物濃度都是前一次的一半)，則從一開始服用普拿疼後，經過幾小時，血中藥物濃度會變為原來的 6.25%？請寫出完整的計算過程。", "answer_preview": "10 小時", "concept": "半衰期指數衰減模型：每經過一個半衰期乘 \\(\\frac{1}{2}\\)，即 \\(C(t) = C_0 \\times \\left(\\frac{1}{2}\\right)^n\\)。", "steps": ["<strong>完整計算推導過程：</strong>", "1. 將目標濃度化為分數或 \\(\\frac{1}{2}\\) 的乘冪：", "   \\(6.25\\% = \\frac{6.25}{100} = \\frac{625}{10000} = \\frac{1}{16}\\)", "<br>", "2. 求出經過了幾個半衰期：", "   因為 \\(\\frac{1}{16} = \\left(\\frac{1}{2}\\right)^4\\)", "   表示藥物濃度需經歷 4 次折半，也就是經過了 4 個半衰期。", "<br>", "3. 計算總耗費時間：", "   已知普拿疼的半衰期為 2.5 小時", "   總時間 \\(= 4 \\times 2.5 = 10\\) 小時。", "<br>", "答：經過 10 小時。"], "tip": "記住常用的百分比與二的負冪次對應：50% = 1/2, 25% = 1/4, 12.5% = 1/8, 6.25% = 1/16。"}]}, {"page": 5, "title": "第 5 頁：資優試題挑戰區", "category": "資優挑戰區", "problems": [{"id": "p5-1", "number": "1", "question": "計算 \\(2^{99} - 2^{98} - 2^{97} - \\dots - 2^2 - 2^1\\) 之值為何？", "answer_preview": "2", "concept": "二進制連鎖消去原理（或等比級數求和公式）：利用 \\(2^n - 2^{n-1} = 2^{n-1}\\) 產生由左至右的多米諾骨牌連鎖效應。", "steps": ["<strong>解法一：連鎖消去法（最直觀極速）</strong>", "• 從最左側前兩項開始結合：", "  \\(2^{99} - 2^{98} = 2^{98}(2 - 1) = 2^{98}\\)", "• 接著減去第三項：", "  \\(2^{98} - 2^{97} = 2^{97}(2 - 1) = 2^{97}\\)", "• 依此規律連鎖消去，每一項減去後都剛好等於後一項的同底數冪：", "  \\dots", "  \\(2^3 - 2^2 = 2^2 = 4\\)", "  最後剩下：\\(2^2 - 2^1 = 4 - 2 = 2\\)", "<hr>", "<strong>解法二：級數求和封閉式</strong>", "• 原式可改寫為：\\(2^{99} - (2^{98} + 2^{97} + \\dots + 2^2 + 2^1)\\)", "• 括號內為首項 2、公比 2 的等比級數，項數共 98 項：", "  \\(S = \\frac{2(2^{98} - 1)}{2 - 1} = 2^{99} - 2\\)", "• 代回原式：\\(2^{99} - (2^{99} - 2) = 2^{99} - 2^{99} + 2 = 2\\)"], "tip": "資優數學常客：\\(2^n = 1 + \\sum_{k=0}^{n-1} 2^k\\)，因此只要記住連續 2 次方減法最後會回歸到底部。"}, {"id": "p5-2", "number": "2", "question": "在算式 \\(21 - \\left(-\\frac{50}{87} \\ \\square\\ 24\\right)^2\\) 的 \\(\\square\\) 中，應填入「\\(+\\)、\\(-\\)、\\(\\times\\)、\\(\\div\\)」中的哪一個運算符號，可使計算出來的值是最小的？", "answer_preview": "- (減號)", "concept": "函數極值與數感分析：式子為 \\(21 - X^2\\)，要使結果最小，必須讓減去的正數 \\(X^2\\) 最大，也就是讓括號內的值 \\(|X|\\) 的絕對值最大！", "steps": ["<strong>逐步分析與數值估算：</strong>", "設括號內為 \\(X = \\left(-\\frac{50}{87} \\ \\square\\ 24\\right)\\)", "要使 \\(21 - X^2\\) 最小，需要 \\(X^2\\) 最大，即 \\(|X|\\) 最大。", "<br>", "分別檢驗四種運算符號的 \\(|X|\\)：", "1. 填入「\\(+\\)」：", "   \\(X = -\\frac{50}{87} + 24 = 23\\frac{37}{87} \\approx 23.42\\)", "   \\(|X| \\approx 23.42\\)", "2. 填入「\\(-\\)」：", "   \\(X = -\\frac{50}{87} - 24 = -24\\frac{50}{87} \\approx -24.57\\)", "   \\(|X| \\approx 24.57\\)", "3. 填入「\\(\\times\\)」：", "   \\(X = -\\frac{50}{87} \\times 24 = -\\frac{50 \\times 8}{29} = -\\frac{400}{29} \\approx -13.79\\)", "   \\(|X| \\approx 13.79\\)", "4. 填入「\\(\\div\\)」：", "   \\(X = -\\frac{50}{87} \\div 24 = -\\frac{50}{2088} \\approx -0.024\\)", "   \\(|X| \\approx 0.024\\)", "<br>", "比較各情況的絕對值大小：", "\\(24\\frac{50}{87} > 23\\frac{37}{87} > 13.79 > 0.024\\)", "故當填入「\\(-\\)」號時，\\(|X|\\) 最大，其平方 \\(X^2\\) 最大，使得 \\(21 - X^2\\) 的結果最小。", "<br>", "答：填入「\\(-\\)」號"], "tip": "兩個負數相減（即加上一個負數）會往數線左邊走得最遠，絕對值達到 24 點多，平方後數值最大。"}, {"id": "p5-3", "number": "3", "question": "計算 \\(\\frac{(-387)^9}{129^9} \\div \\frac{2193^6}{(-731)^6} + \\frac{1565^3}{(-313)^3}\\) 之值為何？", "answer_preview": "-152", "concept": "利用指數同次方商數性質 \\(\\frac{a^n}{b^n} = \\left(\\frac{a}{b}\\right)^n\\)，先約分化為簡潔整數再行計算。", "steps": ["<strong>觀察分子分母的倍數特徵：</strong>", "• 觀察第一項：\\(-387 = -3 \\times 129\\)", "  故 \\(\\frac{(-387)^9}{129^9} = \\left(\\frac{-387}{129}\\right)^9 = (-3)^9\\)", "<br>", "• 觀察第二項：\\(2193 = -3 \\times (-731)\\)（因 \\(731 \\times 3 = 2193\\)）", "  故 \\(\\frac{2193^6}{(-731)^6} = \\left(\\frac{2193}{-731}\\right)^6 = (-3)^6\\)", "<br>", "• 觀察第三項：\\(1565 = -5 \\times (-313)\\)（因 \\(313 \\times 5 = 1565\\)）", "  故 \\(\\frac{1565^3}{(-313)^3} = \\left(\\frac{1565}{-313}\\right)^3 = (-5)^3\\)", "<br>", "<strong>代回原式進行化簡計算：</strong>", "• 原式前半部：\\((-3)^9 \\div (-3)^6 = (-3)^{9-6} = (-3)^3 = -27\\)", "• 原式後半部：\\((-5)^3 = -125\\)", "• 相加結果：\\(-27 + (-125) = -152\\)", "<br>", "答：-152"], "tip": "不要被巨大數字嚇到，命題老師刻意設計了 3 倍與 5 倍的整數關係，提早約分可三秒秒殺此題！"}]}, {"page": 6, "title": "第 6 頁：高手過招・延伸學習（一）質數與同餘", "category": "高手過招與延伸", "problems": [{"id": "p6-1", "number": "高手過招 1", "question": "自 100 至 300 的偶數中，不是 3 的倍數的共有幾個數？並求其和為多少？", "answer_preview": "共有 67 個數，其和為 13366", "concept": "排容原理與等差級數求和：偶數集合扣除「既是偶數又是 3 的倍數」（即 6 的倍數）。", "steps": ["<strong>第一步：求 100 至 300 的偶數個數與總和</strong>", "• 偶數列為：\\(100, 102, 104, \\dots, 300\\)", "• 個數：\\(N_1 = \\frac{300 - 100}{2} + 1 = 101\\) 個", "• 偶數總和：\\(S_1 = \\frac{(100 + 300) \\times 101}{2} = 200 \\times 101 = 20200\\)", "<br>", "<strong>第二步：求偶數中 3 的倍數（即 6 的倍數）的個數與總和</strong>", "• 範圍在 100 到 300 之間的 6 的倍數：", "  最小者為 \\(6 \\times 17 = 102\\)，最大者為 \\(6 \\times 50 = 300\\)", "• 個數：\\(N_2 = 50 - 17 + 1 = 34\\) 個", "• 6 的倍數總和：\\(S_2 = \\frac{(102 + 300) \\times 34}{2} = 402 \\times 17 = 6834\\)", "<br>", "<strong>第三步：求不是 3 的倍數的偶數個數與和</strong>", "• 個數：\\(101 - 34 = 67\\) 個", "• 和：\\(20200 - 6834 = 13366\\)"], "tip": "公倍數觀念：既是 2 的倍數又是 3 的倍數，就是 \\([2, 3] = 6\\) 的倍數。"}, {"id": "p6-2", "number": "高手過招 2", "question": "將 20 以內的質數填入算式中的「\\(\\square\\)」內，每個質數只填一次，使 A 成為最大的整數：<br>\\[A = \\frac{\\square + \\square + \\square + \\square + \\square + \\square + \\square}{\\square}\\]", "answer_preview": "A 的最大整數為 10", "concept": "質數性質與整除性分析：20 以內質數共 8 個，分母佔 1 個，分子佔 7 個，設分母為 \\(p\\)，利用總和常數化為 \\(A = \\frac{S - p}{p} = \\frac{S}{p} - 1\\)。", "steps": ["<strong>第一步：列出 20 以內的所有質數並求和</strong>", "• 20 以內的質數有：2, 3, 5, 7, 11, 13, 17, 19，剛好共 8 個。", "• 這 8 個質數的總和：", "  \\(S = 2 + 3 + 5 + 7 + 11 + 13 + 17 + 19 = 77\\)", "<br>", "<strong>第二步：改寫算式結構</strong>", "• 題目分母填 1 個質數，分子填其餘 7 個質數之和。", "• 若分母填入質數 \\(p\\)，則分子為 \\(77 - p\\)。", "• 算式 \\(A = \\frac{77 - p}{p} = \\frac{77}{p} - 1\\)", "<br>", "<strong>第三步：分析 A 為整數且最大的條件</strong>", "• 要使 \\(A\\) 是整數，\\(p\\) 必須能整除 77。", "• 77 的正因數有 1, 7, 11, 77；在 20 以內的質數中，只有 \\(p = 7\\) 與 \\(p = 11\\) 兩種可能！", "  • 當 \\(p = 7\\) 時：\\(A = \\frac{77}{7} - 1 = 11 - 1 = 10\\)", "  • 當 \\(p = 11\\) 時：\\(A = \\frac{77}{11} - 1 = 7 - 1 = 6\\)", "• 要使 \\(A\\) 成為「最大的整數」，應取 \\(A = 10\\)（此時分母填 7，分子填 2, 3, 5, 11, 13, 17, 19）。"], "tip": "將分子 7 個未知數用「總和 77 減分母」代換，是化繁為簡的關鍵技巧。"}, {"id": "p6-3", "number": "高手過招 3", "question": "(1) 若 P 是質數，且 \\(P^3 + 5\\) 也是質數，則 \\(P^5 + 7\\) 是質數或合數？<br>(2) 由超級計算機運算知 \\(2^{859433} - 1\\) 是一個質數，則 \\(2^{859433} + 1\\) 是質數或合數？", "answer_preview": "(1) 合數 ； (2) 合數", "concept": "(1) 唯一偶質數 2 的奇偶奇偶性論證；(2) 連續三整數必有 3 的倍數，或模 3 同餘循環理論。", "steps": ["<strong>第 (1) 小題逐步推理：</strong>", "• 質數中只有 2 是偶數，其餘皆為奇數。", "• 若 \\(P\\) 為奇質數（\\(P \\ge 3\\)）：", "  則 \\(P^3\\) 為奇數，\\(P^3 + 5\\) 為奇數 + 奇數 = 偶數。", "  且 \\(P^3 + 5 > 2\\)，大於 2 的偶數必定是「合數」，與已知「\\(P^3 + 5\\) 也是質數」矛盾！", "• 因此，\\(P\\) 不可能是奇質數，唯一可能為偶質數 \\(P = 2\\)。", "• 驗證：當 \\(P = 2\\) 時，\\(P^3 + 5 = 2^3 + 5 = 8 + 5 = 13\\)（確實為質數，符合條件）。", "• 代入所求：\\(P^5 + 7 = 2^5 + 7 = 32 + 7 = 39\\)。", "• 因為 \\(39 = 3 \\times 13\\)，除了 1 和 39 外還有其他因數，故為「合數」。", "<hr>", "<strong>第 (2) 小題逐步推理：</strong>", "• 考慮模 3 同餘：任何整數對 3 取餘數只有 0, 1, 2。", "• 2 的冪次模 3 循環：\\(2 \\equiv -1 \\pmod 3\\)，故 \\(2^n \\equiv (-1)^n \\pmod 3\\)。", "• 本題指數為 859433，是個奇數，因此：", "  \\(2^{859433} \\equiv (-1)^{859433} \\equiv -1 \\equiv 2 \\pmod 3\\)", "• 這說明 \\(2^{859433} + 1 \\equiv -1 + 1 = 0 \\pmod 3\\)，即 \\(2^{859433} + 1\\) 必能被 3 整除！", "• 又顯然 \\(2^{859433} + 1 > 3\\)，因此它是一個大於 3 且能被 3 整除的數，必定是「合數」。"], "tip": "在質數問題中，碰到 \\(A+B\\) 質數時，第一時間一定要考慮唯一偶質數 2；碰到連續奇數或大數次方時，考慮模 3 特性。"}, {"id": "p6-ext1", "number": "延伸學習 1", "question": "自 100 至 999 的正整數中，試求：<br>(1) 被 3 除餘 1 的數共有多少個？<br>(2) 求滿足(1)的諸數之和。<br>(3) 滿足(1)的各數中，為完全平方數者共有多少個？", "answer_preview": "(1) 300 個 ； (2) 164550 ； (3) 15 個", "concept": "等差數列通項 \\(3k+1\\)，以及平方數模 3 的同餘性質：任何整數的平方模 3 只能是 0 或 1。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 被 3 除餘 1 的數通式為 \\(3k + 1\\)", "• 限制條件：\\(100 \\le 3k + 1 \\le 999 \\implies 99 \\le 3k \\le 998 \\implies 33 \\le k \\le 332.66\\)", "• 故整數 \\(k\\) 可取 \\(33, 34, \\dots, 332\\)", "• 個數 \\(= 332 - 33 + 1 = 300\\) 個", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 這 300 個數成等差數列：", "  首項 \\(a_1 = 3 \\times 33 + 1 = 100\\)", "  末項 \\(a_{300} = 3 \\times 332 + 1 = 997\\)", "• 等差級數和：\\(S = \\frac{(100 + 997) \\times 300}{2} = 1097 \\times 150 = 164550\\)", "<hr>", "<strong>第 (3) 小題逐步計算：</strong>", "• 設完全平方數為 \\(x^2\\)，範圍在 100 至 999 之間：", "  \\(100 \\le x^2 \\le 999 \\implies 10 \\le x \\le 31\\)（因 \\(31^2 = 961, 32^2 = 1024\\)）", "  整數 \\(x\\) 共有 \\(31 - 10 + 1 = 22\\) 個。", "• 檢驗整數平方的同餘：", "  • 若 \\(x\\) 是 3 的倍數，則 \\(x^2 \\equiv 0 \\pmod 3\\)", "  • 若 \\(x\\) 不是 3 的倍數，則 \\(x^2 \\equiv 1^2 = 1\\) 或 \\(x^2 \\equiv 2^2 \\equiv 1 \\pmod 3\\)", "• 只要 \\(x\\) 不是 3 的倍數，其平方就必定被 3 除餘 1！", "• 在 10 到 31 中，3 的倍數有：12, 15, 18, 21, 24, 27, 30 共 7 個。", "• 故不是 3 的倍數的整數有 \\(22 - 7 = 15\\) 個，對應的 15 個完全平方數皆滿足條件。"], "tip": "「完全平方數除以 3 的餘數非 0 即 1」，這一定理在初等數論中極為重要，可直接轉化為排除 3 的倍數！"}, {"id": "p6-ext2", "number": "延伸學習 2", "question": "(1) 設正整數中互不相等的Manage/三個質數之和的最小值為 M，則 M 的負倒數是多少？<br>(2) 正整數 m 和 n 是兩個不同的質數，\\(m + n + m \\times n\\) 的最小值是 p，則 \\(\\frac{m^2 + n^2}{p^2}\\) 之值是多少？", "answer_preview": "(1) -1/10 ； (2) 13/121", "concept": "最小質數選取（2, 3, 5），負倒數定義（\\(-1/M\\)），以及兩變數對稱式極值求法。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 正整數中最小的三個互不相同質數為 2, 3, 5。", "• 其和的最小值 \\(M = 2 + 3 + 5 = 10\\)。", "• \\(M\\) 的負倒數定義為 \\(-\\frac{1}{M}\\)，故為 \\(-\\frac{1}{10}\\)。", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 式子因式分解結構：\\(m + n + mn = (m + 1)(n + 1) - 1\\)。", "• 要使該式最小，應選取最小的兩個相異質數 \\(m = 2, n = 3\\)（或對調）。", "• 此時 \\(p = 2 + 3 + 2 \\times 3 = 11\\)。", "• 計算所求分式：", "  分子 \\(= m^2 + n^2 = 2^2 + 3^2 = 4 + 9 = 13\\)", "  分母 \\(= p^2 = 11^2 = 121\\)", "• 故 \\(\\frac{m^2 + n^2}{p^2} = \\frac{13}{121}\\)"], "tip": "負倒數包含「負號」與「倒數」兩重動作，不要只寫成倒數 1/10 或只加負號 -10。"}, {"id": "p6-ext3", "number": "延伸學習 3", "question": "(1) 若 P 為質數，且 \\(P^6 + 3\\) 亦是質數，則 \\(P^{11} - 48\\) 之值為？<br>(2) 若 P 為不小於 5 的質數，且 \\(2P + 1\\) 是質數，則 \\(4P + 1\\) 是質數或合數？", "answer_preview": "(1) 2000 ； (2) 合數", "concept": "模 3 分類討論與質數同餘排除法：任何質數 \\(P \\ge 5\\) 必滿足 \\(P \\equiv 1\\) 或 \\(2 \\pmod 3\\)。", "steps": ["<strong>第 (1) 小題逐步推理：</strong>", "• 若 \\(P\\) 為奇質數，則 \\(P^6\\) 為奇數，\\(P^6 + 3\\) 為奇數+奇數 = 偶數。", "  且 \\(P^6 + 3 > 3\\)，大於 2 的偶數必為合數，與題意矛盾。", "• 故 \\(P\\) 必為偶質數 \\(P = 2\\)。", "• 驗證：\\(2^6 + 3 = 64 + 3 = 67\\)，67 確實為質數！", "• 計算所求：\\(P^{11} - 48 = 2^{11} - 48 = 2048 - 48 = 2000\\)。", "<hr>", "<strong>第 (2) 小題嚴密數學推導：</strong>", "• 已知 \\(P \\ge 5\\) 為質數，故 \\(P\\) 不能被 3 整除，模 3 只有兩種可能：", "  情況 1：若 \\(P \\equiv 1 \\pmod 3\\)", "  則 \\(2P + 1 \\equiv 2(1) + 1 = 3 \\equiv 0 \\pmod 3\\)", "  由於 \\(P \\ge 5\\)，\\(2P + 1 \\ge 2(5) + 1 = 11 > 3\\)，這表示 \\(2P + 1\\) 是一個大於 3 且是 3 的倍數的數，必定是合數！", "  但題目已知「\\(2P + 1\\) 是質數」，因此情況 1 不可能成立！", "  <br>", "  情況 2：必定有 \\(P \\equiv 2 \\pmod 3\\)", "  此時檢驗 \\(4P + 1\\) 的同餘特性：", "  \\(4P + 1 \\equiv 4(2) + 1 = 8 + 1 = 9 \\equiv 0 \\pmod 3\\)", "  因為 \\(P \\ge 5\\)，\\(4P + 1 \\ge 4(5) + 1 = 21 > 3\\)", "  這說明 \\(4P + 1\\) 必定能被 3 整除且大於 3，故 \\(4P + 1\\) 必定是「合數」。", "• 例如：\\(P = 5 \\implies 2P+1 = 11\\)（質數），\\(4P+1 = 21 = 3 \\times 7\\)（合數）；\\(P = 11 \\implies 2P+1 = 23\\)（質數），\\(4P+1 = 45 = 3^2 \\times 5\\)（合數）。"], "tip": "此題是國際數學奧林匹亞及資優選拔中極經典的「模 3 必然覆蓋」證明題，證明步驟嚴謹無瑕。"}]}, {"page": 7, "title": "第 7 頁：高手過招・延伸學習（二）質數體積與整除六位數", "category": "高手過招與延伸", "problems": [{"id": "p7-4", "number": "高手過招 4", "question": "已知正整數 p、q 都是質數，且 \\(7p + q\\) 與 \\(pq + 11\\) 也都是質數，求 \\(p^q + q^p\\) 之值。", "answer_preview": "17", "concept": "質數的奇偶性分析與模 3 同餘鎖定：若兩質數皆為奇數，則其線性組合必為偶數。", "steps": ["<strong>第一步：奇偶性分析</strong>", "• 假設 \\(p, q\\) 皆為奇質數（即 \\(p, q \\ge 3\\)）：", "  則 \\(7p\\) 為奇數，\\(q\\) 為奇數，\\(7p + q\\) 為奇數 + 奇數 = 偶數。", "  且 \\(7p + q \\ge 7(3) + 3 = 24 > 2\\)，大於 2 的偶數必為合數，與題意矛盾！", "• 因此，\\(p\\) 與 \\(q\\) 中「至少有一個必須是偶質數 2」。", "<br>", "<strong>第二步：分類討論與模 3 檢驗</strong>", "• <strong>情況 A：若 \\(p = 2\\)</strong>", "  兩式變為：\\(7(2) + q = 14 + q\\) 與 \\(2q + 11\\)。", "  • 若 \\(q = 3\\)：\\(14 + 3 = 17\\)（質數），\\(2(3) + 11 = 17\\)（質數），完全符合！", "  • 若 \\(q > 3\\)，質數 \\(q\\) 模 3 餘 1 或 2：", "    - 若 \\(q \\equiv 1 \\pmod 3\\)，則 \\(14 + q \\equiv 2 + 1 = 3 \\equiv 0 \\pmod 3\\)（為大於 3 的 3 的倍數，合數）。", "    - 若 \\(q \\equiv 2 \\pmod 3\\)，則 \\(2q + 11 \\equiv 2(2) + 2 = 6 \\equiv 0 \\pmod 3\\)（合數）。", "    故 \\(q > 3\\) 無其他解，此情況得唯一解 \\(p = 2, q = 3\\)。", "<br>", "• <strong>情況 B：若 \\(q = 2\\)</strong>", "  兩式變為：\\(7p + 2\\) 與 \\(2p + 11\\)。", "  • 若 \\(p = 3\\)：\\(7(3) + 2 = 23\\)（質數），\\(2(3) + 11 = 17\\)（質數），完全符合！", "  • 同理，若 \\(p > 3\\)，利用模 3 檢驗兩式之一必為 3 的倍數，無其他解。", "  此情況得唯一解 \\(p = 3, q = 2\\)。", "<br>", "<strong>第三步：計算所求數值</strong>", "• 不論哪種情況，\\(\\{p, q\\} = \\{2, 3\\}\\)。", "• 所求：\\(p^q + q^p = 2^3 + 3^2 = 8 + 9 = 17\\)。"], "tip": "遇到雙質數問題，先用奇偶性逼出 2，再用模 3 逼出 3，是數論競賽標準「二重過濾法」。"}, {"id": "p7-5", "number": "高手過招 5", "question": "1、2、3、4、5、6 每一個使用一次組成一個六位數 \\(\\overline{abcdef}\\)，使得三位數 \\(\\overline{abc}\\)、\\(\\overline{bcd}\\)、\\(\\overline{cde}\\)、\\(\\overline{def}\\) 能依次被 4、5、3、11 整除，求這個六位數。", "answer_preview": "324561", "concept": "數位不重複約束下的整除性連環倒推法（5 的倍數末位判定、11 的倍數交錯和、4 的倍數末兩位）。", "steps": ["<strong>第一步：由 5 的整除性確定 d</strong>", "• \\(\\overline{bcd}\\) 能被 5 整除，末位 \\(d\\) 必須是 0 或 5。", "• 數字只有 1~6，故唯一可能為 \\(d = 5\\)。", "<br>", "<strong>第二步：由 11 的整除性確定 e, f</strong>", "• \\(\\overline{def} = \\overline{5ef}\\) 能被 11 整除。", "• 三位數能被 11 整除，且百位是 5，數字來自 \\(\\{1, 2, 3, 4, 6\\}\\) 且不重複。", "• 500 多中 11 的倍數有：506, 517, 528, 539, 550, 561, 572, 583, 594。", "• 檢查所有數字落在 \\(\\{1, 2, 3, 4, 6\\}\\) 且彼此相異者，只有 561 符合！", "• 因此確定 \\(e = 6, f = 1\\)。", "<br>", "<strong>第三步：由 3 的整除性確定 c</strong>", "• 目前已使用的數字為：\\(d = 5, e = 6, f = 1\\)，剩餘數字為 \\(\\{2, 3, 4\\}\\)。", "• \\(\\overline{cde} = \\overline{c56}\\) 能被 3 整除，其數字和 \\(c + 5 + 6 = c + 11\\) 必須是 3 的倍數。", "• 在 \\(\\{2, 3, 4\\}\\) 中：", "  - 若 \\(c = 2\\)：\\(2 + 11 = 13\\)（不合）", "  - 若 \\(c = 3\\)：\\(3 + 11 = 14\\)（不合）", "  - 若 \\(c = 4\\)：\\(4 + 11 = 15\\)（符合，能被 3 整除！）", "• 故確定 \\(c = 4\\)。", "<br>", "<strong>第四步：由 4 的整除性確定 a, b</strong>", "• 剩餘數字為 \\(\\{2, 3\\}\\)，分配給 \\(a, b\\)。", "• \\(\\overline{abc} = \\overline{ab4}\\) 能被 4 整除，末兩位 \\(\\overline{b4}\\) 必須能被 4 整除。", "  - 若 \\(b = 2\\)，末兩位為 24，能被 4 整除（符合！）。此時 \\(a = 3\\)。", "  - 若 \\(b = 3\\)，末兩位為 34，不能被 4 整除（不合）。", "• 故確定 \\(b = 2, a = 3\\)。", "<br>", "• 完整六位數即為：324561。"], "tip": "從約束條件最強的「5 的倍數」與「11 的倍數」切入，推導過程便如水到渠成，毫無旁枝蔓節。"}, {"id": "p7-ext1", "number": "延伸學習 1", "question": "(1) 已知 \\(p, p+2, p+6, p+8, p+14\\) 都是質數，滿足此條件的質數 p 共有多少個？<br>(2) 一個長方體的正面和上面的面積和是 209，它的長、寬、高都是質數，求這個長方體的體積。", "answer_preview": "(1) 1 個 (即 p = 5) ； (2) 374", "concept": "(1) 模 5 抽屜覆蓋原理；(2) 幾何長方體表面因式分解 \\(a(b+c) = 209\\) 與質數分解。", "steps": ["<strong>第 (1) 小題逐步推導（模 5 分析）：</strong>", "• 檢驗五個數對 5 的餘數：", "  • 當 \\(p = 5\\) 時，五數分別為：5, 7, 11, 13, 19，全部皆為質數！滿足條件。", "  • 當 \\(p \\ne 5\\) 時，質數 \\(p\\) 不能被 5 整除，\\(p \\pmod 5\\) 的餘數只可能為 1, 2, 3, 4：", "    - 若 \\(p \\equiv 1 \\pmod 5\\)，則 \\(p + 14 \\equiv 1 + 14 = 15 \\equiv 0 \\pmod 5\\)（為大於 5 的 5 的倍數，必為合數）。", "    - 若 \\(p \\equiv 2 \\pmod 5\\)，則 \\(p + 8 \\equiv 2 + 8 = 10 \\equiv 0 \\pmod 5\\)（為合數）。", "    - 若 \\(p \\equiv 3 \\pmod 5\\)，若 \\(p = 3\\)，則 \\(p + 6 = 9\\) 為合數；若 \\(p > 3\\)，則 \\(p + 2 \\equiv 3 + 2 = 5 \\equiv 0 \\pmod 5\\)（為合數）。", "    - 若 \\(p \\equiv 4 \\pmod 5\\)，則 \\(p + 6 \\equiv 4 + 6 = 10 \\equiv 0 \\pmod 5\\)（為合數）。", "• 無論如何，當 \\(p \\ne 5\\) 時這五個數中必然恰有一數是 5 的倍數且大於 5，絕不可能全為質數！", "• 故唯一滿足條件的質數只有 \\(p = 5\\) 一個。", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 設長方體的長為 \\(a\\)、寬為 \\(b\\)、高為 \\(c\\)，且 \\(a, b, c\\) 皆為質數。", "• 正面面積為 \\(ac\\)，上面面積為 \\(ab\\)，面積和為：", "  \\(ac + ab = a(b + c) = 209\\)", "• 將 209 質因數分解：\\(209 = 11 \\times 19\\)", "• 因為 \\(b, c\\) 皆為質數，\\(b \\ge 2, c \\ge 2 \\implies b + c \\ge 4\\)。", "  • 若 \\(a = 11\\)，則 \\(b + c = 19\\)：", "    兩質數之和為奇數 19，必有一數為唯一偶質數 2，另一數為 \\(19 - 2 = 17\\)（17 也是質數，符合！）。", "    此時三邊長為 11, 2, 17。", "  • 若 \\(a = 19\\)，則 \\(b + c = 11\\)：", "    必有一數為 2，另一數為 \\(11 - 2 = 9\\)（9 是合數，不符合）。", "• 確定長寬高為 11, 2, 17（順序不影響體積）。", "• 長方體體積 \\(V = a \\times b \\times c = 11 \\times 2 \\times 17 = 374\\)。"], "tip": "「兩質數之和為奇數，必有一質數是 2」是數學競賽不可或缺的秒殺思維。"}, {"id": "p7-ext2", "number": "延伸學習 2", "question": "用 1、2、3、4、5、6 這六個數碼組成一個六位數 \\(\\overline{abcdef}\\)，其中不同字母代表 1~6 中不同的數碼，要求前兩個數碼組成的兩位數 \\(\\overline{ab}\\) 是 2 的倍數，且 \\(\\overline{abc}\\) 是 3 的倍數，\\(\\overline{abcd}\\) 是 4 的倍數，\\(\\overline{abcde}\\) 是 5 的倍數，\\(\\overline{abcdef}\\) 是 6 的倍數，試找出所有這樣的六位數，並說明你的推理過程。", "answer_preview": "123654 與 321654", "concept": "高階數位邏輯嚴密推理：位置奇偶交替原則、末位 5 鎖定、4 的倍數末兩位窮舉。", "steps": ["<strong>詳細推理過程：</strong>", "1. <strong>奇偶位置鎖定：</strong>", "   • \\(\\overline{ab}\\) 是 2 的倍數 \\(\\implies b\\) 必為偶數。", "   • \\(\\overline{abcd}\\) 是 4 的倍數 \\(\\implies d\\) 必為偶數。", "   • \\(\\overline{abcdef}\\) 是 6 的倍數 \\(\\implies f\\) 必為偶數。", "   數碼 1~6 中只有三個偶數 \\(\\{2, 4, 6\\}\\)，故偶數位 \\(b, d, f\\) 必須恰好填入 \\(\\{2, 4, 6\\}\\)；", "   相對應地，奇數位 \\(a, c, e\\) 必須填入三個奇數 \\(\\{1, 3, 5\\}\\)。", "<br>", "2. <strong>確定 e 的數值：</strong>", "   • \\(\\overline{abcde}\\) 是 5 的倍數，末位 \\(e\\) 必須是 0 或 5。", "   • 因為奇數位來自 \\(\\{1, 3, 5\\}\\)，所以唯一可能為 \\(e = 5\\)。", "   • 既然 \\(e = 5\\)，則剩餘奇數位 \\(\\{a, c\\} = \\{1, 3\\}\\)。", "<br>", "3. <strong>確定 b 的數值：</strong>", "   • \\(\\overline{abc}\\) 是 3 的倍數，其數字和 \\(a + b + c\\) 必須被 3 整除。", "   • 因為 \\(\\{a, c\\} = \\{1, 3\\}\\)，其和固定為 \\(a + c = 1 + 3 = 4\\)。", "   • 故 \\(4 + b\\) 必須被 3 整除。在偶數 \\(b \\in \\{2, 4, 6\\}\\) 中：", "     - 若 \\(b = 2\\)：\\(4 + 2 = 6\\)（能被 3 整除，符合！）", "     - 若 \\(b = 4\\)：\\(4 + 4 = 8\\)（不合）", "     - 若 \\(b = 6\\)：\\(4 + 6 = 10\\)（不合）", "   • 故唯一可能為 \\(b = 2\\)。", "<br>", "4. <strong>確定 d 與 f 的數值：</strong>", "   • 目前偶數剩餘 \\(\\{d, f\\} = \\{4, 6\\}\\)。", "   • \\(\\overline{abcd}\\) 是 4 的倍數，末兩位 \\(\\overline{cd}\\) 必須能被 4 整除。", "   • 已知 \\(c\\) 是 1 或 3（奇數）：", "     - 若 \\(d = 4\\)，末兩位 \\(\\overline{c4}\\) 為 14 或 34，兩者皆不能被 4 整除！", "     - 若 \\(d = 6\\)，末兩位 \\(\\overline{c6}\\) 為 16 或 36，兩者皆能被 4 整除！", "   • 因此，\\(d\\) 必須是 6，從而 \\(f = 4\\)。", "<br>", "5. <strong>組合出所有解：</strong>", "   • 目前已知：\\(b = 2, d = 6, e = 5, f = 4\\)，而 \\(\\{a, c\\} = \\{1, 3\\}\\)。", "   • 情況一：若 \\(a = 1, c = 3\\)，組成六位數 <strong>123654</strong>。", "   • 情況二：若 \\(a = 3, c = 1\\)，組成六位數 <strong>321654</strong>。", "   • 檢驗整除 6：\\(1+2+3+6+5+4 = 21\\)（能被 3 整除且為偶數），兩者皆完全滿足所有條件！", "<br>", "答：所有符合條件的六位數共有兩個，分別為 123654 與 321654。"], "tip": "此題是整除性邏輯推理的巔峰代表作，步驟環環相扣，每一步都具有必然性！"}]}, {"page": 8, "title": "第 8 頁：高手過招・延伸學習（三）質因數分組與特殊分解", "category": "高手過招與延伸", "problems": [{"id": "p8-6", "number": "高手過招 6", "question": "把 30、33、39、75、140、350、1430、1690 八數平均分成甲, 乙兩組，已知 1430 在甲組，若甲 4 數的乘積等於乙組 4 的乘積，那麼甲組另外 3 數的和是多少？", "answer_preview": "419 或 254 (視分組情況而定)", "concept": "因數乘積相等的分組策略：將所有數進行質因數分解，統計各質因數總指數，每組必須平分各質因數。", "steps": ["<strong>第一步：八個數質因數分解</strong>", "• 30 = \\(2 \\times 3 \\times 5\\)", "• 33 = \\(3 \\times 11\\)", "• 39 = \\(3 \\times 13\\)", "• 75 = \\(3 \\times 5^2\\)", "• 140 = \\(2^2 \\times 5 \\times 7\\)", "• 350 = \\(2 \\times 5^2 \\times 7\\)", "• 1430 = \\(2 \\times 5 \\times 11 \\times 13\\)", "• 1690 = \\(2 \\times 5 \\times 13^2\\)", "<br>", "<strong>第二步：統計質因數總指數與每組目標配額</strong>", "• 質因數 2 的總次數：1 + 0 + 0 + 0 + 2 + 1 + 1 + 1 = 6 次 \\(\\implies\\) 每組需 3 次", "• 質因數 3 的總次數：1 + 1 + 1 + 1 + 0 + 0 + 0 + 0 = 4 次 \\(\\implies\\) 每組需 2 次", "• 質因數 5 的總次數：1 + 0 + 0 + 2 + 1 + 2 + 1 + 1 = 8 次 \\(\\implies\\) 每組需 4 次", "• 質因數 7 的總次數：0 + 0 + 0 + 0 + 1 + 1 + 0 + 0 = 2 次 \\(\\implies\\) 每組需 1 次", "• 質因數 11 的總次數：0 + 1 + 0 + 0 + 0 + 0 + 1 + 0 = 2 次 \\(\\implies\\) 每組需 1 次", "• 質因數 13 的總次數：0 + 0 + 1 + 0 + 0 + 0 + 1 + 2 = 4 次 \\(\\implies\\) 每組需 2 次", "<br>", "<strong>第三步：依稀有質因數進行鎖定</strong>", "• <strong>質因數 11</strong>：只有 33 與 1430 含有 11。已知 1430 在甲組，故 <strong>33 必在乙組</strong>。", "• <strong>質因數 13</strong>：1430 含有一個 13，1690 含有兩個 13。若 1690 在甲組，甲組 13 的次方達到 3 超過 2，故 <strong>1690 必在乙組</strong>。", "  乙組已有 1690 佔滿兩個 13，故 <strong>39（含一個 13）必在甲組</strong>。", "  此時甲組已有：1430, 39。", "• <strong>質因數 7</strong>：分布在 140 與 350，恰一數在甲組，一數在乙組：", "  - <strong>情況 1：350 在甲組</strong>（此時 140 在乙組）。", "    甲組已有：1430, 39, 350。計算其乘積缺少 \\(2^1 \\times 3^1 \\times 5^1 = 30\\)，故第四數為 30。", "    此時甲組另三數為 30, 39, 350，其和 \\(= 30 + 39 + 350 = 419\\)。", "  - <strong>情況 2：140 在甲組</strong>（此時 350 在乙組）。", "    甲組已有：1430, 39, 140。計算其乘積缺少 \\(3^1 \\times 5^2 = 75\\)，故第四數為 75。", "    此時甲組另三數為 39, 75, 140，其和 \\(= 39 + 75 + 140 = 254\\)。", "<br>", "答：甲組另外三數的和為 419 或 254。"], "tip": "抓出最高冪次或最少出現的質因數（如 11 與 13）作為突破口，是因數乘積對稱分組問題的不二法門。"}, {"id": "p8-7", "number": "高手過招 7", "question": "(1) 把 11112222 分解成兩個相鄰的正整數的乘積，求其中較大的那個正整數因數。<br>(2) a、b、c 三都是兩位數，\\(a > b > c\\)，已知它們的乘積是 3960，求此三數。", "answer_preview": "(1) 3334 ； (2) 詳見解析（共 7 組可能解，如常見競賽題條件和為質數則為 30, 12, 11；和為偶數則為 22, 18, 10）", "concept": "(1) 特殊循環數代數拆解法：設 \\(x = 1111\\)；(2) 3960 質因數分配給三個兩位數的排列組合分析。", "steps": ["<strong>第 (1) 小題代數巧解：</strong>", "• 設 \\(x = 1111 = \\frac{10^4 - 1}{9}\\)，則 \\(10^4 = 9x + 1\\)。", "• 將 11112222 拆解：", "  \\(11112222 = 11110000 + 2222 = 1111 \\times 10^4 + 2222 = x(10^4 + 2)\\)", "• 將 \\(10^4 = 9x + 1\\) 代入：", "  \\(x(9x + 1 + 2) = x(9x + 3) = 3x(3x + 1)\\)", "• 因為 \\(x = 1111\\)，所以：", "  \\(3x = 3333\\)", "  \\(3x + 1 = 3334\\)", "• 這表明 \\(11112222 = 3333 \\times 3334\\)，恰好是兩個相鄰正整數的乘積！", "• 其中較大的正整數因數為 <strong>3334</strong>。", "<hr>", "<strong>第 (2) 小題完整因數分解與分類討論：</strong>", "• 將 3960 進行質因數分解：", "  \\(3960 = 10 \\times 396 = 2 \\times 5 \\times 4 \\times 99 = 2^3 \\times 3^2 \\times 5 \\times 11\\)", "• 限制條件：\\(10 \\le c < b < a \\le 99\\)（皆為兩位數）。", "• 質因數 11 必須分配給其中一個數，且該數只能是 11 的倍數（如 11, 22, 33, 44...）。", "• 滿足 \\(a > b > c \\ge 10\\) 且 \\(a \\times b \\times c = 3960\\) 的所有兩位數組合共有以下 7 組：", "  1. \\(a = 20, b = 18, c = 11\\)（和為 49）", "  2. \\(a = 22, b = 15, c = 12\\)（和為 49）", "  3. \\(a = 22, b = 18, c = 10\\)（和為 50，為偶數）", "  4. \\(a = 24, b = 15, c = 11\\)（和為 50，為偶數）", "  5. \\(a = 30, b = 12, c = 11\\)（和為 53，為質數）", "  6. \\(a = 33, b = 12, c = 10\\)（和為 55）", "  7. \\(a = 36, b = 11, c = 10\\)（和為 57）", "• <strong>題意補全提示</strong>：講義印製處「已知它們的和是 數」若為漏印字：", "  - 若原題為「和是質數」，則唯一解為 \\(a = 30, b = 12, c = 11\\)（和為 53）；", "  - 若原題為「和是偶數」，則解為 \\((22, 18, 10)\\) 或 \\((24, 15, 11)\\)。"], "tip": "第 (1) 題的 \\(3x(3x+1)\\) 是奧數數論的極致典範，掌握結構後遇到 1122 或 111111222222 都能一秒寫出答案！"}, {"id": "p8-ext1", "number": "延伸學習（右上）", "question": "有八數：14、30、33、75、143、169、595、663，把它們分成兩組，每組四個數且各組四個數的乘積相等，那麼與 14 分在同一組的是哪三個數？", "answer_preview": "75, 143, 663", "concept": "質因數唯一性推論鏈：藉由 17, 7, 2, 13 的分佈位置逐步鎖定分組。", "steps": ["<strong>第一步：各數質因數分解</strong>", "• 14 = \\(2 \\times 7\\)", "• 30 = \\(2 \\times 3 \\times 5\\)", "• 33 = \\(3 \\times 11\\)", "• 75 = \\(3 \\times 5^2\\)", "• 143 = \\(11 \\times 13\\)", "• 169 = \\(13^2\\)", "• 595 = \\(5 \\times 7 \\times 17\\)", "• 663 = \\(3 \\times 13 \\times 17\\)", "<br>", "<strong>第二步：嚴密邏輯推論鏈</strong>", "1. <strong>鎖定 17</strong>：這八個數中，只有 595 與 663 含有質因數 17，因此這兩數必須分在不同組！", "2. <strong>鎖定 7</strong>：只有 14 與 595 含有質因數 7。因為 14 在第一組，所以 <strong>595 必定在第二組</strong>！", "3. 既然 595 在第二組，由步驟 1 可知 <strong>663 必定在第一組</strong>（與 14 同組）！", "4. <strong>鎖定 2</strong>：只有 14 與 30 含有質因數 2。因為 14 在第一組，所以 <strong>30 必定在第二組</strong>！", "5. <strong>鎖定 13</strong>：質因數 13 分布在 143（1個）、169（2個）、663（1個），總共 4 個 13，每組需分配 2 個 13。", "   第一組已經有 663（已佔 1 個 13），若放入 169（2個 13）則會達到 3 個超標，因此 169 必定在第二組，<strong>143 必定在第一組</strong>！", "6. <strong>決定第四數</strong>：", "   目前第一組已有三數：14, 663, 143。", "   乘積缺少 \\(3^1 \\times 5^2 = 75\\)，因此第四數必定是 <strong>75</strong>！", "<br>", "答：與 14 分在同一組的三個數是 75, 143, 663。"], "tip": "單一質因數只出現在兩個數時，這兩數必然分屬兩組；由此為骨牌起點逐一推導，過程唯一確定！"}, {"id": "p8-ext2", "number": "延伸學習（右下）", "question": "(1) ① 寫出 234 的標準分解式<br>　　② 若 \\(3^m \\times (3^n - 1) = 234\\)，\\(m, n\\) 是正整數，則 \\(m = ?, n = ?\\)<br>(2) 已知 6545 可以分解成兩個二位數的乘積，則此兩個二位數和為？", "answer_preview": "(1) ① 2 × 3^2 × 13 ； ② m = 2, n = 3 ； (2) 162", "concept": "(1) 質因數 3 的整除性分離（\\(3^n - 1\\) 絕不含因數 3）；(2) 質因數排列組合重組為二位數。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• ① 將 234 做短除法質因數分解：", "  \\(234 = 2 \\times 117 = 2 \\times 9 \\times 13 = 2 \\times 3^2 \\times 13\\)", "• ② 觀察方程式 \\(3^m \\times (3^n - 1) = 234\\)：", "  因為 \\(n\\) 是正整數，\\(3^n\\) 是 3 的倍數，所以 \\(3^n - 1\\) 除以 3 餘 2（絕不含質因數 3）。", "  這意味著 234 中的所有質因數 3（即 \\(3^2\\)）必須全部由前方的 \\(3^m\\) 提供！", "  因此必有 \\(3^m = 3^2 \\implies m = 2\\)。", "  接著將 \\(3^m = 9\\) 代回：", "  \\(3^n - 1 = \\frac{234}{9} = 26 \\implies 3^n = 27 = 3^3 \\implies n = 3\\)。", "• 答：\\(m = 2, n = 3\\)", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 將 6545 進行質因數分解：", "  \\(6545 = 5 \\times 1309 = 5 \\times 7 \\times 187 = 5 \\times 7 \\times 11 \\times 17\\)", "• 需將這四個質因數 \\(\\{5, 7, 11, 17\\}\\) 配對組合成兩個「二位數」：", "  - 若選 17，可與 5 配對：\\(5 \\times 17 = 85\\)（二位數）", "  - 剩下的質因數 7 與 11 相乘：\\(7 \\times 11 = 77\\)（二位數）", "  - 檢查其他組合：若 \\(7 \\times 17 = 119\\) 超過二位數；若 \\(11 \\times 17 = 187\\) 超過二位數。", "• 故唯一的兩個二位數為 77 與 85。", "• 兩二位數之和 \\(= 77 + 85 = 162\\)。"], "tip": "在 \\(3^m(3^n - 1)\\) 中利用「整除性互質」分離因數，是競賽中破解整數指數方程的絕妙招數。"}]}, {"page": 9, "title": "第 9 頁：高手過招・延伸學習（四）末尾零與倍數判別", "category": "高手過招與延伸", "problems": [{"id": "p9-8", "number": "高手過招 8", "question": "一串數 1、4、7、10、……、697、700 的規律是：第一個數是 1，以後的每一個數等於它前面的一個數加 3，直到 700 為止。將所有這些數相乘，試求所得數的尾部零的個數。(例如：12003000 的尾部零的個數是 3)", "answer_preview": "60 個零", "concept": "乘積尾部零由質因數 10 的次數決定，即 \\(\\min(v_2, v_5)\\)。本數列偶數充裕，只需嚴密統計質因數 5 的階梯累加個數。", "steps": ["<strong>第一步：數列項數與通式</strong>", "• 數列為公差 3 的等差數列：\\(a_k = 3k - 2\\)", "• 由末項 \\(3k - 2 = 700 \\implies 3k = 702 \\implies k = 234\\) 項。", "• 偶數在數列中每隔一項就出現一次，至少有 117 個偶數，質因數 2 極為充足，尾部 0 的個數完全取決於「質因數 5 的總個數」。", "<br>", "<strong>第二步：階梯式統計質因數 5 的貢獻</strong>", "• <strong>1. 能被 5 整除（至少提供 1 個 5）的數：</strong>", "  \\(3k - 2 \\equiv 0 \\pmod 5 \\iff 3k \\equiv 2 \\equiv 12 \\pmod 5 \\iff k \\equiv 4 \\pmod 5\\)", "  項數每 5 項出現一個，數值每 \\(3 \\times 5 = 15\\) 出現一次：", "  10, 25, 40, 55, ..., 700", "  個數 \\(= \\frac{700 - 10}{15} + 1 = 46 + 1 = 47\\) 個。", "<br>", "• <strong>2. 能被 25（\\(5^2\\)）整除（提供第 2 個 5）的數：</strong>", "  \\(3k - 2 \\equiv 0 \\pmod{25} \\iff 3k \\equiv 2 \\equiv 27 \\pmod{25} \\iff k \\equiv 9 \\pmod{25}\\)", "  數值每 \\(3 \\times 25 = 75\\) 出現一次，首項為 \\(3(9) - 2 = 25\\)：", "  25, 100, 175, 250, 325, 400, 475, 550, 625, 700", "  個數 \\(= \\frac{700 - 25}{75} + 1 = 9 + 1 = 10\\) 個。", "<br>", "• <strong>3. 能被 125（\\(5^3\\)）整除（提供第 3 個 5）的數：</strong>", "  在 1 至 700 之間，且形如 \\(3k - 2\\) 的 125 的倍數：", "  125 的倍數有 125, 250, 375, 500, 625", "  檢驗除以 3 的餘數（需餘 1，即 \\(3k - 2 = 3(k-1) + 1\\)）：", "  - \\(125 \\equiv 2 \\pmod 3\\)（不合）", "  - \\(250 \\equiv 1 \\pmod 3\\)（符合！）", "  - \\(375 \\equiv 0 \\pmod 3\\)（不合）", "  - \\(500 \\equiv 2 \\pmod 3\\)（不合）", "  - \\(625 \\equiv 1 \\pmod 3\\)（符合！）", "  共 2 個（250 與 625）。", "<br>", "• <strong>4. 能被 625（\\(5^4\\)）整除（提供第 4 個 5）的數：</strong>", "  只有 625 本身，且 \\(625 = 3(209) - 2\\)，在數列中，共 1 個。", "<br>", "<strong>第三步：匯總所有質因數 5 的個數</strong>", "• 總個數 \\(= 47 + 10 + 2 + 1 = 60\\) 個。", "• 答：所得數尾部零的個數為 60 個。"], "tip": "非自然數階乘的尾部零問題，必須透過同餘方程式 \\(3k-2 \\equiv 0 \\pmod{5^m}\\) 求得間隔與首項，按階梯法累加。"}, {"id": "p9-9", "number": "高手過招 9", "question": "(1) 設七位數 23ab421 為 99 的倍數 (a、b 為一正整數或 0)，試求 a、b 之值。<br>(2) 若 792 能整除七位數 13xy45z，則 \\(x + 2y + z = ?\\)", "answer_preview": "(1) a = 2, b = 4 ； (2) 14", "concept": "高階整除性判定法則：99 的倍數（9 與 11 的倍數）與 792 的倍數（\\(792 = 8 \\times 9 \\times 11\\)）。", "steps": ["<strong>第 (1) 小題逐步推導：</strong>", "• 99 的倍數必須同時是 9 與 11 的倍數。", "• <strong>被 9 整除</strong>：數字和必須是 9 的倍數", "  \\(2 + 3 + a + b + 4 + 2 + 1 = 12 + a + b\\)", "  因 \\(0 \\le a, b \\le 9 \\implies 0 \\le a + b \\le 18\\)，故 \\(a + b = 6\\) 或 \\(a + b = 15\\)。", "• <strong>被 11 整除</strong>：奇數位數字和與偶數位數字和之差是 11 的倍數", "  奇數位和（從右向左第 1, 3, 5, 7 位）：\\(1 + 4 + a + 2 = a + 7\\)", "  偶數位和（第 2, 4, 6 位）：\\(2 + b + 3 = b + 5\\)", "  差值：\\((a + 7) - (b + 5) = a - b + 2\\)", "  需為 11 的倍數，因 \\(-9 \\le a - b \\le 9\\)，\\(-7 \\le a - b + 2 \\le 11\\)，可能為 0 或 11。", "  - 若 \\(a - b + 2 = 0 \\implies b - a = 2\\)：", "    聯立 \\(a + b = 6\\) 解得：\\(b = 4, a = 2\\)（為有效整數解！）。", "    聯立 \\(a + b = 15\\) 解得：\\(2b = 17\\)（無整數解）。", "  - 若 \\(a - b + 2 = 11 \\implies a - b = 9 \\implies a = 9, b = 0\\)，此時 \\(a + b = 9\\) 不合。", "• 故唯一解為 \\(a = 2, b = 4\\)。", "<hr>", "<strong>第 (2) 小題逐步推導：</strong>", "• 分解 792：\\(792 = 8 \\times 99 = 8 \\times 9 \\times 11\\)。七位數 13xy45z 需同時被 8, 9, 11 整除。", "1. <strong>被 8 整除（末三位判定）</strong>：", "   末三位 \\(\\overline{45z}\\) 能被 8 整除，\\(450 \\div 8 = 56 \\dots 2\\)，故 \\(456 = 8 \\times 57\\)，唯一可能 \\(z = 6\\)。", "2. <strong>被 9 整除（數字和判定）</strong>：", "   數字和 \\(= 1 + 3 + x + y + 4 + 5 + 6 = 19 + x + y\\) 需為 9 的倍數。", "   故 \\(x + y = 8\\) 或 \\(x + y = 17\\)。", "3. <strong>被 11 整除（奇偶位差判定）</strong>：", "   奇數位和：\\(z + 4 + x + 1 = 6 + 4 + x + 1 = x + 11\\)", "   偶數位和：\\(5 + y + 3 = y + 8\\)", "   差值：\\((x + 11) - (y + 8) = x - y + 3\\) 必須被 11 整除。", "   取 \\(x - y + 3 = 11 \\implies x - y = 8\\)。", "   與 \\(x + y = 8\\) 聯立：\\(2x = 16 \\implies x = 8, y = 0\\)（符合！）。", "   若取 \\(x - y + 3 = 0 \\implies y - x = 3\\)，與 \\(x+y=8\\) 聯立無整數解。", "4. 得 \\(x = 8, y = 0, z = 6\\)。", "• 計算所求：\\(x + 2y + z = 8 + 2(0) + 6 = 14\\)。"], "tip": "複合整除性判定一定要「先從末幾位（2, 4, 8, 5）鎖定末尾未知數」，再用數字和與奇偶位差聯立求解。"}, {"id": "p9-ext1", "number": "延伸學習（右上）", "question": "(1) 若 160000 的兩正因數的和等於 1025，求這兩個正因數。<br>(2) 將自然數 N 接寫在每一自然數後面 (例如 \\(N = \\text{將 } 2 \\text{ 寫在 } 35 \\text{ 的後面得 } 352\\))，如果得到的新數都能被 N 整除，那麼 N 稱為魔術數。在小於 1300 的正整數中，魔術數的個數是多少？", "answer_preview": "(1) 25 與 1000，或 400 與 625 ； (2) 14 個", "concept": "(1) 奇偶性分析鎖定質因數 5 的冪次；(2) 魔術數定義的代數轉化：\\(M \\cdot 10^k + N \\equiv 0 \\pmod N \\iff N \\mid 10^k\\)。", "steps": ["<strong>第 (1) 小題逐步推導：</strong>", "• 設兩正因數為 \\(u, v\\)，\\(u \\le v\\)，滿足 \\(u \\mid 160000\\)，\\(v \\mid 160000\\)，且 \\(u + v = 1025\\)。", "• 分解 160000：\\(160000 = 16 \\times 10^4 = 2^4 \\times (2 \\times 5)^4 = 2^8 \\times 5^4\\)。", "• 因為兩數和 \\(u + v = 1025\\) 是奇數，兩數必為「一奇一偶」。", "• 160000 的所有奇數因數只能由質因數 5 提供，即 \\(5^0, 5^1, 5^2, 5^3, 5^4\\)：", "  - 若奇因數為 1：偶因數 \\(= 1025 - 1 = 1024 = 2^{10}\\)，但 160000 最多只有 \\(2^8\\)，不能整除，不合。", "  - 若奇因數為 5：偶因數 \\(= 1025 - 5 = 1020\\)，含質因數 3 與 17，不能整除，不合。", "  - 若奇因數為 25：偶因數 \\(= 1025 - 25 = 1000 = 2^3 \\times 5^3\\)，能整除 160000，符合！解為 <strong>25 與 1000</strong>。", "  - 若奇因數為 125：偶因數 \\(= 1025 - 125 = 900\\)，含質因數 3，不能整除，不合。", "  - 若奇因數為 625：偶因數 \\(= 1025 - 625 = 400 = 2^4 \\times 5^2\\)，能整除 160000，符合！解為 <strong>400 與 625</strong>。", "• 答：這兩個正因數為 25 與 1000，或 400 與 625。", "<hr>", "<strong>第 (2) 小題逐步推導：</strong>", "• 設 \\(N\\) 為 \\(k\\) 位數。將 \\(N\\) 接在任意自然數 \\(M\\) 後面，新數為 \\(M \\cdot 10^k + N\\)。", "• 依題意，\\(M \\cdot 10^k + N\\) 恆能被 \\(N\\) 整除，即：", "  \\(M \\cdot 10^k + N \\equiv 0 \\pmod N \\iff M \\cdot 10^k \\equiv 0 \\pmod N\\) 對「所有」自然數 \\(M\\) 均成立。", "• 取 \\(M = 1\\)，必須有 \\(10^k\\) 能被 \\(N\\) 整除，即 <strong>\\(N\\) 必須是 \\(10^k\\) 的因數</strong>！", "• 依位數 \\(k\\) 分類討論（需滿足 \\(N < 1300\\)）：", "  1. <strong>一位數（\\(k = 1\\)）</strong>：\\(N \\mid 10\\)，有 1, 2, 5，共 3 個。", "  2. <strong>二位數（\\(k = 2\\)）</strong>：\\(10 \\le N \\le 99\\) 且 \\(N \\mid 100\\)，有 10, 20, 25, 50，共 4 個。", "  3. <strong>三位數（\\(k = 3\\)）</strong>：\\(100 \\le N \\le 999\\) 且 \\(N \\mid 1000\\)，有 100, 125, 200, 250, 500，共 5 個。", "  4. <strong>四位數（\\(k = 4\\)）</strong>：\\(1000 \\le N < 1300\\) 且 \\(N \\mid 10000\\)，因 \\(10000 = 1000 \\times 10 = 1250 \\times 8\\)，有 1000, 1250，共 2 個。", "• 魔術數總個數 \\(= 3 + 4 + 5 + 2 = 14\\) 個。"], "tip": "將題目的文字敘述轉化為簡潔的數論條件「N 是 10^k 的因數」，複雜的問題瞬間迎刃而解。"}, {"id": "p9-ext2", "number": "延伸學習（右下）", "question": "(1) 七位數 3a4589b 為 55 的倍數，則數對 \\((a, b) = \\underline{\\hspace{2cm}}\\)。<br>(2) 六位數 321xy5 為 33 的倍數，則數對 \\((x, y) = \\underline{\\hspace{2cm}}\\)。<br>(3) 若三位數 \\(\\overline{abc}\\)，假設 a、b、c 三個數兩兩相異，且 \\(\\overline{abc}\\) 可以被 45 所整除，求這種三位數共有多少個？", "answer_preview": "(1) (1, 0) 或 (6, 5) ； (2) (2, 5), (5, 8), (9, 1) ； (3) 15 個", "concept": "55（5與11）、33（3與11）與 45（5與9）的質因數分解判定，配合數字兩兩相異排除重疊。", "steps": ["<strong>第 (1) 小題逐步計算：</strong>", "• 55 的倍數必為 5 與 11 的倍數：", "  末位 \\(b \\in \\{0, 5\\}\\)。", "  奇偶位差：\\((b + 8 + 4 + 3) - (9 + 5 + a) = (b + 15) - (a + 14) = b - a + 1\\) 需為 11 的倍數。", "  因 \\(-8 \\le b - a + 1 \\le 10\\)，只能為 0，故 \\(a - b = 1\\)。", "  - 若 \\(b = 0 \\implies a = 1\\)，數對為 (1, 0)；", "  - 若 \\(b = 5 \\implies a = 6\\)，數對為 (6, 5)。", "<hr>", "<strong>第 (2) 小題逐步計算：</strong>", "• 33 的倍數必為 3 與 11 的倍數：", "  • 數字和：\\(3 + 2 + 1 + x + y + 5 = 11 + x + y\\) 需為 3 的倍數。", "  • 奇偶位差：\\((5 + x + 2) - (y + 1 + 3) = x - y + 3\\) 需為 11 的倍數，可能為 0 或 11。", "    - 情況 A：\\(x - y + 3 = 0 \\implies y - x = 3\\)。", "      代入數字和：\\(11 + x + (x + 3) = 2x + 14 \\equiv 2(x + 1) \\pmod 3\\)，需 \\(x + 1\\) 為 3 的倍數，\\(x \\in \\{2, 5, 8\\}\\)。", "      當 \\(x = 2 \\implies y = 5\\)（得 (2, 5)）；", "      當 \\(x = 5 \\implies y = 8\\)（得 (5, 8)）；", "      當 \\(x = 8 \\implies y = 11\\)（超過 9，不合）。", "    - 情況 B：\\(x - y + 3 = 11 \\implies x - y = 8\\)。", "      可能為 \\(x = 8, y = 0\\)（和為 19，非 3 的倍數）；或 \\(x = 9, y = 1\\)（和為 21，符合！得 (9, 1)）。", "  • 數對 \\((x, y)\\) 共有三組：(2, 5)、(5, 8)、(9, 1)。", "<hr>", "<strong>第 (3) 小題逐步計算：</strong>", "• 45 的倍數必被 5 和 9 整除，且 \\(a, b, c\\) 兩兩相異，\\(a \\ne 0\\)。", "• 依末位 \\(c\\) 分類：", "  • <strong>若 \\(c = 0\\)</strong>：\\(a, b \\ne 0\\) 且 \\(a \\ne b\\)。", "    數字和 \\(a + b\\) 需被 9 整除，在 1~9 中 \\(a + b = 9\\) 的數對有：", "    (1,8), (2,7), (3,6), (4,5), (5,4), (6,3), (7,2), (8,1)，共 8 個（皆兩兩相異且非 0）。", "  • <strong>若 \\(c = 5\\)</strong>：\\(a, b \\ne 5\\) 且 \\(a \\ne b\\) 且 \\(a \\ne 0\\)。", "    數字和 \\(a + b + 5\\) 需被 9 整除 \\(\\implies a + b = 4\\) 或 \\(a + b = 13\\)。", "    - \\(a + b = 4\\)：(1,3), (3,1), (4,0)（共 3 個；(2,2) 數字相同排除）。", "    - \\(a + b = 13\\)：(4,9), (6,7), (7,6), (9,4)（共 4 個；(5,8) 與 (8,5) 含 5 排除）。", "    共 \\(3 + 4 = 7\\) 個。", "• 總個數 \\(= 8 + 7 = 15\\) 個。"], "tip": "在計數問題中，嚴格排除條件（如 a、b、c 兩兩相異且首位非零）是避免多算或少算的防護盾。"}]}, {"page": 10, "title": "第 10 頁：高手過招・延伸學習（五）高位數整除與完全數", "category": "高手過招與延伸", "problems": [{"id": "p10-10", "number": "高手過招 10", "question": "(1) 已知 \\(3^1 = 3, 3^2 = 9, 3^3 = 27, 3^4 = 81\\)，\\(3^{20} = a48678440b\\)，其中 a、b 是 0~9 的整數，求 \\(a + 2b = ?\\)<br>(2) 有一個四十一信數（位數）：\\(55\\dots 5 \\ \\square\\ 99\\dots 9\\)，其中 5 和 9 各 20 個，此數能被 7 整除，那麼 \\(\\square\\) 所代表的數是多少？", "answer_preview": "(1) 5 ； (2) 6", "concept": "(1) 個位數循環律與 9 的整除性；(2) 模 7 同餘與 6 位一循環特性（\\(111111 = 7 \\times 15873\\)）。", "steps": ["<strong>第 (1) 小題逐步推導：</strong>", "1. <strong>求末位數 b</strong>：", "   3 的次方個位數規律為：3, 9, 7, 1，以 4 為週期循環。", "   因為指數 \\(20 = 4 \\times 5\\)（整除），故末位數 \\(b = 1\\)。", "2. <strong>求首位數 a</strong>：", "   因為 \\(3^{20}\\) 顯然是 9 的倍數，其所有位數之和必為 9 的倍數。", "   數字和 \\(= a + 4 + 8 + 6 + 7 + 8 + 4 + 4 + 0 + 1 = a + 42\\)。", "   在 \\(0 \\le a \\le 9\\) 範圍內，\\(42 + a\\) 需為 9 的倍數，唯一可能為 \\(42 + a = 45 \\implies a = 3\\)。", "3. 計算所求：\\(a + 2b = 3 + 2(1) = 5\\)。", "<hr>", "<strong>第 (2) 小題逐步推導（模 7 循環群）：</strong>", "• 關鍵性質：\\(1001 = 7 \\times 11 \\times 13\\)，\\(10^3 \\equiv -1 \\pmod 7\\)，\\(10^6 \\equiv 1 \\pmod 7\\)。", "  因此連續 6 個相同的數字（如 111111, 555555, 999999）皆能被 7 整除！", "• 設方格中的數字為 \\(d\\)。", "• 該四十一檔數結構為：\\(55\\dots 5 (20\\text{個}) \\times 10^{21} + d \\times 10^{20} + 99\\dots 9 (20\\text{個})\\)。", "• 逐段計算模 7 的餘數：", "  1. <strong>20 個 9</strong>：\\(20 = 6 \\times 3 + 2\\)，前 18 個 9 可整除 7 消去，剩下最後兩位 99：", "     \\(99 = 7 \\times 14 + 1 \\equiv 1 \\pmod 7\\)。", "  2. <strong>中間方格 \\(d \\times 10^{20}\\)</strong>：", "     \\(10^{20} = 10^{6 \\times 3 + 2} \\equiv 10^2 = 100 \\equiv 2 \\pmod 7\\)，貢獻 \\(2d\\)。", "  3. <strong>20 個 5 乘以 \\(10^{21}\\)</strong>：", "     20 個 5 模 7 剩下 55，\\(55 = 7 \\times 7 + 6 \\equiv -1 \\pmod 7\\)。", "     \\(10^{21} = 10^{6 \\times 3 + 3} \\equiv 10^3 = 1000 \\equiv -1 \\pmod 7\\)。", "     乘積貢獻：\\((-1) \\times (-1) = 1 \\pmod 7\\)。", "• 匯總全體模 7：", "  \\(1 + 2d + 1 = 2d + 2 \\equiv 0 \\pmod 7\\)", "  \\(2(d + 1) \\equiv 0 \\pmod 7 \\implies d + 1 \\equiv 0 \\pmod 7\\)", "• 在 \\(0 \\le d \\le 9\\) 之中，唯一可能為 \\(d = 6\\)。", "• 答：\\(\\square\\) 所代表的數是 6。"], "tip": "7、11、13 的倍數判別祕訣：\\(10^3 \\equiv -1\\)，每三位一節交錯相減；而六位一循環則全部消去！"}, {"id": "p10-11", "number": "高手過招 11", "question": "一矩形的四邊長是小於 10 的整數，用這四長度可構成一四位數，這四位數的千位數字與百位字相同，並且這個四位數是一完全平方數，求矩形的面積。", "answer_preview": "28", "concept": "完全平方數的形態分析：aabb 型完全平方數的唯一性證明（7744 = 88^2）。", "steps": ["<strong>第一步：題意幾何與代數轉化</strong>", "• 矩形四邊長分別為兩組對邊長，設為 \\(x, y\\)，滿足 \\(1 \\le x, y \\le 9\\)。", "• 四邊長構成四位數，千位與百位相同，故為 \\(x, x\\)；十位與個位自然為 \\(y, y\\)。", "• 該四位數可寫為：", "  \\(N = \\overline{xxyy} = 1000x + 100x + 10y + y = 1100x + 11y = 11(100x + y)\\)", "<br>", "<strong>第二步：完全平方數條件推導</strong>", "• 因為 \\(N\\) 是一個完全平方數，且含有質因數 11，所以 \\(N\\) 必須含有質因數 11 的偶數次方（至少為 \\(11^2\\)）。", "• 這表示括號內的 \\(100x + y\\) 必須能被 11 整除！", "• 改寫：\\(100x + y = 99x + (x + y)\\)", "• 因為 \\(99x\\) 是 11 的倍數，所以 \\(x + y\\) 必須是 11 的倍數！", "• 由於 \\(1 \\le x, y \\le 9\\)，\\(2 \\le x + y \\le 18\\)，故唯一可能為 \\(x + y = 11\\)。", "<br>", "<strong>第三步：利用平方數末位數窮舉</strong>", "• 完全平方數的個位數 \\(y\\) 只能是 0, 1, 4, 5, 6, 9：", "  - 若 \\(y = 1 \\implies x = 10\\)（超過 9，不合）", "  - 若 \\(y = 4 \\implies x = 11 - 4 = 7\\)，此時四位數為 7744。檢驗：\\(\\sqrt{7744} = 88\\)，恰為整數平方！", "  - 若 \\(y = 5 \\implies x = 6\\)，數為 6655（非平方數）", "  - 若 \\(y = 6 \\implies x = 5\\)，數為 5566（非平方數）", "  - 若 \\(y = 9 \\implies x = 2\\)，數為 2299（非平方數）", "• 故唯一的 aabb 型四位完全平方數為 7744，長寬分別為 7 與 4。", "• 矩形面積 \\(= 7 \\times 4 = 28\\)。"], "tip": "7744 是數學史上唯一一個前兩位相同、後兩位也相同的四位完全平方數（88^2），記住此特徵可直接秒解！"}, {"id": "p10-ext1", "number": "延伸學習（右上）", "question": "(1) 有一個 101 位的正整數 \\(A = \\underbrace{88\\dots 8}_{50\\text{個}} \\ \\square \\ \\underbrace{99\\dots 9}_{50\\text{個}}\\) 能被 7 整除，求 \\(\\square\\) 所代表的數是多少？<br>(2) 有一個六位數 \\(11 \\ \\square\\square\\ 11\\) 能被 17 和 19 整除，求方格的兩數是多少？", "answer_preview": "(1) 5 ； (2) 5, 3 (該數為 115311)", "concept": "(1) 超大位數模 7 循環消去（\\(50 = 6 \\times 8 + 2\\)）；(2) 互質整除性：\\(17 \\times 19 = 323\\) 的整除性求解。", "steps": ["<strong>第 (1) 小題逐步推導：</strong>", "• 模 7 以 6 位為一循環週期消去（因 111111 能被 7 整除）。", "• 50 個位數除以 6：\\(50 = 6 \\times 8 + 2\\)，故 50 個重複數字模 7 等價於「2 個重複數字」！", "• 設方格代表數字為 \\(d\\)，位在 \\(10^{50}\\)：", "  1. <strong>低位 50 個 9</strong>：等價於 99，\\(99 = 7 \\times 14 + 1 \\equiv 1 \\pmod 7\\)。", "  2. <strong>中間方格 \\(d \\times 10^{50}\\)</strong>：", "     \\(10^{50} = 10^{6 \\times 8 + 2} \\equiv 10^2 = 100 \\equiv 2 \\pmod 7\\)，貢獻 \\(2d\\)。", "  3. <strong>高位 50 個 8 乘以 \\(10^{51}\\)</strong>：", "     50 個 8 等價於 88，\\(88 = 7 \\times 12 + 4 \\equiv 4 \\pmod 7\\)。", "     \\(10^{51} = 10^{6 \\times 8 + 3} \\equiv 10^3 = 1000 \\equiv -1 \\pmod 7\\)。", "     乘積貢獻：\\(4 \\times (-1) = -4 \\equiv 3 \\pmod 7\\)。", "• 匯總全體模 7：", "  \\(1 + 2d + 3 = 2d + 4 \\equiv 0 \\pmod 7\\)", "  \\(2(d + 2) \\equiv 0 \\pmod 7 \\implies d + 2 \\equiv 0 \\pmod 7\\)", "• 在 \\(0 \\le d \\le 9\\) 之中，\\(d = 7 - 2 = 5\\)。", "• 答：\\(\\square\\) 代表的數是 5。", "<hr>", "<strong>第 (2) 小題逐步推導：</strong>", "• 設方格中的兩位數為 \\(N = \\overline{ab} = 10a + b\\)（\\(00 \\le N \\le 99\\)）。", "• 六位數可表示為：\\(110011 + 100N\\)。", "• 該數能同時被 17 與 19 整除，因 17 與 19 互質，故必能被 \\(17 \\times 19 = 323\\) 整除。", "• 計算基礎常數除以 323：", "  \\(110011 = 323 \\times 340 + 191\\)，即 \\(110011 \\equiv 191 \\pmod{323}\\)。", "• 故需滿足：\\(191 + 100N \\equiv 0 \\pmod{323} \\iff 100N \\equiv 323 - 191 = 132 \\pmod{323}\\)。", "• 兩邊除以 4：\\(25N \\equiv 33 \\pmod{323}\\)。", "• 兩邊同乘以 13（因為 \\(25 \\times 13 = 325 \\equiv 2 \\pmod{323}\\)）：", "  \\(2N \\equiv 33 \\times 13 = 429 \\equiv 106 \\pmod{323}\\)", "  除以 2 得：\\(N \\equiv 53 \\pmod{323}\\)。", "• 在 00 到 99 範圍內，唯一解為 \\(N = 53\\)。", "• 驗證：六位數為 115311，\\(115311 \\div 17 = 6783\\)，\\(115311 \\div 19 = 6069\\)，完全整除！", "• 答：方格兩數分別為 5, 3。"], "tip": "在模同餘除法中，乘以逆元（如 13 乘 25 得 325 餘 2）能避開暴力的 1~99 測試，展現高超代數素養。"}, {"id": "p10-ext2", "number": "延伸學習（右下）", "question": "(1) 求一個最小的自然數，它的 \\(\\frac{1}{2}\\) 是一個平方數，它的 \\(\\frac{1}{3}\\) 是一個立方數，則此數是 \\(\\underline{\\hspace{2cm}}\\)。<br>(2) 如果 \\(a < b < c < d < e\\) 是連續的五個正整數，\\(b+c+d\\) 是完全平方數，\\(a+b+c+d+e\\) 是完全立方數，求 c 的最小值。", "answer_preview": "(1) 648 ； (2) 675", "concept": "質因數分解指數整除性條件求極小值：完全平方數各指數必為 2 的倍數，完全立方數各指數必為 3 的倍數。", "steps": ["<strong>第 (1) 小題逐步推導：</strong>", "• 設該最小自然數為 \\(N\\)。因其需能被 2 與 3 整除，設其質因數分解為 \\(N = 2^x \\times 3^y\\)。", "• 條件 1：\\(\\frac{N}{2} = 2^{x-1} \\times 3^y\\) 是平方數", "  \\(\\implies x - 1\\) 必須是偶數（\\(x\\) 必須是奇數）且 \\(y\\) 必須是偶數。", "• 條件 2：\\(\\frac{N}{3} = 2^x \\times 3^{y-1}\\) 是立方數", "  \\(\\implies x\\) 必須是 3 的倍數，且 \\(y - 1\\) 必須是 3 的倍數（\\(y \\equiv 1 \\pmod 3\\)）。", "• 聯立求 \\(x\\) 的最小正整數：", "  \\(x\\) 是奇數且是 3 的倍數 \\(\\implies x = 3\\)。", "• 聯立求 \\(y\\) 的最小正整數：", "  \\(y\\) 是偶數且 \\(y \\equiv 1 \\pmod 3\\)：偶數中 0 (餘0), 2 (餘2), 4 (餘1) \\(\\implies y = 4\\)。", "• 最小自然數 \\(N = 2^3 \\times 3^4 = 8 \\times 81 = 648\\)。", "  （驗證：\\(648/2 = 324 = 18^2\\)；\\(648/3 = 216 = 6^3\\)）", "<hr>", "<strong>第 (2) 小題逐步推導：</strong>", "• 設五個連續正整數為 \\(c-2, c-1, c, c+1, c+2\\)（其中 \\(c \\ge 3\\)）。", "• 和 1：\\(b + c + d = (c-1) + c + (c+1) = 3c\\) 是一完全平方數。", "• 和 2：\\(a + b + c + d + e = 5c\\) 是一完全立方數。", "• 設 \\(c = 3^u \\times 5^v \\times k\\)，為求最小值令 \\(k = 1\\)：", "  • \\(3c = 3^{u+1} \\times 5^v\\) 是平方數 \\(\\implies u+1\\) 為偶數（\\(u\\) 為奇數），\\(v\\) 為偶數。", "  • \\(5c = 3^u \\times 5^{v+1}\\) 是立方數 \\(\\implies u\\) 為 3 的倍數，\\(v+1\\) 為 3 的倍數（\\(v \\equiv 2 \\pmod 3\\)）。", "• 尋找最小非負整數解：", "  - 針對 \\(u\\)：\\(u\\) 為奇數且為 3 的倍數，最小為 \\(u = 3\\)。", "  - 針對 \\(v\\)：\\(v\\) 為偶數且 \\(v \\equiv 2 \\pmod 3\\)，最小為 \\(v = 2\\)。", "• 故 \\(c\\) 的最小值為 \\(c = 3^3 \\times 5^2 = 27 \\times 25 = 675\\)。", "  （驗證：\\(3c = 2025 = 45^2\\)；\\(5c = 3375 = 15^3\\)）"], "tip": "透過質因數冪次的同餘條件求交集，是解決次方倍數極小值問題的通用必勝法。"}]}, {"page": 11, "title": "第 11 頁：高手過招・延伸學習（六）因數總和與極限論證", "category": "高手過招與延伸", "problems": [{"id": "p11-12", "number": "高手過招 12", "question": "求出 720 的：<br>(1) 正因數共有 ______ 個。<br>(2) 正因數的總和為 ______。<br>(3) 相異質因數有 ______ 個。<br>(4) 相異質因數的總和為 ______。", "answer_preview": "(1) 30 個 ； (2) 2418 ； (3) 3 個 ； (4) 10", "concept": "標準分解式與因數定理：若 \\(N = p_1^{a_1} p_2^{a_2} \\dots\\)，因數個數 \\(\\prod (a_i + 1)\\)，因數總和 \\(\\prod (1 + p_i + \\dots + p_i^{a_i})\\)。", "steps": ["<strong>第一步：求 720 的標準分解式</strong>", "• \\(720 = 72 \\times 10 = (8 \\times 9) \\times (2 \\times 5) = 2^4 \\times 3^2 \\times 5^1\\)", "<br>", "<strong>第二步：逐項計算</strong>", "• (1) <strong>正因數個數</strong>：", "  \\((4 + 1) \\times (2 + 1) \\times (1 + 1) = 5 \\times 3 \\times 2 = 30\\) 個。", "<br>", "• (2) <strong>正因數總和</strong>：", "  \\((1 + 2 + 4 + 8 + 16) \\times (1 + 3 + 9) \\times (1 + 5)\\)", "  \\(= 31 \\times 13 \\times 6 = 403 \\times 6 = 2418\\)。", "<br>", "• (3) <strong>相異質因數個數</strong>：", "  質底數有 2, 3, 5，共 3 個。", "<br>", "• (4) <strong>相異質因數的總和</strong>：", "  \\(2 + 3 + 5 = 10\\)。"], "tip": "標準分解式是因數理論的基石，計算因數總和時善用乘法分配律公式，絕不需要一個個把因數列出相加。"}, {"id": "p11-13", "number": "高手過招 13", "question": "41 名「兩人三腳」選手所穿運動服號碼分別是 1, 2, 3, …, 41。問：<br>(1) 能否讓這 41 名選手站成一排，使得任意兩個相鄰選手運動服的號碼和是質數？<br>(2) 能否讓這 41 名選手站成一圈，使得任意兩個相鄰選手運動服的號碼和是質數？若能辦到，試舉出一列；若不能辦到，請說明理由。", "answer_preview": "(1) 能 (見逐步解析中構造之一列) ； (2) 不能 (奇偶二分圖反證法)", "concept": "二分圖、奇偶性不變量與抽屜原理：兩數和為大於 2 的質數（必為奇數）時，相鄰兩數必須奇偶交替。", "steps": ["<strong>核心定理（奇偶性限制）：</strong>", "• 號碼 1 到 41 中：", "  奇數有：1, 3, 5, ..., 41，共 \\(\\frac{41-1}{2} + 1 = 21\\) 個；", "  偶數有：2, 4, 6, ..., 40，共 20 個。", "• 任意兩個相鄰選手運動服號碼和是質數：", "  兩相異正整數相加最小值為 \\(1 + 2 = 3\\)，大於 2 的質數全部都是「奇數」！", "  而兩數和要成為奇數，必須是「一奇一偶」相加！", "  這代表：<strong>任意相鄰的兩個人，號碼必然是一奇一偶交替排列！</strong>", "<hr>", "<strong>第 (1) 小題（站成一排）：能辦到！</strong>", "• 當 41 人排成一直線時，奇偶交替形式必須為：", "  奇, 偶, 奇, 偶, 奇, ..., 偶, 奇", "  剛好有 21 個奇數與 20 個偶數，首尾皆為奇數，數量完全吻合！", "• 我們構造出具體的一組排法（哈密頓路徑）：", "  <strong>1, 16, 25, 18, 19, 24, 17, 14, 23, 20, 41, 26, 11, 30, 29, 32, 15, 22, 31, 28, 13, 34, 37, 36, 35, 12, 5, 6, 7, 40, 21, 38, 33, 8, 39, 4, 27, 10, 9, 2, 3</strong>", "  檢驗相鄰兩數之和：", "  \\(1+16=17\\), \\(16+25=41\\), \\(25+18=43\\), \\(18+19=37\\), \\(19+24=43\\), \\dots, \\(9+2=11\\), \\(2+3=5\\)，每一對相鄰和皆為質數！", "<hr>", "<strong>第 (2) 小題（站成一圈）：不能辦到！理由如下：</strong>", "• 當 41 個人圍成一個封閉圓圈時，每個人都有兩個鄰居。", "• 若任意相鄰兩數和為質數，圓圈上的數字必須「奇、偶、奇、偶……」嚴格交替。", "• 在封閉交替環中，奇數的個數必須等於偶數的個數。", "• 但 1 到 41 中有 21 個奇數和 20 個偶數，奇數比偶數多 1 個！", "• 根據<strong>抽屜原理（鴿籠原理）</strong>，將 21 個奇數排入 20 個偶數所隔開的間隔中，必定有至少兩個奇數被排在相鄰的位置！", "• 這兩個相鄰奇數之和為：奇數 + 奇數 = 偶數。", "• 由於兩數互不相同，其和最小為 \\(1 + 3 = 4 > 2\\)，大於 2 的偶數必定是「合數」，絕對不可能是質數！", "• 因此，絕對無法讓這 41 名選手站成符合條件的一圈。"], "tip": "此題是圖論與初等數論交叉的經典資優好題，第 (2) 小題的反證法邏輯極具說服力與美感。"}, {"id": "p11-ext1", "number": "延伸學習（右上）", "question": "① 求 7875 的標準分解式是 \\(7875 = \\underline{\\hspace{2cm}}\\)<br>② 7875 的一切正因數的個數為 \\(\\underline{\\hspace{2cm}}\\)<br>③ 7875 的一切正因數的總和為 \\(\\underline{\\hspace{2cm}}\\)", "answer_preview": "① 3^2 × 5^3 × 7 ； ② 24 個 ； ③ 16224", "concept": "大數標準分解式短除法，以及正因數個數定理與總和展開定理。", "steps": ["<strong>① 求 7875 的標準分解式：</strong>", "• \\(7875 = 5 \\times 1575 = 25 \\times 315 = 125 \\times 63\\)", "• \\(63 = 9 \\times 7 = 3^2 \\times 7\\)", "• 故 \\(7875 = 3^2 \\times 5^3 \\times 7^1\\)", "<hr>", "<strong>② 7875 的正因數個數：</strong>", "• 指數分別為 2, 3, 1，各加 1 相乘：", "  \\((2 + 1) \\times (3 + 1) \\times (1 + 1) = 3 \\times 4 \\times 2 = 24\\) 個。", "<hr>", "<strong>③ 7875 的正因數總和：</strong>", "• 總和公式：", "  \\(S = (1 + 3 + 3^2) \\times (1 + 5 + 5^2 + 5^3) \\times (1 + 7)\\)", "• 計算各括號：", "  \\(1 + 3 + 9 = 13\\)", "  \\(1 + 5 + 25 + 125 = 156\\)", "  \\(1 + 7 = 8\\)", "• 相乘：\\(13 \\times 156 \\times 8 = 2028 \\times 8 = 16224\\)。"], "tip": "因數總和公式源自多項式展開，括號相乘能無遺漏且不重複地加總所有可能因數組合。"}, {"id": "p11-ext2", "number": "延伸學習（右下）", "question": "(1) 能否將 1, 2, 3, …, 50 兩兩配對，能使每一對數之和都是質數，並且得到的質數互不相同？<br>(2) 是否存在兩個質數，它們的和等於 \\(\\underbrace{111\\dots 1}_{20\\text{個「1」}}\\)，若存在，請舉一例；若不存在，請說明理由。", "answer_preview": "(1) 不能辦到 (抽屜原理矛盾) ； (2) 不存在 (模 3 偶質數反證法)", "concept": "(1) 質數計數與區間質數密度限制（抽屜原理）；(2) 唯一偶質數 2 與數字和模 3 判定證明合數。", "steps": ["<strong>第 (1) 小題嚴密數學否證（抽屜原理）：</strong>", "• 共有 50 個正整數 1~50，兩兩配對可分成 25 對，產生 25 個質數和。", "• <strong>求配對質數和的取值範圍：</strong>", "  - 最小可能的和：\\(1 + 2 = 3\\)", "  - 最大可能的和：\\(49 + 50 = 99\\)", "  故所有配對產生的質數和必須落在區間 \\([3, 99]\\) 之內。", "• <strong>統計 \\([3, 99]\\) 區間內的質數總數：</strong>", "  已知 100 以內的所有質數共有 25 個（2, 3, 5, 7, ..., 97）。", "  但因為最小可能和為 3，質數 2 永遠無法由兩個相異正整數相加得到，因此在 \\([3, 99]\\) 區間內可供挑選的質數<strong>只有 24 個</strong>！", "• <strong>矛盾推論：</strong>", "  我們需要產生 25 個兩兩互不相同的質數，但整個範圍內最多只有 24 個質數可用！", "  根據<strong>抽屜原理</strong>，25 個質數和中必定至少有兩個數值相同，絕不可能全部互不相同！", "• 答：不能辦到。", "<hr>", "<strong>第 (2) 小題嚴密數學論證：</strong>", "• 設該 20 位數為 \\(N = \\underbrace{111\\dots 1}_{20\\text{個「1」}}\\)。", "• <strong>第一步：奇偶性分析</strong>", "  \\(N\\) 的個位數字是 1，因此 \\(N\\) 是一個<strong>奇數</strong>。", "  若兩個質數 \\(p, q\\) 之和為奇數（\\(p + q = N\\)），根據整數加法奇偶性，這兩個質數必然為「一奇一偶」。", "  在所有質數中，唯一的偶質數只有 2！", "  因此這兩個質數中必定有一個是 2，不妨設 \\(p = 2\\)。", "<br>", "• <strong>第二步：檢驗另一個數 \\(q = N - 2\\)</strong>", "  另一個質數必須為 \\(q = N - 2 = \\underbrace{111\\dots 1}_{19\\text{個}} 09\\)。", "  我們計算 \\(N\\) 的各數位之和：\\(1 \\times 20 = 20\\)。", "  因為 \\(20 = 3 \\times 6 + 2\\)，故 \\(N \\equiv 2 \\pmod 3\\)（除以 3 餘 2）。", "  因此：", "  \\(q = N - 2 \\equiv 2 - 2 \\equiv 0 \\pmod 3\\)", "  這證明了 <strong>\\(q\\) 必定能被 3 整除</strong>！", "<br>", "• <strong>第三步：得出結論</strong>", "  顯然 \\(q > 3\\)，一個大於 3 且能被 3 整除的整數必定是<strong>合數</strong>，絕對不可能是質數！", "  因此，根本不存在這樣的兩個質數使得它們的和等於 \\(N\\)。", "<br>", "• 答：不存在。理由如上推導。"], "tip": "此兩題為數學競賽壓軸的論證神題！一題用「質數個數不足 24 < 25」擊破，一題用「奇偶性逼出 2 後模 3 必為合數」擊破，論證兼具嚴密與美感。"}]}];
+
+        function renderPages(items) {
+            const container = document.getElementById('pagesContainer');
+            container.innerHTML = '';
+
+            items.forEach(p => {
+                const section = document.createElement('section');
+                section.className = 'page-section';
+                section.setAttribute('data-category', p.category);
+                section.id = `page-${p.page}`;
+
+                let problemsHtml = '';
+                p.problems.forEach(prob => {
+                    const stepsList = prob.steps.map(s => `<li>${s}</li>`).join('');
+                    problemsHtml += `
+                        <div class="problem-card" id="${prob.id}" data-text="${prob.question.replace(/<[^>]+>/g, '')} ${prob.number} ${prob.answer_preview}">
+                            <div class="card-body">
+                                <div class="problem-header">
+                                    <span class="problem-num-badge">${prob.number}</span>
+                                    <div class="question-content">${prob.question}</div>
+                                    <span class="answer-pill">${prob.answer_preview}</span>
+                                </div>
+                                <button class="toggle-btn" onclick="toggleSolution('${prob.id}')">
+                                    <span>💡 點選查看詳細逐步解析</span>
+                                    <span class="icon">▼</span>
+                                </button>
+                            </div>
+                            <div class="solution-drawer" id="sol-${prob.id}">
+                                <div class="solution-section">
+                                    <div class="sol-title" style="color: var(--primary);">🎯 核心觀念</div>
+                                    <div class="sol-concept">${prob.concept}</div>
+                                </div>
+                                <div class="solution-section">
+                                    <div class="sol-title" style="color: #334155;">📝 逐步解析與計算</div>
+                                    <div class="sol-steps">
+                                        <ul>${stepsList}</ul>
+                                    </div>
+                                </div>
+                                <div class="solution-section">
+                                    <div class="sol-title" style="color: var(--accent);">⚠️ 盲點提示與資優思維</div>
+                                    <div class="sol-tip">${prob.tip}</div>
+                                </div>
+                                <div class="solution-section">
+                                    <div class="sol-answer-box">
+                                        <span>🏆 最終解答：</span>
+                                        <span>${prob.answer_preview}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                section.innerHTML = `
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span>📄</span>
+                            <span>${p.title}</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                            <span class="section-badge">${p.category}</span>
+                            <button class="btn btn-outline" style="font-size: 0.8rem; padding: 4px 10px; border-radius: 6px;" onclick="togglePageImage(${p.page})">🖼️ 查看本頁講義原圖</button>
+                        </div>
+                    </div>
+                    <div id="page-img-${p.page}" style="display: none; margin-bottom: 20px; text-align: center; background: #f1f5f9; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1;">
+                        <img src="page_images/page_${p.page}.png" alt="${p.title}" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    </div>
+                    ${problemsHtml}
+                `;
+                container.appendChild(section);
+            });
+
+            // Trigger KaTeX re-render
+            try {
+                if (window.renderMathInElement) {
+                    renderMathInElement(container, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '\\[', right: '\\]', display: true},
+                            {left: '\\(', right: '\\)', display: false},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+            } catch (err) {
+                console.warn('KaTeX render warning:', err);
+            }
+        }
+
+        function togglePageImage(pageNum) {
+            const imgDiv = document.getElementById(`page-img-${pageNum}`);
+            if (imgDiv) {
+                imgDiv.style.display = imgDiv.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function toggleSolution(id) {
+            const card = document.getElementById(id);
+            const drawer = document.getElementById(`sol-${id}`);
+            const btn = card.querySelector('.toggle-btn');
+            
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) {
+                drawer.classList.remove('open');
+                btn.classList.remove('active');
+                btn.querySelector('span:first-child').textContent = '💡 點選查看詳細逐步解析';
+            } else {
+                drawer.classList.add('open');
+                btn.classList.add('active');
+                btn.querySelector('span:first-child').textContent = '收合詳細逐步解析';
+            }
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.solution-drawer').forEach(d => d.classList.add('open'));
+            document.querySelectorAll('.toggle-btn').forEach(b => {
+                b.classList.add('active');
+                b.querySelector('span:first-child').textContent = '收合詳細逐步解析';
+            });
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.solution-drawer').forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.toggle-btn').forEach(b => {
+                b.classList.remove('active');
+                b.querySelector('span:first-child').textContent = '💡 點選查看詳細逐步解析';
+            });
+        }
+
+        function filterCategory(cat, tabElem) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if (tabElem) tabElem.classList.add('active');
+
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(s => {
+                if (cat === 'all' || s.getAttribute('data-category') === cat) {
+                    s.style.display = 'block';
+                } else {
+                    s.style.display = 'none';
+                }
+            });
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const cards = document.querySelectorAll('.problem-card');
+            
+            cards.forEach(c => {
+                const text = c.getAttribute('data-text').toLowerCase();
+                if (!query || text.includes(query)) {
+                    c.style.display = 'block';
+                } else {
+                    c.style.display = 'none';
+                }
+            });
+
+            // Hide empty sections
+            document.querySelectorAll('.page-section').forEach(s => {
+                const visibleCards = s.querySelectorAll('.problem-card:not([style*="display: none"])');
+                s.style.display = visibleCards.length > 0 ? 'block' : 'none';
+            });
+        }
+
+        // Initialize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                renderPages(data);
+            });
+        } else {
+            renderPages(data);
+        }
+    </script>
+</body>
+</html>
