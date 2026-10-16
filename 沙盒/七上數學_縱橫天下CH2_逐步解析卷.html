@@ -1,0 +1,4940 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>七上數學—縱橫天下 CH2 逐步解析卷</title>
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --secondary: #0f766e;
+      --secondary-hover: #115e59;
+      --secondary-light: #f0fdfa;
+      --accent: #d97706;
+      --accent-light: #fffbeb;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --sol-bg: #f8fafc;
+      --step-border: #3b82f6;
+      --ans-bg: #ecfdf5;
+      --ans-border: #10b981;
+      --ans-text: #065f46;
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    /* Top Hero Header */
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #0d9488 100%);
+      color: #ffffff;
+      padding: 28px 20px 24px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 0.98rem;
+      opacity: 0.92;
+    }
+
+    /* Sticky Control Bar */
+    .control-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      padding: 12px 20px;
+    }
+
+    .control-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* Unit Tabs */
+    .unit-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .unit-tab {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text-main);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .unit-tab:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .unit-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28);
+    }
+
+    /* Search & Global Action Buttons */
+    .global-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-input {
+      padding: 7px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      width: 210px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-global {
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.18s ease;
+    }
+
+    .btn-expand-all {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .btn-expand-all:hover {
+      background: #dbeafe;
+    }
+
+    .btn-collapse-all {
+      background: #f1f5f9;
+      color: #475569;
+      border-color: #cbd5e1;
+    }
+
+    .btn-collapse-all:hover {
+      background: #e2e8f0;
+    }
+
+    /* Page Pills Row */
+    .page-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px;
+      padding-top: 2px;
+    }
+
+    .page-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    .page-pill {
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #475569;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .page-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .page-pill.active {
+      background: #1e293b;
+      color: #ffffff;
+      border-color: #1e293b;
+    }
+
+    /* Main Content Container */
+    .container {
+      max-width: 1180px;
+      margin: 24px auto 60px;
+      padding: 0 18px;
+    }
+
+    .section-block {
+      margin-bottom: 42px;
+    }
+
+    .section-header {
+      margin: 28px 0 18px;
+      padding: 14px 20px;
+      background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .challenge-header {
+      margin: 26px 0 14px !important;
+      padding: 12px 18px !important;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+      border-left: 6px solid #f59e0b !important;
+      border-radius: 10px !important;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.12);
+    }
+
+    .challenge-header h3 {
+      margin: 0 !important;
+      color: #92400e !important;
+      font-size: 1.18rem;
+    }
+
+    /* Paired Grid for Left/Right Column Questions in 2-1 */
+    .q-pair {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .q-pair .q-card {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .q-pair {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Question Card */
+    .q-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .q-card:hover {
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.09);
+    }
+
+    .q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .q-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 4px 12px;
+      border-radius: 8px;
+    }
+
+    .q-card.is-challenge .q-badge {
+      background: #fef3c7;
+      color: #b45309;
+      border-color: #fde68a;
+    }
+
+    .q-page {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .q-body {
+      font-size: 1.03rem;
+      color: var(--text-main);
+      flex-grow: 1;
+    }
+
+    .q-body p {
+      margin: 0 0 8px;
+    }
+
+    .q-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Action Buttons inside Card */
+    .q-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .btn-toggle, .btn-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-toggle {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-toggle:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-toggle.active {
+      background: #475569;
+      box-shadow: none;
+    }
+
+    .btn-step {
+      background: var(--secondary-light);
+      color: var(--secondary);
+      border: 1px solid #99f6e4;
+    }
+
+    .btn-step:hover {
+      background: #ccfbf1;
+      color: var(--secondary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Solution Container */
+    .q-solution {
+      margin-top: 16px;
+      padding: 18px 20px;
+      background: var(--sol-bg);
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      animation: fadeIn 0.22s ease;
+    }
+
+    .q-solution[hidden] {
+      display: none !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step {
+      background: #ffffff;
+      border-left: 4px solid var(--step-border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+      animation: fadeIn 0.22s ease;
+    }
+
+    .step[hidden] {
+      display: none !important;
+    }
+
+    .step-title {
+      font-weight: 700;
+      color: #1e40af;
+      font-size: 0.96rem;
+      margin-bottom: 6px;
+    }
+
+    .step-content {
+      font-size: 0.96rem;
+      color: #334155;
+    }
+
+    .step-content p {
+      margin: 0 0 6px;
+    }
+
+    .step-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-content ul, .step-content ol {
+      margin: 6px 0;
+      padding-left: 22px;
+    }
+
+    .step-content li {
+      margin-bottom: 4px;
+    }
+
+    .ans-box {
+      background: var(--ans-bg);
+      border: 1.5px solid var(--ans-border);
+      color: var(--ans-text);
+      padding: 12px 16px;
+      border-radius: 9px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 10px;
+      animation: fadeIn 0.22s ease;
+    }
+
+    .ans-box[hidden] {
+      display: none !important;
+    }
+
+    /* Empty State & Stats */
+    .filter-status {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Scroll to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-hover);
+      transform: translateY(-3px);
+    }
+
+    /* KaTeX overflow handling */
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 4px 0;
+      margin: 0.6em 0 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1>📘 七上數學—縱橫天下 CH2 逐步解析卷</h1>
+    <p>2-1 因數與倍數 ｜ 2-2 最大公因數與最小公倍數 ｜ 2-3 分數的四則運算（P.1 ～ P.19 完整題目與點選逐步詳解）</p>
+  </header>
+
+  <nav class="control-bar">
+    <div class="control-inner">
+      <div class="control-row">
+        <div class="unit-tabs">
+          <button class="unit-tab active" onclick="filterUnit('all', this)">全部單元 (P.1~P.19)</button>
+          <button class="unit-tab" onclick="filterUnit('sec-2-1', this)">2-1 因數與倍數 (P.1~P.6)</button>
+          <button class="unit-tab" onclick="filterUnit('sec-2-2', this)">2-2 最大公因數與最小公倍數 (P.7~P.12)</button>
+          <button class="unit-tab" onclick="filterUnit('sec-2-3', this)">2-3 分數的四則運算 (P.13~P.19)</button>
+          <button class="unit-tab" onclick="filterUnit('challenge', this)">🏆 資優試題挑戰區</button>
+        </div>
+        <div class="global-tools">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋題號或題目關鍵字..." oninput="applyFilters()">
+          <button class="btn-global btn-expand-all" onclick="toggleAllSolutions(true)">💡 展開全部解析</button>
+          <button class="btn-global btn-collapse-all" onclick="toggleAllSolutions(false)">🔼 收合全部解析</button>
+        </div>
+      </div>
+      <div class="page-pills" id="pagePills">
+        <span class="page-label">頁碼篩選：</span>
+        <button class="page-pill active" data-p="all" onclick="filterPage('all', this)">全部</button>
+        <button class="page-pill" data-p="1" onclick="filterPage('1', this)">P.1</button>
+        <button class="page-pill" data-p="2" onclick="filterPage('2', this)">P.2</button>
+        <button class="page-pill" data-p="3" onclick="filterPage('3', this)">P.3</button>
+        <button class="page-pill" data-p="4" onclick="filterPage('4', this)">P.4</button>
+        <button class="page-pill" data-p="5" onclick="filterPage('5', this)">P.5</button>
+        <button class="page-pill" data-p="6" onclick="filterPage('6', this)">P.6 🏆</button>
+        <button class="page-pill" data-p="7" onclick="filterPage('7', this)">P.7</button>
+        <button class="page-pill" data-p="8" onclick="filterPage('8', this)">P.8</button>
+        <button class="page-pill" data-p="9" onclick="filterPage('9', this)">P.9</button>
+        <button class="page-pill" data-p="10" onclick="filterPage('10', this)">P.10</button>
+        <button class="page-pill" data-p="11" onclick="filterPage('11', this)">P.11</button>
+        <button class="page-pill" data-p="12" onclick="filterPage('12', this)">P.12 🏆</button>
+        <button class="page-pill" data-p="13" onclick="filterPage('13', this)">P.13</button>
+        <button class="page-pill" data-p="14" onclick="filterPage('14', this)">P.14</button>
+        <button class="page-pill" data-p="15" onclick="filterPage('15', this)">P.15</button>
+        <button class="page-pill" data-p="16" onclick="filterPage('16', this)">P.16</button>
+        <button class="page-pill" data-p="17" onclick="filterPage('17', this)">P.17</button>
+        <button class="page-pill" data-p="18" onclick="filterPage('18', this)">P.18</button>
+        <button class="page-pill" data-p="19" onclick="filterPage('19', this)">P.19 🏆</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="filter-status">
+      <span id="questionCount">載入題目中...</span>
+      <span>💡 提示：點擊「<strong>顯示解析</strong>」可一次展開完整詳解；點擊「<strong>逐步解析</strong>」可一步一步引導思考！</span>
+    </div>
+
+    <!-- 2-1 因數與倍數 (P.1 ~ P.6) -->
+<section id="sec-2-1" class="section-block">
+  <div class="section-header">
+    <h2>2-1 因數與倍數（P.1 ～ P.6）</h2>
+  </div>
+
+  <!-- ==================== P.1 ==================== -->
+  <div class="q-pair">
+    <!-- P.1 第 1 題 -->
+    <div class="q-card" data-page="1">
+      <div class="q-header">
+        <span class="q-badge">第 1 題</span>
+        <span class="q-page">P.1</span>
+      </div>
+      <div class="q-body">
+        <p>已知 \(3712\square\) 是一個五位數，其中 \(\square\) 為個位數，則：</p>
+        <p>(1) 當 \(3712\square\) 是 \(3\) 的倍數時，\(\square =\)？</p>
+        <p>(2) 當 \(3712\square\) 是 \(5\) 的倍數時，\(\square =\)？</p>
+        <p>(3) 當 \(3712\square\) 是 \(11\) 的倍數時，\(\square =\)？</p>
+        <p>(4) 當 \(3712\square\) 是 \(4\) 的倍數時，\(\square =\)？</p>
+        <p>(5) 當 \(3712\square\) 是 \(8\) 的倍數時，\(\square =\)？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 判別 \(3\) 的倍數</div>
+          <div class="step-content">
+            <p>\(3\) 的倍數判別法為「各位數字和是 \(3\) 的倍數」。</p>
+            <p>計算數字和：\(3 + 7 + 1 + 2 + \square = 13 + \square\)。</p>
+            <p>因為 \(0 \le \square \le 9\)，使 \(13 + \square\) 為 \(3\) 的倍數（\(15, 18, 21\)）時，\(\square = 2, 5, 8\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 判別 \(5\) 的倍數</div>
+          <div class="step-content">
+            <p>\(5\) 的倍數判別法為「個位數字是 \(0\) 或 \(5\)」，故 \(\square = 0, 5\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 3：(3) 判別 \(11\) 的倍數</div>
+          <div class="step-content">
+            <p>\(11\) 的倍數判別法為「奇數位數字和與偶數位數字和的差是 \(11\) 的倍數（含 \(0\)）」。</p>
+            <ul>
+              <li>奇數位數字和：\(3 + 1 + \square = 4 + \square\)</li>
+              <li>偶數位數字和：\(7 + 2 = 9\)</li>
+            </ul>
+            <p>兩者相差：\(|(4 + \square) - 9| = |\square - 5| = 0\)，故 \(\square = 5\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 4：(4) 判別 \(4\) 的倍數</div>
+          <div class="step-content">
+            <p>\(4\) 的倍數判別法為「末兩位數是 \(4\) 的倍數」。</p>
+            <p>末兩位為 \(2\square\)，其中 \(20, 24, 28\) 為 \(4\) 的倍數，故 \(\square = 0, 4, 8\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 5：(5) 判別 \(8\) 的倍數</div>
+          <div class="step-content">
+            <p>\(8\) 的倍數判別法為「末三位數是 \(8\) 的倍數」。</p>
+            <p>末三位為 \(12\square\)，因為 \(120 = 8 \times 15\)、\(128 = 8 \times 16\)，故 \(\square = 0, 8\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(2, 5, 8\) &nbsp; (2) \(0, 5\) &nbsp; (3) \(5\) &nbsp; (4) \(0, 4, 8\) &nbsp; (5) \(0, 8\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.1 EX1 -->
+    <div class="q-card" data-page="1">
+      <div class="q-header">
+        <span class="q-badge">EX1（隨堂演練）</span>
+        <span class="q-page">P.1</span>
+      </div>
+      <div class="q-body">
+        <p>已知 \(4173\square\) 是一個五位數，則：</p>
+        <p>(1) 當它含有因數 \(2\) 時，\(\square =\)？</p>
+        <p>(2) 當它含有因數 \(3\) 時，\(\square =\)？</p>
+        <p>(3) 當它含有因數 \(5\) 時，\(\square =\)？</p>
+        <p>(4) 當它含有因數 \(11\) 時，\(\square =\)？</p>
+        <p>(5) 它是否含有因數 \(33\)？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 含有因數 \(2\)</div>
+          <div class="step-content">
+            <p>含有因數 \(2\) 即為偶數，個位數 \(\square = 0, 2, 4, 6, 8\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 含有因數 \(3\)</div>
+          <div class="step-content">
+            <p>各位數字和：\(4 + 1 + 7 + 3 + \square = 15 + \square\) 為 \(3\) 的倍數，故 \(\square = 0, 3, 6, 9\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 3：(3) 含有因數 \(5\)</div>
+          <div class="step-content">
+            <p>個位數字為 \(0\) 或 \(5\)，故 \(\square = 0, 5\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 4：(4) 含有因數 \(11\)</div>
+          <div class="step-content">
+            <ul>
+              <li>奇數位數字和：\(4 + 7 + \square = 11 + \square\)</li>
+              <li>偶數位數字和：\(1 + 3 = 4\)</li>
+            </ul>
+            <p>相差 \((11 + \square) - 4 = 7 + \square\) 為 \(11\) 的倍數，得 \(7 + \square = 11 \implies \square = 4\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 5：(5) 判斷是否含有因數 \(33\)</div>
+          <div class="step-content">
+            <p>因為 \(33 = 3 \times 11\)，若含有因數 \(33\)，則必須同時含有因數 \(3\) 與因數 \(11\)。</p>
+            <p>由 (2) 知含因數 \(3\) 時 \(\square \in \{0, 3, 6, 9\}\)；由 (4) 知含因數 \(11\) 時 \(\square = 4\)。兩者沒有共同的 \(\square\) 值，因此<strong>不含有因數 \(33\)</strong>。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(0, 2, 4, 6, 8\) &nbsp; (2) \(0, 3, 6, 9\) &nbsp; (3) \(0, 5\) &nbsp; (4) \(4\) &nbsp; (5) 否（不含因數 \(33\)）
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.1 第 2 題 -->
+    <div class="q-card" data-page="1">
+      <div class="q-header">
+        <span class="q-badge">第 2 題</span>
+        <span class="q-page">P.1</span>
+      </div>
+      <div class="q-body">
+        <p>(1) 設 \(A = 18 \times 19 \times 20 \times 21\)，則 \(A\) 的標準分解式及相異質因數為何？</p>
+        <p>(2) 設 \(B = 1 \times 2 \times 3 \times 4 \times \dots \times 29 \times 30\)，則 \(B\) 的相異質因數共有多少個？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 求 \(A\) 的標準分解式與相異質因數</div>
+          <div class="step-content">
+            <p>先將各數做質因數分解：</p>
+            <ul>
+              <li>\(18 = 2 \times 3^2\)</li>
+              <li>\(19 = 19\)（質數）</li>
+              <li>\(20 = 2^2 \times 5\)</li>
+              <li>\(21 = 3 \times 7\)</li>
+            </ul>
+            <p>合併同底數的次方：\(A = 2^{1+2} \times 3^{2+1} \times 5 \times 7 \times 19 = 2^3 \times 3^3 \times 5 \times 7 \times 19\)。</p>
+            <p>相異質因數為 \(2, 3, 5, 7, 19\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 求 \(B\) 的相異質因數個數</div>
+          <div class="step-content">
+            <p>\(B\) 為 \(1\) 到 \(30\) 的連續整數乘積，其相異質因數即為 \(1 \sim 30\) 之間的所有質數：</p>
+            <p>\(2, 3, 5, 7, 11, 13, 17, 19, 23, 29\)，共有 \(10\) 個。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) 標準分解式：\(2^3 \times 3^3 \times 5 \times 7 \times 19\)；相異質因數：\(2, 3, 5, 7, 19\) &nbsp; (2) \(10\) 個
+        </div>
+      </div>
+    </div>
+
+    <!-- P.1 EX2 -->
+    <div class="q-card" data-page="1">
+      <div class="q-header">
+        <span class="q-badge">EX2（隨堂演練）</span>
+        <span class="q-page">P.1</span>
+      </div>
+      <div class="q-body">
+        <p>(1) 設 \(A = 34 \times 39 \times 44 \times 49\)，則 \(A\) 的標準分解式及相異質因數為何？</p>
+        <p>(2) 設 \(B = 2 \times 4 \times 6 \times 8 \times \dots \times 48 \times 50\)，則 \(B\) 的相異質因數共有多少個？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 求 \(A\) 的標準分解式與相異質因數</div>
+          <div class="step-content">
+            <p>分別將各數做質因數分解：</p>
+            <ul>
+              <li>\(34 = 2 \times 17\)</li>
+              <li>\(39 = 3 \times 13\)</li>
+              <li>\(44 = 2^2 \times 11\)</li>
+              <li>\(49 = 7^2\)</li>
+            </ul>
+            <p>合併並由小到大排列：\(A = 2^3 \times 3 \times 7^2 \times 11 \times 13 \times 17\)。</p>
+            <p>相異質因數為 \(2, 3, 7, 11, 13, 17\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 求 \(B\) 的相異質因數個數</div>
+          <div class="step-content">
+            <p>將每一項提出 \(2\)：</p>
+            <p>\[B = (2 \times 1) \times (2 \times 2) \times (2 \times 3) \times \dots \times (2 \times 25) = 2^{25} \times (1 \times 2 \times 3 \times \dots \times 25)\]</p>
+            <p>因此 \(B\) 的相異質因數即為 \(1 \sim 25\) 之間的所有質數：\(2, 3, 5, 7, 11, 13, 17, 19, 23\)，共有 \(9\) 個。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) 標準分解式：\(2^3 \times 3 \times 7^2 \times 11 \times 13 \times 17\)；相異質因數：\(2, 3, 7, 11, 13, 17\) &nbsp; (2) \(9\) 個
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.1 第 3 題 -->
+    <div class="q-card" data-page="1">
+      <div class="q-header">
+        <span class="q-badge">第 3 題</span>
+        <span class="q-page">P.1</span>
+      </div>
+      <div class="q-body">
+        <p>(1) 若 \(50\) 可因數分解成 \(a \times b\)，其中 \(a\)、\(b\) 均為正整數，則 \(a + b =\)？</p>
+        <p>(2) 已知 \(c\)、\(d\) 皆為正整數，且 \(c > d\)，若 \(c \times d = 90\)，且 \(c - d = 9\)，則 \(c\)、\(d\) 之值分別是多少？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 列出 \(50\) 的正因數配對</div>
+          <div class="step-content">
+            <p>\(50 = 1 \times 50 = 2 \times 25 = 5 \times 10\)。</p>
+            <p>計算 \(a + b\) 的可能值：</p>
+            <ul>
+              <li>\(1 + 50 = 51\)</li>
+              <li>\(2 + 25 = 27\)</li>
+              <li>\(5 + 10 = 15\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 列出 \(90\) 的正因數配對並檢驗差為 \(9\)</div>
+          <div class="step-content">
+            <p>\(90 = 90 \times 1 = 45 \times 2 = 30 \times 3 = 18 \times 5 = 15 \times 6 = 10 \times 9\)。</p>
+            <p>其中滿足 \(c - d = 9\) 的組合為 \(15 - 6 = 9\)，故 \(c = 15\)，\(d = 6\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(51\)、\(27\) 或 \(15\) &nbsp; (2) \(c = 15\)，\(d = 6\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.1 EX3 -->
+    <div class="q-card" data-page="1">
+      <div class="q-header">
+        <span class="q-badge">EX3（隨堂演練）</span>
+        <span class="q-page">P.1</span>
+      </div>
+      <div class="q-body">
+        <p>(1) 若 \(70\) 可因數分解成 \(a \times b\)，其中 \(a\)、\(b\) 均為正整數，且 \(a > b\)，則 \(a - b =\)？</p>
+        <p>(2) 設長方形的長和寬分別是 \(c\) 和 \(d\)，其中 \(c\)、\(d\) 皆是正整數，且 \(c > d\)，若長方形的面積是 \(72\) 平方單位，周長是 \(44\)，則 \(c\)、\(d\) 之值分別是多少？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 列出 \(70\) 的正因數配對</div>
+          <div class="step-content">
+            <p>因為 \(a > b\)，\(70 = 70 \times 1 = 35 \times 2 = 14 \times 5 = 10 \times 7\)。</p>
+            <p>計算 \(a - b\) 的可能值：</p>
+            <ul>
+              <li>\(70 - 1 = 69\)</li>
+              <li>\(35 - 2 = 33\)</li>
+              <li>\(14 - 5 = 9\)</li>
+              <li>\(10 - 7 = 3\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 利用面積與周長求 \(c, d\)</div>
+          <div class="step-content">
+            <p>面積 \(c \times d = 72\)；周長 \(2(c + d) = 44 \implies c + d = 22\)。</p>
+            <p>將 \(72\) 分解為兩正整數相乘：\(72 = 72 \times 1 = 36 \times 2 = 24 \times 3 = 18 \times 4 = 12 \times 6 = 9 \times 8\)。</p>
+            <p>其中滿足 \(c + d = 22\) 的組合為 \(18 + 4 = 22\)，故 \(c = 18\)，\(d = 4\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(69\)、\(33\)、\(9\) 或 \(3\) &nbsp; (2) \(c = 18\)，\(d = 4\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== P.2 ==================== -->
+  <div class="q-pair">
+    <!-- P.2 第 4 題 -->
+    <div class="q-card" data-page="2">
+      <div class="q-header">
+        <span class="q-badge">第 4 題</span>
+        <span class="q-page">P.2</span>
+      </div>
+      <div class="q-body">
+        <p>小華利用自己的生日設計一個四位數的密碼，方法是：分別將月分與日期寫成兩個質數的和，再將此四個質數相乘，所得數字即為密碼（例如，生日若為 8 月 24 日，將 8 寫成 3 與 5 的和，24 寫成 11 與 13 的和，再將 3、5、11、13 相乘得密碼為 2145）。已知小華的密碼為 \(2030\)，則小華的生日為何？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將密碼 \(2030\) 做質因數分解</div>
+          <div class="step-content">
+            <p>\[2030 = 10 \times 203 = 2 \times 5 \times 7 \times 29\]</p>
+            <p>因此這四個質數分別為 \(2\)、\(5\)、\(7\)、\(29\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：根據月份與日期的範圍配對</div>
+          <div class="step-content">
+            <p>月份最大為 \(12\)，因此質數 \(29\) 必定屬於「日期」的一部分。</p>
+            <p>日期最多為 \(31\) 日，在 \(2, 5, 7\) 中，只有 \(29 + 2 = 31 \le 31\)（若配 \(5\) 或 \(7\) 則為 \(34\) 或 \(36\)，超過 \(31\) 日）。</p>
+            <p>剩下的兩個質數 \(5\) 與 \(7\) 相加即為月份：\(5 + 7 = 12\)（\(12\) 月恰有 \(31\) 天，符合常理）。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(12\) 月 \(31\) 日
+        </div>
+      </div>
+    </div>
+
+    <!-- P.2 第 4 題（右欄隨堂演練） -->
+    <div class="q-card" data-page="2">
+      <div class="q-header">
+        <span class="q-badge">第 4 題（隨堂演練）</span>
+        <span class="q-page">P.2</span>
+      </div>
+      <div class="q-body">
+        <p>傳說某古堡有億萬寶藏，必須輸入入門密碼才能進入寶庫取寶；已知入門密碼有四碼 \(\fbox{a}\fbox{b}\fbox{c}\fbox{d}\)，分別隱藏在 \(289\fbox{a} = 2^b \times c^2 \times d \times 23\) 的標準分解式中，則此入門密碼為何？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：利用 \(23\) 的倍數求出個位數 \(a\)</div>
+          <div class="step-content">
+            <p>四位數 \(289\fbox{a}\) 含有質因數 \(23\)，用除法檢驗：</p>
+            <p>\[2898 \div 23 = 126\]</p>
+            <p>故 \(a = 8\)，此四位數為 \(2898\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：求 \(2898\) 的標準分解式</div>
+          <div class="step-content">
+            <p>將 \(126\) 繼續做質因數分解：\(126 = 2 \times 63 = 2^1 \times 3^2 \times 7\)。</p>
+            <p>因此：\[2898 = 2^1 \times 3^2 \times 7 \times 23\]</p>
+            <p>對照 \(2^b \times c^2 \times d \times 23\)，可得 \(b = 1\)，\(c = 3\)，\(d = 7\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(8137\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.2 第 5 題 -->
+    <div class="q-card" data-page="2">
+      <div class="q-header">
+        <span class="q-badge">第 5 題</span>
+        <span class="q-page">P.2</span>
+      </div>
+      <div class="q-body">
+        <p>小威把「\(9\)、\(15\)、\(21\)、\(65\)、\(91\)、\(169\)」這六個數分成兩組，使每一組有三個數，且各組中的三個數乘積相等，則 \(15\) 與哪兩個數同一組？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將六個數做質因數分解</div>
+          <div class="step-content">
+            <ul>
+              <li>\(9 = 3^2\)</li>
+              <li>\(15 = 3 \times 5\)</li>
+              <li>\(21 = 3 \times 7\)</li>
+              <li>\(65 = 5 \times 13\)</li>
+              <li>\(91 = 7 \times 13\)</li>
+              <li>\(169 = 13^2\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：平衡兩組的質因數個數</div>
+          <div class="step-content">
+            <p>六數總乘積為 \(3^4 \times 5^2 \times 7^2 \times 13^4\)，因此每一組的三數乘積皆須為 \(3^2 \times 5 \times 7 \times 13^2\)。</p>
+            <ul>
+              <li>\(15 = 3 \times 5\) 含有一個 \(3\)，為了湊齊 \(3^2\)，必須與含有一個 \(3\) 的 \(21 = 3 \times 7\) 同組（不能與 \(9 = 3^2\) 同組）。</li>
+              <li>目前 \(15 \times 21 = 3^2 \times 5 \times 7\)，還缺 \(13^2\)，故第三個數必為 \(169 = 13^2\)。</li>
+            </ul>
+            <p>（另一組為 \(9, 65, 91\)，乘積亦為 \(3^2 \times 5 \times 7 \times 13^2\)。）</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(21\)、\(169\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.2 第 5 題（右欄隨堂演練） -->
+    <div class="q-card" data-page="2">
+      <div class="q-header">
+        <span class="q-badge">第 5 題（隨堂演練）</span>
+        <span class="q-page">P.2</span>
+      </div>
+      <div class="q-body">
+        <p>有六張卡片，上面分別寫上 \(33\)、\(55\)、\(119\)、\(85\)、\(91\)、\(39\) 六個數，小風欲將卡片分成兩組，每一組 \(3\) 張。則應如何分組，這兩組的數字乘積才會相等？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將六個數做質因數分解</div>
+          <div class="step-content">
+            <ul>
+              <li>\(33 = 3 \times 11\)</li>
+              <li>\(55 = 5 \times 11\)</li>
+              <li>\(119 = 7 \times 17\)</li>
+              <li>\(85 = 5 \times 17\)</li>
+              <li>\(91 = 7 \times 13\)</li>
+              <li>\(39 = 3 \times 13\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：平衡兩組的質因數</div>
+          <div class="step-content">
+            <p>每個質因數 \(3, 5, 7, 11, 13, 17\) 都各出現 \(2\) 次，故每組皆需恰含 \(3, 5, 7, 11, 13, 17\) 各一個：</p>
+            <ul>
+              <li>第一組選 \(33 = 3 \times 11\)，則含 \(11\) 的 \(55\) 與含 \(3\) 的 \(39\) 必須在第二組。</li>
+              <li>第二組已有 \(39 = 3 \times 13\) 與 \(55 = 5 \times 11\)，還缺質因數 \(7\) 與 \(17\)，故搭配 \(119 = 7 \times 17\)。</li>
+              <li>剩下的 \(85 = 5 \times 17\) 與 \(91 = 7 \times 13\) 則歸入第一組。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> 第一組：\(33\)、\(85\)、\(91\)；第二組：\(39\)、\(55\)、\(119\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.2 第 6 題 -->
+    <div class="q-card" data-page="2">
+      <div class="q-header">
+        <span class="q-badge">第 6 題</span>
+        <span class="q-page">P.2</span>
+      </div>
+      <div class="q-body">
+        <p>若 \(n\) 為正整數，且 \(\dfrac{56}{n}\) 也為正整數，則 \(n\) 可能的值有哪些？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：判斷因數關係</div>
+          <div class="step-content">
+            <p>要使 \(\dfrac{56}{n}\) 為正整數，代表 \(n\) 必須整除 \(56\)，即 \(n\) 為 \(56\) 的正因數。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：列出 \(56\) 的所有正因數</div>
+          <div class="step-content">
+            <p>\(56 = 1 \times 56 = 2 \times 28 = 4 \times 14 = 7 \times 8\)。</p>
+            <p>故 \(n\) 可能的值為 \(1, 2, 4, 7, 8, 14, 28, 56\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(1, 2, 4, 7, 8, 14, 28, 56\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.2 第 6 題（右欄隨堂演練） -->
+    <div class="q-card" data-page="2">
+      <div class="q-header">
+        <span class="q-badge">第 6 題（隨堂演練）</span>
+        <span class="q-page">P.2</span>
+      </div>
+      <div class="q-body">
+        <p>若 \(x\) 為正整數，且 \(\dfrac{16}{x}\) 也為正整數，則 \(x\) 可能的值有哪些？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：判斷因數關係並列出正因數</div>
+          <div class="step-content">
+            <p>要使 \(\dfrac{16}{x}\) 為正整數，\(x\) 必須為 \(16\) 的正因數。</p>
+            <p>\(16 = 1 \times 16 = 2 \times 8 = 4 \times 4\)，故 \(x = 1, 2, 4, 8, 16\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(1, 2, 4, 8, 16\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== P.3 ==================== -->
+  <div class="q-pair">
+    <!-- P.3 第 7 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 7 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>正整數 \(x\) 的所有正因數共有 \(9\) 個，由小到大排列如下：\(1\)、\(2\)、\(3\)、\(4\)、\(6\)、\(a\)、\(b\)、\(c\)、\(x\)，請問 \(a + b + c =\)？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：利用因數首尾配對求 \(x\)</div>
+          <div class="step-content">
+            <p>共有 \(9\) 個正因數，正中間（第 \(5\) 個）的因數為 \(6\)，故：\[x = 6 \times 6 = 36\]</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：依序求出 \(a, b, c\)</div>
+          <div class="step-content">
+            <ul>
+              <li>\(4 \times a = 36 \implies a = 9\)</li>
+              <li>\(3 \times b = 36 \implies b = 12\)</li>
+              <li>\(2 \times c = 36 \implies c = 18\)</li>
+            </ul>
+            <p>因此 \(a + b + c = 9 + 12 + 18 = 39\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(39\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.3 第 7 題（右欄隨堂演練） -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 7 題（隨堂演練）</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>將 \(420\) 的所有正因數由小到大排列如下：\(1\)、\(2\)、\(3\)、\(\dots\)、\(a\)、\(b\)、\(420\)，請問 \(a + b =\)？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：利用因數首尾對稱配對</div>
+          <div class="step-content">
+            <p>由小到大排列的正因數，首尾兩兩相乘皆等於 \(420\)：</p>
+            <ul>
+              <li>\(1 \times 420 = 420\)</li>
+              <li>\(2 \times b = 420 \implies b = 210\)</li>
+              <li>\(3 \times a = 420 \implies a = 140\)</li>
+            </ul>
+            <p>因此 \(a + b = 140 + 210 = 350\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(350\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.3 第 8 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 8 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>(1) 在 \(1 \sim 300\) 的整數中，所有 \(7\) 的倍數共有幾個？</p>
+        <p>(2) 在 \(100 \sim 300\) 的整數中，所有 \(7\) 的倍數共有幾個？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 計算 \(1 \sim 300\) 中 \(7\) 的倍數個數</div>
+          <div class="step-content">
+            <p>\[300 \div 7 = 42 \dots 6\]</p>
+            <p>即 \(7 \times 1, 7 \times 2, \dots, 7 \times 42\)，共有 \(42\) 個。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 扣除 \(1 \sim 99\) 中 \(7\) 的倍數個數</div>
+          <div class="step-content">
+            <p>在 \(1 \sim 99\) 中，\(99 \div 7 = 14 \dots 1\)，共有 \(14\) 個 \(7\) 的倍數。</p>
+            <p>因此在 \(100 \sim 300\) 中共有 \(42 - 14 = 28\) 個。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(42\) 個 &nbsp; (2) \(28\) 個
+        </div>
+      </div>
+    </div>
+
+    <!-- P.3 第 9 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 9 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>將一支 \(18\) 人的啦啦隊排成各種不同的長方形隊形，試問有幾種不同的排法？（旋轉後隊形相同者視為同一種）</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將 \(18\) 分解為兩正整數之積</div>
+          <div class="step-content">
+            <p>因為旋轉後相同視為同一種，只需列出 \(18\) 的因數配對：</p>
+            <p>\[18 = 1 \times 18 = 2 \times 9 = 3 \times 6\]</p>
+            <p>共有 \(3\) 種不同的排法。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(3\) 種
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.3 第 10 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 10 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>小康想用 \(45\) 塊邊長為 \(1\) 公分的正方形紙板，緊密的拼成面積為 \(45\) 平方公分的長方形，則此長方形的周長最小為多少公分？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：列出長與寬的所有可能組合</div>
+          <div class="step-content">
+            <p>長方形面積為 \(45\)，長與寬為 \(45\) 的正因數配對：</p>
+            <ul>
+              <li>\(45 = 1 \times 45 \implies \text{周長} = 2 \times (1 + 45) = 92\text{ 公分}\)</li>
+              <li>\(45 = 3 \times 15 \implies \text{周長} = 2 \times (3 + 15) = 36\text{ 公分}\)</li>
+              <li>\(45 = 5 \times 9 \implies \text{周長} = 2 \times (5 + 9) = 28\text{ 公分}\)</li>
+            </ul>
+            <p>當長與寬越接近時，周長越小，最小周長為 \(28\) 公分。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(28\) 公分
+        </div>
+      </div>
+    </div>
+
+    <!-- P.3 第 11 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 11 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>(1) 已知四位數 \(864\square\) 是 \(15\) 的倍數，則 \(\square =\)？</p>
+        <p>(2) 已知四位數 \(807\square\) 是 \(22\) 的倍數，則 \(\square =\)？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 判別 \(15\) 的倍數（同時為 \(3\) 與 \(5\) 的倍數）</div>
+          <div class="step-content">
+            <p>因為 \(15 = 3 \times 5\)：</p>
+            <ul>
+              <li>先看 \(5\) 的倍數：個位數 \(\square\) 可能為 \(0\) 或 \(5\)。</li>
+              <li>再看 \(3\) 的倍數：數字和 \(8 + 6 + 4 + \square = 18 + \square\) 須為 \(3\) 的倍數，故 \(\square = 0\)（若 \(\square = 5\) 則和為 \(23\)，不合）。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 判別 \(22\) 的倍數（同時為 \(2\) 與 \(11\) 的倍數）</div>
+          <div class="step-content">
+            <p>因為 \(22 = 2 \times 11\)：</p>
+            <ul>
+              <li>先看 \(11\) 的倍數：\((8 + 7) - (0 + \square) = 15 - \square = 11 \implies \square = 4\)。</li>
+              <li>再檢驗 \(2\) 的倍數：\(\square = 4\) 為偶數，符合條件。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(\square = 0\) &nbsp; (2) \(\square = 4\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.3 第 12 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 12 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>蘭三拉麵餐廳新開幕贈送私房菜，如下圖所示，老蕭與小林到現場發現餐廳外大排長龍，他們抽了一張號碼牌，號碼是四位數「\(28\bigstar 9\)」。小林算了一下就說：「我們前一組的客人好幸運！他們的號碼是 \(9\) 的倍數。」則 \(\bigstar\) 的值為何？</p>
+        <div class="info-banner" style="background:#eef6f0;border:2px solid #3b7a57;border-radius:8px;padding:10px 14px;margin:8px 0;display:inline-block;">
+          <strong>🍜 蘭三拉麵</strong><br>
+          開幕期間凡排隊號碼牌為 \(9\) 的倍數，用餐免費贈送主廚私房菜一盤
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：推算前一組客人的號碼</div>
+          <div class="step-content">
+            <p>老蕭與小林的號碼是 \(28\bigstar 9\)，因此前一組客人的號碼為 \(28\bigstar 9 - 1 = 28\bigstar 8\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：利用 \(9\) 的倍數判別法求 \(\bigstar\)</div>
+          <div class="step-content">
+            <p>\(28\bigstar 8\) 是 \(9\) 的倍數，其各位數字和：\[2 + 8 + \bigstar + 8 = 18 + \bigstar\]</p>
+            <p>要使 \(18 + \bigstar\) 為 \(9\) 的倍數（\(18\) 或 \(27\)），則 \(\bigstar = 0\) 或 \(9\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(0\) 或 \(9\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.3 第 13 題 -->
+    <div class="q-card" data-page="3">
+      <div class="q-header">
+        <span class="q-badge">第 13 題</span>
+        <span class="q-page">P.3</span>
+      </div>
+      <div class="q-body">
+        <p>某網路商店推出雙十一購物節優惠內容如下圖。若小康目前已選購的商品總金額為五位數 \(1\square 375\) 元，他算一算，只要再多消費 \(1000\) 元，就可以享有雙十一的 \(8\) 折優惠，則 \(\square\) 的值為何？</p>
+        <p style="font-size:0.85em;color:#666;">（註：原卷題幹前半段「若小康目前已選購的商品總 \(1\square 375\) 元，他算一算，只要 元，就可以享有雙十一的 8 折 值為何？」為排版重複殘留文字，完整題意如上。）</p>
+        <div class="info-banner" style="background:#fff0f3;border:2px solid #d6336c;border-radius:8px;padding:10px 14px;margin:8px 0;display:inline-block;">
+          <strong>🛍️ BIG SALE</strong><br>
+          單筆消費滿 \(10000\) 元，且消費金額為 \(11\) 的倍數，可享 \(8\) 折優惠
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：表示再多消費 \(1000\) 元後的總金額</div>
+          <div class="step-content">
+            <p>原金額為 \(1\square 375\) 元，再多消費 \(1000\) 元後，千位數字增加 \(1\)，新金額為 \(1(\square+1)375\) 元（若 \(\square=9\) 則為 \(20375\) 元，奇偶位差 \(|(2+3+5)-(0+7)|=3\)，不是 \(11\) 的倍數）。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：利用 \(11\) 的倍數判別法求 \(\square\)</div>
+          <div class="step-content">
+            <p>新金額 \(1(\square+1)375\) 是 \(11\) 的倍數：</p>
+            <ul>
+              <li>奇數位數字和：\(1 + 3 + 5 = 9\)</li>
+              <li>偶數位數字和：\((\square + 1) + 7 = \square + 8\)</li>
+            </ul>
+            <p>兩者相差：\(|(\square + 8) - 9| = |\square - 1| = 0 \implies \square = 1\)。</p>
+            <p>（驗算：原金額 \(11375 + 1000 = 12375 = 11 \times 1125\)，符合條件。）</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(\square = 1\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== P.4 ==================== -->
+  <div class="q-pair">
+    <!-- P.4 第 14 題 -->
+    <div class="q-card" data-page="4">
+      <div class="q-header">
+        <span class="q-badge">第 14 題</span>
+        <span class="q-page">P.4</span>
+      </div>
+      <div class="q-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+          <div>
+            <p>小瑋利用短除法對正整數甲做因數分解的過程如右，則：</p>
+            <p>(1) 丁 \(=\)？ &nbsp;&nbsp; (2) 丙 \(=\)？</p>
+            <p>(3) 甲的標準分解式為何？</p>
+          </div>
+          <svg width="120" height="150" viewBox="0 0 120 150" style="font-family:serif;font-size:16px;">
+            <text x="15" y="25">5</text>
+            <line x1="30" y1="8" x2="30" y2="30" stroke="#333" stroke-width="1.5"/>
+            <line x1="30" y1="30" x2="85" y2="30" stroke="#333" stroke-width="1.5"/>
+            <text x="50" y="25">甲</text>
+
+            <text x="15" y="52">6</text>
+            <line x1="30" y1="35" x2="30" y2="57" stroke="#333" stroke-width="1.5"/>
+            <line x1="30" y1="57" x2="85" y2="57" stroke="#333" stroke-width="1.5"/>
+            <text x="50" y="52">乙</text>
+
+            <text x="15" y="79">7</text>
+            <line x1="30" y1="62" x2="30" y2="84" stroke="#333" stroke-width="1.5"/>
+            <line x1="30" y1="84" x2="85" y2="84" stroke="#333" stroke-width="1.5"/>
+            <text x="50" y="79">丙</text>
+
+            <text x="15" y="106">8</text>
+            <line x1="30" y1="89" x2="30" y2="111" stroke="#333" stroke-width="1.5"/>
+            <line x1="30" y1="111" x2="85" y2="111" stroke="#333" stroke-width="1.5"/>
+            <text x="50" y="106">丁</text>
+
+            <text x="54" y="133">9</text>
+          </svg>
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：由下往上反推丁與丙</div>
+          <div class="step-content">
+            <ul>
+              <li>(1) \(\text{丁} = 8 \times 9 = 72\)</li>
+              <li>(2) \(\text{丙} = 7 \times \text{丁} = 7 \times 72 = 504\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(3) 求甲的標準分解式</div>
+          <div class="step-content">
+            <p>不必算出甲的實際數值，直接將所有除數與最後的商相乘並分解為質因數：</p>
+            <p>\[\text{甲} = 5 \times 6 \times 7 \times 8 \times 9 = 5 \times (2 \times 3) \times 7 \times 2^3 \times 3^2 = 2^4 \times 3^3 \times 5 \times 7\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(\text{丁} = 72\) &nbsp; (2) \(\text{丙} = 504\) &nbsp; (3) \(2^4 \times 3^3 \times 5 \times 7\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.4 第 15 題 -->
+    <div class="q-card" data-page="4">
+      <div class="q-header">
+        <span class="q-badge">第 15 題</span>
+        <span class="q-page">P.4</span>
+      </div>
+      <div class="q-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+          <div>
+            <p>小康利用短除法對正整數 \(A\) 做質因數分解的過程如右，則：</p>
+            <p>(1) \(C =\)？ &nbsp;&nbsp; (2) \(B =\)？</p>
+            <p>(3) \(A\) 的標準分解式為何？</p>
+          </div>
+          <svg width="130" height="125" viewBox="0 0 130 125" style="font-family:serif;font-size:16px;">
+            <text x="18" y="25">2</text>
+            <line x1="34" y1="8" x2="34" y2="30" stroke="#333" stroke-width="1.5"/>
+            <line x1="34" y1="30" x2="95" y2="30" stroke="#333" stroke-width="1.5"/>
+            <text x="55" y="25" font-style="italic">A</text>
+
+            <text x="18" y="52" font-style="italic">B</text>
+            <line x1="34" y1="35" x2="34" y2="57" stroke="#333" stroke-width="1.5"/>
+            <line x1="34" y1="57" x2="95" y2="57" stroke="#333" stroke-width="1.5"/>
+            <text x="48" y="52">286</text>
+
+            <text x="12" y="79">11</text>
+            <line x1="34" y1="62" x2="34" y2="84" stroke="#333" stroke-width="1.5"/>
+            <line x1="34" y1="84" x2="95" y2="84" stroke="#333" stroke-width="1.5"/>
+            <text x="55" y="79" font-style="italic">C</text>
+
+            <text x="52" y="106">13</text>
+          </svg>
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：由下往上求 \(C\) 與 \(B\)</div>
+          <div class="step-content">
+            <ul>
+              <li>(1) \(C = 11 \times 13 = 143\)</li>
+              <li>(2) 因為 \(286 \div B = C = 143\)，所以 \(B = 286 \div 143 = 2\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(3) 求 \(A\) 的標準分解式</div>
+          <div class="step-content">
+            <p>將左側所有質因數與最下方的商相乘：\[A = 2 \times B \times 11 \times 13 = 2^2 \times 11 \times 13\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(C = 143\) &nbsp; (2) \(B = 2\) &nbsp; (3) \(2^2 \times 11 \times 13\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.4 第 16 題 -->
+    <div class="q-card" data-page="4">
+      <div class="q-header">
+        <span class="q-badge">第 16 題</span>
+        <span class="q-page">P.4</span>
+      </div>
+      <div class="q-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+          <div>
+            <p>右圖是對甲數做質因數分解的過程，則：</p>
+            <p>(1) 甲、乙、丙、丁的值分別為多少？</p>
+            <p>(2) 甲數的標準分解式為何？</p>
+          </div>
+          <svg width="170" height="150" viewBox="0 0 170 150" style="font-family:serif;font-size:15px;text-anchor:middle;">
+            <text x="90" y="20">甲</text>
+            <line x1="85" y1="25" x2="60" y2="42" stroke="#333" stroke-width="1.3"/>
+            <line x1="95" y1="25" x2="120" y2="42" stroke="#333" stroke-width="1.3"/>
+
+            <text x="60" y="56">63</text>
+            <text x="120" y="56">丙</text>
+
+            <line x1="55" y1="62" x2="40" y2="78" stroke="#333" stroke-width="1.3"/>
+            <line x1="65" y1="62" x2="80" y2="78" stroke="#333" stroke-width="1.3"/>
+            <line x1="115" y1="62" x2="102" y2="78" stroke="#333" stroke-width="1.3"/>
+            <line x1="125" y1="62" x2="138" y2="78" stroke="#333" stroke-width="1.3"/>
+
+            <text x="40" y="94">9</text>
+            <text x="80" y="94">丁</text>
+            <text x="102" y="94">2</text>
+            <text x="138" y="94">5</text>
+
+            <line x1="36" y1="100" x2="22" y2="116" stroke="#333" stroke-width="1.3"/>
+            <line x1="44" y1="100" x2="58" y2="116" stroke="#333" stroke-width="1.3"/>
+
+            <text x="22" y="132">3</text>
+            <text x="58" y="132">乙</text>
+          </svg>
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 根據樹狀圖分支求甲、乙、丙、丁</div>
+          <div class="step-content">
+            <ul>
+              <li>\(9 = 3 \times \text{乙} \implies \text{乙} = 3\)</li>
+              <li>\(63 = 9 \times \text{丁} \implies \text{丁} = 7\)</li>
+              <li>\(\text{丙} = 2 \times 5 = 10\)</li>
+              <li>\(\text{甲} = 63 \times \text{丙} = 63 \times 10 = 630\)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 寫出甲數的標準分解式</div>
+          <div class="step-content">
+            <p>將所有最末端的質因數相乘並由小到大排列：\[\text{甲} = 2 \times 3^2 \times 5 \times 7\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(\text{甲} = 630\)，\(\text{乙} = 3\)，\(\text{丙} = 10\)，\(\text{丁} = 7\) &nbsp; (2) \(2 \times 3^2 \times 5 \times 7\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.4 第 17 題 -->
+    <div class="q-card" data-page="4">
+      <div class="q-header">
+        <span class="q-badge">第 17 題</span>
+        <span class="q-page">P.4</span>
+      </div>
+      <div class="q-body">
+        <p>將下列各數做質因數分解，並寫成標準分解式。</p>
+        <p>(1) \(2772\) &nbsp;&nbsp;&nbsp; (2) \(36 \times 84\) &nbsp;&nbsp;&nbsp; (3) \(26 \times 39 \times 121\)</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 分解 \(2772\)</div>
+          <div class="step-content">
+            <p>\[2772 = 4 \times 693 = 4 \times 9 \times 77 = 2^2 \times 3^2 \times 7 \times 11\]</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 分解 \(36 \times 84\)</div>
+          <div class="step-content">
+            <p>因為 \(36 = 2^2 \times 3^2\)，\(84 = 2^2 \times 3 \times 7\)，合併得：\[36 \times 84 = 2^4 \times 3^3 \times 7\]</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 3：(3) 分解 \(26 \times 39 \times 121\)</div>
+          <div class="step-content">
+            <p>因為 \(26 = 2 \times 13\)，\(39 = 3 \times 13\)，\(121 = 11^2\)，合併得：\[26 \times 39 \times 121 = 2 \times 3 \times 11^2 \times 13^2\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(2^2 \times 3^2 \times 7 \times 11\) &nbsp; (2) \(2^4 \times 3^3 \times 7\) &nbsp; (3) \(2 \times 3 \times 11^2 \times 13^2\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.4 第 18 題 -->
+    <div class="q-card" data-page="4">
+      <div class="q-header">
+        <span class="q-badge">第 18 題</span>
+        <span class="q-page">P.4</span>
+      </div>
+      <div class="q-body">
+        <p>小恩將若干張邊長為 \(1\) 的正方形紙片緊密的拼成一個長方形，且長、寬皆大於 \(2\)。若正方形紙片可全部用完，則小恩不可能有多少張正方形紙片？</p>
+        <p>(A) \(33\) &nbsp;&nbsp; (B) \(43\) &nbsp;&nbsp; (C) \(63\) &nbsp;&nbsp; (D) \(93\)</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：判斷質數與合數性質</div>
+          <div class="step-content">
+            <p>拼成長方形且長、寬皆為大於 \(2\) 的整數，表示總張數（面積）必為合數，且可分解為兩個大於 \(2\) 的整數相乘：</p>
+            <ul>
+              <li>(A) \(33 = 3 \times 11\)（可）</li>
+              <li>(B) \(43 = 1 \times 43\)（\(43\) 為質數，只能拼成寬為 \(1\) 的長方形，不合）</li>
+              <li>(C) \(63 = 3 \times 21 = 7 \times 9\)（可）</li>
+              <li>(D) \(93 = 3 \times 31\)（可）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (B)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.4 第 19 題 -->
+    <div class="q-card" data-page="4">
+      <div class="q-header">
+        <span class="q-badge">第 19 題</span>
+        <span class="q-page">P.4</span>
+      </div>
+      <div class="q-body">
+        <p>若「\(P(k)\)」代表所有小於 \(k\) 的質數個數，例如：小於 \(5\) 的質數有 \(2\)、\(3\)，共 \(2\) 個，因此 \(P(5) = 2\)，則：</p>
+        <p>(1) \(P(24) - P(12)\) 之值是多少？</p>
+        <p>(2) 若 \(P(x) = 9\)，則整數 \(x\) 可能為何？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 計算 \(P(24)\) 與 \(P(12)\)</div>
+          <div class="step-content">
+            <ul>
+              <li>小於 \(24\) 的質數有：\(2, 3, 5, 7, 11, 13, 17, 19, 23\)，共 \(9\) 個，故 \(P(24) = 9\)。</li>
+              <li>小於 \(12\) 的質數有：\(2, 3, 5, 7, 11\)，共 \(5\) 個，故 \(P(12) = 5\)。</li>
+            </ul>
+            <p>因此 \(P(24) - P(12) = 9 - 5 = 4\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 由第 \(9\) 個與第 \(10\) 個質數決定 \(x\) 的範圍</div>
+          <div class="step-content">
+            <p>由小到大第 \(9\) 個質數為 \(23\)，第 \(10\) 個質數為 \(29\)。</p>
+            <p>因為「小於 \(x\)」的質數恰有 \(9\) 個（必須包含 \(23\)，但不能包含 \(29\)），所以整數 \(x\) 必須滿足 \(23 < x \le 29\)。</p>
+            <p>故 \(x\) 可能為 \(24, 25, 26, 27, 28, 29\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(4\) &nbsp; (2) \(24, 25, 26, 27, 28, 29\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== P.5 ==================== -->
+  <div class="q-pair">
+    <!-- P.5 第 20 題 -->
+    <div class="q-card" data-page="5">
+      <div class="q-header">
+        <span class="q-badge">第 20 題</span>
+        <span class="q-page">P.5</span>
+      </div>
+      <div class="q-body">
+        <p>設「\(a * b\)」表示所有大於 \(a\) 但小於 \(b\) 的質數個數（原卷略字作「所有大於 \(a\) 數個數」），例如：大於 \(20\) 但小於 \(30\) 的質數有 \(23\)、\(29\)，共 \(2\) 個，所以 \(20 * 30 = 2\)。試問：</p>
+        <p>(1) \(70 * 80\) 之值為何？ &nbsp;&nbsp; (2) 若 \(P(x) = 9\)，則整數 \(x\) 可能為何？</p>
+        <p style="font-size:0.85em;color:#666;">（註：原卷第 (2) 小題誤植為第 19(2) 題之題目，解析同時附上 \(P(x)=9\) 與延伸題意說明。）</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 找出介於 \(70\) 與 \(80\) 之間的質數</div>
+          <div class="step-content">
+            <p>大於 \(70\) 但小於 \(80\) 的質數有：\(71\)、\(73\)、\(79\)，共 \(3\) 個，故 \(70 * 80 = 3\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 求 \(P(x) = 9\) 的整數 \(x\)</div>
+          <div class="step-content">
+            <p>同第 19 題 (2)，小於 \(x\) 的質數恰有 \(9\) 個（即 \(2, 3, 5, 7, 11, 13, 17, 19, 23\)），而下一個質數為 \(29\)，故 \(23 < x \le 29\)，得 \(x = 24, 25, 26, 27, 28, 29\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(3\) &nbsp; (2) \(24, 25, 26, 27, 28, 29\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.5 第 21 題 -->
+    <div class="q-card" data-page="5">
+      <div class="q-header">
+        <span class="q-badge">第 21 題</span>
+        <span class="q-page">P.5</span>
+      </div>
+      <div class="q-body">
+        <p>若 \(a = 2^b \times 3^2 \times 5\)，且 \(20\) 是 \(a\) 的因數，但 \(24\) 不是 \(a\) 的因數，則 \(b =\)？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將 \(20\) 與 \(24\) 寫成標準分解式</div>
+          <div class="step-content">
+            <ul>
+              <li>\(20 = 2^2 \times 5\) 是 \(a\) 的因數 \(\implies a\) 至少含有 \(2^2\)，即 \(b \ge 2\)。</li>
+              <li>\(24 = 2^3 \times 3\) 不是 \(a\) 的因數，因為 \(a\) 已含有 \(3^2\)（足夠提供因數 \(3\)），所以 \(a\) 不能含有 \(2^3\)，即 \(b < 3\)。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：決定 \(b\) 的值</div>
+          <div class="step-content">
+            <p>由 \(2 \le b < 3\) 且 \(b\) 為整數，得 \(b = 2\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(b = 2\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.5 第 22 題 -->
+    <div class="q-card" data-page="5">
+      <div class="q-header">
+        <span class="q-badge">第 22 題</span>
+        <span class="q-page">P.5</span>
+      </div>
+      <div class="q-body">
+        <p>有一個長方體，已知它的長、寬、高是大於 \(3\) 公分的不同整數，且體積為 \(490\) 立方公分，則此長方體的表面積是多少平方公分？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將體積 \(490\) 做質因數分解</div>
+          <div class="step-content">
+            <p>\[490 = 2 \times 5 \times 7^2\]</p>
+            <p>要分成三個大於 \(3\) 的<strong>相異整數</strong>，因為 \(2 < 3\)，所以 \(2\) 必須與 \(5\) 或 \(7\) 相乘：</p>
+            <ul>
+              <li>若 \(2 \times 5 = 10\)，則三邊為 \(10, 7, 7\)（有兩邊相同，不合「不同整數」）。</li>
+              <li>若 \(2 \times 7 = 14\)，則三邊為 \(5, 7, 14\)（皆大於 \(3\) 且互不相同，符合條件！）。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：計算長方體表面積</div>
+          <div class="step-content">
+            <p>\[\text{表面積} = 2 \times (5 \times 7 + 7 \times 14 + 14 \times 5) = 2 \times (35 + 98 + 70) = 2 \times 203 = 406\text{（平方公分）}\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(406\) 平方公分
+        </div>
+      </div>
+    </div>
+
+    <!-- P.5 第 23 題 -->
+    <div class="q-card" data-page="5">
+      <div class="q-header">
+        <span class="q-badge">第 23 題</span>
+        <span class="q-page">P.5</span>
+      </div>
+      <div class="q-body">
+        <p>有一個長方體，已知它的底面為一個正方形，且其長、寬、高都是大於 \(1\) 公分的整數，若其體積為 \(315\) 立方公分，則其表面積為多少平方公分？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將體積 \(315\) 做質因數分解</div>
+          <div class="step-content">
+            <p>\[315 = 3^2 \times 5 \times 7\]</p>
+            <p>因為底面為正方形（長 \(=\) 寬 \(> 1\)），體積必含有平方因數。唯一大於 \(1\) 的平方因數為 \(3^2\)，故底面邊長（長、寬）皆為 \(3\) 公分，高為 \(5 \times 7 = 35\) 公分。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：計算長方體表面積</div>
+          <div class="step-content">
+            <p>\[\text{表面積} = 2 \times (3 \times 3 + 3 \times 35 + 3 \times 35) = 2 \times (9 + 105 + 105) = 2 \times 219 = 438\text{（平方公分）}\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(438\) 平方公分
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.5 第 24 題 -->
+    <div class="q-card" data-page="5">
+      <div class="q-header">
+        <span class="q-badge">第 24 題</span>
+        <span class="q-page">P.5</span>
+      </div>
+      <div class="q-body">
+        <p>已知小豪家三兄弟的年齡恰好都相差一歲，且三兄弟和媽媽的年齡乘積為 \(18648\)，請回答下列問題。</p>
+        <p>(1) 寫出 \(18648\) 的標準分解式。</p>
+        <p>(2) 小豪家三兄弟的年齡分別是幾歲？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：(1) 求 \(18648\) 的標準分解式</div>
+          <div class="step-content">
+            <p>利用短除法分解：\[18648 = 8 \times 2331 = 2^3 \times 9 \times 259 = 2^3 \times 3^2 \times 7 \times 37\]</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：(2) 推算媽媽與三兄弟的年齡</div>
+          <div class="step-content">
+            <p>標準分解式中含有較大的質因數 \(37\)，因此媽媽的年齡必為 \(37\) 歲。</p>
+            <p>剩下的因數 \(2^3 \times 3^2 \times 7\) 恰可組合成三個連續整數：\[7 \times 2^3 \times 3^2 = 7 \times 8 \times 9\]</p>
+            <p>故三兄弟的年齡分別是 \(7\) 歲、\(8\) 歲、\(9\) 歲。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> (1) \(2^3 \times 3^2 \times 7 \times 37\) &nbsp; (2) \(7\) 歲、\(8\) 歲、\(9\) 歲
+        </div>
+      </div>
+    </div>
+
+    <!-- P.5 第 25 題 -->
+    <div class="q-card" data-page="5">
+      <div class="q-header">
+        <span class="q-badge">第 25 題</span>
+        <span class="q-page">P.5</span>
+      </div>
+      <div class="q-body">
+        <p>已知新泰國中大會舞隊伍每列有 \(118\) 位同學，編號 \(1 \sim 118\) 號。今宣布編號為 \(3\) 的倍數的同學拿紅色彩球，編號為 \(8\) 的倍數的同學拿藍色彩球，則只有拿紅色彩球但沒有拿藍色彩球的同學共有多少位？請寫出完整的計算過程。</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：計算拿紅色彩球（\(3\) 的倍數）的人數</div>
+          <div class="step-content">
+            <p>\[118 \div 3 = 39 \dots 1\]</p>
+            <p>代表拿紅色彩球的同學共有 \(39\) 位。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：扣除同時拿紅、藍彩球（\(24\) 的倍數）的人數</div>
+          <div class="step-content">
+            <p>同時拿紅球與藍球的同學，其編號為 \(3\) 與 \(8\) 的公倍數，即 \(24\) 的倍數：</p>
+            <p>\[118 \div 24 = 4 \dots 22\]</p>
+            <p>代表同時拿兩種彩球的同學有 \(4\) 位（編號 \(24, 48, 72, 96\)）。</p>
+            <p>故「只有拿紅色彩球但沒有拿藍色彩球」的同學共有：\[39 - 4 = 35\text{（位）}\]</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(35\) 位
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== P.6 資優試題挑戰區 ==================== -->
+  <div class="challenge-header" data-page="6" style="margin:24px 0 12px;padding:10px 16px;background:linear-gradient(135deg,#fff3cd,#ffe69c);border-left:5px solid #f59f00;border-radius:8px;">
+    <h3 style="margin:0;color:#856404;">🏆 2-1 資優試題挑戰區（P.6）</h3>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.6 挑戰區第 1 題 -->
+    <div class="q-card" data-page="6">
+      <div class="q-header">
+        <span class="q-badge">挑戰區 第 1 題</span>
+        <span class="q-page">P.6</span>
+      </div>
+      <div class="q-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:220px;">
+            <p>如右圖，小軒在一個正方體的六個面上，各寫上一個正整數，並使相對兩面所寫的數之和都相等，如果在 \(9\)、\(21\)、\(38\) 的對面依次寫上 \(a\)、\(b\)、\(c\)，且 \(a\)、\(b\)、\(c\) 皆為質數，則 \(a\)、\(b\)、\(c\) 分別為何？</p>
+          </div>
+          <svg width="120" height="110" viewBox="0 0 120 110" style="font-family:sans-serif;font-weight:bold;">
+            <!-- Front face -->
+            <polygon points="15,40 70,40 70,95 15,95" fill="#d0ebff" stroke="#333" stroke-width="1.8"/>
+            <!-- Top face -->
+            <polygon points="15,40 42,18 97,18 70,40" fill="#e7f5ff" stroke="#333" stroke-width="1.8"/>
+            <!-- Right face -->
+            <polygon points="70,40 97,18 97,73 70,95" fill="#a5d8ff" stroke="#333" stroke-width="1.8"/>
+            <text x="42" y="74" font-size="18" text-anchor="middle" fill="#111">38</text>
+            <text x="56" y="34" font-size="15" text-anchor="middle" fill="#111">9</text>
+            <text x="84" y="62" font-size="16" text-anchor="middle" fill="#111" transform="skewY(-35) translate(0,48)">21</text>
+          </svg>
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：列出對面之和相等的關係式與奇偶性分析</div>
+          <div class="step-content">
+            <p>由題意知：\[9 + a = 21 + b = 38 + c\]</p>
+            <p>觀察奇偶性：\(9\) 與 \(21\) 為奇數，\(38\) 為偶數。</p>
+            <ul>
+              <li>若 \(c\) 為奇質數，則 \(38 + c\) 為奇數，此時 \(a = (38 + c) - 9\) 與 \(b = (38 + c) - 21\) 皆須為偶質數（即 \(a = b = 2\)），明顯矛盾！</li>
+              <li>因此 \(c\) 必為唯一的偶質數：<strong>\(c = 2\)</strong>。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：代入 \(c = 2\) 求出 \(a\) 與 \(b\)</div>
+          <div class="step-content">
+            <p>相對兩面之和為 \(38 + 2 = 40\)：</p>
+            <ul>
+              <li>\(a = 40 - 9 = 31\)（質數，合）</li>
+              <li>\(b = 40 - 21 = 19\)（質數，合）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(a = 31\)，\(b = 19\)，\(c = 2\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.6 挑戰區第 2 題 -->
+    <div class="q-card" data-page="6">
+      <div class="q-header">
+        <span class="q-badge">挑戰區 第 2 題</span>
+        <span class="q-page">P.6</span>
+      </div>
+      <div class="q-body">
+        <p>聖誕節快到了，必勝補習班的班主任到大賣場買了 \(36\) 份相同的禮物要送給學生，洗衣服時，不小心將購物發票洗爛了，依稀只能看到 \(36\) 份禮物的總價為五位數 \(\text{◎}713\text{☆}\) 元，且不超過 \(4\) 萬元，其中 \(\text{◎}\) 和 \(\text{☆}\) 為 \(0 \sim 9\) 的數字，請問這 \(36\) 份禮物共價值多少元？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：分解 \(36 = 4 \times 9\)，先由 \(4\) 的倍數求 \(\text{☆}\)</div>
+          <div class="step-content">
+            <p>總價 \(\text{◎}713\text{☆}\) 是 \(36\) 的倍數，故同時為 \(4\) 的倍數與 \(9\) 的倍數。</p>
+            <p>由 \(4\) 的倍數判別法，末兩位 \(3\text{☆}\) 為 \(4\) 的倍數（\(32\) 或 \(36\)），得 \(\text{☆} = 2\) 或 \(6\)。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：再由 \(9\) 的倍數與「不超過 \(4\) 萬元」求 \(\text{◎}\)</div>
+          <div class="step-content">
+            <p>各位數字和為 \(\text{◎} + 7 + 1 + 3 + \text{☆} = 11 + \text{◎} + \text{☆}\)，須為 \(9\) 的倍數：</p>
+            <ul>
+              <li>若 \(\text{☆} = 2\)：數字和 \(13 + \text{◎} = 18 \implies \text{◎} = 5\)，總價 \(57132\) 元超過 \(4\) 萬元（不合）。</li>
+              <li>若 \(\text{☆} = 6\)：數字和 \(17 + \text{◎} = 18 \implies \text{◎} = 1\)，總價 \(17136\) 元不超過 \(4\) 萬元（合！）。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(17136\) 元
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-pair">
+    <!-- P.6 挑戰區第 3 題 -->
+    <div class="q-card" data-page="6">
+      <div class="q-header">
+        <span class="q-badge">挑戰區 第 3 題</span>
+        <span class="q-page">P.6</span>
+      </div>
+      <div class="q-body">
+        <p>將一個三位數重複寫兩次得一個六位數（如 \(123\) 重複寫兩次為 \(123123\)），則像這樣的數一定含有哪些質因數？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：將六位數拆解為三位數的倍數</div>
+          <div class="step-content">
+            <p>設此三位數為 \(\overline{abc}\)，重複寫兩次所得的六位數可表示為：\[\overline{abcabc} = \overline{abc} \times 1000 + \overline{abc} = \overline{abc} \times 1001\]</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：對 \(1001\) 做質因數分解</div>
+          <div class="step-content">
+            <p>\[1001 = 7 \times 11 \times 13\]</p>
+            <p>因此像這樣的六位數一定含有 \(1001\) 的所有質因數：\(7\)、\(11\)、\(13\)。</p>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(7\)、\(11\)、\(13\)
+        </div>
+      </div>
+    </div>
+
+    <!-- P.6 挑戰區第 4 題 -->
+    <div class="q-card" data-page="6">
+      <div class="q-header">
+        <span class="q-badge">挑戰區 第 4 題</span>
+        <span class="q-page">P.6</span>
+      </div>
+      <div class="q-body">
+        <p>用 \(1\)、\(2\)、\(3\)、\(4\)、\(5\)、\(6\) 這六個數組成一個六位數 \(\overline{abcdef}\)，其中不同的字母代表 \(1 \sim 6\) 不同的數字。若要求二位數 \(\overline{ab}\) 是 \(2\) 的倍數，三位數 \(\overline{abc}\) 是 \(3\) 的倍數，四位數 \(\overline{abcd}\) 是 \(4\) 的倍數，五位數 \(\overline{abcde}\) 是 \(5\) 的倍數，六位數 \(\overline{abcdef}\) 是 \(6\) 的倍數，請問所有這樣的六位數有哪些？</p>
+      </div>
+      <div class="q-actions">
+        <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+        <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+      </div>
+      <div class="q-solution" hidden>
+        <div class="step">
+          <div class="step-title">步驟 1：決定 \(e\) 以及奇偶數位置</div>
+          <div class="step-content">
+            <ul>
+              <li>因為五位數 \(\overline{abcde}\) 是 \(5\) 的倍數，在 \(1 \sim 6\) 中只有 \(5\) 可作為個位數，故 <strong>\(e = 5\)</strong>。</li>
+              <li>因為 \(\overline{ab}\)、\(\overline{abcd}\)、\(\overline{abcdef}\) 分別為 \(2, 4, 6\) 的倍數（皆為偶數），所以 \(b, d, f\) 必為偶數 \(\{2, 4, 6\}\)，而剩下的 \(a, c\) 必為奇數 \(\{1, 3\}\)。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 2：利用 \(3\) 的倍數與 \(4\) 的倍數決定 \(b, d, f\)</div>
+          <div class="step-content">
+            <ul>
+              <li>三位數 \(\overline{abc}\) 是 \(3\) 的倍數：已知 \(\{a, c\} = \{1, 3\}\)，故 \(a + c = 4\)。要使 \(a + b + c = 4 + b\) 為 \(3\) 的倍數，偶數 \(b \in \{2, 4, 6\}\) 中只有 <strong>\(b = 2\)</strong> 符合（\(4 + 2 = 6\)）。</li>
+              <li>四位數 \(\overline{abcd}\) 是 \(4\) 的倍數：末兩位 \(\overline{cd}\) 為 \(4\) 的倍數。因為 \(c \in \{1, 3\}\) 為奇數，搭配偶數 \(d \in \{4, 6\}\) 時，\(16\) 與 \(36\) 是 \(4\) 的倍數（而 \(14, 34\) 不是），故 <strong>\(d = 6\)</strong>。</li>
+              <li>剩下的最後一個偶數即為 <strong>\(f = 4\)</strong>。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title">步驟 3：排列 \(a, c\) 寫出所有可能</div>
+          <div class="step-content">
+            <p>\(a, c\) 為 \(1, 3\) 的兩種排列，皆滿足所有條件：</p>
+            <ul>
+              <li>當 \(a = 1, c = 3\) 時：<strong>\(123654\)</strong></li>
+              <li>當 \(a = 3, c = 1\) 時：<strong>\(321654\)</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="ans-box">
+          <strong>【答案】</strong> \(123654\)、\(321654\)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- 2-2 最大公因數與最小公倍數 (P.7 ~ P.12) -->
+    <section id="sec-2-2" class="section-block">
+      <div class="section-header">
+        <h2>2-2 最大公因數與最小公倍數（P.7 ～ P.12）</h2>
+      </div>
+      <!-- ==================== 2-2 最大公因數與最小公倍數 (P.7 ~ P.12) ==================== -->
+
+<!-- ==================== P.7 ==================== -->
+<div class="q-card" data-page="7">
+  <div class="q-header">
+    <span class="q-badge">第 1 題</span>
+    <span class="q-page">P.7</span>
+  </div>
+  <div class="q-body">
+    <p>求下列各組數的最大公因數與最小公倍數：</p>
+    <p>(1) \(2^3 \times 3^2\)，\(2^3 \times 3 \times 5\)，\(2^2 \times 3^2 \times 5 \times 7\)</p>
+    <p>(2) \(2^2 \times 3^5 \times 7\)，\(270\)</p>
+    <p>(3) \(21 \times 28 \times 49\)，\(16 \times 27 \times 245\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：回顧標準分解式求最大公因數與最小公倍數的法則</div>
+      <div class="step-content">
+        <ul>
+          <li><strong>最大公因數</strong>：找出各數<strong>共同的質因數</strong>，並取<strong>次方最小</strong>者相乘。</li>
+          <li><strong>最小公倍數</strong>：找出各數<strong>所有的質因數</strong>，並取<strong>次方最大</strong>者相乘。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算第 (1) 小題</div>
+      <div class="step-content">
+        <p>三數皆已寫成標準分解式：\(2^3 \times 3^2\)、\(2^3 \times 3^1 \times 5^1\)、\(2^2 \times 3^2 \times 5^1 \times 7^1\)</p>
+        <ul>
+          <li>共同質因數為 \(2\) 和 \(3\)，最小次方分別為 \(2^2\) 與 \(3^1\)：<br>
+            最大公因數 \(= 2^2 \times 3 = 4 \times 3 = 12\)</li>
+          <li>所有質因數為 \(2, 3, 5, 7\)，最大次方分別為 \(2^3, 3^2, 5^1, 7^1\)：<br>
+            最小公倍數 \(= 2^3 \times 3^2 \times 5 \times 7 = 8 \times 9 \times 5 \times 7 = 2520\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 3：計算第 (2) 小題</div>
+      <div class="step-content">
+        <p>先將 \(270\) 作質因數分解：\(270 = 2 \times 135 = 2 \times 3^3 \times 5\)</p>
+        <p>比較 \(2^2 \times 3^5 \times 7\) 與 \(2 \times 3^3 \times 5\)：</p>
+        <ul>
+          <li>最大公因數 \(= 2 \times 3^3 = 2 \times 27 = 54\)</li>
+          <li>最小公倍數 \(= 2^2 \times 3^5 \times 5 \times 7 = 4 \times 243 \times 5 \times 7 = 34020\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 4：計算第 (3) 小題</div>
+      <div class="step-content">
+        <p>先將兩數化為標準分解式：</p>
+        <ul>
+          <li>\(21 \times 28 \times 49 = (3 \times 7) \times (2^2 \times 7) \times 7^2 = 2^2 \times 3 \times 7^4\)</li>
+          <li>\(16 \times 27 \times 245 = 2^4 \times 3^3 \times (5 \times 7^2) = 2^4 \times 3^3 \times 5 \times 7^2\)</li>
+        </ul>
+        <p>由此可得：</p>
+        <ul>
+          <li>最大公因數 \(= 2^2 \times 3 \times 7^2 = 4 \times 3 \times 49 = 588\)</li>
+          <li>最小公倍數 \(= 2^4 \times 3^3 \times 5 \times 7^4 = 16 \times 27 \times 5 \times 2401 = 5186160\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong><br>
+      (1) 最大公因數：\(2^2 \times 3\)（或 \(12\)）；最小公倍數：\(2^3 \times 3^2 \times 5 \times 7\)（或 \(2520\)）<br>
+      (2) 最大公因數：\(2 \times 3^3\)（或 \(54\)）；最小公倍數：\(2^2 \times 3^5 \times 5 \times 7\)（或 \(34020\)）<br>
+      (3) 最大公因數：\(2^2 \times 3 \times 7^2\)（或 \(588\)）；最小公倍數：\(2^4 \times 3^3 \times 5 \times 7^4\)（或 \(5186160\)）
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="7">
+  <div class="q-header">
+    <span class="q-badge">第 2 題</span>
+    <span class="q-page">P.7</span>
+  </div>
+  <div class="q-body">
+    <p>有一保麗龍材質的實心長方體，長 \(210\) 公分，寬 \(168\) 公分，高 \(126\) 公分，若想把它切割成若干大小相同的正方體，而使其不剩下，則：</p>
+    <p>(1) 所切的正方體邊長最大為多少公分？</p>
+    <p>(2) 所切的正方體最少有幾塊？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：分析題意與求最大邊長</div>
+      <div class="step-content">
+        <p>要將長方體切割成大小相同的正方體且不剩下，正方體的邊長必須同時整除長 \(210\)、寬 \(168\)、高 \(126\)，因此邊長為三數的公因數。</p>
+        <p>欲使正方體邊長最大，即求 \((210, 168, 126)\)：</p>
+        \[210 = 2 \times 3 \times 5 \times 7 = 42 \times 5\]
+        \[168 = 2^3 \times 3 \times 7 = 42 \times 4\]
+        \[126 = 2 \times 3^2 \times 7 = 42 \times 3\]
+        <p>得最大公因數 \((210, 168, 126) = 42\)，故正方體邊長最大為 \(42\) 公分。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算最少能切出幾塊正方體</div>
+      <div class="step-content">
+        <p>當正方體邊長最大（\(42\) 公分）時，切出的塊數最少：</p>
+        <ul>
+          <li>長邊可切：\(210 \div 42 = 5\)（塊）</li>
+          <li>寬邊可切：\(168 \div 42 = 4\)（塊）</li>
+          <li>高邊可切：\(126 \div 42 = 3\)（塊）</li>
+        </ul>
+        <p>總塊數 \(= 5 \times 4 \times 3 = 60\)（塊）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(42\) 公分 &nbsp;&nbsp; (2) \(60\) 塊
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="7">
+  <div class="q-header">
+    <span class="q-badge">第 3 題</span>
+    <span class="q-page">P.7</span>
+  </div>
+  <div class="q-body">
+    <p>碧潭樂園裡有一塊三角形公園，為了增加樹蔭處讓遊客休憩，想要沿著公園周圍種樹綠化環境，且相鄰兩棵樹之間的距離要相等，但在三角形的頂點處，只蓋涼亭不種樹，已知三角形公園邊長分別為 \(180\) 公尺、\(200\) 公尺、\(240\) 公尺，則：</p>
+    <p>(1) 兩棵樹之間的距離最大是多少公尺？</p>
+    <p>(2) 所種的樹最少有幾棵？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：求兩棵樹之間的最大距離</div>
+      <div class="step-content">
+        <p>由於三個頂點處要蓋涼亭（相當於分段點），且相鄰兩棵樹（及頂點涼亭與相鄰樹）的間距相等，故間距必為三邊長 \(180\)、\(200\)、\(240\) 的公因數。</p>
+        <p>求最大公因數 \((180, 200, 240)\)：</p>
+        \[180 = 20 \times 9, \quad 200 = 20 \times 10, \quad 240 = 20 \times 12\]
+        <p>因 \((9, 10, 12) = 1\)，故 \((180, 200, 240) = 20\)，即兩棵樹之間的距離最大為 \(20\) 公尺。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算最少種幾棵樹（扣除三個頂點）</div>
+      <div class="step-content">
+        <p>當樹距最大（\(20\) 公尺）時，種的樹最少：</p>
+        <p>公園周長總間隔數 \(= (180 + 200 + 240) \div 20 = 620 \div 20 = 31\)（個間隔）。</p>
+        <p>封閉圖形中「總定點數 \(=\) 總間隔數 \(= 31\)」，但三個頂點只蓋涼亭不種樹，必須扣除 \(3\) 個頂點：</p>
+        \[31 - 3 = 28 \text{（棵）}\]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(20\) 公尺 &nbsp;&nbsp; (2) \(28\) 棵
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="7">
+  <div class="q-header">
+    <span class="q-badge">第 4 題</span>
+    <span class="q-page">P.7</span>
+  </div>
+  <div class="q-body">
+    <p>天干：甲、乙、丙、丁、戊、己、庚、辛、壬、癸；地支：子、丑、寅、卯、辰、巳、午、未、申、酉、戌、亥，農曆記年是以天干地支來記年，分別以甲子、乙丑、丙寅、丁卯、戊辰、己巳、庚午、……來表示，已知西元 \(2012\) 年為壬辰年，則西元 \(2075\) 年的農曆記年為多少年？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算經過的年數與循環週期</div>
+      <div class="step-content">
+        <p>從西元 \(2012\) 年到西元 \(2075\) 年，共經過：</p>
+        \[2075 - 2012 = 63 \text{（年）}\]
+        <p>天干有 \(10\) 個（每 \(10\) 年一循環），地支有 \(12\) 個（每 \(12\) 年一循環），天干地支組合每 \([10, 12] = 60\) 年一循環（稱為一甲子）。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：推算 2075 年的天干與地支</div>
+      <div class="step-content">
+        <p>將經過的 \(63\) 年除以週期 \(60\) 年：</p>
+        \[63 \div 60 = 1 \cdots 3\]
+        <p>代表完整經過 \(1\) 個甲子（回到壬辰年）後，再往後推 \(3\) 年：</p>
+        <ul>
+          <li><strong>天干</strong>從「壬」往後推 \(3\) 位：壬 \(\rightarrow\) 癸(1) \(\rightarrow\) 甲(2) \(\rightarrow\) <strong>乙(3)</strong></li>
+          <li><strong>地支</strong>從「辰」往後推 \(3\) 位：辰 \(\rightarrow\) 巳(1) \(\rightarrow\) 午(2) \(\rightarrow\) <strong>未(3)</strong></li>
+        </ul>
+        <p>故西元 \(2075\) 年為<strong>乙未</strong>年。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> 乙未年
+    </div>
+  </div>
+</div>
+
+<!-- ==================== P.8 ==================== -->
+<div class="q-card" data-page="8">
+  <div class="q-header">
+    <span class="q-badge">第 5 題</span>
+    <span class="q-page">P.8</span>
+  </div>
+  <div class="q-body">
+    <p>歐太太有三個女兒，長女 \(7\) 日一歸，次女 \(11\) 日一歸，幼女 \(15\) 日一歸。某日三女同歸，歐太太為使三女下一次早些同歸相聚，便叫三女把歸家日期各縮短一天，但幼女說：不如把歸家日期各延長一天，便可早些相聚。則歐太太與幼女誰言之有理？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算歐太太方案（各縮短一天）的相聚天數</div>
+      <div class="step-content">
+        <p>若把歸家日期各縮短一天，則長女每 \(6\) 日一歸、次女每 \(10\) 日一歸、幼女每 \(14\) 日一歸。</p>
+        <p>三女下一次同時歸家的天數為 \(6, 10, 14\) 的最小公倍數：</p>
+        \[[6, 10, 14] = 2 \times 3 \times 5 \times 7 = 210 \text{（日）}\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算幼女方案（各延長一天）的相聚天數並比較</div>
+      <div class="step-content">
+        <p>若把歸家日期各延長一天，則長女每 \(8\) 日一歸、次女每 \(12\) 日一歸、幼女每 \(16\) 日一歸。</p>
+        <p>三女下一次同時歸家的天數為 \(8, 12, 16\) 的最小公倍數：</p>
+        \[[8, 12, 16] = 2^4 \times 3 = 48 \text{（日）}\]
+        <p>因為 \(48 < 210\)，各延長一天反而只需 \(48\) 天就能再度同歸相聚，故<strong>幼女</strong>言之有理。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> 幼女言之有理（歐太太的方式需 \(210\) 天，幼女的方式只需 \(48\) 天）
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="8">
+  <div class="q-header">
+    <span class="q-badge">第 6 題</span>
+    <span class="q-page">P.8</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 若有一正整數，除 \(280\) 餘 \(8\)，除 \(490\) 餘 \(14\)，則此數為多少？</p>
+    <p>(2) 在三位正整數中，被 \(28\)、\(42\)、\(70\) 除之皆餘 \(3\) 的最大數是多少？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：解析第 (1) 小題（注意「除」與「除以」的區別）</div>
+      <div class="step-content">
+        <p>設此正整數為 \(x\)。題目說「\(x\) 除 \(280\) 餘 \(8\)」即 \(280 \div x\) 餘 \(8\)；「\(x\) 除 \(490\) 餘 \(14\)」即 \(490 \div x\) 餘 \(14\)。</p>
+        <ul>
+          <li>除數必須大於餘數，所以 \(x > 8\) 且 \(x > 14\)，即 \(x > 14\)。</li>
+          <li>將被除數減去餘數後，必能被 \(x\) 整除：<br>
+            \(280 - 8 = 272\) 是 \(x\) 的倍數；<br>
+            \(490 - 14 = 476\) 是 \(x\) 的倍數。</li>
+        </ul>
+        <p>因此 \(x\) 是 \(272\) 和 \(476\) 的公因數。先求最大公因數：</p>
+        \[(272, 476) = 68\]
+        <p>\(68\) 的所有正因數為：\(1, 2, 4, 17, 34, 68\)。其中滿足 \(x > 14\) 的數為 <strong>\(17\)、\(34\)、\(68\)</strong>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：解析第 (2) 小題</div>
+      <div class="step-content">
+        <p>所求之數「被 \(28\)、\(42\)、\(70\) 除之皆餘 \(3\)」，代表此數減去 \(3\) 之後是 \(28, 42, 70\) 的公倍數。</p>
+        <p>先求最小公倍數：</p>
+        \[[28, 42, 70] = 2^2 \times 3 \times 5 \times 7 = 420\]
+        <p>因此滿足條件的數可表示為 \(420k + 3\)（\(k\) 為正整數或 \(0\)）。</p>
+        <p>要在三位正整數中找最大數，取 \(k = 2\)：</p>
+        \[420 \times 2 + 3 = 840 + 3 = 843\]
+        <p>（若 \(k = 3\) 則為 \(1263\)，超過三位數）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(17\)、\(34\) 或 \(68\) &nbsp;&nbsp; (2) \(843\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="8">
+  <div class="q-header">
+    <span class="q-badge">第 7 題</span>
+    <span class="q-page">P.8</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 若有一正整數，除 \(206\) 餘 \(2\)，除 \(250\) 不足 \(5\)，則此數為多少？</p>
+    <p>(2) 在三位正整數中，被 \(15\) 除餘 \(10\)，被 \(20\) 除餘 \(15\)，被 \(25\) 除不足 \(5\) 的最大數是多少？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：解析第 (1) 小題</div>
+      <div class="step-content">
+        <p>設此正整數為 \(x\)：</p>
+        <ul>
+          <li>「除 \(206\) 餘 \(2\)」\(\Rightarrow 206 - 2 = 204\) 可被 \(x\) 整除，且 \(x > 2\)。</li>
+          <li>「除 \(250\) 不足 \(5\)」\(\Rightarrow 250 + 5 = 255\) 可被 \(x\) 整除，且 \(x > 5\)。</li>
+        </ul>
+        <p>求 \(204\) 與 \(255\) 的最大公因數：</p>
+        \[(204, 255) = 51\]
+        <p>\(51\) 的正因數有 \(1, 3, 17, 51\)。因除數 \(x > 5\)，故此數為 <strong>\(17\) 或 \(51\)</strong>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：解析第 (2) 小題</div>
+      <div class="step-content">
+        <p>觀察三個條件：</p>
+        <ul>
+          <li>被 \(15\) 除餘 \(10\) \(\Rightarrow\) 即<strong>不足 \(5\)</strong>（\(15 - 10 = 5\)）</li>
+          <li>被 \(20\) 除餘 \(15\) \(\Rightarrow\) 即<strong>不足 \(5\)</strong>（\(20 - 15 = 5\)）</li>
+          <li>被 \(25\) 除<strong>不足 \(5\)</strong></li>
+        </ul>
+        <p>因此，此數加上 \(5\) 之後必為 \(15, 20, 25\) 的公倍數。先求最小公倍數：</p>
+        \[[15, 20, 25] = 300\]
+        <p>此數可表為 \(300k - 5\)。欲在三位正整數中求最大數，取 \(k = 3\)：</p>
+        \[300 \times 3 - 5 = 900 - 5 = 895\]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(17\) 或 \(51\) &nbsp;&nbsp; (2) \(895\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="8">
+  <div class="q-header">
+    <span class="q-badge">第 8 題</span>
+    <span class="q-page">P.8</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 甲、乙都是正整數，若甲 \(= 54\)，且 \((\text{甲}, \text{乙}) = 6\)，\([\text{甲}, \text{乙}] = 270\)，則乙 \(= ?\)</p>
+    <p>(2) \(a\)、\(b\) 都是正整數，若 \(b = 20\)，且 \((a, b) = 4\)，\([a, b] = 140\)，則 \(a = ?\)</p>
+    <p>(3) 若 \(24\) 和 \(90\) 與 \(30\) 和 \(k\) 有相同的最大公因數和最小公倍數，且 \(k\) 為正整數，則 \(k = ?\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：運用「兩數乘積 ＝ 最大公因數 × 最小公倍數」求 (1)、(2)</div>
+      <div class="step-content">
+        <p>對於任意兩正整數 \(A, B\)，恆有 \(A \times B = (A, B) \times [A, B]\)：</p>
+        <ul>
+          <li><strong>(1)</strong> \(54 \times \text{乙} = 6 \times 270 \implies \text{乙} = \dfrac{6 \times 270}{54} = 30\)</li>
+          <li><strong>(2)</strong> \(a \times 20 = 4 \times 140 \implies a = \dfrac{4 \times 140}{20} = 28\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算第 (3) 小題並驗算</div>
+      <div class="step-content">
+        <p>因為 \(24\) 和 \(90\) 與 \(30\) 和 \(k\) 有相同的最大公因數與最小公倍數，所以兩組數的乘積相等：</p>
+        \[30 \times k = 24 \times 90 \implies k = \frac{24 \times 90}{30} = 72\]
+        <p><strong>驗算</strong>：\((24, 90) = 6 = (30, 72)\)，且 \([24, 90] = 360 = [30, 72]\)，完全符合！</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(30\) &nbsp;&nbsp; (2) \(28\) &nbsp;&nbsp; (3) \(72\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="8">
+  <div class="q-header">
+    <span class="q-badge">第 9 題</span>
+    <span class="q-page">P.8</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 利用短除法求 \(42\) 和 \(56\) 的最大公因數。</p>
+    <p>(2) 求出 \(42\) 和 \(56\) 的所有公因數。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：利用短除法求最大公因數</div>
+      <div class="step-content">
+        <table style="border-collapse:collapse; font-family:monospace; font-size:1.1em; margin:8px 0;">
+          <tr>
+            <td style="padding:2px 8px; text-align:right;">2</td>
+            <td style="padding:2px 10px; border-left:2px solid #334155; border-bottom:2px solid #334155;">42 &nbsp; 56</td>
+          </tr>
+          <tr>
+            <td style="padding:2px 8px; text-align:right;">7</td>
+            <td style="padding:2px 10px; border-left:2px solid #334155; border-bottom:2px solid #334155;">21 &nbsp; 28</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="padding:2px 10px;">&nbsp;3 &nbsp;&nbsp; 4</td>
+          </tr>
+        </table>
+        <p>由短除法可知 \((42, 56) = 2 \times 7 = 14\)。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：由最大公因數找出所有公因數</div>
+      <div class="step-content">
+        <p>兩數的所有公因數，就是它們最大公因數 \(14\) 的所有因數。</p>
+        <p>\(14\) 的正因數有：\(1, 2, 7, 14\)（若包含負因數則為 \(\pm 1, \pm 2, \pm 7, \pm 14\)）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(14\) &nbsp;&nbsp; (2) \(1, 2, 7, 14\)（若含負公因數則為 \(\pm 1, \pm 2, \pm 7, \pm 14\)）
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="8">
+  <div class="q-header">
+    <span class="q-badge">第 10 題</span>
+    <span class="q-page">P.8</span>
+  </div>
+  <div class="q-body">
+    <p>若正整數 \(a\) 與 \(420\) 的最大公因數為 \(42\)，則下列選項中所表示的數，哪一個<strong>不可能</strong>是 \(a\) 的因數？</p>
+    <p>(A) \(9\) &nbsp;&nbsp; (B) \(6\) &nbsp;&nbsp; (C) \(4\) &nbsp;&nbsp; (D) \(2\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：分析 \((a, 420) = 42\) 的質因數結構</div>
+      <div class="step-content">
+        <p>已知 \(420 = 42 \times 10 = 42 \times 2 \times 5\)，且 \((a, 420) = 42\)。</p>
+        <p>我們可設 \(a = 42 \times k = 2 \times 3 \times 7 \times k\)，其中 \(k\) 與 \(10\) 互質，即 \((k, 10) = 1\)。</p>
+        <p>這表示 \(k\) <strong>不能含有質因數 \(2\) 或 \(5\)</strong>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：逐一檢驗各選項</div>
+      <div class="step-content">
+        <ul>
+          <li>(A) \(9\)：若取 \(k = 3\)（與 \(10\) 互質），則 \(a = 42 \times 3 = 126\)，此時 \(9\) 是 \(a\) 的因數，故可能。</li>
+          <li>(B) \(6\) 與 (D) \(2\)：因為 \(2\) 和 \(6\) 都是 \(42\) 的因數，必然也是 \(a\) 的因數。</li>
+          <li>(C) \(4\)：因為 \(42 = 2 \times 3 \times 7\) 只有一個質因數 \(2\)，且 \(k\) 不能含有質因數 \(2\)，所以 \(a\) 的標準分解式中 \(2\) 的次方必為 \(1\) 次，<strong>不可能被 \(4 = 2^2\) 整除</strong>！（否則 \((a, 420)\) 至少會是 \(84\)）。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (C)
+    </div>
+  </div>
+</div>
+
+<!-- ==================== P.9 ==================== -->
+<div class="q-card" data-page="9">
+  <div class="q-header">
+    <span class="q-badge">第 11 題</span>
+    <span class="q-page">P.9</span>
+  </div>
+  <div class="q-body">
+    <p>若有一正整數，除 \(207\) 餘 \(3\)，除 \(248\) 不足 \(7\)，則此數可能為多少？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：轉化整除條件與限制</div>
+      <div class="step-content">
+        <p>設此正整數為 \(x\)：</p>
+        <ul>
+          <li>「除 \(207\) 餘 \(3\)」代表 \(207 \div x\) 餘 \(3\) \(\implies x > 3\)，且 \(x\) 是 \(207 - 3 = 204\) 的因數。</li>
+          <li>「除 \(248\) 不足 \(7\)」代表 \(248 \div x\) 不足 \(7\) \(\implies x > 7\)，且 \(x\) 是 \(248 + 7 = 255\) 的因數。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：求公因數並篩選大於 7 的數</div>
+      <div class="step-content">
+        <p>求 \(204\) 與 \(255\) 的最大公因數：</p>
+        \[204 = 51 \times 4, \quad 255 = 51 \times 5 \implies (204, 255) = 51\]
+        <p>\(51\) 的所有正因數為 \(1, 3, 17, 51\)。由於必須滿足 \(x > 7\)，故此數可能為 <strong>\(17\) 或 \(51\)</strong>。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(17\) 或 \(51\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="9">
+  <div class="q-header">
+    <span class="q-badge">第 12 題</span>
+    <span class="q-page">P.9</span>
+  </div>
+  <div class="q-body">
+    <p>已知 \(a = 2^2 \times 3^3 \times 5\)，\(b = 2^3 \times 3^2 \times 5^2\)，\(c = 2^3 \times 3^2 \times 7\) <small style="color:#64748b;">（註：原講義印刷為 <code>22×33×5</code>、<code>23×32×52</code>、<code>23×32×7</code>，實為標準分解式之指數）</small>，試回答下列問題：</p>
+    <p>(1) 求 \(a\)、\(b\)、\(c\) 的最大公因數。</p>
+    <p>(2) 比較 \(a\)、\(b\)、\(c\) 的大小關係。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：求 \(a\)、\(b\)、\(c\) 的最大公因數</div>
+      <div class="step-content">
+        <p>觀察三數的標準分解式：</p>
+        \[a = 2^2 \times 3^3 \times 5, \quad b = 2^3 \times 3^2 \times 5^2, \quad c = 2^3 \times 3^2 \times 7\]
+        <p>共同的質因數為 \(2\) 與 \(3\)，取次方最小者：</p>
+        \[(a, b, c) = 2^2 \times 3^2 = 4 \times 9 = 36\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：提出最大公因數比較 \(a\)、\(b\)、\(c\) 的大小</div>
+      <div class="step-content">
+        <p>將 \(a, b, c\) 皆改寫為 \((a, b, c) = 2^2 \times 3^2\) 乘上剩餘因數：</p>
+        <ul>
+          <li>\(a = (2^2 \times 3^2) \times (3 \times 5) = 36 \times 15 = 540\)</li>
+          <li>\(b = (2^2 \times 3^2) \times (2 \times 5^2) = 36 \times 50 = 1800\)</li>
+          <li>\(c = (2^2 \times 3^2) \times (2 \times 7) = 36 \times 14 = 504\)</li>
+        </ul>
+        <p>因為 \(50 > 15 > 14\)，所以 <strong>\(b > a > c\)</strong>。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(2^2 \times 3^2\)（或 \(36\)） &nbsp;&nbsp; (2) \(b > a > c\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="9">
+  <div class="q-header">
+    <span class="q-badge">第 13 題</span>
+    <span class="q-page">P.9</span>
+  </div>
+  <div class="q-body">
+    <p>若 \(a\) 為正整數，且 \((a, 588) = 42\)，\((140, a) = 70\)，則 \(a\) 的最小值為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：由最大公因數條件推得 \(a\) 為公倍數</div>
+      <div class="step-content">
+        <ul>
+          <li>因為 \((a, 588) = 42\)，所以 \(a\) 是 \(42\) 的倍數。</li>
+          <li>因為 \((140, a) = 70\)，所以 \(a\) 是 \(70\) 的倍數。</li>
+        </ul>
+        <p>因此，\(a\) 必為 \(42\) 與 \(70\) 的公倍數。先求最小公倍數：</p>
+        \[[42, 70] = 2 \times 3 \times 5 \times 7 = 210\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：檢驗 \(a = 210\) 是否滿足原條件</div>
+      <div class="step-content">
+        <p>當 \(a = 210\) 時：</p>
+        <ul>
+          <li>\((210, 588) = (42 \times 5, 42 \times 14) = 42\)（因 \((5, 14) = 1\)，符合！）</li>
+          <li>\((140, 210) = (70 \times 2, 70 \times 3) = 70\)（因 \((2, 3) = 1\)，符合！）</li>
+        </ul>
+        <p>故 \(a\) 的最小值即為 \(210\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(210\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="9">
+  <div class="q-header">
+    <span class="q-badge">第 14 題</span>
+    <span class="q-page">P.9</span>
+  </div>
+  <div class="q-body">
+    <p>若 \(b\) 為 \(100\) 到 \(200\) 之間的正整數，且 \((b, 50) = 10\)，\((120, b) = 60\)，則 \(b\) 的值為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：利用 \((120, b) = 60\) 列出 \(100 \sim 200\) 之間的候選數</div>
+      <div class="step-content">
+        <p>由 \((120, b) = 60\) 可知 \(b\) 是 \(60\) 的倍數。</p>
+        <p>在 \(100\) 到 \(200\) 之間，\(60\) 的倍數只有 \(120\)（\(60 \times 2\)）與 \(180\)（\(60 \times 3\)）。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：檢驗最大公因數條件</div>
+      <div class="step-content">
+        <ul>
+          <li>若 \(b = 120\)：則 \((120, 120) = 120 \neq 60\)（不合）。</li>
+          <li>若 \(b = 180\)：
+            <ul>
+              <li>\((120, 180) = 60\)（符合！）</li>
+              <li>\((180, 50) = 10\)（符合！）</li>
+            </ul>
+          </li>
+        </ul>
+        <p>因此 \(b = 180\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(180\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="9">
+  <div class="q-header">
+    <span class="q-badge">第 15 題</span>
+    <span class="q-page">P.9</span>
+  </div>
+  <div class="q-body">
+    <p>求下列各組數的最小公倍數。（以標準分解式表示）</p>
+    <p>(1) \([2^4 \times 3^4, 2^3 \times 3^5] =\) _______________。</p>
+    <p>(2) \([2^3 \times 5^2 \times 11, 2^3 \times 3^3 \times 5, 2^4 \times 3^2 \times 13] =\) _______________。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算第 (1) 小題</div>
+      <div class="step-content">
+        <p>取所有出現過的質因數 \(2, 3\) 的最高次方：</p>
+        <ul>
+          <li>質因數 \(2\)：\(\max(4, 3) = 4 \implies 2^4\)</li>
+          <li>質因數 \(3\)：\(\max(4, 5) = 5 \implies 3^5\)</li>
+        </ul>
+        <p>故 \([2^4 \times 3^4, 2^3 \times 3^5] = 2^4 \times 3^5\)。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算第 (2) 小題</div>
+      <div class="step-content">
+        <p>取所有出現過的質因數 \(2, 3, 5, 11, 13\) 的最高次方：</p>
+        <ul>
+          <li>質因數 \(2\)：\(2^4\)；質因數 \(3\)：\(3^3\)；質因數 \(5\)：\(5^2\)；質因數 \(11\)：\(11\)；質因數 \(13\)：\(13\)</li>
+        </ul>
+        <p>故最小公倍數為 \(2^4 \times 3^3 \times 5^2 \times 11 \times 13\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong><br>
+      (1) \(2^4 \times 3^5\)<br>
+      (2) \(2^4 \times 3^3 \times 5^2 \times 11 \times 13\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="9">
+  <div class="q-header">
+    <span class="q-badge">第 16 題</span>
+    <span class="q-page">P.9</span>
+  </div>
+  <div class="q-body">
+    <p>有一正整數 \(a\) 介於 \(220\) 和 \(250\) 之間，若 \(a\) 為 \(3\)、\(5\) 的公倍數，且 \(a\) 除以 \(7\) 的餘數為 \(2\)，則 \(a\) 除以 \(11\) 的餘數為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：找出 \(220 \sim 250\) 之間 \(3\) 和 \(5\) 的公倍數</div>
+      <div class="step-content">
+        <p>\(3\) 和 \(5\) 的最小公倍數為 \([3, 5] = 15\)。</p>
+        <p>在 \(220\) 和 \(250\) 之間，\(15\) 的倍數有：</p>
+        \[15 \times 15 = 225, \quad 15 \times 16 = 240\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：利用「除以 7 餘 2」決定 \(a\)，再求除以 11 的餘數</div>
+      <div class="step-content">
+        <ul>
+          <li>\(225 \div 7 = 32 \cdots 1\)（餘數為 \(1\)，不合）</li>
+          <li>\(240 \div 7 = 34 \cdots 2\)（餘數為 \(2\)，符合！故 \(a = 240\)）</li>
+        </ul>
+        <p>接著計算 \(a = 240\) 除以 \(11\) 的餘數：</p>
+        \[240 \div 11 = 21 \cdots 9 \quad (\because 11 \times 21 = 231)\]
+        <p>故餘數為 \(9\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(9\)
+    </div>
+  </div>
+</div>
+
+<!-- ==================== P.10 ==================== -->
+<div class="q-card" data-page="10">
+  <div class="q-header">
+    <span class="q-badge">第 17 題</span>
+    <span class="q-page">P.10</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 求 \(2\)、\(3\)、\(5\) 的最小公倍數。</p>
+    <p>(2) 若 \(a\)、\(b\)、\(c\) 皆為正整數且 \(a \times 2 = b \times 3 = c \times 5\)，則 \(a\)、\(b\)、\(c\) 的大小關係為何？</p>
+    <p>(3) 若 \(d\)、\(e\)、\(f\) 皆為正整數且 \(d \times (-2) = e \times (-3) = f \times (-5)\)，則 \(d\)、\(e\)、\(f\) 的大小關係為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算第 (1)、(2) 小題</div>
+      <div class="step-content">
+        <p><strong>(1)</strong> 因 \(2, 3, 5\) 皆為相異質數，故 \([2, 3, 5] = 2 \times 3 \times 5 = 30\)。</p>
+        <p><strong>(2)</strong> 令 \(a \times 2 = b \times 3 = c \times 5 = 30\)（最小公倍數），則：</p>
+        \[a = 30 \div 2 = 15, \quad b = 30 \div 3 = 10, \quad c = 30 \div 5 = 6\]
+        <p>故大小關係為 <strong>\(a > b > c\)</strong>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：解析第 (3) 小題</div>
+      <div class="step-content">
+        <p>由 \(d \times (-2) = e \times (-3) = f \times (-5)\)：</p>
+        <ul>
+          <li><strong>情況一（依題目字面 \(d, e, f\) 為正整數，乘積為負數 \(-30\)）</strong>：<br>
+            將等式同除以 \((-1)\) 得 \(d \times 2 = e \times 3 = f \times 5 = 30\)，則 \(d = 15, e = 10, f = 6\)，故 <strong>\(d > e > f\)</strong>。</li>
+          <li><strong>情況二（補充：若原題意為 \(d, e, f\) 為負整數，使乘積為正數 \(30\)）</strong>：<br>
+            令 \(d \times (-2) = e \times (-3) = f \times (-5) = 30\)，則 \(d = -15, e = -10, f = -6\)，此時負數絕對值越大其值越小，即 <strong>\(d < e < f\)</strong>。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(30\) &nbsp;&nbsp; (2) \(a > b > c\) &nbsp;&nbsp; (3) \(d > e > f\)（若題意 \(d, e, f\) 為負整數且乘積為正，則為 \(d < e < f\)）
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="10">
+  <div class="q-header">
+    <span class="q-badge">第 18 題</span>
+    <span class="q-page">P.10</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 已知 \(a\)、\(b\) 為兩正整數，且 \(a < b\)。若 \((a, b) = 5\)，\([a, b] = 45\)，則 \(a + b = ?\)</p>
+    <p>(2) 已知 \(a\)、\(b\) 為兩正整數，且 \(a < b\)。若 \((a, b) = 7\)，\([a, b] = 42\)，則 \(a + b = ?\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：解析第 (1) 小題</div>
+      <div class="step-content">
+        <p>因 \((a, b) = 5\)，可設 \(a = 5x\)、\(b = 5y\)，其中 \(x, y\) 為正整數，\((x, y) = 1\) 且 \(x < y\)。</p>
+        <p>由 \([a, b] = 5xy = 45\)，得 \(xy = 9\)。</p>
+        <p>滿足 \(xy = 9\)、\(x < y\) 且互質的正整數對只有 \(x = 1, y = 9\)（注意 \(3 \times 3\) 不互質）。</p>
+        <p>故 \(a = 5 \times 1 = 5\)，\(b = 5 \times 9 = 45\)，所求 \(a + b = 5 + 45 = 50\)。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：解析第 (2) 小題</div>
+      <div class="step-content">
+        <p>因 \((a, b) = 7\)，可設 \(a = 7x\)、\(b = 7y\)，其中 \((x, y) = 1\) 且 \(x < y\)。</p>
+        <p>由 \([a, b] = 7xy = 42\)，得 \(xy = 6\)。</p>
+        <p>滿足 \(xy = 6\)、\(x < y\) 且互質的正整數對有兩組：</p>
+        <ul>
+          <li><strong>第一組</strong> \(x = 1, y = 6\)：得 \(a = 7, b = 42 \implies a + b = 7 + 42 = 49\)</li>
+          <li><strong>第二組</strong> \(x = 2, y = 3\)：得 \(a = 14, b = 21 \implies a + b = 14 + 21 = 35\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(50\) &nbsp;&nbsp; (2) \(49\) 或 \(35\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="10">
+  <div class="q-header">
+    <span class="q-badge">第 19 題</span>
+    <span class="q-page">P.10</span>
+  </div>
+  <div class="q-body">
+    <p>小軒將一張長 \(60\) 公分、寬 \(48\) 公分的長方形紙牌切割成大小相同的正方形，則至少可以切割成多少個正方形？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：求切割正方形的最大邊長</div>
+      <div class="step-content">
+        <p>要切割成大小相同的正方形且個數最少，正方形的邊長必須最大，即為長 \(60\) 與寬 \(48\) 的最大公因數：</p>
+        \[(60, 48) = 12 \text{（公分）}\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算最少可切割的正方形個數</div>
+      <div class="step-content">
+        <ul>
+          <li>長邊可切：\(60 \div 12 = 5\)（等分）</li>
+          <li>寬邊可切：\(48 \div 12 = 4\)（等分）</li>
+        </ul>
+        <p>共可切成 \(5 \times 4 = 20\)（個）正方形。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(20\) 個
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="10">
+  <div class="q-header">
+    <span class="q-badge">第 20 題</span>
+    <span class="q-page">P.10</span>
+  </div>
+  <div class="q-body">
+    <p>小茜將數張長 \(6\) 公分、寬 \(4\) 公分的長方形紙牌拼成正方形，拼的時候長邊和長邊相接，短邊和短邊相接，而且沒有重疊，請問：</p>
+    <p>(1) 小茜可以拼成的最小正方形面積是多少？</p>
+    <p>(2) 承(1)，共需要多少張長方形紙牌？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：求最小正方形的邊長與面積</div>
+      <div class="step-content">
+        <p>由長方形拼成大正方形，正方形的邊長必為長 \(6\) 公分與寬 \(4\) 公分的公倍數。</p>
+        <p>最小正方形的邊長為 \([6, 4] = 12\)（公分）。</p>
+        <p>故最小正方形面積 \(= 12 \times 12 = 144\)（平方公分）。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算所需的長方形紙牌張數</div>
+      <div class="step-content">
+        <ul>
+          <li>長邊方向需排：\(12 \div 6 = 2\)（排）</li>
+          <li>寬邊方向需排：\(12 \div 4 = 3\)（列）</li>
+        </ul>
+        <p>共需要 \(2 \times 3 = 6\)（張）長方形紙牌。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(144\) 平方公分 &nbsp;&nbsp; (2) \(6\) 張
+    </div>
+  </div>
+</div>
+
+<!-- ==================== P.11 ==================== -->
+<div class="q-card" data-page="11">
+  <div class="q-header">
+    <span class="q-badge">第 20 題 (短除法)</span>
+    <span class="q-page">P.11</span>
+  </div>
+  <div class="q-body">
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
+      <div style="flex:1; min-width:240px;">
+        <p>小康利用短除法求 \(A\)、\(B\) 兩個正整數的最大公因數和最小公倍數，完整計算過程如右所示。</p>
+        <p>已知 \((A, B) = 26\)，\([A, B] = 1820\)，\(E + F = 17\)，若 \(A < B\)，則 \(A + D + E + G = ?\)</p>
+      </div>
+      <div>
+        <table style="border-collapse:collapse; font-family:'Times New Roman', serif; font-style:italic; font-size:1.25em; margin:4px 12px;">
+          <tr>
+            <td style="padding:3px 10px; text-align:right;">G</td>
+            <td style="padding:3px 14px; border-left:2px solid #1e293b; border-bottom:2px solid #1e293b;">A &nbsp;&nbsp; B</td>
+          </tr>
+          <tr>
+            <td style="padding:3px 10px; text-align:right; font-style:normal;">13</td>
+            <td style="padding:3px 14px; border-left:2px solid #1e293b; border-bottom:2px solid #1e293b;">C &nbsp;&nbsp; D</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="padding:3px 14px;">E &nbsp;&nbsp; F</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：由最大公因數與最小公倍數求出 \(G\)、\(E\)、\(F\)</div>
+      <div class="step-content">
+        <ul>
+          <li>短除法左側除數的乘積即為最大公因數：<br>
+            \((A, B) = G \times 13 = 26 \implies G = 2\)</li>
+          <li>最小公倍數為左側除數與底部商的連乘積：<br>
+            \([A, B] = G \times 13 \times E \times F = 26 \times E \times F = 1820 \implies E \times F = 1820 \div 26 = 70\)</li>
+          <li>已知 \(E + F = 17\) 且 \(E \times F = 70\)，又因 \(A < B \implies E < F\)，可得：<br>
+            \(E = 7\)，\(F = 10\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：由下往上反推 \(C\)、\(D\)、\(A\) 並求總和</div>
+      <div class="step-content">
+        <ul>
+          <li>\(C = 13 \times E = 13 \times 7 = 91\)</li>
+          <li>\(D = 13 \times F = 13 \times 10 = 130\)</li>
+          <li>\(A = G \times C = 2 \times 91 = 182\)</li>
+        </ul>
+        <p>因此所求為：</p>
+        \[A + D + E + G = 182 + 130 + 7 + 2 = 321\]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(321\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="11">
+  <div class="q-header">
+    <span class="q-badge">第 21 題</span>
+    <span class="q-page">P.11</span>
+  </div>
+  <div class="q-body">
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+      <div style="flex:1; min-width:240px;">
+        <p>右表是往甲地和乙地的列車時刻表，其中往乙地的班次較密集，各班車開出的時間皆有固定的間隔。已知在 \(09:40\) 時，兩班列車同時開出，試觀察右表的規律，則下一次兩班列車同時開出的時間為何？</p>
+      </div>
+      <div>
+        <table style="border-collapse:collapse; font-size:0.95em; text-align:center; border:2px solid #f59e0b;">
+          <thead>
+            <tr style="background:#f59e0b; color:#fff;">
+              <th colspan="3" style="padding:6px 12px;">列車時刻表</th>
+            </tr>
+            <tr style="background:#fef3c7; color:#92400e;">
+              <th rowspan="2" style="border:1px solid #fcd34d; padding:4px 8px;">班次</th>
+              <th colspan="2" style="border:1px solid #fcd34d; padding:4px 8px;">目的地</th>
+            </tr>
+            <tr style="background:#fffbeb; color:#92400e;">
+              <th style="border:1px solid #fcd34d; padding:4px 10px;">往甲地</th>
+              <th style="border:1px solid #fcd34d; padding:4px 10px;">往乙地</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="border:1px solid #fde68a; padding:4px;">1</td><td style="border:1px solid #fde68a; padding:4px;">08 : 40</td><td style="border:1px solid #fde68a; padding:4px;">08 : 58</td></tr>
+            <tr><td style="border:1px solid #fde68a; padding:4px;">2</td><td style="border:1px solid #fde68a; padding:4px;">09 : 00</td><td style="border:1px solid #fde68a; padding:4px;">09 : 12</td></tr>
+            <tr><td style="border:1px solid #fde68a; padding:4px;">3</td><td style="border:1px solid #fde68a; padding:4px;">09 : 20</td><td style="border:1px solid #fde68a; padding:4px;">09 : 26</td></tr>
+            <tr style="background:#fef9c3; font-weight:bold;"><td style="border:1px solid #fde68a; padding:4px;">4</td><td style="border:1px solid #fde68a; padding:4px;">09 : 40</td><td style="border:1px solid #fde68a; padding:4px;">09 : 40</td></tr>
+            <tr><td style="border:1px solid #fde68a; padding:2px;">⋮</td><td style="border:1px solid #fde68a; padding:2px;">⋮</td><td style="border:1px solid #fde68a; padding:2px;">⋮</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：觀察時刻表求兩路線的發車間隔</div>
+      <div class="step-content">
+        <ul>
+          <li><strong>往甲地</strong>：\(08:40 \rightarrow 09:00 \rightarrow 09:20 \rightarrow 09:40\)，固定每 <strong>\(20\) 分鐘</strong>開出一班。</li>
+          <li><strong>往乙地</strong>：\(08:58 \rightarrow 09:12 \rightarrow 09:26 \rightarrow 09:40\)，固定每 <strong>\(14\) 分鐘</strong>開出一班。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：求最小公倍數並推算下次同時開車時間</div>
+      <div class="step-content">
+        <p>兩班車同時開出的間隔時間為 \(20\) 與 \(14\) 的最小公倍數：</p>
+        \[[20, 14] = 140 \text{（分鐘）} = 2 \text{ 小時 } 20 \text{ 分鐘}\]
+        <p>從 \(09:40\) 往後加 \(2\) 小時 \(20\) 分鐘：</p>
+        \[9\text{ 時 }40\text{ 分} + 2\text{ 時 }20\text{ 分} = 12\text{ 時 }00\text{ 分}\]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(12 : 00\)（中午 \(12\) 時）
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="11">
+  <div class="q-header">
+    <span class="q-badge">第 22 題</span>
+    <span class="q-page">P.11</span>
+  </div>
+  <div class="q-body">
+    <p>A、B、C 三臺玩具車繞著同一個周長為 \(120\) 公尺的運動場比賽，若 A 車每秒移動 \(4\) 公尺，B 車每秒移動 \(5\) 公尺，C 車每秒移動 \(6\) 公尺，且三車同時同地同方向出發，則：</p>
+    <p>(1) 幾分鐘後三車會在起跑處第一次相遇？</p>
+    <p>(2) 承(1)，此時 A 車跑了幾圈？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：先算三車各跑一圈所需的秒數</div>
+      <div class="step-content">
+        <ul>
+          <li>A 車跑一圈需：\(120 \div 4 = 30\)（秒）</li>
+          <li>B 車跑一圈需：\(120 \div 5 = 24\)（秒）</li>
+          <li>C 車跑一圈需：\(120 \div 6 = 20\)（秒）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：求在起跑處第一次相遇的時間與 A 車圈數</div>
+      <div class="step-content">
+        <p><strong>(1)</strong> 三車同時回到起跑處的時間為 \(30, 24, 20\) 的最小公倍數：</p>
+        \[[30, 24, 20] = 120 \text{（秒）} = 2 \text{（分鐘）}\]
+        <p><strong>(2)</strong> 此時 A 車跑了 \(120 \div 30 = 4\)（圈）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(2\) 分鐘後 &nbsp;&nbsp; (2) \(4\) 圈
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="11">
+  <div class="q-header">
+    <span class="q-badge">第 23 題</span>
+    <span class="q-page">P.11</span>
+  </div>
+  <div class="q-body">
+    <p>甲、乙、丙三人同時朝同方向，從同起點繞著一個 \(200\) 公尺的圓形跑道競走，三人分別維持每秒 \(1.3\) 公尺、\(1.5\) 公尺、\(1.8\) 公尺的固定速率，請問從起點出發後，三人第一次在跑道上相遇要花多少秒？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：利用「相對速率（追趕問題）」求兩兩追上一圈的時間</div>
+      <div class="step-content">
+        <p>在圓形跑道上同向競走，快者每比慢者多走一圈（\(200\) 公尺）就會追上相遇一次：</p>
+        <ul>
+          <li><strong>乙追上甲</strong>：每秒相差 \(1.5 - 1.3 = 0.2\) 公尺，每追上一圈需 \(200 \div 0.2 = 1000\)（秒）。</li>
+          <li><strong>丙追上甲</strong>：每秒相差 \(1.8 - 1.3 = 0.5\) 公尺，每追上一圈需 \(200 \div 0.5 = 400\)（秒）。</li>
+          <li><strong>丙追上乙</strong>：每秒相差 \(1.8 - 1.5 = 0.3\) 公尺，每追上一圈需 \(200 \div 0.3 = \dfrac{2000}{3}\)（秒）。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：求三人同時相遇的最小公倍數時間</div>
+      <div class="step-content">
+        <p>當乙追上甲、且丙也同時追上甲時，三人即在同一位置相遇。求 \(1000\) 與 \(400\)（及 \(\frac{2000}{3}\)）的最小公倍數：</p>
+        \[[1000, 400] = 2000 \text{（秒）}\]
+        <p><strong>驗算</strong>：經過 \(2000\) 秒時，甲走了 \(1.3 \times 2000 = 2600\text{ m}\)（\(13\) 圈）、乙走了 \(1.5 \times 2000 = 3000\text{ m}\)（\(15\) 圈）、丙走了 \(1.8 \times 2000 = 3600\text{ m}\)（\(18\) 圈），三人剛好都在起點第一次相遇！</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(2000\) 秒
+    </div>
+  </div>
+</div>
+
+<!-- ==================== P.12 資優試題挑戰區 ==================== -->
+<div class="challenge-header" data-page="12"><h3>&#x1F3C6; 2-2 &#x8CC7;&#x512A;&#x8A66;&#x984C;&#x6311;&#x6230;&#x5340;&#xFF08;P.12&#xFF09;</h3></div>
+<div class="q-card" data-page="12">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 1 題</span>
+    <span class="q-page">P.12</span>
+  </div>
+  <div class="q-body">
+    <p>已知兩數的最大公因數為 \(15\)，且這兩數的和為 \(90\)，試求此兩數。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：利用最大公因數假設兩數</div>
+      <div class="step-content">
+        <p>因為兩數的最大公因數為 \(15\)，可設此兩數為 \(15x\) 與 \(15y\)，其中 \(x, y\) 為正整數且<strong>互質</strong>，即 \((x, y) = 1\)。</p>
+        <p>由兩數之和為 \(90\) 列式：</p>
+        \[15x + 15y = 90 \implies 15(x + y) = 90 \implies x + y = 6\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：討論互質的數對 \((x, y)\)</div>
+      <div class="step-content">
+        <p>將 \(x + y = 6\) 的正整數分解列舉如下：</p>
+        <ul>
+          <li>當 \(x = 1, y = 5\) 時：\((1, 5) = 1\)（互質，符合！）</li>
+          <li>當 \(x = 2, y = 4\) 時：\((2, 4) = 2 \neq 1\)（不合）</li>
+          <li>當 \(x = 3, y = 3\) 時：\((3, 3) = 3 \neq 1\)（不合）</li>
+        </ul>
+        <p>故 \(x = 1, y = 5\)，此兩數分別為 \(15 \times 1 = 15\) 與 \(15 \times 5 = 75\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(15\) 和 \(75\)
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="12">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 2 題</span>
+    <span class="q-page">P.12</span>
+  </div>
+  <div class="q-body">
+    <p>阿翔、浩子、小軒三兄弟在媽媽生日時回家慶生，此後阿翔每 \(4\) 天、浩子每 \(6\) 天、小軒每 \(9\) 天回家一次，請問：</p>
+    <p>(1) 下一次三人同一天回家是幾天後？</p>
+    <p>(2) 若媽媽生日那天是星期六，則下一次三人都在星期六回家是幾天後？</p>
+    <p>(3) 若媽媽生日那天是星期六，則下一次三人都在星期日回家是幾天後？</p>
+    <p>(4) 若媽媽生日那天是星期日，則下一次三人都在星期六回家是幾天後？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算第 (1)、(2) 小題</div>
+      <div class="step-content">
+        <p><strong>(1)</strong> 三人同時回家的週期為 \(4, 6, 9\) 的最小公倍數：</p>
+        \[[4, 6, 9] = 36 \text{（天後）}\]
+        <p><strong>(2)</strong> 要再次在星期六回家，經過的天數還必須是 \(7\) 的倍數，故求 \([36, 7]\)：</p>
+        \[[36, 7] = 252 \text{（天後）}\]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：計算第 (3) 小題（星期六 \(\rightarrow\) 星期日）</div>
+      <div class="step-content">
+        <p>三人同時回家的天數必為 \(36k\) 天後（\(k\) 為正整數）。</p>
+        <p>從星期六到星期日，代表天數除以 \(7\) 的<strong>餘數要為 \(1\)</strong>。</p>
+        <p>剛好當 \(k = 1\) 時：\(36 \div 7 = 5 \cdots 1\)（餘數即為 \(1\)！），故第 \(1\) 次同時回家（<strong>\(36\) 天後</strong>）剛好就是星期日。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 3：計算第 (4) 小題（星期日 \(\rightarrow\) 星期六）</div>
+      <div class="step-content">
+        <p>從星期日到星期六，代表天數 \(36k\) 除以 \(7\) 的<strong>餘數要為 \(6\)</strong>。</p>
+        <p>因為每經過一次 \(36\) 天，除以 \(7\) 的餘數就增加 \(1\)（\(36 = 7 \times 5 + 1\)）：</p>
+        <p>欲使餘數累積為 \(6\)，最小的正整數為 \(k = 6\)：</p>
+        \[36 \times 6 = 216 \text{（天後）}\]
+        <p>（驗算：\(216 \div 7 = 30 \cdots 6\)，星期日往後推 \(6\) 天即為星期六）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(36\) 天後 &nbsp;&nbsp; (2) \(252\) 天後 &nbsp;&nbsp; (3) \(36\) 天後 &nbsp;&nbsp; (4) \(216\) 天後
+    </div>
+  </div>
+</div>
+
+<div class="q-card" data-page="12">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 3 題</span>
+    <span class="q-page">P.12</span>
+  </div>
+  <div class="q-body">
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
+      <div style="flex:1; min-width:260px;">
+        <p>桌上有數根火柴棒，曉康利用這些火柴棒排出一些圖形。</p>
+        <p>第一次：排成數個相連的正方形，如右圖(一)；</p>
+        <p>第二次：排成數個相連的正六邊形，如右圖(二)；</p>
+        <p>第三次：排成數個相連的正八邊形，如右圖(三)；</p>
+        <p>若每次都剛好將火柴棒用完，則桌上的火柴棒最少有多少根？</p>
+      </div>
+      <div style="text-align:center;">
+        <svg width="230" height="195" viewBox="0 0 230 195" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:4px;">
+          <!-- 圖(一) 相連正方形 -->
+          <g stroke="#334155" stroke-width="2" fill="none">
+            <rect x="20" y="12" width="26" height="26"/>
+            <rect x="46" y="12" width="26" height="26"/>
+            <text x="95" y="28" fill="#475569" stroke="none" font-size="13">……</text>
+            <rect x="135" y="12" width="26" height="26"/>
+          </g>
+          <text x="175" y="30" fill="#1e293b" font-size="12">圖(一)</text>
+
+          <!-- 圖(二) 相連正六邊形 -->
+          <g stroke="#334155" stroke-width="2" fill="none">
+            <polygon points="20,75 30,63 46,63 56,75 46,87 30,87"/>
+            <polygon points="56,75 66,63 82,63 92,75 82,87 66,87"/>
+            <text x="100" y="79" fill="#475569" stroke="none" font-size="13">……</text>
+            <polygon points="130,75 140,63 156,63 166,75 156,87 140,87"/>
+          </g>
+          <text x="175" y="79" fill="#1e293b" font-size="12">圖(二)</text>
+
+          <!-- 圖(三) 相連正八邊形 -->
+          <g stroke="#334155" stroke-width="2" fill="none">
+            <polygon points="20,132 29,123 42,123 51,132 51,145 42,154 29,154 20,145"/>
+            <polygon points="51,132 60,123 73,123 82,132 82,145 73,154 60,154 51,145"/>
+            <text x="95" y="142" fill="#475569" stroke="none" font-size="13">……</text>
+            <polygon points="130,132 139,123 152,123 161,132 161,145 152,154 139,154 130,145"/>
+          </g>
+          <text x="175" y="142" fill="#1e293b" font-size="12">圖(三)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：分析三種圖形的火柴棒數量規律</div>
+      <div class="step-content">
+        <p>觀察相連的正多邊形，每多排 \(1\) 個圖形就會共用 \(1\) 根火柴棒（也可以想成「先放最左邊的 \(1\) 根，之後每個圖形需要『邊數 \(-1\)』根」）：</p>
+        <ul>
+          <li><strong>圖(一) 正方形</strong>：\(1\) 個需 \(1 + 3 \times 1 = 4\) 根；\(x\) 個需 \(3x + 1\) 根 \(\implies\) 火柴棒總數<strong>除以 \(3\) 餘 \(1\)</strong>。</li>
+          <li><strong>圖(二) 正六邊形</strong>：\(1\) 個需 \(1 + 5 \times 1 = 6\) 根；\(y\) 個需 \(5y + 1\) 根 \(\implies\) 火柴棒總數<strong>除以 \(5\) 餘 \(1\)</strong>。</li>
+          <li><strong>圖(三) 正八邊形</strong>：\(1\) 個需 \(1 + 7 \times 1 = 8\) 根；\(z\) 個需 \(7z + 1\) 根 \(\implies\) 火柴棒總數<strong>除以 \(7\) 餘 \(1\)</strong>。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：利用最小公倍數求出最少火柴棒數</div>
+      <div class="step-content">
+        <p>設桌上的火柴棒共有 \(N\) 根。因為 \(N\) 除以 \(3\)、\(5\)、\(7\) 皆餘 \(1\)，所以 \(N - 1\) 是 \(3, 5, 7\) 的公倍數。</p>
+        <p>求 \(3, 5, 7\) 的最小公倍數：</p>
+        \[[3, 5, 7] = 105\]
+        <p>故 \(N\) 最少為：</p>
+        \[N = 105 + 1 = 106 \text{（根）}\]
+        <p>（此時可排成 \(35\) 個正方形、或 \(21\) 個正六邊形、或 \(15\) 個正八邊形）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(106\) 根
+    </div>
+  </div>
+</div>
+
+    </section>
+
+    <!-- 2-3 分數的四則運算 (P.13 ~ P.19) -->
+    <section id="sec-2-3" class="section-block">
+      <div class="section-header">
+        <h2>2-3 分數的四則運算（P.13 ～ P.19）</h2>
+      </div>
+      <!-- ==================== 2-3 分數的四則運算 (P.13 ~ P.19) ==================== -->
+
+<!-- P.13 第 1 題 -->
+<div class="q-card" data-page="13">
+  <div class="q-header">
+    <span class="q-badge">第 1 題</span>
+    <span class="q-page">P.13</span>
+  </div>
+  <div class="q-body">
+    <p>比較下列各數的大小：</p>
+    <p>(1) \(\dfrac{3}{16}\)、\(\dfrac{4}{17}\)、\(\dfrac{5}{18}\)</p>
+    <p>(2) \(-\dfrac{21}{20}\)、\(-\dfrac{22}{21}\)、\(-\dfrac{23}{22}\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 通分分子比較大小</div>
+      <div class="step-content">
+        <p>三個正分數的分子 \(3\)、\(4\)、\(5\) 較小，先求分子的最小公倍數：\([3, 4, 5] = 60\)。</p>
+        <p>將三個分數的分子皆擴分為 \(60\)：</p>
+        \[
+          \frac{3}{16} = \frac{60}{320}, \quad \frac{4}{17} = \frac{60}{255}, \quad \frac{5}{18} = \frac{60}{216}
+        \]
+        <p>正分數當分子相同時，分母愈小，其值愈大。因為 \(216 < 255 < 320\)，所以：</p>
+        \[
+          \frac{5}{18} > \frac{4}{17} > \frac{3}{16}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 化為帶分數並注意負號影響</div>
+      <div class="step-content">
+        <p>先比較其絕對值（正數部分）的大小：</p>
+        \[
+          \frac{21}{20} = 1 + \frac{1}{20}, \quad \frac{22}{21} = 1 + \frac{1}{21}, \quad \frac{23}{22} = 1 + \frac{1}{22}
+        \]
+        <p>因為 \(\dfrac{1}{20} > \dfrac{1}{21} > \dfrac{1}{22}\)，所以正數大小為 \(\dfrac{21}{20} > \dfrac{22}{21} > \dfrac{23}{22}\)。</p>
+        <p>加上負號後，絕對值愈大，其值反而愈小，故：</p>
+        \[
+          -\frac{23}{22} > -\frac{22}{21} > -\frac{21}{20}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{5}{18} > \dfrac{4}{17} > \dfrac{3}{16}\) &nbsp;&nbsp; (2) \(-\dfrac{23}{22} > -\dfrac{22}{21} > -\dfrac{21}{20}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.13 第 2 題 -->
+<div class="q-card" data-page="13">
+  <div class="q-header">
+    <span class="q-badge">第 2 題</span>
+    <span class="q-page">P.13</span>
+  </div>
+  <div class="q-body">
+    <p>比較下列各數的大小：</p>
+    <p>(1) \(\dfrac{2}{37}\)、\(\dfrac{3}{41}\)、\(\dfrac{4}{59}\)</p>
+    <p>(2) \(-\dfrac{95}{96}\)、\(-\dfrac{96}{97}\)、\(-\dfrac{97}{98}\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 將分子化為相同</div>
+      <div class="step-content">
+        <p>求分子 \(2\)、\(3\)、\(4\) 的最小公倍數：\([2, 3, 4] = 12\)。</p>
+        <p>將各分數擴分使分子皆為 \(12\)：</p>
+        \[
+          \frac{2}{37} = \frac{12}{222}, \quad \frac{3}{41} = \frac{12}{164}, \quad \frac{4}{59} = \frac{12}{177}
+        \]
+        <p>因為分母 \(164 < 177 < 222\)，分子相同時分母愈小值愈大，故：</p>
+        \[
+          \frac{3}{41} > \frac{4}{59} > \frac{2}{37}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 與 \(1\) 的差比較大小</div>
+      <div class="step-content">
+        <p>先看正數部分與 \(1\) 的差距：</p>
+        \[
+          \frac{95}{96} = 1 - \frac{1}{96}, \quad \frac{96}{97} = 1 - \frac{1}{97}, \quad \frac{97}{98} = 1 - \frac{1}{98}
+        \]
+        <p>因為減去的部分 \(\dfrac{1}{96} > \dfrac{1}{97} > \dfrac{1}{98}\)，所以正數大小為 \(\dfrac{95}{96} < \dfrac{96}{97} < \dfrac{97}{98}\)。</p>
+        <p>取負號後不等號方向反轉，可得：</p>
+        \[
+          -\frac{95}{96} > -\frac{96}{97} > -\frac{97}{98}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{3}{41} > \dfrac{4}{59} > \dfrac{2}{37}\) &nbsp;&nbsp; (2) \(-\dfrac{95}{96} > -\dfrac{96}{97} > -\dfrac{97}{98}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.13 右上方比較大小練習題 -->
+<div class="q-card" data-page="13">
+  <div class="q-header">
+    <span class="q-badge">演練題（右上）</span>
+    <span class="q-page">P.13</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 比較 \(\dfrac{82}{75}\)、\(\dfrac{92}{85}\)、\(\dfrac{102}{95}\) 的大小關係。</p>
+    <p>(2) 比較 \(\dfrac{19}{23}\)、\(\dfrac{21}{25}\)、\(\dfrac{23}{27}\) 的大小關係。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 假分數化為帶分數（分子與分母差固定為 7）</div>
+      <div class="step-content">
+        <p>觀察發現每個假分數的分子都比分母大 \(7\)，將它們化為帶分數：</p>
+        \[
+          \frac{82}{75} = 1 + \frac{7}{75}, \quad \frac{92}{85} = 1 + \frac{7}{85}, \quad \frac{102}{95} = 1 + \frac{7}{95}
+        \]
+        <p>因為 \(\dfrac{7}{75} > \dfrac{7}{85} > \dfrac{7}{95}\)，所以：</p>
+        \[
+          \frac{82}{75} > \frac{92}{85} > \frac{102}{95}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 真分數與 \(1\) 作比較（分母與分子差固定為 4）</div>
+      <div class="step-content">
+        <p>觀察發現每個真分數的分母都比分子大 \(4\)，改寫為 \(1\) 減去單位分數的倍數：</p>
+        \[
+          \frac{19}{23} = 1 - \frac{4}{23}, \quad \frac{21}{25} = 1 - \frac{4}{25}, \quad \frac{23}{27} = 1 - \frac{4}{27}
+        \]
+        <p>因為 \(\dfrac{4}{23} > \dfrac{4}{25} > \dfrac{4}{27}\)，被減去的數愈小，剩下的結果愈大，故：</p>
+        \[
+          \frac{23}{27} > \frac{21}{25} > \frac{19}{23}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{82}{75} > \dfrac{92}{85} > \dfrac{102}{95}\) &nbsp;&nbsp; (2) \(\dfrac{23}{27} > \dfrac{21}{25} > \dfrac{19}{23}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.13 第 3 題 -->
+<div class="q-card" data-page="13">
+  <div class="q-header">
+    <span class="q-badge">第 3 題</span>
+    <span class="q-page">P.13</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值：</p>
+    <p>(1) \(2\dfrac{3}{4} - 1\dfrac{5}{6} - 2\dfrac{7}{10}\)</p>
+    <p>(2) \(2\dfrac{1}{5} - \left[\left(\dfrac{7}{2} - \dfrac{8}{3}\right) + \left(4\dfrac{6}{5} - 4\dfrac{2}{5}\right)\right]\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 整數與分數拆分或通分計算</div>
+      <div class="step-content">
+        <p>將帶分數拆分為整數部分與分數部分，分母 \(4\)、\(6\)、\(10\) 的最小公倍數為 \([4, 6, 10] = 60\)：</p>
+        \[
+          \begin{aligned}
+          2\frac{3}{4} - 1\frac{5}{6} - 2\frac{7}{10} &= (2 - 1 - 2) + \left(\frac{3}{4} - \frac{5}{6} - \frac{7}{10}\right) \\
+          &= -1 + \frac{45 - 50 - 42}{60} \\
+          &= -1 + \left(-\frac{47}{60}\right) = -1\frac{47}{60} \quad \left(\text{或 } -\frac{107}{60}\right)
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 先算同分母與括號內部</div>
+      <div class="step-content">
+        <p>先化簡中括號內的兩個小括號：</p>
+        <ul>
+          <li>\(\dfrac{7}{2} - \dfrac{8}{3} = \dfrac{21 - 16}{6} = \dfrac{5}{6}\)</li>
+          <li>\(4\dfrac{6}{5} - 4\dfrac{2}{5} = \dfrac{4}{5}\)</li>
+        </ul>
+        <p>代回原式並將同分母為 \(5\) 的項先結合：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= 2\frac{1}{5} - \left[\frac{5}{6} + \frac{4}{5}\right] \\
+          &= \left(\frac{11}{5} - \frac{4}{5}\right) - \frac{5}{6} \\
+          &= \frac{7}{5} - \frac{5}{6} = \frac{42 - 25}{30} = \frac{17}{30}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(-1\dfrac{47}{60}\)（或 \(-\dfrac{107}{60}\)） &nbsp;&nbsp; (2) \(\dfrac{17}{30}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.13 第 4 題 -->
+<div class="q-card" data-page="13">
+  <div class="q-header">
+    <span class="q-badge">第 4 題</span>
+    <span class="q-page">P.13</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值：</p>
+    <p>(1) \(\left|\dfrac{1}{2} - 1\right| + \left|\dfrac{1}{3} - \dfrac{1}{2}\right| + \left|\dfrac{1}{4} - \dfrac{1}{3}\right| + \left|\dfrac{1}{5} - \dfrac{1}{4}\right|\)</p>
+    <p>(2) \(\dfrac{1}{1\times 2} + \dfrac{2}{2\times 4} + \dfrac{3}{4\times 7} + \dots + \dfrac{6}{16\times 22}\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 去絕對值後分項對消</div>
+      <div class="step-content">
+        <p>因為絕對值內皆為「小數減大數」（負數），去絕對值時須對調相減順序為「大數減小數」：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \left(\frac{1}{3} - \frac{1}{4}\right) + \left(\frac{1}{4} - \frac{1}{5}\right) \\
+          &= 1 - \frac{1}{5} = \frac{4}{5}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 分項拆解（裂項相消法）</div>
+      <div class="step-content">
+        <p>觀察每一項：分子剛好等於分母兩因數的差，即 \(\dfrac{b - a}{a \times b} = \dfrac{1}{a} - \dfrac{1}{b}\)。</p>
+        <ul>
+          <li>\(\dfrac{1}{1\times 2} = 1 - \dfrac{1}{2}\)</li>
+          <li>\(\dfrac{2}{2\times 4} = \dfrac{1}{2} - \dfrac{1}{4}\)</li>
+          <li>\(\dfrac{3}{4\times 7} = \dfrac{1}{4} - \dfrac{1}{7}\)</li>
+          <li>\(\dots\)</li>
+          <li>\(\dfrac{6}{16\times 22} = \dfrac{1}{16} - \dfrac{1}{22}\)</li>
+        </ul>
+        <p>將各項相加，中間項兩兩抵消：</p>
+        \[
+          \text{原式} = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{4}\right) + \left(\frac{1}{4} - \frac{1}{7}\right) + \dots + \left(\frac{1}{16} - \frac{1}{22}\right) = 1 - \frac{1}{22} = \frac{21}{22}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{4}{5}\) &nbsp;&nbsp; (2) \(\dfrac{21}{22}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.14 第 5 題 -->
+<div class="q-card" data-page="14">
+  <div class="q-header">
+    <span class="q-badge">第 5 題</span>
+    <span class="q-page">P.14</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值：</p>
+    <p>(1) \(2\dfrac{3}{5} \div \left(-5\dfrac{1}{5}\right)\)</p>
+    <p>(2) \(\left(-\dfrac{2}{3}\right)\times\left(-\dfrac{3}{4}\right)\times\left(-\dfrac{4}{5}\right)\times\dots\times\left(-\dfrac{98}{99}\right)\times\left(-\dfrac{99}{100}\right)\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 帶分數化為假分數再相除</div>
+      <div class="step-content">
+        <p>將帶分數化為假分數，並將除法改為乘以倒數：</p>
+        \[
+          2\frac{3}{5} \div \left(-5\frac{1}{5}\right) = \frac{13}{5} \div \left(-\frac{26}{5}\right) = \frac{13}{5} \times \left(-\frac{5}{26}\right) = -\frac{1}{2}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 判斷正負號與連鎖約分</div>
+      <div class="step-content">
+        <p>先計算共有幾個負數相乘：分子從 \(2\) 到 \(99\)，共有 \(99 - 2 + 1 = 98\) 項。</p>
+        <p>因為 \(98\) 是偶數，所以偶數個負數相乘結果為<strong>正數</strong>。</p>
+        <p>接著將分子與分母斜向連鎖約分：</p>
+        \[
+          \text{原式} = +\left(\frac{2}{\cancel{3}} \times \frac{\cancel{3}}{\cancel{4}} \times \frac{\cancel{4}}{\cancel{5}} \times \dots \times \frac{\cancel{98}}{\cancel{99}} \times \frac{\cancel{99}}{100}\right) = \frac{2}{100} = \frac{1}{50}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(-\dfrac{1}{2}\) &nbsp;&nbsp; (2) \(\dfrac{1}{50}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.14 第 6 題 -->
+<div class="q-card" data-page="14">
+  <div class="q-header">
+    <span class="q-badge">第 6 題</span>
+    <span class="q-page">P.14</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值：</p>
+    <p>(1) \(\left(3 - \dfrac{1}{3}\right) \div \dfrac{1}{3} \times \dfrac{3}{4} - \dfrac{2}{7}\)</p>
+    <p>(2) \(\left(2 - \dfrac{1}{3}\right) \times 0.8 + \dfrac{5}{6} \div \left(\dfrac{2}{3} - \dfrac{1}{4}\right)\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 先算括號，再由左而右乘除</div>
+      <div class="step-content">
+        \[
+          \begin{aligned}
+          \left(3 - \frac{1}{3}\right) \div \frac{1}{3} \times \frac{3}{4} - \frac{2}{7} &= \frac{8}{3} \times 3 \times \frac{3}{4} - \frac{2}{7} \\
+          &= 6 - \frac{2}{7} = 5\frac{5}{7} \quad \left(\text{或 } \frac{40}{7}\right)
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 小數化分數並分段計算</div>
+      <div class="step-content">
+        <p>將 \(0.8\) 化為 \(\dfrac{4}{5}\)，並先算出兩個括號內的值：</p>
+        <ul>
+          <li>\(2 - \dfrac{1}{3} = \dfrac{5}{3}\)</li>
+          <li>\(\dfrac{2}{3} - \dfrac{1}{4} = \dfrac{8 - 3}{12} = \dfrac{5}{12}\)</li>
+        </ul>
+        <p>代回原式計算：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \frac{5}{3} \times \frac{4}{5} + \frac{5}{6} \div \frac{5}{12} \\
+          &= \frac{4}{3} + \frac{5}{6} \times \frac{12}{5} \\
+          &= \frac{4}{3} + 2 = 3\frac{1}{3} \quad \left(\text{或 } \frac{10}{3}\right)
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(5\dfrac{5}{7}\)（或 \(\dfrac{40}{7}\)） &nbsp;&nbsp; (2) \(3\dfrac{1}{3}\)（或 \(\dfrac{10}{3}\)）
+    </div>
+  </div>
+</div>
+
+<!-- P.14 第 7 題 -->
+<div class="q-card" data-page="14">
+  <div class="q-header">
+    <span class="q-badge">第 7 題</span>
+    <span class="q-page">P.14</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值：</p>
+    <p>(1) \(129\dfrac{3}{4}\times\dfrac{2}{3} - 97\dfrac{3}{4}\times\dfrac{2}{3} - (-58)\times\dfrac{2}{3}\)</p>
+    <p>(2) \(69\times\left(\dfrac{18}{161} + \dfrac{7}{115}\right) - 21\times\left(\dfrac{4}{49} - \dfrac{3}{35}\right)\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 逆用乘法分配律提出公因數</div>
+      <div class="step-content">
+        <p>觀察三項皆有 \(\times \dfrac{2}{3}\)，將 \(\dfrac{2}{3}\) 提出：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \left[129\frac{3}{4} - 97\frac{3}{4} - (-58)\right] \times \frac{2}{3} \\
+          &= (32 + 58) \times \frac{2}{3} \\
+          &= 90 \times \frac{2}{3} = 60
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 利用分配律展開約分後再合併同分母</div>
+      <div class="step-content">
+        <p>觀察因數關係：\(69 = 23\times 3\)，而 \(161 = 23\times 7\)、\(115 = 23\times 5\)；另一邊 \(21 = 7\times 3\)，而 \(49 = 7\times 7\)、\(35 = 7\times 5\)。利用分配律直接展開約分最簡便：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= 69\times\frac{18}{161} + 69\times\frac{7}{115} - 21\times\frac{4}{49} + 21\times\frac{3}{35} \\
+          &= 3\times\frac{18}{7} + 3\times\frac{7}{5} - 3\times\frac{4}{7} + 3\times\frac{3}{5} \\
+          &= \left(\frac{54}{7} - \frac{12}{7}\right) + \left(\frac{21}{5} + \frac{9}{5}\right) \\
+          &= \frac{42}{7} + \frac{30}{5} = 6 + 6 = 12
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(60\) &nbsp;&nbsp; (2) \(12\)
+    </div>
+  </div>
+</div>
+
+<!-- P.14 第 8 題 -->
+<div class="q-card" data-page="14">
+  <div class="q-header">
+    <span class="q-badge">第 8 題</span>
+    <span class="q-page">P.14</span>
+  </div>
+  <div class="q-body">
+    <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+      <div style="flex:1; min-width:240px;">
+        <p>如右圖，一竹竿立於池塘中，竹竿全長的 \(\dfrac{2}{7}\) 在泥中，剩下的 \(\dfrac{3}{5}\) 在水中，露出水面的有 \(2\) 公尺，則此竹竿全長為多少公尺？</p>
+      </div>
+      <div style="flex:0 0 auto;">
+        <svg width="200" height="160" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px;">
+          <!-- 水面與水層 -->
+          <rect x="20" y="55" width="130" height="55" fill="#bae6fd" />
+          <line x1="20" y1="55" x2="150" y2="55" stroke="#0284c7" stroke-width="2" />
+          <!-- 泥巴層 -->
+          <rect x="20" y="110" width="130" height="30" fill="#a8a29e" />
+          <line x1="20" y1="110" x2="150" y2="110" stroke="#57534e" stroke-width="1.5" />
+          <!-- 竹竿 -->
+          <rect x="82" y="18" width="6" height="122" fill="#eab308" stroke="#713f12" stroke-width="1.5" />
+          <line x1="82" y1="45" x2="88" y2="45" stroke="#713f12" stroke-width="1.5" />
+          <line x1="82" y1="75" x2="88" y2="75" stroke="#713f12" stroke-width="1.5" />
+          <line x1="82" y1="105" x2="88" y2="105" stroke="#713f12" stroke-width="1.5" />
+          <!-- 標註 2公尺 -->
+          <line x1="72" y1="18" x2="78" y2="18" stroke="#334155" stroke-width="1.2" />
+          <line x1="72" y1="55" x2="78" y2="55" stroke="#334155" stroke-width="1.2" />
+          <line x1="75" y1="18" x2="75" y2="55" stroke="#334155" stroke-width="1.2" />
+          <text x="32" y="40" font-size="12" fill="#1e293b" font-weight="bold">2 公尺</text>
+          <!-- 右側文字 -->
+          <text x="158" y="86" font-size="12" fill="#0369a1" font-weight="bold">水</text>
+          <text x="158" y="128" font-size="12" fill="#44403c" font-weight="bold">泥巴</text>
+          <text x="73" y="154" font-size="12" fill="#713f12" font-weight="bold">竹竿</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：求露出水面部分占竹竿全長的幾分之幾</div>
+      <div class="step-content">
+        <p>設竹竿全長為單位 \(1\)：</p>
+        <ul>
+          <li>扣除泥中的 \(\dfrac{2}{7}\) 後，剩下的部分占全長的 \(1 - \dfrac{2}{7} = \dfrac{5}{7}\)。</li>
+          <li>水中的部分占剩下的 \(\dfrac{3}{5}\)，代表露出水面的部分占剩下的 \(1 - \dfrac{3}{5} = \dfrac{2}{5}\)。</li>
+        </ul>
+        <p>因此，露出水面的部分占竹竿全長的比例為：</p>
+        \[
+          \left(1 - \frac{2}{7}\right) \times \left(1 - \frac{3}{5}\right) = \frac{5}{7} \times \frac{2}{5} = \frac{2}{7}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：由實際長度反推全長</div>
+      <div class="step-content">
+        <p>已知露出水面的 \(2\) 公尺占全長的 \(\dfrac{2}{7}\)，故竹竿全長為：</p>
+        \[
+          2 \div \frac{2}{7} = 2 \times \frac{7}{2} = 7 \text{（公尺）}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(7\) 公尺
+    </div>
+  </div>
+</div>
+
+<!-- P.15 第 9 題 -->
+<div class="q-card" data-page="15">
+  <div class="q-header">
+    <span class="q-badge">第 9 題</span>
+    <span class="q-page">P.15</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 若 \(\dfrac{7}{8} < \dfrac{a}{88} < \dfrac{10}{11}\)，且 \(\dfrac{a}{88}\) 為最簡分數，則 \(a = ?\)</p>
+    <p>(2) 若 \(\dfrac{7}{9} < \dfrac{63}{b} < \dfrac{9}{11}\)，且 \(\dfrac{63}{b}\) 為最簡分數，則 \(b = ?\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 通分分母為 \(88\) 並檢驗互質</div>
+      <div class="step-content">
+        <p>將不等式兩端的分數擴分使分母皆為 \(88\)：</p>
+        \[
+          \frac{77}{88} < \frac{a}{88} < \frac{80}{88}
+        \]
+        <p>所以整數 \(a\) 可能為 \(78\) 或 \(79\)。</p>
+        <p>因為 \(\dfrac{a}{88}\) 為最簡分數，\(a\) 與 \(88\) 必須互質（\(\gcd(a, 88) = 1\)）：</p>
+        <ul>
+          <li>當 \(a = 78\) 時，\(78\) 與 \(88\) 皆為偶數，可約分，不合。</li>
+          <li>當 \(a = 79\) 時，\(79\) 為質數，\(\gcd(79, 88) = 1\)，符合。</li>
+        </ul>
+        <p>故 \(a = 79\)。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 通分分子為 \(63\) 並檢驗互質</div>
+      <div class="step-content">
+        <p>將不等式兩端的分數擴分使分子皆為 \(63\)：</p>
+        \[
+          \frac{63}{81} < \frac{63}{b} < \frac{63}{77}
+        \]
+        <p>因為分子相同且皆為正數，分母範圍為 \(77 < b < 81\)，所以整數 \(b\) 可能為 \(78\)、\(79\)、\(80\)。</p>
+        <p>又因為 \(\dfrac{63}{b}\) 為最簡分數，且 \(63 = 3^2 \times 7\)，所以 \(b\) 不能含有質因數 \(3\) 或 \(7\)：</p>
+        <ul>
+          <li>\(b = 78 = 2 \times 3 \times 13\)（含有因數 \(3\)，可約分，不合）</li>
+          <li>\(b = 79\)（質數，與 \(63\) 互質，符合）</li>
+          <li>\(b = 80 = 2^4 \times 5\)（與 \(63\) 互質，符合）</li>
+        </ul>
+        <p>故 \(b = 79\) 或 \(80\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(a = 79\) &nbsp;&nbsp; (2) \(b = 79\) 或 \(80\)
+    </div>
+  </div>
+</div>
+
+<!-- P.15 第 10 題 -->
+<div class="q-card" data-page="15">
+  <div class="q-header">
+    <span class="q-badge">第 10 題</span>
+    <span class="q-page">P.15</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 計算 \(\dfrac{3}{17} + \dfrac{21}{29} - \left(-\dfrac{14}{17}\right) + \dfrac{8}{29}\) 的值。</p>
+    <p>(2) 計算 \(\dfrac{11}{14} + \left(-\dfrac{2}{9}\right) - \left[\left(-\dfrac{3}{14}\right) + \left(-\dfrac{1}{3}\right)\right]\) 的值。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 同分母分數交換結合</div>
+      <div class="step-content">
+        <p>利用負負得正並將同分母的項分組相加：</p>
+        \[
+          \begin{aligned}
+          \frac{3}{17} + \frac{21}{29} - \left(-\frac{14}{17}\right) + \frac{8}{29} &= \left(\frac{3}{17} + \frac{14}{17}\right) + \left(\frac{21}{29} + \frac{8}{29}\right) \\
+          &= 1 + 1 = 2
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 去括號後同分母先結合</div>
+      <div class="step-content">
+        <p>先去中括號（括號前為負號，括號內各項變號）：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \frac{11}{14} - \frac{2}{9} + \frac{3}{14} + \frac{1}{3} \\
+          &= \left(\frac{11}{14} + \frac{3}{14}\right) + \left(-\frac{2}{9} + \frac{3}{9}\right) \\
+          &= 1 + \frac{1}{9} = 1\frac{1}{9} \quad \left(\text{或 } \frac{10}{9}\right)
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(2\) &nbsp;&nbsp; (2) \(1\dfrac{1}{9}\)（或 \(\dfrac{10}{9}\)）
+    </div>
+  </div>
+</div>
+
+<!-- P.15 第 11 題 -->
+<div class="q-card" data-page="15">
+  <div class="q-header">
+    <span class="q-badge">第 11 題</span>
+    <span class="q-page">P.15</span>
+  </div>
+  <div class="q-body">
+    <p>已知本次段考成績，數學及格的人數占全班的 \(\dfrac{1}{3}\)，英語及格的人數占全班的 \(\dfrac{1}{4}\)，數學和英語都不及格的人數占全班的 \(\dfrac{1}{2}\)，試回答下列問題：</p>
+    <p>(1) 數學及格且英語也及格的人數占全班的幾分之幾？</p>
+    <p>(2) 數學及格但英語不及格的人數占全班的幾分之幾？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 利用排容原理求兩科皆及格比例</div>
+      <div class="step-content">
+        <p>全班為 \(1\)，因為兩科都不及格占 \(\dfrac{1}{2}\)，所以「至少有一科及格」的人數占全班的：</p>
+        \[
+          1 - \frac{1}{2} = \frac{1}{2}
+        \]
+        <p>由排容原理（數學及格 \(+\) 英語及格 \(-\) 兩科都及格 \(=\) 至少一科及格），可得兩科都及格占全班的：</p>
+        \[
+          \frac{1}{3} + \frac{1}{4} - \frac{1}{2} = \frac{4 + 3 - 6}{12} = \frac{1}{12}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 扣除兩科皆及格的部分</div>
+      <div class="step-content">
+        <p>「數學及格但英語不及格」即從數學及格比例中扣除兩科都及格的比例：</p>
+        \[
+          \frac{1}{3} - \frac{1}{12} = \frac{4 - 1}{12} = \frac{3}{12} = \frac{1}{4}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{1}{12}\) &nbsp;&nbsp; (2) \(\dfrac{1}{4}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.15 第 12 題 -->
+<div class="q-card" data-page="15">
+  <div class="q-header">
+    <span class="q-badge">第 12 題</span>
+    <span class="q-page">P.15</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值。</p>
+    <p>(1) \(\left(-\dfrac{3}{8}\right) \times \left(-4\dfrac{4}{15}\right)\)</p>
+    <p>(2) \(\left(-\dfrac{5}{6}\right) \times \left(-2\dfrac{1}{4}\right) \times \left(-\dfrac{3}{25}\right)\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 帶分數化為假分數後約分相乘</div>
+      <div class="step-content">
+        <p>兩個負數相乘結果為正數，將 \(-4\dfrac{4}{15}\) 化為 \(-\dfrac{64}{15}\)：</p>
+        \[
+          \left(-\frac{3}{8}\right) \times \left(-\frac{64}{15}\right) = +\left(\frac{3}{8} \times \frac{64}{15}\right) = \frac{8}{5} = 1\frac{3}{5}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 三個負數相乘結果為負數</div>
+      <div class="step-content">
+        <p>將 \(-2\dfrac{1}{4}\) 化為 \(-\dfrac{9}{4}\)，三個負數相乘為負數：</p>
+        \[
+          \left(-\frac{5}{6}\right) \times \left(-\frac{9}{4}\right) \times \left(-\frac{3}{25}\right) = -\left(\frac{5}{6} \times \frac{9}{4} \times \frac{3}{25}\right) = -\frac{9}{40}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(1\dfrac{3}{5}\)（或 \(\dfrac{8}{5}\)） &nbsp;&nbsp; (2) \(-\dfrac{9}{40}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.16 第 13 題 -->
+<div class="q-card" data-page="16">
+  <div class="q-header">
+    <span class="q-badge">第 13 題</span>
+    <span class="q-page">P.16</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 計算 \(\left(1 + \dfrac{1}{2}\right)\times\left(1 + \dfrac{1}{3}\right)\times\left(1 + \dfrac{1}{4}\right)\times\dots\times\left(1 + \dfrac{1}{50}\right) = ?\)</p>
+    <p>(2) 計算 \(\left(\dfrac{1}{2} - 1\right)\times\left(\dfrac{1}{3} - 1\right)\times\left(\dfrac{1}{4} - 1\right)\times\dots\times\left(\dfrac{1}{50} - 1\right) = ?\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 先通分各括號再連鎖約分</div>
+      <div class="step-content">
+        <p>將每個括號算出後，前項分子與後項分母剛好互相約掉：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \frac{\cancel{3}}{2} \times \frac{\cancel{4}}{\cancel{3}} \times \frac{\cancel{5}}{\cancel{4}} \times \dots \times \frac{51}{\cancel{50}} \\
+          &= \frac{51}{2} \quad \left(\text{或 } 25\frac{1}{2}\right)
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 判斷項數與正負號再約分</div>
+      <div class="step-content">
+        <p>將每個括號算出：</p>
+        \[
+          \text{原式} = \left(-\frac{1}{2}\right) \times \left(-\frac{2}{3}\right) \times \left(-\frac{3}{4}\right) \times \dots \times \left(-\frac{49}{50}\right)
+        \]
+        <p>分母從 \(2\) 到 \(50\)，共有 \(50 - 2 + 1 = 49\) 個負數相乘。因為 \(49\) 為奇數，結果為<strong>負數</strong>：</p>
+        \[
+          \text{原式} = -\left(\frac{1}{\cancel{2}} \times \frac{\cancel{2}}{\cancel{3}} \times \frac{\cancel{3}}{\cancel{4}} \times \dots \times \frac{\cancel{49}}{50}\right) = -\frac{1}{50}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{51}{2}\)（或 \(25\dfrac{1}{2}\)） &nbsp;&nbsp; (2) \(-\dfrac{1}{50}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.16 第 14 題 -->
+<div class="q-card" data-page="16">
+  <div class="q-header">
+    <span class="q-badge">第 14 題</span>
+    <span class="q-page">P.16</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 若 \(\text{甲}\times\dfrac{4}{5} = \text{乙}\times\dfrac{3}{4} = \text{丙}\times\dfrac{2}{3}\)，且甲、乙、丙皆為正數，則甲、乙、丙的大小關係為何？</p>
+    <p>(2) 若 \(a\times\dfrac{199}{99} = b\times\dfrac{299}{199} = c\times\dfrac{399}{299}\)，且 \(a\)、\(b\)、\(c\) 皆為負數，則 \(a\)、\(b\)、\(c\) 的大小關係為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 正數乘積相等，乘數愈大則被乘數愈小</div>
+      <div class="step-content">
+        <p>比較三個乘數的大小：</p>
+        \[
+          \frac{4}{5} = 1 - \frac{1}{5}, \quad \frac{3}{4} = 1 - \frac{1}{4}, \quad \frac{2}{3} = 1 - \frac{1}{3} \implies \frac{4}{5} > \frac{3}{4} > \frac{2}{3}
+        \]
+        <p>因為甲、乙、丙皆為正數，且乘積相等，所乘的分數愈小，代表原本的正數愈大（或者令乘積為 \(1\)，則 \(\text{甲} = \dfrac{5}{4}\)、\(\text{乙} = \dfrac{4}{3}\)、\(\text{丙} = \dfrac{3}{2}\)），故：</p>
+        \[
+          \text{丙} > \text{乙} > \text{甲}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 先比較絕對值大小，再取負號反轉</div>
+      <div class="step-content">
+        <p>先比較三個正分數的大小（分子皆比分母大 \(100\)）：</p>
+        \[
+          \frac{199}{99} = 1 + \frac{100}{99}, \quad \frac{299}{199} = 1 + \frac{100}{199}, \quad \frac{399}{299} = 1 + \frac{100}{299}
+        \]
+        <p>顯然 \(\dfrac{199}{99} > \dfrac{299}{199} > \dfrac{399}{299}\)。</p>
+        <p>因此，就絕對值而言，\(|a| < |b| < |c|\)。但因為 \(a\)、\(b\)、\(c\) 皆為<strong>負數</strong>，絕對值愈小，其值反而愈大，故：</p>
+        \[
+          a > b > c
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\text{丙} > \text{乙} > \text{甲}\) &nbsp;&nbsp; (2) \(a > b > c\)
+    </div>
+  </div>
+</div>
+
+<!-- P.16 第 15 題 -->
+<div class="q-card" data-page="16">
+  <div class="q-header">
+    <span class="q-badge">第 15 題</span>
+    <span class="q-page">P.16</span>
+  </div>
+  <div class="q-body">
+    <p>贏跑飲料公司要促銷飲料，甲、乙兩位經理各提了一個方案：</p>
+    <p>甲：原價加 2 成後再打八折。</p>
+    <p>乙：原價打八折後再加 2 成。</p>
+    <p>請問誰的方案降價較多？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：分別計算甲、乙方案的最終售價</div>
+      <div class="step-content">
+        <p>設飲料原價為 \(x\) 元（或設為 \(100\) 元）：</p>
+        <ul>
+          <li><strong>甲方案</strong>（加 2 成即 \(\times 1.2\)，打八折即 \(\times 0.8\)）：<br>
+            售價 \(= x \times (1 + 20\%) \times 80\% = x \times \dfrac{6}{5} \times \dfrac{4}{5} = \dfrac{24}{25}x = 0.96x\)。</li>
+          <li><strong>乙方案</strong>（打八折即 \(\times 0.8\)，加 2 成即 \(\times 1.2\)）：<br>
+            售價 \(= x \times 80\% \times (1 + 20\%) = x \times \dfrac{4}{5} \times \dfrac{6}{5} = \dfrac{24}{25}x = 0.96x\)。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：比較降價幅度</div>
+      <div class="step-content">
+        <p>由乘法交換律可知，兩個方案的最終售價皆為原價的 \(96\%\)（皆降價 \(4\%\)），因此兩人的方案<strong>降價一樣多</strong>。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> 兩人的方案降價一樣多
+    </div>
+  </div>
+</div>
+
+<!-- P.16 第 16 題 -->
+<div class="q-card" data-page="16">
+  <div class="q-header">
+    <span class="q-badge">第 16 題</span>
+    <span class="q-page">P.16</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值。</p>
+    <p>(1) \(\left(-\dfrac{1}{2}\right) \div \dfrac{1}{3}\)</p>
+    <p>(2) \(\dfrac{3}{2} \div \left(-\dfrac{3}{4}\right)\)</p>
+    <p>(3) \(\left(-\dfrac{1}{12}\right) \div \left(-\dfrac{3}{14}\right) \div 1\dfrac{5}{9}\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1)、(2) 小題 — 除以一個數等於乘以它的倒數</div>
+      <div class="step-content">
+        <p>(1) \(\left(-\dfrac{1}{2}\right) \div \dfrac{1}{3} = \left(-\dfrac{1}{2}\right) \times 3 = -\dfrac{3}{2}\)（或 \(-1\dfrac{1}{2}\)）</p>
+        <p>(2) \(\dfrac{3}{2} \div \left(-\dfrac{3}{4}\right) = \dfrac{3}{2} \times \left(-\dfrac{4}{3}\right) = -2\)</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (3) 小題 — 連除化為連乘</div>
+      <div class="step-content">
+        <p>先將帶分數 \(1\dfrac{5}{9}\) 化為假分數 \(\dfrac{14}{9}\)，兩個負數相除（乘）得正數：</p>
+        \[
+          \begin{aligned}
+          \left(-\frac{1}{12}\right) \div \left(-\frac{3}{14}\right) \div \frac{14}{9} &= +\left(\frac{1}{12} \times \frac{14}{3} \times \frac{9}{14}\right) \\
+          &= \frac{1}{4}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(-\dfrac{3}{2}\)（或 \(-1\dfrac{1}{2}\)） &nbsp;&nbsp; (2) \(-2\) &nbsp;&nbsp; (3) \(\dfrac{1}{4}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.17 第 17 題 -->
+<div class="q-card" data-page="17">
+  <div class="q-header">
+    <span class="q-badge">第 17 題</span>
+    <span class="q-page">P.17</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 若 \(a \div \dfrac{99}{91} = b \div \dfrac{89}{81} = c \div \dfrac{79}{71}\)，且 \(a\)、\(b\)、\(c\) 皆為正數，則 \(a\)、\(b\)、\(c\) 的大小關係為何？</p>
+    <p>(2) 若 \(a \div \dfrac{123}{456} = b \div \dfrac{223}{556} = c \div \dfrac{323}{656}\)，且 \(a\)、\(b\)、\(c\) 皆為負數，則 \(a\)、\(b\)、\(c\) 的大小關係為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 正數商相等時，除數愈大則被除數愈大</div>
+      <div class="step-content">
+        <p>令 \(a \div \dfrac{99}{91} = b \div \dfrac{89}{81} = c \div \dfrac{79}{71} = 1\)，則：</p>
+        \[
+          a = \frac{99}{91} = 1 + \frac{8}{91}, \quad b = \frac{89}{81} = 1 + \frac{8}{81}, \quad c = \frac{79}{71} = 1 + \frac{8}{71}
+        \]
+        <p>因為 \(\dfrac{8}{71} > \dfrac{8}{81} > \dfrac{8}{91}\)，所以：</p>
+        \[
+          c > b > a
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 負數商相等時，先比絕對值再取負號</div>
+      <div class="step-content">
+        <p>三個除數的分母與分子差皆為 \(456 - 123 = 333\)：</p>
+        \[
+          \frac{123}{456} = 1 - \frac{333}{456}, \quad \frac{223}{556} = 1 - \frac{333}{556}, \quad \frac{323}{656} = 1 - \frac{333}{656}
+        \]
+        <p>因為減去的部分 \(\dfrac{333}{456} > \dfrac{333}{556} > \dfrac{333}{656}\)，所以正除數大小為 \(\dfrac{123}{456} < \dfrac{223}{556} < \dfrac{323}{656}\)。</p>
+        <p>因此絕對值大小為 \(|a| < |b| < |c|\)。又因為 \(a\)、\(b\)、\(c\) 皆為負數（或令等式值為 \(-1\)），負數絕對值愈小其值愈大，故：</p>
+        \[
+          a > b > c
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(c > b > a\) &nbsp;&nbsp; (2) \(a > b > c\)
+    </div>
+  </div>
+</div>
+
+<!-- P.17 第 18 題 -->
+<div class="q-card" data-page="17">
+  <div class="q-header">
+    <span class="q-badge">第 18 題</span>
+    <span class="q-page">P.17</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值。</p>
+    <p>(1) \(\dfrac{5}{3} \div \left(-1\dfrac{1}{4}\right) + \dfrac{2}{3}\)</p>
+    <p>(2) \(\left(2 - \dfrac{2}{3}\right) \div \left(\dfrac{2}{3} - 2\right) \times \dfrac{3}{4}\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 先乘除後加減</div>
+      <div class="step-content">
+        \[
+          \begin{aligned}
+          \frac{5}{3} \div \left(-1\frac{1}{4}\right) + \frac{2}{3} &= \frac{5}{3} \div \left(-\frac{5}{4}\right) + \frac{2}{3} \\
+          &= \frac{5}{3} \times \left(-\frac{4}{5}\right) + \frac{2}{3} \\
+          &= -\frac{4}{3} + \frac{2}{3} = -\frac{2}{3}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 觀察相反數相除為 \(-1\)</div>
+      <div class="step-content">
+        <p>注意到 \(2 - \dfrac{2}{3} = \dfrac{4}{3}\) 與 \(\dfrac{2}{3} - 2 = -\dfrac{4}{3}\) 互為相反數，相除必得 \(-1\)：</p>
+        \[
+          \begin{aligned}
+          \left(2 - \frac{2}{3}\right) \div \left(\frac{2}{3} - 2\right) \times \frac{3}{4} &= \frac{4}{3} \div \left(-\frac{4}{3}\right) \times \frac{3}{4} \\
+          &= (-1) \times \frac{3}{4} = -\frac{3}{4}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(-\dfrac{2}{3}\) &nbsp;&nbsp; (2) \(-\dfrac{3}{4}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.17 第 19 題 -->
+<div class="q-card" data-page="17">
+  <div class="q-header">
+    <span class="q-badge">第 19 題</span>
+    <span class="q-page">P.17</span>
+  </div>
+  <div class="q-body">
+    <p>計算下列各式的值。</p>
+    <p>(1) \(\left(-\dfrac{21}{55}\right) \times \left(\dfrac{5}{7} + \dfrac{5}{3}\right)\)</p>
+    <p>(2) \(\left(-\dfrac{16}{33}\right) \times \dfrac{9}{14} - \dfrac{2}{33} \times \left(-\dfrac{9}{14}\right)\)</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 利用乘法分配律展開約分</div>
+      <div class="step-content">
+        <p>因為 \(21\) 是 \(7\) 與 \(3\) 的公倍數，而 \(55\) 是 \(5\) 的倍數，直接用分配律展開最快速：</p>
+        \[
+          \begin{aligned}
+          \left(-\frac{21}{55}\right) \times \left(\frac{5}{7} + \frac{5}{3}\right) &= \left(-\frac{21}{55}\right) \times \frac{5}{7} + \left(-\frac{21}{55}\right) \times \frac{5}{3} \\
+          &= -\frac{3}{11} + \left(-\frac{7}{11}\right) = -\frac{10}{11}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 提出公因數 \(\dfrac{9}{14}\)</div>
+      <div class="step-content">
+        <p>利用負負得正整理符號，再提出 \(\dfrac{9}{14}\)：</p>
+        \[
+          \begin{aligned}
+          \left(-\frac{16}{33}\right) \times \frac{9}{14} - \frac{2}{33} \times \left(-\frac{9}{14}\right) &= \left(-\frac{16}{33} + \frac{2}{33}\right) \times \frac{9}{14} \\
+          &= \left(-\frac{14}{33}\right) \times \frac{9}{14} = -\frac{3}{11}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(-\dfrac{10}{11}\) &nbsp;&nbsp; (2) \(-\dfrac{3}{11}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.17 第 20 題 -->
+<div class="q-card" data-page="17">
+  <div class="q-header">
+    <span class="q-badge">第 20 題</span>
+    <span class="q-page">P.17</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 計算 \(\left(-333\dfrac{4}{15}\right) \times 3\) 的值。</p>
+    <p>(2) 若 \(a\) 是最接近 \(\left(-111\dfrac{1}{18}\right) \times 9\) 的整數，則 \(a\) 的值為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 將負帶分數拆成「負整數 \(+\) 負真分數」</div>
+      <div class="step-content">
+        <p>注意 \(-333\dfrac{4}{15} = -333 - \dfrac{4}{15}\)，切勿誤寫為 \(-333 + \dfrac{4}{15}\)：</p>
+        \[
+          \begin{aligned}
+          \left(-333\frac{4}{15}\right) \times 3 &= \left(-333 - \frac{4}{15}\right) \times 3 \\
+          &= -333 \times 3 - \frac{4}{15} \times 3 \\
+          &= -999 - \frac{4}{5} = -999\frac{4}{5}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 展開計算並判斷最接近的整數</div>
+      <div class="step-content">
+        <p>同樣將 \(-111\dfrac{1}{18}\) 拆解為 \(-111 - \dfrac{1}{18}\)：</p>
+        \[
+          \begin{aligned}
+          \left(-111\frac{1}{18}\right) \times 9 &= \left(-111 - \frac{1}{18}\right) \times 9 \\
+          &= -999 - \frac{1}{2} = -999\frac{1}{2} = -999.5
+          \end{aligned}
+        \]
+        <p>在數線上，\(-999.5\) 位於 \(-999\) 與 \(-1000\) 的正中間（距離皆為 \(0.5\)），故最接近的整數為 \(-999\) 或 \(-1000\)。（註：若原題分母為大於 \(18\) 的數如 \(\dfrac{1}{19}\) 或 \(\dfrac{1}{27}\)，則分數部分小於 \(\dfrac{1}{2}\)，此時最接近的整數為 \(-999\)）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(-999\dfrac{4}{5}\) &nbsp;&nbsp; (2) \(-999\) 或 \(-1000\)（乘積為 \(-999\dfrac{1}{2}\)，與兩整數等距）
+    </div>
+  </div>
+</div>
+
+<!-- P.18 第 21 題 -->
+<div class="q-card" data-page="18">
+  <div class="q-header">
+    <span class="q-badge">第 21 題</span>
+    <span class="q-page">P.18</span>
+  </div>
+  <div class="q-body">
+    <p>阿維看一本書，第一天看整本書的 \(\dfrac{1}{5}\)，第二天看剩下的 \(\dfrac{1}{4}\)，第三天看未看完的 \(\dfrac{1}{3}\)，最後剩 \(120\) 頁，請問這本書有多少頁？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算三天後剩下頁數占全書的比例</div>
+      <div class="step-content">
+        <p>設整本書的頁數為單位 \(1\)：</p>
+        <ul>
+          <li>第一天看完後剩下：\(1 - \dfrac{1}{5} = \dfrac{4}{5}\)</li>
+          <li>第二天看完剩下的 \(\dfrac{1}{4}\) 後，還剩下其中的 \(1 - \dfrac{1}{4} = \dfrac{3}{4}\)</li>
+          <li>第三天看完未看完的 \(\dfrac{1}{3}\) 後，還剩下其中的 \(1 - \dfrac{1}{3} = \dfrac{2}{3}\)</li>
+        </ul>
+        <p>因此，最後剩下的頁數占全書的：</p>
+        \[
+          \left(1 - \frac{1}{5}\right) \times \left(1 - \frac{1}{4}\right) \times \left(1 - \frac{1}{3}\right) = \frac{\cancel{4}}{5} \times \frac{\cancel{3}}{\cancel{4}} \times \frac{2}{\cancel{3}} = \frac{2}{5}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：由最後剩下的 \(120\) 頁反求全書頁數</div>
+      <div class="step-content">
+        \[
+          120 \div \frac{2}{5} = 120 \times \frac{5}{2} = 300 \text{（頁）}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(300\) 頁
+    </div>
+  </div>
+</div>
+
+<!-- P.18 第 22 題 -->
+<div class="q-card" data-page="18">
+  <div class="q-header">
+    <span class="q-badge">第 22 題</span>
+    <span class="q-page">P.18</span>
+  </div>
+  <div class="q-body">
+    <p>子瑜要從甲市走到乙市，第一天走 \(\dfrac{2}{5}\)，第二天走剩下的 \(\dfrac{1}{3}\)，第三天走未走完的 \(\dfrac{1}{4}\)，結果距離乙市還有 \(9\) 公里，請問甲、乙兩市的路程是多少公里？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：計算三天後未走完路程占全長的比例</div>
+      <div class="step-content">
+        <p>設甲、乙兩市總路程為單位 \(1\)，三天後剩下的路程占全長的：</p>
+        \[
+          \left(1 - \frac{2}{5}\right) \times \left(1 - \frac{1}{3}\right) \times \left(1 - \frac{1}{4}\right) = \frac{\cancel{3}}{5} \times \frac{2}{\cancel{3}} \times \frac{3}{4} = \frac{3}{10}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：由剩下的 \(9\) 公里反推總路程</div>
+      <div class="step-content">
+        \[
+          9 \div \frac{3}{10} = 9 \times \frac{10}{3} = 30 \text{（公里）}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(30\) 公里
+    </div>
+  </div>
+</div>
+
+<!-- P.18 第 23 題 -->
+<div class="q-card" data-page="18">
+  <div class="q-header">
+    <span class="q-badge">第 23 題</span>
+    <span class="q-page">P.18</span>
+  </div>
+  <div class="q-body">
+    <p>恩伯將 \(5\dfrac{1}{4}\) 公斤的肥料分裝成每包 \(400\) 公克的小包，則關於分裝完後的情形，下列敘述何者正確？</p>
+    <p>(A) 可分成 \(13\) 小包，剩下 \(\dfrac{1}{20}\) 公斤</p>
+    <p>(B) 可分成 \(13\) 小包，剩下 \(\dfrac{1}{8}\) 公斤</p>
+    <p>(C) 可分成 \(15\) 小包，剩下 \(\dfrac{1}{20}\) 公斤</p>
+    <p>(D) 可分成 \(15\) 小包，剩下 \(\dfrac{1}{8}\) 公斤</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：統一單位為公斤並計算可分裝包數</div>
+      <div class="step-content">
+        <p>每小包重量為 \(400\text{ 公克} = \dfrac{400}{1000}\text{ 公斤} = \dfrac{2}{5}\text{ 公斤}\)。</p>
+        <p>將總重量除以每包重量：</p>
+        \[
+          5\frac{1}{4} \div \frac{2}{5} = \frac{21}{4} \times \frac{5}{2} = \frac{105}{8} = 13\frac{1}{8} \text{（包）}
+        \]
+        <p>可知共可裝滿 <strong>\(13\) 小包</strong>，並剩下 \(\dfrac{1}{8}\) <strong>包</strong>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：將剩下的「包數」換算回「公斤」（小心單位陷阱！）</div>
+      <div class="step-content">
+        <p>剩下的 \(\dfrac{1}{8}\) 包，每包重 \(\dfrac{2}{5}\) 公斤，因此剩下的實際重量為：</p>
+        \[
+          \frac{1}{8} \text{ 包} \times \frac{2}{5} \text{ 公斤/包} = \frac{1}{20} \text{ 公斤}
+        \]
+        <p>（或用減法驗算：\(5\dfrac{1}{4} - 13 \times \dfrac{2}{5} = \dfrac{105}{20} - \dfrac{104}{20} = \dfrac{1}{20}\) 公斤）。故選 <strong>(A)</strong>。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (A)
+    </div>
+  </div>
+</div>
+
+<!-- P.18 第 24 題 -->
+<div class="q-card" data-page="18">
+  <div class="q-header">
+    <span class="q-badge">第 24 題</span>
+    <span class="q-page">P.18</span>
+  </div>
+  <div class="q-body">
+    <p>有一工程，甲獨做要 \(12\) 天做完，乙獨做要 \(15\) 天做完，丙獨做要 \(20\) 天做完，則甲、乙、丙三人合作要幾天才能做完？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：求三人每天各自完成的工作量</div>
+      <div class="step-content">
+        <p>將整個工程視為單位 \(1\)：</p>
+        <ul>
+          <li>甲每天完成工程的 \(\dfrac{1}{12}\)</li>
+          <li>乙每天完成工程的 \(\dfrac{1}{15}\)</li>
+          <li>丙每天完成工程的 \(\dfrac{1}{20}\)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：求三人合作每天完成的工作量與所需天數</div>
+      <div class="step-content">
+        <p>三人合作一天可完成工程的：</p>
+        \[
+          \frac{1}{12} + \frac{1}{15} + \frac{1}{20} = \frac{5 + 4 + 3}{60} = \frac{12}{60} = \frac{1}{5}
+        \]
+        <p>因此，完成整個工程所需的天數為：</p>
+        \[
+          1 \div \frac{1}{5} = 5 \text{（天）}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(5\) 天
+    </div>
+  </div>
+</div>
+
+<!-- ==================== P.19 資優試題挑戰區 ==================== -->
+
+<!-- P.19 資優第 1 題 -->
+<div class="challenge-header" data-page="19"><h3>&#x1F3C6; 2-3 &#x8CC7;&#x512A;&#x8A66;&#x984C;&#x6311;&#x6230;&#x5340;&#xFF08;P.19&#xFF09;</h3></div>
+<div class="q-card" data-page="19">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 1 題</span>
+    <span class="q-page">P.19</span>
+  </div>
+  <div class="q-body">
+    <p>計算 \(99\dfrac{3}{4} + 199\dfrac{3}{4} + 2999\dfrac{3}{4} + 39999\dfrac{3}{4} + 1\) 之值為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：將尾數的 \(1\) 拆分成 \(4\) 個 \(\dfrac{1}{4}\) 湊整數</div>
+      <div class="step-content">
+        <p>觀察發現前四個帶分數都只要再加上 \(\dfrac{1}{4}\) 就能湊成整百、整千、整萬數，而最後的 \(1\) 剛好可以拆成 \(\dfrac{1}{4} + \dfrac{1}{4} + \dfrac{1}{4} + \dfrac{1}{4}\)：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \left(99\frac{3}{4} + \frac{1}{4}\right) + \left(199\frac{3}{4} + \frac{1}{4}\right) + \left(2999\frac{3}{4} + \frac{1}{4}\right) + \left(39999\frac{3}{4} + \frac{1}{4}\right) \\
+          &= 100 + 200 + 3000 + 40000 \\
+          &= 43300
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> \(43300\)
+    </div>
+  </div>
+</div>
+
+<!-- P.19 資優第 2 題 -->
+<div class="q-card" data-page="19">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 2 題</span>
+    <span class="q-page">P.19</span>
+  </div>
+  <div class="q-body">
+    <p>(1) 計算 \(\dfrac{1}{1\times 2} + \dfrac{1}{2\times 3} + \dfrac{1}{3\times 4} + \dfrac{1}{4\times 5} + \dfrac{1}{5\times 6}\) 之值為何？</p>
+    <p>(2) 計算 \(\dfrac{3}{1\times 5} + \dfrac{3}{5\times 9} + \dfrac{3}{9\times 13} + \dfrac{3}{13\times 17}\) 之值為何？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 基本分項對消</div>
+      <div class="step-content">
+        <p>利用 \(\dfrac{1}{n(n+1)} = \dfrac{1}{n} - \dfrac{1}{n+1}\) 將各項拆開：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \left(\frac{1}{3} - \frac{1}{4}\right) + \left(\frac{1}{4} - \frac{1}{5}\right) + \left(\frac{1}{5} - \frac{1}{6}\right) \\
+          &= 1 - \frac{1}{6} = \frac{5}{6}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 調整係數的分項對消</div>
+      <div class="step-content">
+        <p>觀察分母兩數相差 \(4\)（如 \(5 - 1 = 4\)），由於 \(\dfrac{1}{a} - \dfrac{1}{b} = \dfrac{b - a}{a\times b} = \dfrac{4}{a\times b}\)，而原式分子為 \(3\)，所以可提出倍數 \(\dfrac{3}{4}\)：</p>
+        \[
+          \begin{aligned}
+          \text{原式} &= \frac{3}{4} \times \left(\frac{4}{1\times 5} + \frac{4}{5\times 9} + \frac{4}{9\times 13} + \frac{4}{13\times 17}\right) \\
+          &= \frac{3}{4} \times \left[\left(1 - \frac{1}{5}\right) + \left(\frac{1}{5} - \frac{1}{9}\right) + \left(\frac{1}{9} - \frac{1}{13}\right) + \left(\frac{1}{13} - \frac{1}{17}\right)\right] \\
+          &= \frac{3}{4} \times \left(1 - \frac{1}{17}\right) = \frac{3}{4} \times \frac{16}{17} = \frac{12}{17}
+          \end{aligned}
+        \]
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(\dfrac{5}{6}\) &nbsp;&nbsp; (2) \(\dfrac{12}{17}\)
+    </div>
+  </div>
+</div>
+
+<!-- P.19 資優第 3 題 -->
+<div class="q-card" data-page="19">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 3 題</span>
+    <span class="q-page">P.19</span>
+  </div>
+  <div class="q-body">
+    <p>若 \(S = 1 - \dfrac{1}{2} + \dfrac{1}{3} - \dfrac{1}{4} + \dfrac{1}{5} - \dfrac{1}{6} + \dfrac{1}{7} - \dfrac{1}{8}\)，試利用 \(\dfrac{1}{2} > \dfrac{1}{3} > \dfrac{1}{4} > \dots > \dfrac{1}{8}\)，說明 \(0 < S < 1\)。</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：兩兩分組說明 \(S > 0\)</div>
+      <div class="step-content">
+        <p>從第一項起每兩項加括號分組：</p>
+        \[
+          S = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{3} - \frac{1}{4}\right) + \left(\frac{1}{5} - \frac{1}{6}\right) + \left(\frac{1}{7} - \frac{1}{8}\right)
+        \]
+        <p>因為 \(1 > \dfrac{1}{2}\)、\(\dfrac{1}{3} > \dfrac{1}{4}\)、\(\dfrac{1}{5} > \dfrac{1}{6}\)、\(\dfrac{1}{7} > \dfrac{1}{8}\)，所以每個括號內的值皆大於 \(0\)。</p>
+        <p>四個正數相加必為正數，故 <strong>\(S > 0\)</strong>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：從第二項起分組說明 \(S < 1\)</div>
+      <div class="step-content">
+        <p>保留第一項 \(1\)，將後面的項改寫為減去括號的形式：</p>
+        \[
+          S = 1 - \left(\frac{1}{2} - \frac{1}{3}\right) - \left(\frac{1}{4} - \frac{1}{5}\right) - \left(\frac{1}{6} - \frac{1}{7}\right) - \frac{1}{8}
+        \]
+        <p>因為 \(\dfrac{1}{2} > \dfrac{1}{3}\)、\(\dfrac{1}{4} > \dfrac{1}{5}\)、\(\dfrac{1}{6} > \dfrac{1}{7}\)，每個括號的值與 \(\dfrac{1}{8}\) 皆為正數。</p>
+        <p>\(1\) 連續減去數個正數，結果必小於 \(1\)，故 <strong>\(S < 1\)</strong>。綜合上述可得 \(0 < S < 1\)。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> 如解析所示，透過兩種括號分組方式分別證明 \(S > 0\) 與 \(S < 1\)，故 \(0 < S < 1\)。
+    </div>
+  </div>
+</div>
+
+<!-- P.19 資優第 4 題 -->
+<div class="q-card" data-page="19">
+  <div class="q-header">
+    <span class="q-badge">資優挑戰 第 4 題</span>
+    <span class="q-page">P.19</span>
+  </div>
+  <div class="q-body">
+    <p>已知兩個分數 \(2\dfrac{1}{12}\) 與 \(-1\dfrac{17}{18}\) 同時乘以一數後，均可化為整數，請問：</p>
+    <p>(1) 若所乘的數為正整數，則此正整數最小是多少？</p>
+    <p>(2) 若所乘的數為正分數，則此正分數最小是多少？</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn-toggle" onclick="toggleSolution(this)">💡 顯示解析</button>
+    <button class="btn-step" onclick="nextStep(this)">👣 逐步解析</button>
+  </div>
+  <div class="q-solution" hidden>
+    <div class="step">
+      <div class="step-title">步驟 1：第 (1) 小題 — 化為最簡假分數，求分母的最小公倍數</div>
+      <div class="step-content">
+        <p>先將兩帶分數化為最簡假分數：</p>
+        \[
+          2\frac{1}{12} = \frac{25}{12}, \qquad -1\frac{17}{18} = -\frac{35}{18}
+        \]
+        <p>欲使兩分數乘以正整數 \(k\) 後皆為整數，\(k\) 必須同時消去分母 \(12\) 與 \(18\)，即 \(k\) 為 \(12\) 與 \(18\) 的公倍數。</p>
+        <p>因此最小的正整數為：</p>
+        \[
+          [12, 18] = 36
+        \]
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">步驟 2：第 (2) 小題 — 求所乘最小正分數（分子最小、分母最大）</div>
+      <div class="step-content">
+        <p>設所乘的最簡正分數為 \(\dfrac{b}{a}\)：</p>
+        \[
+          \frac{25}{12} \times \frac{b}{a} \in \mathbb{Z}, \qquad -\frac{35}{18} \times \frac{b}{a} \in \mathbb{Z}
+        \]
+        <ul>
+          <li>為了消去原分母 \(12\) 與 \(18\)，分子 \(b\) 必須是 \(12\) 與 \(18\) 的公倍數。要使分數 \(\dfrac{b}{a}\) 最小，分子 \(b\) 應取最小：\(b = [12, 18] = 36\)。</li>
+          <li>為了能被原分子 \(25\) 與 \(35\) 整除，分母 \(a\) 必須是 \(25\) 與 \(35\) 的公因數。要使分數 \(\dfrac{b}{a}\) 最小，分母 \(a\) 應取最大：\(a = (25, 35) = 5\)。</li>
+        </ul>
+        <p>故此最小正分數為 \(\dfrac{36}{5}\)（或 \(7\dfrac{1}{5}\)）。</p>
+      </div>
+    </div>
+    <div class="ans-box">
+      <strong>【答案】</strong> (1) \(36\) &nbsp;&nbsp; (2) \(\dfrac{36}{5}\)（或 \(7\dfrac{1}{5}\)）
+    </div>
+  </div>
+</div>
+
+    </section>
+  </main>
+
+  <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到頂部">↑</button>
+
+  <script>
+    let currentUnit = 'all';
+    let currentPage = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.q-card').forEach(card => {
+        const p = card.getAttribute('data-page');
+        if (p === '6' || p === '12' || p === '19') {
+          card.classList.add('is-challenge');
+        }
+      });
+      applyFilters();
+    });
+
+    /**
+     * Toggle full solution visibility when clicking "💡 顯示解析"
+     */
+    function toggleSolution(btn) {
+      const card = btn.closest('.q-card');
+      const sol = card.querySelector('.q-solution');
+      const stepBtn = card.querySelector('.btn-step');
+      const steps = sol.querySelectorAll('.step');
+      const ansBox = sol.querySelector('.ans-box');
+
+      const isHidden = sol.hasAttribute('hidden');
+      const allRevealed = !isHidden && Array.from(steps).every(s => !s.hasAttribute('hidden')) && (!ansBox || !ansBox.hasAttribute('hidden'));
+
+      if (isHidden || !allRevealed) {
+        sol.removeAttribute('hidden');
+        steps.forEach(s => s.removeAttribute('hidden'));
+        if (ansBox) ansBox.removeAttribute('hidden');
+        sol.setAttribute('data-step-idx', steps.length + 1);
+
+        btn.textContent = '🔼 隱藏解析';
+        btn.classList.add('active');
+        if (stepBtn) stepBtn.textContent = '🔄 重新逐步';
+      } else {
+        sol.setAttribute('hidden', '');
+        sol.removeAttribute('data-step-idx');
+        btn.textContent = '💡 顯示解析';
+        btn.classList.remove('active');
+        if (stepBtn) stepBtn.textContent = '👣 逐步解析';
+      }
+    }
+
+    /**
+     * Reveal solution one step at a time when clicking "👣 逐步解析"
+     */
+    function nextStep(btn) {
+      const card = btn.closest('.q-card');
+      const sol = card.querySelector('.q-solution');
+      const toggleBtn = card.querySelector('.btn-toggle');
+      const steps = Array.from(sol.querySelectorAll('.step'));
+      const ansBox = sol.querySelector('.ans-box');
+      const totalItems = steps.length + (ansBox ? 1 : 0);
+
+      let idx = parseInt(sol.getAttribute('data-step-idx') || '0', 10);
+
+      if (sol.hasAttribute('hidden') || idx >= totalItems) {
+        sol.removeAttribute('hidden');
+        steps.forEach((s, i) => {
+          if (i === 0) s.removeAttribute('hidden');
+          else s.setAttribute('hidden', '');
+        });
+        if (ansBox) {
+          if (steps.length === 0) ansBox.removeAttribute('hidden');
+          else ansBox.setAttribute('hidden', '');
+        }
+        idx = 1;
+      } else {
+        idx += 1;
+        if (idx <= steps.length) {
+          steps[idx - 1].removeAttribute('hidden');
+        } else if (ansBox) {
+          ansBox.removeAttribute('hidden');
+        }
+      }
+
+      sol.setAttribute('data-step-idx', idx);
+
+      if (idx < totalItems) {
+        btn.textContent = `👣 下一步 (${idx}/${totalItems})`;
+        if (toggleBtn) {
+          toggleBtn.textContent = '💡 顯示完整解析';
+          toggleBtn.classList.remove('active');
+        }
+      } else {
+        btn.textContent = '🔄 重新逐步';
+        if (toggleBtn) {
+          toggleBtn.textContent = '🔼 隱藏解析';
+          toggleBtn.classList.add('active');
+        }
+      }
+    }
+
+    /**
+     * Expand or collapse all visible solutions
+     */
+    function toggleAllSolutions(expand) {
+      document.querySelectorAll('.q-card').forEach(card => {
+        if (card.style.display === 'none') return;
+        const sol = card.querySelector('.q-solution');
+        const toggleBtn = card.querySelector('.btn-toggle');
+        const stepBtn = card.querySelector('.btn-step');
+        const steps = sol.querySelectorAll('.step');
+        const ansBox = sol.querySelector('.ans-box');
+
+        if (expand) {
+          sol.removeAttribute('hidden');
+          steps.forEach(s => s.removeAttribute('hidden'));
+          if (ansBox) ansBox.removeAttribute('hidden');
+          sol.setAttribute('data-step-idx', steps.length + 1);
+          if (toggleBtn) {
+            toggleBtn.textContent = '🔼 隱藏解析';
+            toggleBtn.classList.add('active');
+          }
+          if (stepBtn) stepBtn.textContent = '🔄 重新逐步';
+        } else {
+          sol.setAttribute('hidden', '');
+          sol.removeAttribute('data-step-idx');
+          if (toggleBtn) {
+            toggleBtn.textContent = '💡 顯示解析';
+            toggleBtn.classList.remove('active');
+          }
+          if (stepBtn) stepBtn.textContent = '👣 逐步解析';
+        }
+      });
+    }
+
+    function filterUnit(unit, btn) {
+      currentUnit = unit;
+      document.querySelectorAll('.unit-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      currentPage = 'all';
+      document.querySelectorAll('.page-pill').forEach(p => {
+        p.classList.toggle('active', p.getAttribute('data-p') === 'all');
+      });
+
+      applyFilters();
+    }
+
+    function filterPage(page, btn) {
+      currentPage = page;
+      document.querySelectorAll('.page-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+      let visibleCount = 0;
+
+      document.querySelectorAll('.section-block').forEach(sec => {
+        const secId = sec.id;
+        let secVisibleCards = 0;
+
+        sec.querySelectorAll('.q-card').forEach(card => {
+          const page = card.getAttribute('data-page');
+          const isChallenge = page === '6' || page === '12' || page === '19';
+
+          let matchUnit = true;
+          if (currentUnit === 'sec-2-1') matchUnit = (secId === 'sec-2-1');
+          else if (currentUnit === 'sec-2-2') matchUnit = (secId === 'sec-2-2');
+          else if (currentUnit === 'sec-2-3') matchUnit = (secId === 'sec-2-3');
+          else if (currentUnit === 'challenge') matchUnit = isChallenge;
+
+          let matchPage = (currentPage === 'all') || (page === currentPage);
+
+          let matchSearch = true;
+          if (query) {
+            matchSearch = card.textContent.toLowerCase().includes(query);
+          }
+
+          const show = matchUnit && matchPage && matchSearch;
+          card.style.display = show ? '' : 'none';
+          if (show) {
+            visibleCount++;
+            secVisibleCards++;
+          }
+        });
+
+        sec.querySelectorAll('.q-pair').forEach(pair => {
+          const hasVisible = Array.from(pair.querySelectorAll('.q-card')).some(c => c.style.display !== 'none');
+          pair.style.display = hasVisible ? '' : 'none';
+        });
+
+        sec.querySelectorAll('.challenge-header').forEach(ch => {
+          const chPage = ch.getAttribute('data-page');
+          const hasVisibleChallenge = Array.from(sec.querySelectorAll(`.q-card[data-page="${chPage}"]`)).some(c => c.style.display !== 'none');
+          ch.style.display = hasVisibleChallenge ? '' : 'none';
+        });
+
+        sec.style.display = secVisibleCards > 0 ? '' : 'none';
+      });
+
+      document.getElementById('questionCount').textContent = `目前顯示：共 ${visibleCount} 道題目`;
+    }
+  </script>
+</body>
+</html>
