@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>國中數學 2-2：最大公因數與最小公倍數（雙節課跨裝置互動實驗室）</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- 引入 Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F8FAFC;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        .fade-in {
+            animation: fadeIn 0.25s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* 強化手機與平板上的滑桿觸控目標大小 */
+        input[type="range"] {
+            height: 8px;
+            border-radius: 8px;
+            accent-color: #4F46E5;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col pb-24 md:pb-8">
+
+    <!-- 頂部導覽列 (電腦/平板完整顯示，手機精簡顯示) -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center justify-between py-2.5 sm:py-3 gap-2.5">
+                <!-- 標題與課本頁碼標示 -->
+                <div class="flex items-center gap-2.5 w-full lg:w-auto justify-between">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white shadow-md shrink-0">
+                            <i class="ph-bold ph-chalkboard-teacher text-xl sm:text-2xl"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="px-2 py-0.5 text-[10px] sm:text-[11px] font-black bg-indigo-100 text-indigo-700 rounded-md">七上 2-2 節</span>
+                                <span class="text-[11px] sm:text-xs text-slate-500 font-medium">課本 P.106 ~ P.127</span>
+                            </div>
+                            <h1 class="text-sm sm:text-lg lg:text-xl font-black tracking-tight text-slate-900 truncate">
+                                最大公因數 <span class="text-indigo-600 font-mono-code">(a,b)</span> 與最小公倍數 <span class="text-teal-600 font-mono-code">[a,b]</span>
+                            </h1>
+                        </div>
+                    </div>
+                    <!-- 手機與平板右上角：兩節課配速按鈕 -->
+                    <button onclick="toggleLessonPlanModal()" class="lg:hidden px-3 py-2 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold flex items-center gap-1 shrink-0 shadow-sm">
+                        <i class="ph-bold ph-list-checks text-base"></i>
+                        <span>90分鐘教案</span>
+                    </button>
+                </div>
+
+                <!-- 平板與電腦版上方模組導覽列 -->
+                <div class="hidden md:flex items-center gap-2 w-full lg:w-auto justify-between lg:justify-end">
+                    <nav class="flex bg-slate-100 p-1 rounded-xl w-full lg:w-auto justify-center gap-1" role="tablist">
+                        <button onclick="switchMainTab('p1_concept')" id="tab-p1_concept" class="main-tab-btn flex-1 lg:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-white text-indigo-600 shadow-sm">
+                            <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-700 rounded text-[10px]">第1節</span>
+                            <span>公因數與公倍數</span>
+                        </button>
+                        <button onclick="switchMainTab('p1_lab')" id="tab-p1_lab" class="main-tab-btn flex-1 lg:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                            <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-700 rounded text-[10px]">第1節</span>
+                            <span>短除法與標準分解式</span>
+                        </button>
+                        <button onclick="switchMainTab('p2_apps')" id="tab-p2_apps" class="main-tab-btn flex-1 lg:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                            <span class="px-1.5 py-0.2 bg-teal-100 text-teal-700 rounded text-[10px]">第2節</span>
+                            <span>四大應用動畫</span>
+                        </button>
+                        <button onclick="switchMainTab('p2_quiz')" id="tab-p2_quiz" class="main-tab-btn flex-1 lg:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                            <span class="px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded text-[10px]">第2節</span>
+                            <span>隨堂評量與挑錯</span>
+                        </button>
+                    </nav>
+                    <button onclick="toggleLessonPlanModal()" class="hidden lg:flex px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold items-center gap-1.5 shrink-0 transition-all">
+                        <i class="ph-bold ph-list-checks text-base"></i>
+                        <span>90分鐘課堂配速</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 手機專用底部固定導覽列 (Bottom App Bar，僅在 md 以下顯示) -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] grid grid-cols-4 px-1 py-1.5" role="tablist" aria-label="手機主功能導覽">
+        <button onclick="switchMainTab('p1_concept')" id="mob-tab-p1_concept" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50/80 font-bold transition-all">
+            <i class="ph-bold ph-circles-three-plus text-lg"></i>
+            <span class="text-[11px] leading-tight mt-0.5">1.觀念探索</span>
+        </button>
+        <button onclick="switchMainTab('p1_lab')" id="mob-tab-p1_lab" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition-all">
+            <i class="ph-bold ph-calculator text-lg"></i>
+            <span class="text-[11px] leading-tight mt-0.5">2.短除分解</span>
+        </button>
+        <button onclick="switchMainTab('p2_apps')" id="mob-tab-p2_apps" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition-all">
+            <i class="ph-bold ph-compass-tool text-lg"></i>
+            <span class="text-[11px] leading-tight mt-0.5">3.應用動畫</span>
+        </button>
+        <button onclick="switchMainTab('p2_quiz')" id="mob-tab-p2_quiz" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition-all">
+            <i class="ph-bold ph-exam text-lg"></i>
+            <span class="text-[11px] leading-tight mt-0.5">4.隨堂評量</span>
+        </button>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-1 w-full space-y-6">
+
+        <!-- =========================================================================
+             模組 1：【第1節課】公因數、互質、公倍數與乘積關係 (課本 P.106~107, P.113, P.119)
+             ========================================================================= -->
+        <section id="section-p1_concept" class="fade-in space-y-6">
+            <!-- 課程進度橫幅 -->
+            <div class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1">第 1 節課（前 20 分鐘）‧ 課本 P.106 ~ P.107、P.113、P.119</span>
+                    <h2 class="text-lg sm:text-xl font-black">主題 1 & 2：公因數、互質、公倍數與兩數乘積關係</h2>
+                    <p class="text-xs sm:text-sm text-indigo-100 mt-0.5">透過互動圈選器觀察「公因數與最大公因數的因數關係」以及「13年/17年質數蟬生命週期」</p>
+                </div>
+                <button onclick="switchMainTab('p1_lab')" class="self-start sm:self-center px-3.5 py-2 rounded-xl bg-white text-indigo-700 font-bold text-xs sm:text-sm shadow hover:bg-indigo-50 transition flex items-center gap-1 shrink-0">
+                    <span>前往短除法實驗室</span>
+                    <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- 左欄：公因數、最大公因數與互質探索器 (P.106~107) -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">課本 P.106 ~ P.107</span>
+                            <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">公因數與「互質」互動探索</h3>
+                        </div>
+                        <span id="factor-coprime-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700">(12, 18) = 6</span>
+                    </div>
+
+                    <!-- 課本範例快速切換按鈕 -->
+                    <div>
+                        <p class="text-xs font-bold text-slate-500 mb-2">點擊載入課本例題與隨堂練習：</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="loadFactorExplorer([12, 18])" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 transition">P.106 例：12, 18</button>
+                            <button onclick="loadFactorExplorer([36, 48, 92])" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">P.106 隨堂：36, 48, 92</button>
+                            <button onclick="loadFactorExplorer([16, 35])" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-800 hover:bg-amber-200 transition">P.107 互質：16, 35</button>
+                            <button onclick="loadFactorExplorer([9, 25])" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50 transition">P.107 隨堂：9, 25</button>
+                            <button onclick="loadFactorExplorer([8, 9])" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-100 text-rose-800 hover:bg-rose-200 transition">P.107 動動腦：8, 9 (合數互質)</button>
+                        </div>
+                    </div>
+
+                    <!-- 各數因數列表 -->
+                    <div id="factor-lists-container" class="space-y-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <!-- JS 動態填入 -->
+                    </div>
+
+                    <!-- 關鍵發現卡片 -->
+                    <div id="factor-insight-box" class="p-3.5 rounded-xl bg-indigo-50/80 border border-indigo-200 text-xs sm:text-sm space-y-1.5">
+                        <!-- JS 動態填入 -->
+                    </div>
+                </div>
+
+                <!-- 右欄：公倍數與最小公倍數探索器 (P.113) -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-teal-100 text-teal-800">課本 P.113</span>
+                            <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">公倍數與最小公倍數探索（1 ~ 100）</h3>
+                        </div>
+                        <span id="multiple-lcm-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700">[9, 12, 18] = 36</span>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-bold text-slate-500 mb-2">點擊載入課本範例：</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="loadMultipleExplorer([4, 6], 60)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">P.113 例：4, 6 (1~60)</button>
+                            <button onclick="loadMultipleExplorer([9, 12, 18], 100)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-teal-600 text-white shadow-sm hover:bg-teal-700 transition">P.113 隨堂：9, 12, 18 (1~100)</button>
+                            <button onclick="loadMultipleExplorer([6, 8, 12], 100)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">進階練習：6, 8, 12 (1~100)</button>
+                        </div>
+                    </div>
+
+                    <div id="multiple-lists-container" class="space-y-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 max-h-60 overflow-y-auto">
+                        <!-- JS 動態填入 -->
+                    </div>
+
+                    <div id="multiple-insight-box" class="p-3.5 rounded-xl bg-teal-50/80 border border-teal-200 text-xs sm:text-sm space-y-1.5">
+                        <!-- JS 動態填入 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下方橫幅：P.119 兩數乘積關係 (a,b) × [a,b] = a × b 與 質數蟬數學好好玩 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- P.119 問題探索 -->
+                <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">課本 P.119 問題探索</span>
+                        <span class="text-xs font-mono-code font-bold text-purple-700">(a, b) × [a, b] = a × b</span>
+                    </div>
+                    <h3 class="text-base font-black text-slate-900">最大公因數與最小公倍數的乘積恆等式</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        任意兩正整數 <code class="font-mono-code font-bold">a, b</code> 的最大公因數與最小公倍數的乘積，恆等於這兩數的乘積！調整下方兩數立即驗證：
+                    </p>
+                    <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div>
+                            <label class="text-xs font-bold text-slate-600 block mb-1">正整數 a</label>
+                            <input type="number" id="prod-input-a" value="36" min="1" max="500" onchange="updateProductIdentity()" class="w-full px-3 py-1.5 rounded-lg border border-slate-300 font-mono-code font-bold text-sm">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-600 block mb-1">正整數 b</label>
+                            <input type="number" id="prod-input-b" value="84" min="1" max="500" onchange="updateProductIdentity()" class="w-full px-3 py-1.5 rounded-lg border border-slate-300 font-mono-code font-bold text-sm">
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="setProdPair(36, 84)" class="px-2.5 py-1 rounded bg-purple-50 text-purple-700 text-xs font-bold hover:bg-purple-100">P.119 探索：a=36, b=84</button>
+                        <button onclick="setProdPair(12, 10)" class="px-2.5 py-1 rounded bg-purple-50 text-purple-700 text-xs font-bold hover:bg-purple-100">P.119 隨堂：a×b=120, [a,b]=60</button>
+                    </div>
+                    <div id="prod-identity-result" class="p-3.5 rounded-xl bg-purple-50 border border-purple-200 text-xs space-y-1.5 font-mono-code">
+                        <!-- JS 動態填入 -->
+                    </div>
+                </div>
+
+                <!-- P.119 數學好好玩：質數蟬 (13年蟬、17年蟬) -->
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">課本 P.119 ~ P.120 數學好好玩</span>
+                        <span class="text-xs font-bold text-emerald-700">為什麼演化出 13 年與 17 年「質數蟬」？</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        十七年蟬與十三年蟬因為生命週期都是<strong>質數</strong>，可大幅降低與天敵（週期 3、5、8 年）相遇的頻率！點擊表格空白格或「一鍵揭曉答案」比較合數週期（4、6年）與質數蟬（13、17年）的相遇週期 <code class="font-mono-code">[天敵週期, 蟬週期]</code>：
+                    </p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center text-xs sm:text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-slate-800 text-white">
+                                    <th class="p-2.5 border border-slate-700">天敵 ＼ 蟬週期</th>
+                                    <th class="p-2.5 border border-slate-700">4 年 (合數)</th>
+                                    <th class="p-2.5 border border-slate-700">6 年 (合數)</th>
+                                    <th class="p-2.5 border border-slate-700 bg-emerald-700">13 年 (質數蟬)</th>
+                                    <th class="p-2.5 border border-slate-700 bg-emerald-700">17 年 (質數蟬)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cicada-table-body" class="font-mono-code">
+                                <!-- JS 動態產生互動表格 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
+                        <span class="text-[11px] text-slate-500">💡 點擊有「?」的格子即可算出最小公倍數！</span>
+                        <button onclick="revealAllCicada(true)" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition">一鍵揭曉 P.120 解答</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================================
+             模組 2：【第1節課】短除法與標準分解式實驗室 (課本 P.108~112, P.114~118)
+             ========================================================================= -->
+        <section id="section-p1_lab" class="hidden fade-in space-y-6">
+            <div class="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1">第 1 節課（後 25 分鐘）‧ 課本 P.108 ~ P.112、P.114 ~ P.118</span>
+                    <h2 class="text-lg sm:text-xl font-black">三數短除法步進實驗室 ＆ 標準分解式次方判別</h2>
+                    <p class="text-xs sm:text-sm text-blue-100 mt-0.5">特別強化：三數求最小公倍數「任兩數有公因數即繼續除，沒除到的照抄」步進教學</p>
+                </div>
+                <button onclick="switchMainTab('p2_apps')" class="self-start sm:self-center px-3.5 py-2 rounded-xl bg-white text-indigo-700 font-bold text-xs sm:text-sm shadow hover:bg-indigo-50 transition flex items-center gap-1 shrink-0">
+                    <span>前往第2節：四大應用題</span>
+                    <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- 課本經典題組快速載入列 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900">輸入 2 或 3 個正整數（或直接點選課本範例）</h3>
+                        <p class="text-xs text-slate-500">同時產生「短除法逐步推導」與「標準分解式次方比較表」</p>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="setLabNumbers(36, 84, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-indigo-50 text-slate-700">P.108 例1：36, 84</button>
+                        <button onclick="setLabNumbers(54, 72, 84)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm">P.108/114 經典三數：54, 72, 84</button>
+                        <button onclick="setLabNumbers(126, 180, 360)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-indigo-50 text-slate-700">P.109 隨堂：126, 180, 360</button>
+                        <button onclick="setLabNumbers(48, 60, 72)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-indigo-50 text-slate-700">P.115 隨堂：48, 60, 72</button>
+                        <button onclick="setLabNumbers(144, 120, 180)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">P.112 例2：2⁴×3², 2³×3×5, 2²×3²×5</button>
+                    </div>
+                </div>
+
+                <!-- 自訂數值輸入列 -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 items-end">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">整數 a</label>
+                        <input type="number" id="lab-num-a" value="54" min="2" max="999" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono-code font-bold text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">整數 b</label>
+                        <input type="number" id="lab-num-b" value="72" min="2" max="999" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono-code font-bold text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">整數 c（選填，留空為兩數）</label>
+                        <input type="number" id="lab-num-c" value="84" min="2" max="999" placeholder="選填第3個數" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono-code font-bold text-sm">
+                    </div>
+                    <button onclick="computeShortDivisionLab()" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow transition flex items-center justify-center gap-1.5">
+                        <i class="ph-bold ph-Sparkle"></i>
+                        <span>開始短除法與分解</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 短除法雙欄對照：左欄 GCD vs 右欄 LCM -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- 左欄：短除法求最大公因數 (P.108) -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">課本 P.108 ~ P.109</span>
+                                <h3 class="text-base sm:text-lg font-black text-indigo-950 mt-1">短除法求最大公因數 <span id="sd-gcd-title-sym" class="font-mono-code text-indigo-600">(54, 72, 84)</span></h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2 bg-indigo-50/70 p-2.5 rounded-lg border border-indigo-100">
+                            <strong>規則：</strong>每一層的除數必須是<strong>所有數共同的質因數</strong>，除到最下面一層沒有共同質因數即停止！
+                        </p>
+                        <div id="sd-gcd-table-box" class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 overflow-x-auto font-mono-code">
+                            <!-- JS 渲染短除法 GCD -->
+                        </div>
+                    </div>
+                    <div id="sd-gcd-result-banner" class="p-3.5 rounded-xl bg-indigo-600 text-white font-mono-code text-sm font-bold">
+                        <!-- JS 動態更新 -->
+                    </div>
+                </div>
+
+                <!-- 右欄：短除法求最小公倍數 (P.114~115) -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-teal-100 text-teal-800">課本 P.114 ~ P.115 關鍵必考</span>
+                                <h3 class="text-base sm:text-lg font-black text-teal-950 mt-1">短除法求最小公倍數 <span id="sd-lcm-title-sym" class="font-mono-code text-teal-600">[54, 72, 84]</span></h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2 bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                            <strong>三數特殊規則：</strong>先除以三數公因數，接著只要<strong>任兩數有共同質因數</strong>就要繼續除，<strong>不能整除的數直接照抄下來（橘字標示）</strong>！
+                        </p>
+                        <div id="sd-lcm-table-box" class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 overflow-x-auto font-mono-code">
+                            <!-- JS 渲染短除法 LCM -->
+                        </div>
+                    </div>
+                    <div id="sd-lcm-result-banner" class="p-3.5 rounded-xl bg-teal-600 text-white font-mono-code text-sm font-bold">
+                        <!-- JS 動態更新 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 標準分解式次方比較表 (P.111~112, P.117~118) -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">課本 P.111 ~ P.112 例2 ＆ P.117 ~ P.118 例4</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">標準分解式指數比較表：「最大公因數共同取小、最小公倍數全部取大」</h3>
+                    </div>
+                </div>
+                <div class="overflow-x-auto" id="pf-comparison-table-wrap">
+                    <!-- JS 動態生成標準分解式比較表 -->
+                </div>
+            </div>
+
+            <!-- 課本 P.110 例1 & P.116 例3：透過指數約分判別因數與倍數 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">課本 P.110 例1 ＆ P.116 例3 觀念檢驗</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">為什麼看指數大小就能判別因數與倍數？（連乘展開約分法）</h3>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button onclick="switchExpCheckMode('factor')" id="exp-btn-factor" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">P.110 例1：誰是 2³×3² 的因數？</button>
+                        <button onclick="switchExpCheckMode('multiple')" id="exp-btn-multiple" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-teal-50">P.116 例3：誰是 2³×5 的倍數？</button>
+                    </div>
+                </div>
+                <div id="exp-cancellation-cards" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- JS 動態填入 4 個選項的展開約分過程 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================================
+             模組 3：【第2節課】主題 3 四大生活應用題動態模擬動畫 (課本 P.120 ~ P.123)
+             ========================================================================= -->
+        <section id="section-p2_apps" class="hidden fade-in space-y-6">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-600 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1">第 2 節課（前 25 分鐘）‧ 課本 P.120 ~ P.123 主題 3</span>
+                    <h2 class="text-lg sm:text-xl font-black">四大生活應用問題：觀念解說動畫與互動圖解</h2>
+                    <p class="text-xs sm:text-sm text-teal-100 mt-0.5">涵蓋課本例 5 分裝禮盒、例 6 跑步週期、例 7 磁磚拼正方形 vs 剪桌墊、例 8 種樹與跨海大橋路燈</p>
+                </div>
+                <button onclick="switchMainTab('p2_quiz')" class="self-start sm:self-center px-3.5 py-2 rounded-xl bg-white text-teal-800 font-bold text-xs sm:text-sm shadow hover:bg-teal-50 transition flex items-center gap-1 shrink-0">
+                    <span>前往隨堂評量與挑錯</span>
+                    <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- 四大應用題型子分頁切換器 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-3 sm:p-5 shadow-sm space-y-5">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <button onclick="switchAppSubTab('ex5')" id="app-tab-ex5" class="p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/70 text-left transition">
+                        <div class="text-[11px] font-bold text-indigo-600">課本 P.120 例5</div>
+                        <div class="text-sm font-black text-slate-900 mt-0.5">🍎 分裝與編組問題</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">求最大公因數 (a, b)</div>
+                    </button>
+                    <button onclick="switchAppSubTab('ex6')" id="app-tab-ex6" class="p-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-left transition">
+                        <div class="text-[11px] font-bold text-teal-600">課本 P.121 例6</div>
+                        <div class="text-sm font-black text-slate-900 mt-0.5">🏃 跑步與農場週期</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">求最小公倍數 [a, b, c]</div>
+                    </button>
+                    <button onclick="switchAppSubTab('ex7')" id="app-tab-ex7" class="p-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-left transition">
+                        <div class="text-[11px] font-bold text-teal-600">課本 P.122 例7 & P.127</div>
+                        <div class="text-sm font-black text-slate-900 mt-0.5">🧱 拼正方形 vs 剪桌墊</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">由小拼大 vs 由大剪小</div>
+                    </button>
+                    <button onclick="switchAppSubTab('ex8')" id="app-tab-ex8" class="p-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-left transition">
+                        <div class="text-[11px] font-bold text-emerald-600">課本 P.123 例8 & 隨堂</div>
+                        <div class="text-sm font-black text-slate-900 mt-0.5">🌳 土地種樹與大橋路燈</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">間隔數與兩側不拆陷阱</div>
+                    </button>
+                </div>
+
+                <!-- 應用 1：課本 P.120 例5 分裝問題（水果禮盒 & 新加坡姐妹校編組） -->
+                <div id="app-view-ex5" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-indigo-100 text-indigo-800 text-xs font-bold">課本 P.120 例5 & 隨堂練習</span>
+                            <span class="text-xs font-bold text-indigo-600">平分無剩餘 → 求公因數</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="loadEx5Scenario('fruit')" id="ex5-btn-fruit" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">🍐 例5：36梨子、60蘋果裝盒</button>
+                            <button onclick="loadEx5Scenario('school')" id="ex5-btn-school" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700">🏫 隨堂：20位A校、12位B校</button>
+                        </div>
+                        <h3 id="ex5-title" class="font-black text-slate-900 text-base">例5：水果店分裝禮盒問題</h3>
+                        <p id="ex5-desc" class="text-xs text-slate-700 leading-relaxed"></p>
+
+                        <!-- 互動滑桿：測試每盒顆數 / 分組數 -->
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label id="ex5-slider-label" class="text-xs font-bold text-slate-700">拖曳測試：每盒放幾個水果？</label>
+                                <span id="ex5-slider-val" class="font-mono-code text-sm font-black text-indigo-600">12 個</span>
+                            </div>
+                            <input type="range" id="ex5-slider" min="1" max="20" value="12" oninput="updateEx5Simulation()" class="w-full">
+                            <div class="flex flex-wrap gap-1.5 pt-1" id="ex5-quick-btns"></div>
+                        </div>
+
+                        <div id="ex5-math-summary" class="bg-white p-3.5 rounded-xl border border-slate-200 text-xs space-y-1.5 leading-relaxed"></div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span id="ex5-visual-title" class="text-xs sm:text-sm font-bold text-slate-800">即時分裝模擬結果</span>
+                            <span id="ex5-status-badge" class="text-xs font-bold px-2.5 py-0.5 rounded-full"></span>
+                        </div>
+                        <div id="ex5-boxes-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-80 overflow-y-auto p-1"></div>
+                    </div>
+                </div>
+
+                <!-- 應用 2：課本 P.121 例6 週期問題（三人公園跑步 & 健康農場收成） -->
+                <div id="app-view-ex6" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-teal-100 text-teal-800 text-xs font-bold">課本 P.121 例6 & 隨堂練習</span>
+                            <span class="text-xs font-bold text-teal-700">同時重逢 → 求最小公倍數</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="loadEx6Scenario('run')" id="ex6-btn-run" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm">🏃 例6：8天、10天、14天跑步</button>
+                            <button onclick="loadEx6Scenario('farm')" id="ex6-btn-farm" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700">🥬 隨堂：45、30、18小時收成</button>
+                        </div>
+                        <h3 id="ex6-title" class="font-black text-slate-900 text-base"></h3>
+                        <p id="ex6-desc" class="text-xs text-slate-700 leading-relaxed"></p>
+                        <div id="ex6-math-box" class="bg-white p-3.5 rounded-xl border border-slate-200 text-xs space-y-1.5 leading-relaxed"></div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <span class="text-xs sm:text-sm font-bold text-slate-800">三軌道週期時間軸模擬器</span>
+                            <div class="flex gap-1.5">
+                                <button onclick="jumpEx6ToHalf()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">測試中途天數</button>
+                                <button onclick="jumpEx6ToLCM()" class="px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-xs font-bold text-white shadow-sm">跳至首次重逢 [a,b,c]</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>拖曳時間軸檢視各週期狀態：</span>
+                                <span id="ex6-time-label" class="font-mono-code text-teal-700 text-sm">第 280 天</span>
+                            </div>
+                            <input type="range" id="ex6-slider" min="1" max="300" value="280" oninput="updateEx6Timeline()" class="w-full">
+                        </div>
+                        <div id="ex6-tracks-box" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- 應用 3：課本 P.122 例7 圖形拼合 vs P.127 評量5 裁剪桌墊 -->
+                <div id="app-view-ex7" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-teal-100 text-teal-800 text-xs font-bold">課本 P.122 例7 vs P.127 評量5</span>
+                            <span class="text-xs font-bold text-teal-700">必考圖形雙星對決</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="loadEx7Scenario('tile_lcm')" id="ex7-btn-lcm" class="px-3 py-2.5 rounded-xl text-xs font-bold bg-teal-600 text-white text-left shadow-sm">
+                                🧱 P.122 例7：60×50 長方形磁磚「拼成大正方形」（由小拼大 → 求 LCM）
+                            </button>
+                            <button onclick="loadEx7Scenario('poster_lcm')" id="ex7-btn-poster" class="px-3 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700 text-left">
+                                📋 P.122 隨堂：48cm 與 80cm 正方形海報貼滿布告欄（求 LCM）
+                            </button>
+                            <button onclick="loadEx7Scenario('cloth_gcd')" id="ex7-btn-gcd" class="px-3 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700 text-left">
+                                ✂️ P.127 評量5：126×90 方格布「剪成小正方形桌墊」（由大剪小 → 求 GCD）
+                            </button>
+                        </div>
+                        <div id="ex7-math-box" class="bg-white p-4 rounded-xl border border-slate-200 text-xs space-y-2 leading-relaxed"></div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col items-center justify-center space-y-3">
+                        <div class="w-full flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                            <span id="ex7-canvas-title" class="text-xs sm:text-sm font-bold text-slate-800">長方形磁磚拼成大正方形圖解</span>
+                            <span id="ex7-canvas-badge" class="text-xs font-mono-code font-bold px-2.5 py-0.5 rounded bg-teal-100 text-teal-800">最小邊長 = [60, 50] = 300 cm</span>
+                        </div>
+                        <div class="w-full overflow-hidden flex justify-center">
+                            <canvas id="ex7-canvas" width="460" height="320" class="w-full max-w-[460px] h-auto aspect-[460/320] bg-slate-50 rounded-xl border border-slate-200 touch-manipulation"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 應用 4：課本 P.123 例8 間隔問題（王伯伯長方形土地種樹 & 澎湖跨海大橋路燈） -->
+                <div id="app-view-ex8" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs font-bold">課本 P.123 例8 & 隨堂練習</span>
+                            <span class="text-xs font-bold text-emerald-700">必考經典：周圍種樹 vs 橋上路燈</span>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-base" id="ex8-title">例8：王伯伯長方形土地周圍種樹問題</h3>
+                        <p class="text-xs text-slate-700 leading-relaxed" id="ex8-desc">
+                            王伯伯有一塊長 <strong>315 公尺</strong>、寬 <strong>135 公尺</strong>的長方形土地，想在其周圍種樹，相鄰兩棵樹距離要相等，且<strong>四個頂點都種</strong>，則最大樹距是幾公尺？此時總共要種幾棵樹？
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button onclick="loadEx8Scenario('trees')" id="ex8-btn-trees" class="flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">
+                                🌳 P.123 例8：315×135 土地種樹 (求GCD)
+                            </button>
+                            <button onclick="loadEx8Scenario('bridge')" id="ex8-btn-bridge" class="flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700 hover:bg-slate-100">
+                                🌉 P.123 隨堂：澎湖跨海大橋路燈 (求LCM)
+                            </button>
+                        </div>
+
+                        <div id="ex8-math-box" class="bg-white p-4 rounded-xl border border-slate-200 text-xs space-y-2 leading-relaxed">
+                            <!-- JS 動態更新解析 -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col items-center space-y-3">
+                        <div class="w-full flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                            <span id="ex8-canvas-title" class="text-xs sm:text-sm font-bold text-slate-800">長方形土地四頂點種樹幾何圖解</span>
+                            <span id="ex8-canvas-badge" class="text-xs font-mono-code font-bold px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800">最大樹距 45m，共種 20 棵</span>
+                        </div>
+                        <div class="w-full overflow-hidden flex justify-center">
+                            <canvas id="ex8-canvas" width="500" height="320" class="w-full max-w-[500px] h-auto aspect-[500/320] bg-slate-50 rounded-xl border border-slate-200 touch-manipulation"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================================
+             模組 4：【第2節課】課本 P.125 自我檢核、P.127 壓軸挑錯題與 P.126~127 自我評量
+             ========================================================================= -->
+        <section id="section-p2_quiz" class="hidden fade-in space-y-6">
+            <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1">第 2 節課（後 20 分鐘）‧ 課本 P.125 ~ P.127</span>
+                    <h2 class="text-lg sm:text-xl font-black">隨堂評量、觀念自我檢核與營隊編組挑錯題</h2>
+                    <p class="text-xs sm:text-sm text-amber-100 mt-0.5">完整收錄課本 P.125 是非題、P.127 營隊男女分組挑錯題，以及 P.126~127 自我評量全題庫</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="initTextbookQuiz(false)" class="px-3 py-2 rounded-xl bg-white text-amber-900 font-bold text-xs shadow hover:bg-amber-50 transition">課本原題模式</button>
+                    <button onclick="initTextbookQuiz(true)" class="px-3 py-2 rounded-xl bg-amber-900/40 text-white border border-white/30 font-bold text-xs hover:bg-amber-900/60 transition">數字變體挑戰</button>
+                </div>
+            </div>
+
+            <!-- 上排：P.125 自我檢核 4 題是非題 + P.127 營隊編組挑錯題 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- P.125 自我檢核 -->
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                        <div>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">課本 P.125 自我檢核</span>
+                            <h3 class="text-base font-black text-slate-900 mt-1">四大易錯觀念快問快答（是非題）</h3>
+                        </div>
+                        <button onclick="resetSelfCheck125()" class="text-xs text-slate-500 hover:text-indigo-600 font-bold">重設</button>
+                    </div>
+                    <div id="self-check-125-list" class="space-y-2.5">
+                        <!-- JS 產生 P.125 4 題是非題 -->
+                    </div>
+                </div>
+
+                <!-- P.127 壓軸挑錯題：小妍 vs 小翊 營隊男女分開編組 -->
+                <div class="lg:col-span-6 bg-amber-50/70 rounded-2xl border-2 border-amber-200 p-4 sm:p-5 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between border-b border-amber-200/80 pb-2.5">
+                        <div>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900">課本 P.127 壓軸挑錯題</span>
+                            <h3 class="text-base font-black text-slate-900 mt-1">營隊 105 男、75 女分開編組闖關：誰說得對？</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-amber-200">
+                        <strong>題目：</strong>暑假營隊男生有 <strong>105 人</strong>，女生有 <strong>75 人</strong>，規定<strong>男、女要分開編組闖關，但每組人數要一樣多</strong>，且總組數要低於 20 組，則共可分成幾組？請點擊判斷小妍與小翊的說法：
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- 小妍 -->
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-black text-sm text-rose-700">👧 小妍的說法</span>
+                                <span class="font-mono-code text-[11px] bg-slate-100 px-2 py-0.5 rounded">(105, 75) = 15</span>
+                            </div>
+                            <p class="text-xs text-slate-700 italic">「因為 105、75 的最大公因數是 15，所以應該要分成 15 組。」</p>
+                            <div class="flex gap-1.5 pt-1">
+                                <button onclick="checkP127Mistake('yan', true)" class="flex-1 py-1.5 rounded-lg border border-slate-300 text-xs font-bold hover:bg-slate-100">正確</button>
+                                <button onclick="checkP127Mistake('yan', false)" class="flex-1 py-1.5 rounded-lg border border-slate-300 text-xs font-bold hover:bg-slate-100">錯誤</button>
+                            </div>
+                            <div id="p127-yan-feedback" class="hidden text-xs p-2 rounded-lg"></div>
+                        </div>
+
+                        <!-- 小翊 -->
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-black text-sm text-emerald-700">👦 小翊的說法</span>
+                                <span class="font-mono-code text-[11px] bg-slate-100 px-2 py-0.5 rounded">105÷15=7, 75÷15=5</span>
+                            </div>
+                            <p class="text-xs text-slate-700 italic">「105、75 的最大公因數是 15，若每組 15 人，則可分成 7 + 5 = 12 組。」</p>
+                            <div class="flex gap-1.5 pt-1">
+                                <button onclick="checkP127Mistake('yi', true)" class="flex-1 py-1.5 rounded-lg border border-slate-300 text-xs font-bold hover:bg-slate-100">正確</button>
+                                <button onclick="checkP127Mistake('yi', false)" class="flex-1 py-1.5 rounded-lg border border-slate-300 text-xs font-bold hover:bg-slate-100">錯誤</button>
+                            </div>
+                            <div id="p127-yi-feedback" class="hidden text-xs p-2 rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下排：課本 P.126 ~ P.127 自我評量 6 大題互動測驗 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <span id="quiz-mode-badge" class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">課本 P.126 ~ P.127 自我評量（原題庫）</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">2-2 綜合隨堂測驗（含詳解與即時批改）</h3>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="quiz-score-badge" class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-bold text-xs">得分：0 / 6</span>
+                    </div>
+                </div>
+                <div id="textbook-quiz-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- JS 動態渲染 6 大題 -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 90 分鐘兩節課教案配速 Modal -->
+    <div id="lesson-plan-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="ph-bold ph-clock-countdown text-xl text-indigo-600"></i>
+                    <h3 class="text-lg font-black text-slate-900">2-2 最大公因數與最小公倍數：兩節課（90 分鐘）教學配速建議</h3>
+                </div>
+                <button onclick="toggleLessonPlanModal()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-xs sm:text-sm">
+                <div class="p-4 rounded-xl bg-indigo-50 border border-indigo-200 space-y-2">
+                    <div class="font-black text-indigo-900 text-sm">🗓️ 第一節課（45 分鐘）：公因數、互質、短除法與標準分解式</div>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700">
+                        <li><strong>00 ~ 15 min（模組 1）：</strong>操作 P.106~107 因數探索器，引導學生發現「所有公因數都是最大公因數的因數」，並用 <code class="font-mono-code">(8, 9) = 1</code> 破除「互質必為質數」的迷思。</li>
+                        <li><strong>15 ~ 30 min（模組 2 上半）：</strong>利用短除法實驗室對比 <code class="font-mono-code">(54, 72, 84)</code> 與 <code class="font-mono-code">[54, 72, 84]</code>，強調三數求最小公倍數時「任兩數可除即繼續除、沒除到的照抄」。</li>
+                        <li><strong>30 ~ 45 min（模組 2 下半）：</strong>透過 P.110 例1 與 P.116 例3 的連乘約分卡片，推導出標準分解式口訣：「最大公因數共同取小、最小公倍數全部取大」。</li>
+                    </ul>
+                </div>
+                <div class="p-4 rounded-xl bg-teal-50 border border-teal-200 space-y-2">
+                    <div class="font-black text-teal-900 text-sm">🗓️ 第二節課（45 分鐘）：兩數乘積關係、四大生活應用題與挑錯評量</div>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700">
+                        <li><strong>00 ~ 10 min（模組 1 下半）：</strong>驗證 P.119 <code class="font-mono-code">(a, b) × [a, b] = a × b</code>，並用「13年、17年質數蟬」引發生活數學興趣。</li>
+                        <li><strong>10 ~ 30 min（模組 3 四大應用動畫）：</strong>依序演示 P.120 分裝禮盒、P.121 跑步週期、P.122 磁磚拼正方形 vs P.127 剪桌墊、P.123 長方形種樹與跨海大橋路燈（特別提醒橋頭橋尾未裝要減 1、兩側要乘 2）。</li>
+                        <li><strong>30 ~ 45 min（模組 4 隨堂評量）：</strong>全班共同討論 P.125 自我檢核與 P.127 小妍/小翊營隊分組挑錯題，最後完成 P.126~127 自我評量。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button onclick="toggleLessonPlanModal()" class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs sm:text-sm">開始授課</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 完整邏輯 -->
+    <script>
+        // ---------- 數學輔助函式 ----------
+        function gcd(a, b) {
+            a = Math.abs(Math.round(a));
+            b = Math.abs(Math.round(b));
+            while (b) {
+                let t = b;
+                b = a % b;
+                a = t;
+            }
+            return a || 1;
+        }
+
+        function lcm(a, b) {
+            if (!a || !b) return 0;
+            return Math.abs((a * b) / gcd(a, b));
+        }
+
+        function gcdArray(arr) {
+            return arr.reduce((acc, v) => gcd(acc, v), arr[0]);
+        }
+
+        function lcmArray(arr) {
+            return arr.reduce((acc, v) => lcm(acc, v), arr[0]);
+        }
+
+        function getFactors(n) {
+            const res = [];
+            for (let i = 1; i <= n; i++) {
+                if (n % i === 0) res.push(i);
+            }
+            return res;
+        }
+
+        function primeFactorize(n) {
+            const factors = {};
+            let temp = n;
+            for (let d = 2; d * d <= temp; d++) {
+                while (temp % d === 0) {
+                    factors[d] = (factors[d] || 0) + 1;
+                    temp /= d;
+                }
+            }
+            if (temp > 1) factors[temp] = (factors[temp] || 0) + 1;
+            return factors;
+        }
+
+        function formatSup(exp) {
+            const sups = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+            return String(exp).split('').map(c => sups[c] || c).join('');
+        }
+
+        function formatPrimeFactors(factorsObj, showOneExp = false) {
+            const primes = Object.keys(factorsObj).map(Number).sort((a, b) => a - b);
+            if (primes.length === 0) return '1';
+            return primes.map(p => {
+                const e = factorsObj[p];
+                if (e === 1 && !showOneExp) return `${p}`;
+                return `${p}${formatSup(e)}`;
+            }).join(' × ');
+        }
+
+        // ---------- 頂部導覽與教案 Modal 切換 ----------
+        function switchMainTab(tabId) {
+            const tabs = ['p1_concept', 'p1_lab', 'p2_apps', 'p2_quiz'];
+            tabs.forEach(t => {
+                const sec = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                const mobBtn = document.getElementById(`mob-tab-${t}`);
+                if (t === tabId) {
+                    sec.classList.remove('hidden');
+                    if (btn) {
+                        btn.className = 'main-tab-btn flex-1 lg:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-white text-indigo-600 shadow-sm';
+                    }
+                    if (mobBtn) {
+                        mobBtn.className = 'flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50/80 font-bold transition-all';
+                    }
+                } else {
+                    sec.classList.add('hidden');
+                    if (btn) {
+                        btn.className = 'main-tab-btn flex-1 lg:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+                    }
+                    if (mobBtn) {
+                        mobBtn.className = 'flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition-all';
+                    }
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (tabId === 'p2_apps') {
+                setTimeout(() => {
+                    drawEx7Canvas();
+                    drawEx8Canvas();
+                }, 40);
+            }
+        }
+
+        function toggleLessonPlanModal() {
+            const modal = document.getElementById('lesson-plan-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        // ---------- 模組 1：公因數、互質、公倍數與質數蟬 ----------
+        function loadFactorExplorer(nums) {
+            const g = gcdArray(nums);
+            const commonFactors = getFactors(g);
+            const badge = document.getElementById('factor-coprime-badge');
+            badge.textContent = `(${nums.join(', ')}) = ${g}` + (g === 1 ? '（互質）' : '');
+            badge.className = g === 1
+                ? 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800'
+                : 'px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700';
+
+            const container = document.getElementById('factor-lists-container');
+            container.innerHTML = nums.map(n => {
+                const fList = getFactors(n);
+                const pills = fList.map(f => {
+                    if (f === g) {
+                        return `<span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-md font-mono-code font-black text-xs bg-amber-500 text-white shadow-sm ring-2 ring-amber-300">${f} (最大)</span>`;
+                    } else if (commonFactors.includes(f)) {
+                        return `<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md font-mono-code font-bold text-xs bg-indigo-600 text-white">${f}</span>`;
+                    }
+                    return `<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md font-mono-code text-xs bg-white border border-slate-200 text-slate-600">${f}</span>`;
+                }).join('');
+                return `
+                    <div class="space-y-1">
+                        <div class="text-xs font-bold text-slate-700"><span class="font-mono-code text-indigo-700">${n}</span> 的因數：</div>
+                        <div class="flex flex-wrap gap-1.5">${pills}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const insight = document.getElementById('factor-insight-box');
+            if (g === 1) {
+                const isCompositePair = nums.every(n => getFactors(n).length > 2);
+                insight.innerHTML = `
+                    <div class="font-black text-amber-900">✨ 互質判別結果：(${nums.join(', ')}) = 1</div>
+                    <p class="text-slate-700">這組數共同的因數只有 <strong>1</strong>，因此稱為<strong>互質</strong>。</p>
+                    ${isCompositePair ? `<p class="text-rose-700 font-bold">💡 課本 P.107 動動腦：${nums.join(' 與 ')} 都是合數，但它們依然互質！證明「兩數互質，兩數不一定是質數」。</p>` : ''}
+                `;
+            } else {
+                insight.innerHTML = `
+                    <div class="font-black text-indigo-900">✨ 課本 P.106 關鍵發現：</div>
+                    <p class="text-slate-700">公因數有 <strong class="font-mono-code text-indigo-700">${commonFactors.join('、')}</strong>，最大公因數 <strong class="font-mono-code text-amber-700">(${nums.join(', ')}) = ${g}</strong>。</p>
+                    <p class="text-indigo-800 font-medium">👉 所有的公因數（${commonFactors.join('、')}）剛好也都是最大公因數 ${g} 的因數！</p>
+                `;
+            }
+        }
+
+        function loadMultipleExplorer(nums, maxLimit = 100) {
+            const l = lcmArray(nums);
+            document.getElementById('multiple-lcm-badge').textContent = `[${nums.join(', ')}] = ${l}`;
+            const container = document.getElementById('multiple-lists-container');
+
+            container.innerHTML = nums.map(n => {
+                const mList = [];
+                for (let m = n; m <= maxLimit; m += n) mList.push(m);
+                const pills = mList.map(m => {
+                    if (m === l) {
+                        return `<span class="px-2.5 py-0.5 rounded-md font-mono-code font-black text-xs bg-amber-500 text-white shadow-sm">${m} (最小)</span>`;
+                    } else if (m % l === 0) {
+                        return `<span class="px-2 py-0.5 rounded-md font-mono-code font-bold text-xs bg-teal-600 text-white">${m}</span>`;
+                    }
+                    return `<span class="px-2 py-0.5 rounded-md font-mono-code text-xs bg-white border border-slate-200 text-slate-600">${m}</span>`;
+                }).join('');
+                return `
+                    <div class="space-y-1">
+                        <div class="text-xs font-bold text-slate-700"><span class="font-mono-code text-teal-700">${n}</span> 的倍數（1~${maxLimit}）：</div>
+                        <div class="flex flex-wrap gap-1.5">${pills}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const commonMultiples = [];
+            for (let m = l; m <= maxLimit; m += l) commonMultiples.push(m);
+            document.getElementById('multiple-insight-box').innerHTML = `
+                <div class="font-black text-teal-900">✨ 課本 P.113 關鍵發現：</div>
+                <p class="text-slate-700">1 到 ${maxLimit} 中的公倍數有：<strong class="font-mono-code text-teal-700">${commonMultiples.join('、')}</strong>，最小公倍數 <strong class="font-mono-code text-amber-700">[${nums.join(', ')}] = ${l}</strong>。</p>
+                <p class="text-teal-800 font-medium">👉 所有的公倍數也都是最小公倍數 ${l} 的倍數！</p>
+            `;
+        }
+
+        function setProdPair(a, b) {
+            document.getElementById('prod-input-a').value = a;
+            document.getElementById('prod-input-b').value = b;
+            updateProductIdentity();
+        }
+
+        function updateProductIdentity() {
+            const a = Math.max(1, parseInt(document.getElementById('prod-input-a').value) || 12);
+            const b = Math.max(1, parseInt(document.getElementById('prod-input-b').value) || 18);
+            const g = gcd(a, b);
+            const l = lcm(a, b);
+            document.getElementById('prod-identity-result').innerHTML = `
+                <div>• 最大公因數 (a, b) = (${a}, ${b}) = <strong class="text-indigo-700">${g}</strong></div>
+                <div>• 最小公倍數 [a, b] = [${a}, ${b}] = <strong class="text-teal-700">${l}</strong></div>
+                <div class="pt-1 border-t border-purple-200 text-purple-900 font-bold">
+                    ✔ (a, b) × [a, b] = ${g} × ${l} = <span class="text-base underline">${g * l}</span><br>
+                    ✔ a × b = ${a} × ${b} = <span class="text-base underline">${a * b}</span>（完全相等！）
+                </div>
+            `;
+        }
+
+        // P.119 質數蟬表格
+        const cicadaPredators = [3, 5, 8];
+        const cicadaCycles = [4, 6, 13, 17];
+        const revealedCicadaCells = { '3-4': true, '5-4': true };
+
+        function renderCicadaTable() {
+            const tbody = document.getElementById('cicada-table-body');
+            tbody.innerHTML = cicadaPredators.map(pred => {
+                const cells = cicadaCycles.map(cyc => {
+                    const key = `${pred}-${cyc}`;
+                    const ans = lcm(pred, cyc);
+                    const isPrimeCicada = cyc === 13 || cyc === 17;
+                    if (revealedCicadaCells[key]) {
+                        return `<td class="p-2.5 border border-slate-200 font-bold ${isPrimeCicada ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-50 text-slate-700'}">${ans} 年</td>`;
+                    }
+                    return `
+                        <td class="p-2 border border-slate-200 ${isPrimeCicada ? 'bg-emerald-50/40' : ''}">
+                            <button onclick="revealSingleCicada('${key}')" class="px-2.5 py-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs">? 點擊計算 [${pred},${cyc}]</button>
+                        </td>
+                    `;
+                }).join('');
+                return `
+                    <tr>
+                        <td class="p-2.5 border border-slate-200 font-bold bg-slate-100 text-slate-800">天敵 ${pred} 年</td>
+                        ${cells}
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function revealSingleCicada(key) {
+            revealedCicadaCells[key] = true;
+            renderCicadaTable();
+        }
+
+        function revealAllCicada() {
+            cicadaPredators.forEach(p => cicadaCycles.forEach(c => {
+                revealedCicadaCells[`${p}-${c}`] = true;
+            }));
+            renderCicadaTable();
+        }
+
+        // ---------- 模組 2：三數短除法與標準分解式實驗室 ----------
+        function setLabNumbers(a, b, c) {
+            document.getElementById('lab-num-a').value = a;
+            document.getElementById('lab-num-b').value = b;
+            document.getElementById('lab-num-c').value = c ? c : '';
+            computeShortDivisionLab();
+        }
+
+        function computeShortDivisionLab() {
+            const a = Math.max(2, parseInt(document.getElementById('lab-num-a').value) || 54);
+            const b = Math.max(2, parseInt(document.getElementById('lab-num-b').value) || 72);
+            const cRaw = document.getElementById('lab-num-c').value.trim();
+            const nums = cRaw ? [a, b, Math.max(2, parseInt(cRaw) || 84)] : [a, b];
+
+            document.getElementById('sd-gcd-title-sym').textContent = `(${nums.join(', ')})`;
+            document.getElementById('sd-lcm-title-sym').textContent = `[${nums.join(', ')}]`;
+
+            // 1. 計算 GCD 短除法步驟
+            const gcdSteps = [];
+            let curGcd = [...nums];
+            let d = 2;
+            while (d <= Math.min(...curGcd)) {
+                if (curGcd.every(x => x % d === 0)) {
+                    gcdSteps.push({ divisor: d, row: [...curGcd] });
+                    curGcd = curGcd.map(x => x / d);
+                } else {
+                    d++;
+                }
+            }
+
+            // 渲染 GCD 短除法
+            let gcdHtml = `<table class="w-full text-center text-sm sm:text-base border-collapse">`;
+            gcdSteps.forEach(st => {
+                gcdHtml += `
+                    <tr>
+                        <td class="py-1.5 px-3 font-black text-indigo-600 text-right w-14 border-r-2 border-slate-700">${st.divisor}</td>
+                        ${st.row.map(v => `<td class="py-1.5 px-4 border-b-2 border-slate-700 font-bold text-slate-800">${v}</td>`).join('')}
+                    </tr>
+                `;
+            });
+            gcdHtml += `
+                <tr>
+                    <td class="py-1.5 px-3 text-right text-xs text-slate-400">停止</td>
+                    ${curGcd.map(v => `<td class="py-1.5 px-4 font-bold text-slate-600">${v}</td>`).join('')}
+                </tr>
+            </table>`;
+            document.getElementById('sd-gcd-table-box').innerHTML = gcdHtml;
+
+            const finalGcd = gcdArray(nums);
+            const gcdDivisorsStr = gcdSteps.length > 0 ? gcdSteps.map(s => s.divisor).join(' × ') + ' = ' : '';
+            document.getElementById('sd-gcd-result-banner').innerHTML = `
+                (${nums.join(', ')}) = ${gcdDivisorsStr}${finalGcd}
+            `;
+
+            // 2. 計算 LCM 短除法步驟（先除以全部共同質因數，再除以任兩數共同質因數）
+            const lcmSteps = [];
+            let curLcm = [...nums];
+            // 第一階段：全體公因數
+            let p = 2;
+            while (p <= Math.min(...curLcm)) {
+                if (curLcm.every(x => x % p === 0)) {
+                    lcmSteps.push({ divisor: p, row: [...curLcm], carriedIndices: [] });
+                    curLcm = curLcm.map(x => x / p);
+                } else {
+                    p++;
+                }
+            }
+            // 第二階段：若為三數，任兩數有共同質因數即繼續除
+            if (curLcm.length === 3) {
+                let q = 2;
+                while (q <= Math.max(...curLcm)) {
+                    const divCount = curLcm.filter(x => x % q === 0).length;
+                    if (divCount >= 2) {
+                        const carried = [];
+                        const nextRow = curLcm.map((x, idx) => {
+                            if (x % q === 0) return x / q;
+                            carried.push(idx);
+                            return x;
+                        });
+                        lcmSteps.push({ divisor: q, row: [...curLcm], carriedIndices: carried });
+                        curLcm = nextRow;
+                    } else {
+                        q++;
+                    }
+                }
+            }
+
+            let lcmHtml = `<table class="w-full text-center text-sm sm:text-base border-collapse">`;
+            lcmSteps.forEach((st, idx) => {
+                const prevCarried = idx > 0 ? lcmSteps[idx - 1].carriedIndices : [];
+                lcmHtml += `
+                    <tr>
+                        <td class="py-1.5 px-3 font-black text-teal-600 text-right w-14 border-r-2 border-slate-700">${st.divisor}</td>
+                        ${st.row.map((v, i) => {
+                            const isCarriedFromAbove = prevCarried.includes(i);
+                            return `<td class="py-1.5 px-4 border-b-2 border-slate-700 font-bold ${isCarriedFromAbove ? 'text-amber-600 bg-amber-50' : 'text-slate-800'}">${v}${isCarriedFromAbove ? '<span class="text-[10px] ml-1">(照抄)</span>' : ''}</td>`;
+                        }).join('')}
+                    </tr>
+                `;
+            });
+            const lastCarried = lcmSteps.length > 0 ? lcmSteps[lcmSteps.length - 1].carriedIndices : [];
+            lcmHtml += `
+                <tr>
+                    <td class="py-1.5 px-3 text-right text-xs text-slate-400">底層</td>
+                    ${curLcm.map((v, i) => {
+                        const isC = lastCarried.includes(i);
+                        return `<td class="py-1.5 px-4 font-black ${isC ? 'text-amber-600' : 'text-teal-700'}">${v}</td>`;
+                    }).join('')}
+                </tr>
+            </table>`;
+            document.getElementById('sd-lcm-table-box').innerHTML = lcmHtml;
+
+            const finalLcm = lcmArray(nums);
+            const allLcmFactors = [...lcmSteps.map(s => s.divisor), ...curLcm];
+            document.getElementById('sd-lcm-result-banner').innerHTML = `
+                [${nums.join(', ')}] = ${allLcmFactors.join(' × ')} = ${finalLcm}
+            `;
+
+            // 3. 產生標準分解式比較表
+            renderPrimeFactorComparisonTable(nums, finalGcd, finalLcm);
+        }
+
+        function renderPrimeFactorComparisonTable(nums, finalGcd, finalLcm) {
+            const pfList = nums.map(n => primeFactorize(n));
+            const primeSet = new Set();
+            pfList.forEach(pf => Object.keys(pf).forEach(k => primeSet.add(Number(k))));
+            const allPrimes = Array.from(primeSet).sort((a, b) => a - b);
+
+            const labels = ['a', 'b', 'c'];
+            let html = `
+                <table class="w-full text-center text-xs sm:text-sm border-collapse font-mono-code">
+                    <thead>
+                        <tr class="bg-slate-800 text-white">
+                            <th class="p-3 border border-slate-700 text-left">整數 / 標準分解式</th>
+                            ${allPrimes.map(p => `<th class="p-3 border border-slate-700">質因數 ${p}</th>`).join('')}
+                            <th class="p-3 border border-slate-700">標準分解式結果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            nums.forEach((n, idx) => {
+                const pf = pfList[idx];
+                html += `
+                    <tr class="bg-white hover:bg-slate-50">
+                        <td class="p-3 border border-slate-200 text-left font-bold text-slate-800">${labels[idx]} = ${n}</td>
+                        ${allPrimes.map(p => {
+                            const exp = pf[p] || 0;
+                            return exp > 0
+                                ? `<td class="p-3 border border-slate-200 font-bold text-slate-800">${p}${formatSup(exp)}</td>`
+                                : `<td class="p-3 border border-slate-200 text-slate-400">無 (${p}⁰)</td>`;
+                        }).join('')}
+                        <td class="p-3 border border-slate-200 font-bold text-slate-700">${formatPrimeFactors(pf)}</td>
+                    </tr>
+                `;
+            });
+
+            // GCD 列 (共同取小)
+            const gcdPf = primeFactorize(finalGcd);
+            html += `
+                <tr class="bg-indigo-50/90 font-bold text-indigo-900">
+                    <td class="p-3 border border-indigo-200 text-left">最大公因數（共同質因數取次方最小）</td>
+                    ${allPrimes.map(p => {
+                        const exps = pfList.map(pf => pf[p] || 0);
+                        const minExp = Math.min(...exps);
+                        return minExp > 0
+                            ? `<td class="p-3 border border-indigo-200 text-indigo-700">取 ${p}${formatSup(minExp)}</td>`
+                            : `<td class="p-3 border border-indigo-200 text-rose-600">不取 (缺共同)</td>`;
+                    }).join('')}
+                    <td class="p-3 border border-indigo-200 text-indigo-700">${formatPrimeFactors(gcdPf)} = ${finalGcd}</td>
+                </tr>
+            `;
+
+            // LCM 列 (全部取大)
+            const lcmPf = primeFactorize(finalLcm);
+            html += `
+                <tr class="bg-teal-50/90 font-bold text-teal-900">
+                    <td class="p-3 border border-teal-200 text-left">最小公倍數（所有質因數取次方最大）</td>
+                    ${allPrimes.map(p => {
+                        const exps = pfList.map(pf => pf[p] || 0);
+                        const maxExp = Math.max(...exps);
+                        return `<td class="p-3 border border-teal-200 text-teal-700">取 ${p}${formatSup(maxExp)}</td>`;
+                    }).join('')}
+                    <td class="p-3 border border-teal-200 text-teal-700">${formatPrimeFactors(lcmPf)} = ${finalLcm}</td>
+                </tr>
+            </tbody></table>`;
+
+            document.getElementById('pf-comparison-table-wrap').innerHTML = html;
+        }
+
+        // P.110 例1 與 P.116 例3 指數約分卡片
+        function switchExpCheckMode(mode) {
+            const btnF = document.getElementById('exp-btn-factor');
+            const btnM = document.getElementById('exp-btn-multiple');
+            const container = document.getElementById('exp-cancellation-cards');
+
+            if (mode === 'factor') {
+                btnF.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white';
+                btnM.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-teal-50';
+                const items = [
+                    { title: '(1) 2⁴', frac: '(2×2×2 × 3×3) ÷ (2×2×2×2) = 9 / 2', ok: false, reason: '2⁴ 的次方 4 > 原數的 2³，分母多出一個 2 無法整除！' },
+                    { title: '(2) 2² × 3²', frac: '(2×2×2 × 3×3) ÷ (2×2 × 3×3) = 2', ok: true, reason: '每個質因數次方皆 ≤ 2³×3²，剛好可約分整除！' },
+                    { title: '(3) 2 × 3²', frac: '(2×2×2 × 3×3) ÷ (2 × 3×3) = 4', ok: true, reason: '2¹ ≤ 2³ 且 3² ≤ 3²，可整除！' },
+                    { title: '(4) 2 × 5', frac: '(2×2×2 × 3×3) ÷ (2 × 5) = 36 / 5', ok: false, reason: '含有 2³×3² 沒有的質因數 5，無法約掉！' }
+                ];
+                container.innerHTML = items.map(it => `
+                    <div class="p-3.5 rounded-xl border ${it.ok ? 'bg-indigo-50/50 border-indigo-200' : 'bg-rose-50/40 border-rose-200'} space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono-code font-black text-sm text-slate-900">${it.title}</span>
+                            <span class="px-2 py-0.5 rounded text-xs font-bold ${it.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${it.ok ? '✔ 是因數' : '✘ 不是因數'}</span>
+                        </div>
+                        <div class="font-mono-code text-xs text-slate-700 bg-white p-2 rounded border border-slate-200">${it.frac}</div>
+                        <p class="text-xs text-slate-600">${it.reason}</p>
+                    </div>
+                `).join('');
+            } else {
+                btnM.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-600 text-white';
+                btnF.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50';
+                const items = [
+                    { title: '(1) 2⁴', frac: '(2×2×2×2) ÷ (2×2×2 × 5) = 2 / 5', ok: false, reason: '缺少質因數 5，無法被 2³×5 整除！' },
+                    { title: '(2) 2³ × 5²', frac: '(2×2×2 × 5×5) ÷ (2×2×2 × 5) = 5', ok: true, reason: '包含質因數 2、5 且次方皆 ≥ 2³×5，是倍數！' },
+                    { title: '(3) 2³ × 5 × 7', frac: '(2×2×2 × 5 × 7) ÷ (2×2×2 × 5) = 7', ok: true, reason: '完整包含 2³×5，多出的 ×7 仍可整除！' },
+                    { title: '(4) 2² × 5² × 7', frac: '(2×2 × 5×5 × 7) ÷ (2×2×2 × 5) = 35 / 2', ok: false, reason: '質因數 2 的次方只有 2² < 2³，無法整除！' }
+                ];
+                container.innerHTML = items.map(it => `
+                    <div class="p-3.5 rounded-xl border ${it.ok ? 'bg-teal-50/50 border-teal-200' : 'bg-rose-50/40 border-rose-200'} space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono-code font-black text-sm text-slate-900">${it.title}</span>
+                            <span class="px-2 py-0.5 rounded text-xs font-bold ${it.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${it.ok ? '✔ 是倍數' : '✘ 不是倍數'}</span>
+                        </div>
+                        <div class="font-mono-code text-xs text-slate-700 bg-white p-2 rounded border border-slate-200">${it.frac}</div>
+                        <p class="text-xs text-slate-600">${it.reason}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ---------- 模組 3：四大生活應用題動態模擬 ----------
+        function switchAppSubTab(exId) {
+            const ids = ['ex5', 'ex6', 'ex7', 'ex8'];
+            ids.forEach(id => {
+                const view = document.getElementById(`app-view-${id}`);
+                const tab = document.getElementById(`app-tab-${id}`);
+                if (id === exId) {
+                    view.classList.remove('hidden');
+                    tab.className = 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/70 text-left transition';
+                } else {
+                    view.classList.add('hidden');
+                    tab.className = 'p-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-left transition';
+                }
+            });
+            if (exId === 'ex7') setTimeout(drawEx7Canvas, 30);
+            if (exId === 'ex8') setTimeout(drawEx8Canvas, 30);
+        }
+
+        // 應用 1：例5 水果分裝 vs 姐妹校編組
+        let currentEx5Mode = 'fruit';
+        function loadEx5Scenario(mode) {
+            currentEx5Mode = mode;
+            const btnF = document.getElementById('ex5-btn-fruit');
+            const btnS = document.getElementById('ex5-btn-school');
+            const slider = document.getElementById('ex5-slider');
+            const quickBtns = document.getElementById('ex5-quick-btns');
+
+            if (mode === 'fruit') {
+                btnF.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm';
+                btnS.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700';
+                document.getElementById('ex5-title').textContent = '例5：36 個梨子與 60 個蘋果分裝禮盒';
+                document.getElementById('ex5-desc').innerHTML = '水果店老闆想將 <strong>36 個梨子</strong>和 <strong>60 個蘋果</strong>分裝成梨子禮盒和蘋果禮盒，每盒水果個數要一樣多且全部分裝完，一盒最多可放幾個水果？';
+                document.getElementById('ex5-slider-label').textContent = '拖曳測試：每盒放幾個水果？';
+                slider.max = 20;
+                slider.value = 12;
+                quickBtns.innerHTML = [1, 2, 3, 4, 6, 12].map(v => `<button onclick="document.getElementById('ex5-slider').value=${v};updateEx5Simulation()" class="px-2 py-1 rounded bg-indigo-50 text-indigo-700 text-xs font-mono-code font-bold hover:bg-indigo-100">公因數 ${v}</button>`).join('');
+            } else {
+                btnS.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm';
+                btnF.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700';
+                document.getElementById('ex5-title').textContent = 'P.120 隨堂：20 位 A 校學生接待 12 位 B 校學生';
+                document.getElementById('ex5-desc').innerHTML = '臺灣 A 校安排 <strong>20 位學生</strong>接待新加坡姐妹校 B 校 <strong>12 位學生</strong>，分成若干組參觀，每組 A 校人數一樣多、B 校人數也一樣多：(1) 最多可分幾組？ (2) 此時每組共幾位學生？';
+                document.getElementById('ex5-slider-label').textContent = '拖曳測試：分成幾組？';
+                slider.max = 12;
+                slider.value = 4;
+                quickBtns.innerHTML = [1, 2, 4].map(v => `<button onclick="document.getElementById('ex5-slider').value=${v};updateEx5Simulation()" class="px-2 py-1 rounded bg-indigo-50 text-indigo-700 text-xs font-mono-code font-bold hover:bg-indigo-100">公因數 ${v} 組</button>`).join('');
+            }
+            updateEx5Simulation();
+        }
+
+        function updateEx5Simulation() {
+            const val = parseInt(document.getElementById('ex5-slider').value) || 1;
+            const grid = document.getElementById('ex5-boxes-grid');
+            const badge = document.getElementById('ex5-status-badge');
+            const summary = document.getElementById('ex5-math-summary');
+
+            if (currentEx5Mode === 'fruit') {
+                document.getElementById('ex5-slider-val').textContent = `${val} 個 / 盒`;
+                const rem1 = 36 % val;
+                const rem2 = 60 % val;
+                const box1 = Math.floor(36 / val);
+                const box2 = Math.floor(60 / val);
+                const isOk = rem1 === 0 && rem2 === 0;
+
+                badge.textContent = isOk ? (val === 12 ? '★ 最大公因數 (36,60)=12！' : '✔ 可平分無剩餘') : `✘ 有剩餘（剩 ${rem1} 梨、${rem2} 蘋）`;
+                badge.className = isOk ? 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800' : 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800';
+
+                summary.innerHTML = `
+                    <div>• 梨子：36 ÷ ${val} = <strong>${box1} 盒</strong> ${rem1 ? `<span class="text-rose-600 font-bold">... 餘 ${rem1} 個</span>` : '（剛好裝完）'}</div>
+                    <div>• 蘋果：60 ÷ ${val} = <strong>${box2} 盒</strong> ${rem2 ? `<span class="text-rose-600 font-bold">... 餘 ${rem2} 個</span>` : '（剛好裝完）'}</div>
+                    <div class="pt-1 border-t border-slate-100 font-bold text-indigo-700">結論：(36, 60) = 12，每盒最多放 12 個水果（共可裝 3 + 5 = 8 盒）。</div>
+                `;
+
+                let cards = '';
+                for (let i = 1; i <= Math.min(box1, 12); i++) {
+                    cards += `<div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs"><div class="font-bold text-amber-900">🍐 梨子禮盒 #${i}</div><div class="text-slate-600 mt-0.5">內含 ${val} 個梨子</div></div>`;
+                }
+                for (let i = 1; i <= Math.min(box2, 12); i++) {
+                    cards += `<div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-xs"><div class="font-bold text-rose-900">🍎 蘋果禮盒 #${i}</div><div class="text-slate-600 mt-0.5">內含 ${val} 個蘋果</div></div>`;
+                }
+                grid.innerHTML = cards;
+            } else {
+                document.getElementById('ex5-slider-val').textContent = `分 ${val} 組`;
+                const remA = 20 % val;
+                const remB = 12 % val;
+                const perA = Math.floor(20 / val);
+                const perB = Math.floor(12 / val);
+                const isOk = remA === 0 && remB === 0;
+
+                badge.textContent = isOk ? (val === 4 ? '★ 最大公因數 (20,12)=4 組！' : '✔ 可平分編組') : `✘ 無法平分（餘 ${remA}人、${remB}人）`;
+                badge.className = isOk ? 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800' : 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800';
+
+                summary.innerHTML = `
+                    <div>• (1) 最多組數：(20, 12) = <strong>4 組</strong>（目前測試：${val} 組）</div>
+                    <div>• (2) 當分成 ${val} 組時：每組有 A 校 ${perA} 人 + B 校 ${perB} 人 = <strong>共 ${perA + perB} 位學生</strong></div>
+                `;
+
+                let cards = '';
+                for (let i = 1; i <= val; i++) {
+                    cards += `
+                        <div class="p-3 rounded-xl ${isOk ? 'bg-indigo-50/70 border-indigo-200' : 'bg-rose-50 border-rose-200'} border text-xs space-y-1">
+                            <div class="font-black text-indigo-950">第 ${i} 組（共 ${perA + perB} 人）</div>
+                            <div class="text-slate-700">🇹🇼 A 校：${perA} 人 ｜ 🇸🇬 B 校：${perB} 人</div>
+                        </div>
+                    `;
+                }
+                grid.innerHTML = cards;
+            }
+        }
+
+        // 應用 2：例6 跑步與農場週期
+        let currentEx6Data = { nums: [8, 10, 14], names: ['小翊 (每8天)', '小妍 (每10天)', '小靖 (每14天)'], unit: '天', lcmVal: 280 };
+        function loadEx6Scenario(mode) {
+            const btnR = document.getElementById('ex6-btn-run');
+            const btnF = document.getElementById('ex6-btn-farm');
+            const slider = document.getElementById('ex6-slider');
+
+            if (mode === 'run') {
+                btnR.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm';
+                btnF.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700';
+                currentEx6Data = { nums: [8, 10, 14], names: ['小翊 (每 8 天)', '小妍 (每 10 天)', '小靖 (每 14 天)'], unit: '天', lcmVal: 280 };
+                document.getElementById('ex6-title').textContent = '例6：三人到中央公園跑步週期問題';
+                document.getElementById('ex6-desc').textContent = '小翊每 8 天、小妍每 10 天、小靖每 14 天到中央公園跑步一次。今天三人都去跑步，最少要再幾天三人才會再度同一天相遇？';
+                document.getElementById('ex6-math-box').innerHTML = `
+                    <div class="font-mono-code font-bold text-teal-800">[8, 10, 14] = 2 × 4 × 5 × 7 = 280（天）</div>
+                    <p class="text-slate-600">第 280 天時：小翊跑了 35 次、小妍跑了 28 次、小靖跑了 20 次，三人再度同日相遇！</p>
+                `;
+                slider.max = 280;
+                slider.value = 280;
+            } else {
+                btnF.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm';
+                btnR.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700';
+                currentEx6Data = { nums: [45, 30, 18], names: ['高麗菜 (45小時)', '小白菜 (30小時)', '空心菜 (18小時)'], unit: '小時', lcmVal: 90 };
+                document.getElementById('ex6-title').textContent = 'P.121 隨堂：《健康農場》三種蔬菜同時收成';
+                document.getElementById('ex6-desc').textContent = '高麗菜每 45 小時、小白菜每 30 小時、空心菜每 18 小時收成一次。某次同時收成後，最少要再幾小時才能再度同時收成？';
+                document.getElementById('ex6-math-box').innerHTML = `
+                    <div class="font-mono-code font-bold text-teal-800">[45, 30, 18] = 2 × 3² × 5 = 90（小時）</div>
+                    <p class="text-slate-600">第 90 小時：高麗菜第 2 次、小白菜第 3 次、空心菜第 5 次收成！</p>
+                `;
+                slider.max = 180;
+                slider.value = 90;
+            }
+            updateEx6Timeline();
+        }
+
+        function jumpEx6ToHalf() {
+            document.getElementById('ex6-slider').value = Math.floor(currentEx6Data.lcmVal / 2);
+            updateEx6Timeline();
+        }
+
+        function jumpEx6ToLCM() {
+            document.getElementById('ex6-slider').value = currentEx6Data.lcmVal;
+            updateEx6Timeline();
+        }
+
+        function updateEx6Timeline() {
+            const t = parseInt(document.getElementById('ex6-slider').value) || 1;
+            const { nums, names, unit, lcmVal } = currentEx6Data;
+            const allMatch = nums.every(n => t % n === 0);
+            document.getElementById('ex6-time-label').textContent = `第 ${t} ${unit}` + (allMatch ? '（★ 三者同時重逢！）' : '');
+
+            const tracks = document.getElementById('ex6-tracks-box');
+            tracks.innerHTML = nums.map((n, idx) => {
+                const isHit = t % n === 0;
+                const pct = Math.min(100, Math.round((t / lcmVal) * 100));
+                return `
+                    <div class="p-3 rounded-xl border ${isHit ? 'bg-teal-50 border-teal-300' : 'bg-slate-50 border-slate-200'} space-y-1.5">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span>${names[idx]}</span>
+                            <span class="font-mono-code ${isHit ? 'text-teal-700 font-black' : 'text-slate-500'}">
+                                ${isHit ? `✔ 剛好第 ${t / n} 次週期！` : `${t} ÷ ${n} 餘 ${t % n}（未到週期）`}
+                            </span>
+                        </div>
+                        <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full ${isHit ? 'bg-teal-600' : 'bg-indigo-400'} transition-all" style="width:${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 應用 3：例7 磁磚拼正方形 vs 剪桌墊 Canvas
+        let currentEx7Mode = 'tile_lcm';
+        function loadEx7Scenario(mode) {
+            currentEx7Mode = mode;
+            const b1 = document.getElementById('ex7-btn-lcm');
+            const b2 = document.getElementById('ex7-btn-poster');
+            const b3 = document.getElementById('ex7-btn-gcd');
+            [b1, b2, b3].forEach(b => b.className = 'px-3 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700 text-left');
+
+            const mathBox = document.getElementById('ex7-math-box');
+            if (mode === 'tile_lcm') {
+                b1.className = 'px-3 py-2.5 rounded-xl text-xs font-bold bg-teal-600 text-white text-left shadow-sm';
+                document.getElementById('ex7-canvas-title').textContent = 'P.122 例7：長 60cm、寬 50cm 磁磚拼成最小正方形';
+                document.getElementById('ex7-canvas-badge').textContent = '最小邊長 [60, 50] = 300 cm';
+                mathBox.innerHTML = `
+                    <div class="font-black text-teal-900">【由小拼大 → 求最小公倍數】</div>
+                    <div>• 正方形最小邊長 = <code class="font-mono-code font-bold">[60, 50] = 300 公分</code></div>
+                    <div>• 正方形最小面積 = <code class="font-mono-code font-bold">300 × 300 = 90000 平方公分</code></div>
+                    <div class="text-teal-700 font-bold">• 需要幾塊磁磚？橫向 300÷60 = 5 塊，縱向 300÷50 = 6 塊，共 5 × 6 = 30 塊！</div>
+                `;
+            } else if (mode === 'poster_lcm') {
+                b2.className = 'px-3 py-2.5 rounded-xl text-xs font-bold bg-teal-600 text-white text-left shadow-sm';
+                document.getElementById('ex7-canvas-title').textContent = 'P.122 隨堂：48cm 與 80cm 正方形海報貼滿正方形布告欄';
+                document.getElementById('ex7-canvas-badge').textContent = '最小邊長 [48, 80] = 240 cm';
+                mathBox.innerHTML = `
+                    <div class="font-black text-teal-900">【課本 P.122 隨堂練習】</div>
+                    <div>• 布告欄最小邊長 = <code class="font-mono-code font-bold">[48, 80] = 240 公分</code></div>
+                    <div>• 布告欄最小面積 = <code class="font-mono-code font-bold">240 × 240 = 57600 平方公分</code></div>
+                    <div class="text-teal-700 font-bold">• 若用 48cm 海報需 (240÷48)² = 5×5 = 25 張；用 80cm 海報需 (240÷80)² = 3×3 = 9 張。</div>
+                `;
+            } else {
+                b3.className = 'px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 text-white text-left shadow-sm';
+                document.getElementById('ex7-canvas-title').textContent = 'P.127 評量5：長 126cm、寬 90cm 方格布剪成最大正方形桌墊';
+                document.getElementById('ex7-canvas-badge').textContent = '最大邊長 (126, 90) = 18 cm';
+                mathBox.innerHTML = `
+                    <div class="font-black text-indigo-900">【由大剪小 → 求最大公因數】</div>
+                    <div>• 桌墊最大邊長 = <code class="font-mono-code font-bold">(126, 90) = 18 公分</code></div>
+                    <div>• 每個桌墊最大面積 = <code class="font-mono-code font-bold">18 × 18 = 324 平方公分</code></div>
+                    <div class="text-indigo-700 font-bold">• 共可剪出幾塊？(126÷18) × (90÷18) = 7 × 5 = 35 塊正方形桌墊！</div>
+                `;
+            }
+            drawEx7Canvas();
+        }
+
+        function drawEx7Canvas() {
+            const canvas = document.getElementById('ex7-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (currentEx7Mode === 'tile_lcm') {
+                // 繪製 300x300 大正方形 (5列 x 6行 的 60x50 磁磚)
+                const size = 230;
+                const sx = (canvas.width - size) / 2;
+                const sy = 45;
+                const cols = 5, rows = 6;
+                const cw = size / cols, ch = size / rows;
+
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        ctx.fillStyle = (r + c) % 2 === 0 ? '#CCFBF1' : '#99F6E4';
+                        ctx.fillRect(sx + c * cw, sy + r * ch, cw, ch);
+                        ctx.strokeStyle = '#0D9488';
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeRect(sx + c * cw, sy + r * ch, cw, ch);
+                    }
+                }
+                ctx.strokeStyle = '#0F172A';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(sx, sy, size, size);
+
+                ctx.fillStyle = '#0F172A';
+                ctx.font = 'bold 13px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.fillText('大正方形邊長 [60, 50] = 300 cm (橫排 5 塊 × 60cm)', canvas.width / 2, 28);
+                ctx.fillText('每小塊磁磚：60cm × 50cm，共 5 × 6 = 30 塊', canvas.width / 2, sy + size + 26);
+            } else if (currentEx7Mode === 'poster_lcm') {
+                const size = 230;
+                const sx = (canvas.width - size) / 2;
+                const sy = 45;
+                const cols = 5, rows = 5;
+                const cw = size / cols;
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        ctx.fillStyle = (r + c) % 2 === 0 ? '#E0E7FF' : '#C7D2FE';
+                        ctx.fillRect(sx + c * cw, sy + r * cw, cw, cw);
+                        ctx.strokeStyle = '#4F46E5';
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeRect(sx + c * cw, sy + r * cw, cw, cw);
+                    }
+                }
+                ctx.strokeStyle = '#0F172A';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(sx, sy, size, size);
+                ctx.fillStyle = '#0F172A';
+                ctx.font = 'bold 13px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.fillText('布告欄最小邊長 [48, 80] = 240 cm (面積 57600 cm²)', canvas.width / 2, 28);
+                ctx.fillText('以 48cm 海報拼貼需 5×5=25 張；以 80cm 海報需 3×3=9 張', canvas.width / 2, sy + size + 26);
+            } else {
+                // 126 x 90 剪成 7 x 5 的 18x18 正方形
+                const w = 280, h = 200;
+                const sx = (canvas.width - w) / 2;
+                const sy = 55;
+                const cols = 7, rows = 5;
+                const cell = w / cols;
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        ctx.fillStyle = (r + c) % 2 === 0 ? '#DBEAFE' : '#BFDBFE';
+                        ctx.fillRect(sx + c * cell, sy + r * cell, cell, cell);
+                        ctx.strokeStyle = '#2563EB';
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeRect(sx + c * cell, sy + r * cell, cell, cell);
+                    }
+                }
+                ctx.strokeStyle = '#1E3A8A';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(sx, sy, w, h);
+                ctx.fillStyle = '#0F172A';
+                ctx.font = 'bold 13px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.fillText('長方形布 126cm × 90cm → 最大正方形邊長 (126,90) = 18cm', canvas.width / 2, 30);
+                ctx.fillText('單塊最大面積 18×18 = 324 cm²，共可剪 7 × 5 = 35 塊', canvas.width / 2, sy + h + 30);
+            }
+        }
+
+        // 應用 4：例8 種樹與澎湖跨海大橋路燈 Canvas
+        let currentEx8Mode = 'trees';
+        function loadEx8Scenario(mode) {
+            currentEx8Mode = mode;
+            const bTree = document.getElementById('ex8-btn-trees');
+            const bBridge = document.getElementById('ex8-btn-bridge');
+            const mathBox = document.getElementById('ex8-math-box');
+
+            if (mode === 'trees') {
+                bTree.className = 'flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm';
+                bBridge.className = 'flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700 hover:bg-slate-100';
+                document.getElementById('ex8-title').textContent = '例8：王伯伯 315m × 135m 長方形土地種樹';
+                document.getElementById('ex8-desc').innerHTML = '王伯伯有一塊長 <strong>315 公尺</strong>、寬 <strong>135 公尺</strong>的長方形土地，想在其周圍種樹，相鄰兩棵樹距離要相等，且<strong>四個頂點都種</strong>，最大樹距是幾公尺？總共要種幾棵樹？';
+                document.getElementById('ex8-canvas-title').textContent = '長方形土地四頂點種樹幾何圖解';
+                document.getElementById('ex8-canvas-badge').textContent = '最大樹距 45m，共種 20 棵';
+                mathBox.innerHTML = `
+                    <div class="font-black text-indigo-900">【解析步驟】</div>
+                    <div>1. 最大樹距 = <code class="font-mono-code font-bold">(315, 135) = 45 公尺</code></div>
+                    <div>2. 土地周長 = <code class="font-mono-code font-bold">(315 + 135) × 2 = 900 公尺</code></div>
+                    <div class="text-emerald-700 font-bold">3. 封閉圖形「棵數 = 間隔數」：900 ÷ 45 = 20 棵樹！</div>
+                `;
+            } else {
+                bBridge.className = 'flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-teal-600 text-white shadow-sm';
+                bTree.className = 'flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-300 text-slate-700 hover:bg-slate-100';
+                document.getElementById('ex8-title').textContent = 'P.123 隨堂：澎湖跨海大橋 2500m 路燈改裝問題';
+                document.getElementById('ex8-desc').innerHTML = '全長 <strong>2500 公尺</strong>的跨海大橋，原本在<strong>橋的兩側</strong>每隔 <strong>20 公尺</strong>裝一盞路燈（<strong>橋頭與橋尾未裝</strong>），現改為每隔 <strong>25 公尺</strong>裝一盞，不需拆除的路燈相鄰幾公尺？共有幾盞不需拆除？';
+                document.getElementById('ex8-canvas-title').textContent = '澎湖跨海大橋兩側路燈不拆位置圖解';
+                document.getElementById('ex8-canvas-badge').textContent = '每 100m 不拆，兩側共 48 盞';
+                mathBox.innerHTML = `
+                    <div class="font-black text-teal-900">【三大必考關鍵步驟】</div>
+                    <div>1. 不需拆除距離 = <code class="font-mono-code font-bold">[20, 25] = 100 公尺</code></div>
+                    <div>2. 單側間隔數 = <code class="font-mono-code font-bold">2500 ÷ 100 = 25 個間隔</code></div>
+                    <div class="text-rose-700 font-bold">3. 陷阱① 橋頭與橋尾未裝：單側盞數 = 25 - 1 = 24 盞</div>
+                    <div class="text-teal-700 font-bold">4. 陷阱② 橋的「兩側」皆裝：24 × 2 = 48 盞不需拆除！</div>
+                `;
+            }
+            drawEx8Canvas();
+        }
+
+        function drawEx8Canvas() {
+            const canvas = document.getElementById('ex8-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (currentEx8Mode === 'trees') {
+                const rw = 315, rh = 135;
+                const sx = (canvas.width - rw) / 2;
+                const sy = (canvas.height - rh) / 2 + 10;
+
+                ctx.fillStyle = '#ECFDF5';
+                ctx.fillRect(sx, sy, rw, rh);
+                ctx.strokeStyle = '#059669';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(sx, sy, rw, rh);
+
+                // 315÷45 = 7 等份，135÷45 = 3 等份
+                const step = 45;
+                const points = [];
+                for (let i = 0; i <= 7; i++) points.push({ x: sx + i * step, y: sy, corner: i === 0 || i === 7 });
+                for (let i = 1; i <= 3; i++) points.push({ x: sx + rw, y: sy + i * step, corner: i === 3 });
+                for (let i = 6; i >= 0; i--) points.push({ x: sx + i * step, y: sy + rh, corner: i === 0 });
+                for (let i = 2; i >= 1; i--) points.push({ x: sx, y: sy + i * step, corner: false });
+
+                points.forEach(pt => {
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, pt.corner ? 8 : 6, 0, Math.PI * 2);
+                    ctx.fillStyle = pt.corner ? '#D97706' : '#10B981';
+                    ctx.fill();
+                    ctx.strokeStyle = '#FFFFFF';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+
+                ctx.fillStyle = '#0F172A';
+                ctx.font = 'bold 13px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.fillText('長 315m ÷ 45m = 7 個間隔 ｜ 寬 135m ÷ 45m = 3 個間隔', canvas.width / 2, 30);
+                ctx.fillText('橘點：4 個頂點皆種樹 ｜ 綠點：邊上樹木（共 (7+3)×2 = 20 棵）', canvas.width / 2, canvas.height - 20);
+            } else {
+                // 繪製跨海大橋雙側路燈示意圖
+                const bx = 45, bw = canvas.width - 90;
+                const byTop = 105, byBot = 195;
+
+                ctx.fillStyle = '#E2E8F0';
+                ctx.fillRect(bx, byTop, bw, byBot - byTop);
+                ctx.strokeStyle = '#475569';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(bx, byTop); ctx.lineTo(bx + bw, byTop);
+                ctx.moveTo(bx, byBot); ctx.lineTo(bx + bw, byBot);
+                ctx.stroke();
+
+                // 畫出橋頭 0m、中間省略、橋尾 2500m
+                const numTicks = 10;
+                const stepX = bw / numTicks;
+                for (let i = 0; i <= numTicks; i++) {
+                    const x = bx + i * stepX;
+                    const isEnd = (i === 0 || i === numTicks);
+                    [byTop - 12, byBot + 12].forEach(y => {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 6, 0, Math.PI * 2);
+                        ctx.fillStyle = isEnd ? '#EF4444' : '#F59E0B';
+                        ctx.fill();
+                    });
+                }
+
+                ctx.fillStyle = '#0F172A';
+                ctx.font = 'bold 13px "Noto Sans TC"';
+                ctx.textAlign = 'center';
+                ctx.fillText('全長 2500m，每 [20, 25] = 100m 不拆（共 25 個間隔）', canvas.width / 2, 35);
+                ctx.fillStyle = '#DC2626';
+                ctx.fillText('紅點：橋頭(0m)與橋尾(2500m)未裝設 → 單側 25 - 1 = 24 盞', canvas.width / 2, 62);
+                ctx.fillStyle = '#0F766E';
+                ctx.fillText('黃點：橋的「兩側」皆有路燈 → 24 × 2 = 共 48 盞不需拆除！', canvas.width / 2, canvas.height - 22);
+            }
+        }
+
+        // ---------- 模組 4：P.125 自我檢核、P.127 挑錯題、P.126~127 自我評量 ----------
+        const selfCheck125Data = [
+            { id: 1, q: '1.「若 a 和 b 互質，則 a、b 必為質數」這個說法是否正確？', ans: false, exp: '錯誤！例如 8 和 9 互質 (8, 9) = 1，但 8 和 9 都是合數。' },
+            { id: 2, q: '2.「利用短除法 2│24, 36 → 3│12, 18 → 4, 6，可知 (24, 36) = 2 × 3 = 6」是否正確？', ans: false, exp: '錯誤！最下層的 4 和 6 還有共同質因數 2，未除盡！正確為 (24, 36) = 12。' },
+            { id: 3, q: '3.「利用標準分解式，可知 [2³ × 3, 2 × 3² × 7] = 2³ × 3²」是否正確？', ans: false, exp: '錯誤！最小公倍數必須包含「所有質因數」，漏掉了 × 7，正確為 2³ × 3² × 7。' },
+            { id: 4, q: '4.「若 a 和 b 互質，則 a × b = [a, b]」這個說法是否正確？', ans: true, exp: '正確！因為 (a, b) × [a, b] = a × b，當 (a, b) = 1 時，[a, b] = a × b。' }
+        ];
+
+        function resetSelfCheck125() {
+            const container = document.getElementById('self-check-125-list');
+            container.innerHTML = selfCheck125Data.map(item => `
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div class="text-xs font-bold text-slate-800">${item.q}</div>
+                    <div class="flex gap-2">
+                        <button onclick="answerSelfCheck125(${item.id}, true)" class="px-3 py-1 rounded-lg bg-white border border-slate-300 text-xs font-bold hover:bg-indigo-50">是（正確）</button>
+                        <button onclick="answerSelfCheck125(${item.id}, false)" class="px-3 py-1 rounded-lg bg-white border border-slate-300 text-xs font-bold hover:bg-indigo-50">否（錯誤）</button>
+                    </div>
+                    <div id="sc125-fb-${item.id}" class="hidden text-xs p-2 rounded-lg"></div>
+                </div>
+            `).join('');
+        }
+
+        function answerSelfCheck125(id, userChoice) {
+            const item = selfCheck125Data.find(x => x.id === id);
+            const fb = document.getElementById(`sc125-fb-${id}`);
+            const isCorrect = userChoice === item.ans;
+            fb.classList.remove('hidden');
+            fb.className = `text-xs p-2.5 rounded-lg font-medium ${isCorrect ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+            fb.innerHTML = `<strong>${isCorrect ? '✔ 答對了！' : '✘ 答錯囉！'}</strong> ${item.exp}`;
+        }
+
+        function checkP127Mistake(who, userSaidCorrect) {
+            if (who === 'yan') {
+                const fb = document.getElementById('p127-yan-feedback');
+                const right = (userSaidCorrect === false);
+                fb.classList.remove('hidden');
+                fb.className = `text-xs p-2.5 rounded-lg ${right ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+                fb.innerHTML = `<strong>${right ? '✔ 判斷正確！' : '✘ 再想一想！'}</strong> 小妍說法<strong>錯誤</strong>：105、75 的最大公因數 15 指的是「<strong>每組最多 15 人</strong>」，而不是分成 15 組！`;
+            } else {
+                const fb = document.getElementById('p127-yi-feedback');
+                const right = (userSaidCorrect === true);
+                fb.classList.remove('hidden');
+                fb.className = `text-xs p-2.5 rounded-lg ${right ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+                fb.innerHTML = `<strong>${right ? '✔ 判斷正確！' : '✘ 再想一想！'}</strong> 小翊說法<strong>正確</strong>：每組 15 人時，男生分成 105÷15 = 7 組，女生分成 75÷15 = 5 組，共可分成 7 + 5 = 12 組（低於 20 組）。`;
+            }
+        }
+
+        // P.126 ~ P.127 自我評量 6 大題
+        let currentQuizItems = [];
+        let quizAnsweredState = {};
+
+        function initTextbookQuiz(isVariant = false) {
+            quizAnsweredState = {};
+            document.getElementById('quiz-mode-badge').textContent = isVariant ? '課本 P.126 ~ P.127 自我評量（數字變體挑戰）' : '課本 P.126 ~ P.127 自我評量（課本原題庫）';
+
+            if (!isVariant) {
+                currentQuizItems = [
+                    {
+                        id: 1,
+                        tag: 'P.126 評量 1（互質判別）',
+                        q: '判斷下列三組數：(1) 1、6  (2) 2、29  (3) 3、33，其中兩數互質的有哪幾組？',
+                        options: ['僅 (1) 和 (2)', '僅 (2) 和 (3)', '(1)、(2)、(3) 皆互質', '僅 (2)'],
+                        ans: 0,
+                        exp: '因為 (1, 6) = 1、(2, 29) = 1、(3, 33) = 3，所以 (1) 1、6 和 (2) 2、29 互質。'
+                    },
+                    {
+                        id: 2,
+                        tag: 'P.126 評量 2（標準分解式因倍數）',
+                        q: '已知 a = 2³ × 5 × 7²，則下列哪一個數同時是 a 的倍數？',
+                        options: ['2³ × 7', '2 × 5²', '2³ × 5² × 7', '2⁴ × 5² × 7³'],
+                        ans: 3,
+                        exp: 'a 的倍數必須包含 2、5、7 且次方分別 ≥ 3、1、2，故 2⁴ × 5² × 7³ (H) 與 2³ × 5² × 7² × 11 (J) 是 a 的倍數。'
+                    },
+                    {
+                        id: 3,
+                        tag: 'P.126 評量 3（區間公倍數個數）',
+                        q: '在 1 到 1000 的整數中，同時是 30 的倍數，也是 42 的倍數共有幾個？',
+                        options: ['3 個', '4 個（210, 420, 630, 840）', '5 個', '6 個'],
+                        ans: 1,
+                        exp: '先求最小公倍數 [30, 42] = 2 × 3 × 5 × 7 = 210。1000 ÷ 210 = 4 ... 160，共有 210、420、630、840 四個。'
+                    },
+                    {
+                        id: 4,
+                        tag: 'P.126 評量 4（先分解再求 GCD/LCM）',
+                        q: '若 a = 55 × 25、b = 1155，則 (a, b) 與 [a, b] 以標準分解式表示分別為何？',
+                        options: ['(a,b) = 5×11，[a,b] = 3×5³×7×11', '(a,b) = 5²×11，[a,b] = 3×5²×7×11', '(a,b) = 5×11，[a,b] = 5³×7×11', '(a,b) = 3×5×11，[a,b] = 3×5³×7×11'],
+                        ans: 0,
+                        exp: '將兩數標準分解：a = 55×25 = 5³×11；b = 1155 = 3×5×7×11。故 (a,b) = 5×11，[a,b] = 3×5³×7×11。'
+                    },
+                    {
+                        id: 5,
+                        tag: 'P.127 評量 5（剪正方形桌墊）',
+                        q: '有一塊長 126 公分、寬 90 公分的長方形方格布，媽媽想剪成數個大小相同的正方形桌墊，每一個桌墊的最大面積是多少平方公分？',
+                        options: ['18 平方公分', '35 平方公分', '324 平方公分', '360 平方公分'],
+                        ans: 2,
+                        exp: '桌墊最大邊長為 (126, 90) = 18 公分，小心題目問的是「最大面積」= 18 × 18 = 324 平方公分！'
+                    },
+                    {
+                        id: 6,
+                        tag: 'P.127 評量 6（天干地支一花甲）',
+                        q: '中國古代以 10 個「天干」與 12 個「地支」互相搭配記錄年分（甲子、乙丑…直到癸亥），每循環一週期稱為「一花甲」，試問一花甲為幾年？',
+                        options: ['22 年', '60 年', '120 年', '30 年'],
+                        ans: 1,
+                        exp: '天干有 10 個、地支有 12 個，所以一花甲週期為 [10, 12] = 60 年。'
+                    }
+                ];
+            } else {
+                currentQuizItems = [
+                    {
+                        id: 1,
+                        tag: '變體挑戰 1（互質判別）',
+                        q: '下列哪一組數「互質」，但兩個數都是合數？',
+                        options: ['14 與 21', '15 與 28', '12 與 33', '9 與 27'],
+                        ans: 1,
+                        exp: '15 = 3×5、28 = 2²×7，兩數皆為合數且 (15, 28) = 1 互質！'
+                    },
+                    {
+                        id: 2,
+                        tag: '變體挑戰 2（標準分解式）',
+                        q: '已知 a = 2⁴ × 3² × 5，b = 2² × 3³ × 7，則 (a, b) 為何？',
+                        options: ['2² × 3²', '2⁴ × 3³ × 5 × 7', '2² × 3² × 5', '2⁴ × 3²'],
+                        ans: 0,
+                        exp: '共同質因數為 2 和 3，取次方最小者得 2² × 3² = 36。'
+                    },
+                    {
+                        id: 3,
+                        tag: '變體挑戰 3（區間公倍數個數）',
+                        q: '在 1 到 500 的整數中，同時是 18 的倍數也是 24 的倍數共有幾個？',
+                        options: ['5 個', '6 個', '7 個', '8 個'],
+                        ans: 1,
+                        exp: '[18, 24] = 72，500 ÷ 72 = 6 ... 68，共有 6 個（72, 144, 216, 288, 360, 432）。'
+                    },
+                    {
+                        id: 4,
+                        tag: '變體挑戰 4（兩數乘積關係）',
+                        q: '已知兩正整數 a、b 的最大公因數 (a, b) = 8，最小公倍數 [a, b] = 96，則 a × b = ？',
+                        options: ['104', '384', '768', '192'],
+                        ans: 2,
+                        exp: '由課本 P.119 公式：a × b = (a, b) × [a, b] = 8 × 96 = 768。'
+                    },
+                    {
+                        id: 5,
+                        tag: '變體挑戰 5（裁剪正方形塊數）',
+                        q: '將長 126 公分、寬 90 公分的長方形布，剪成邊長最大的正方形桌墊且無剩餘，共可剪出「幾塊」桌墊？',
+                        options: ['18 塊', '12 塊', '35 塊', '42 塊'],
+                        ans: 2,
+                        exp: '最大邊長 (126, 90) = 18 公分，長邊可剪 126÷18 = 7 塊，寬邊可剪 90÷18 = 5 塊，共 7 × 5 = 35 塊！'
+                    },
+                    {
+                        id: 6,
+                        tag: '變體挑戰 6（營隊男女分組）',
+                        q: '營隊男生 84 人、女生 60 人分開編組，每組人數相同且最多，則男女生「共可分成幾組」？',
+                        options: ['12 組', '7 組', '5 組', '14 組'],
+                        ans: 0,
+                        exp: '每組最多 (84, 60) = 12 人。男生分 84÷12 = 7 組，女生分 60÷12 = 5 組，共 7 + 5 = 12 組！'
+                    }
+                ];
+            }
+
+            renderTextbookQuiz();
+        }
+
+        function renderTextbookQuiz() {
+            const container = document.getElementById('textbook-quiz-container');
+            container.innerHTML = currentQuizItems.map(item => `
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-3">
+                    <div class="space-y-2">
+                        <span class="inline-block text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">${item.tag}</span>
+                        <h4 class="text-xs sm:text-sm font-black text-slate-900 leading-relaxed">${item.q}</h4>
+                        <div class="grid grid-cols-1 gap-1.5 pt-1">
+                            ${item.options.map((opt, idx) => `
+                                <button onclick="submitQuizOption(${item.id}, ${idx})" id="qbtn-${item.id}-${idx}" class="text-left px-3 py-2 rounded-lg bg-white border border-slate-300 hover:border-indigo-400 text-xs font-bold text-slate-700 transition">
+                                    (${String.fromCharCode(65 + idx)}) ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div id="qfb-${item.id}" class="hidden text-xs p-2.5 rounded-lg"></div>
+                </div>
+            `).join('');
+            updateQuizScore();
+        }
+
+        function submitQuizOption(qId, optIdx) {
+            const item = currentQuizItems.find(x => x.id === qId);
+            const isCorrect = (optIdx === item.ans);
+            quizAnsweredState[qId] = isCorrect;
+
+            item.options.forEach((_, idx) => {
+                const btn = document.getElementById(`qbtn-${qId}-${idx}`);
+                if (idx === item.ans) {
+                    btn.className = 'text-left px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-sm';
+                } else if (idx === optIdx && !isCorrect) {
+                    btn.className = 'text-left px-3 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold';
+                } else {
+                    btn.className = 'text-left px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-400';
+                }
+            });
+
+            const fb = document.getElementById(`qfb-${qId}`);
+            fb.classList.remove('hidden');
+            fb.className = `text-xs p-2.5 rounded-lg ${isCorrect ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+            fb.innerHTML = `<strong>${isCorrect ? '✔ 答對了！' : '✘ 答錯了！'}</strong> ${item.exp}`;
+            updateQuizScore();
+        }
+
+        function updateQuizScore() {
+            const score = Object.values(quizAnsweredState).filter(Boolean).length;
+            document.getElementById('quiz-score-badge').textContent = `得分：${score} / ${currentQuizItems.length}`;
+        }
+
+        // ---------- 網頁載入初始化與螢幕旋轉/縮放監聽 ----------
+        window.onload = function () {
+            loadFactorExplorer([12, 18]);
+            loadMultipleExplorer([9, 12, 18], 100);
+            updateProductIdentity();
+            renderCicadaTable();
+            computeShortDivisionLab();
+            switchExpCheckMode('factor');
+            loadEx5Scenario('fruit');
+            loadEx6Scenario('run');
+            loadEx7Scenario('tile_lcm');
+            loadEx8Scenario('trees');
+            resetSelfCheck125();
+            initTextbookQuiz(false);
+        };
+
+        window.addEventListener('resize', function () {
+            const appsSection = document.getElementById('section-p2_apps');
+            if (appsSection && !appsSection.classList.contains('hidden')) {
+                drawEx7Canvas();
+                drawEx8Canvas();
+            }
+        });
+    </script>
+</body>
+</html>
