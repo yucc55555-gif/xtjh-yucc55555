@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>國中數學 2-3：分數的四則運算（跨裝置互動教學）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F8FAFC;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #F1F5F9; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .math-frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+        .math-frac > span:first-child {
+            border-bottom: 1.5px solid currentColor;
+            padding: 0 2px;
+            width: 100%;
+            text-align: center;
+        }
+        .math-frac > span:last-child {
+            padding: 0 2px;
+        }
+        .math-mixed {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+        }
+        .strike {
+            position: relative;
+            display: inline-block;
+        }
+        .strike::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10%;
+            width: 120%;
+            height: 2px;
+            background-color: #EF4444;
+            transform: rotate(-25deg);
+        }
+        .strike-num {
+            position: absolute;
+            top: -12px;
+            right: -8px;
+            font-size: 10px;
+            color: #EF4444;
+            font-weight: 900;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 8px;
+            background: #E2E8F0;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #F59E0B;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .bottle-liquid {
+            transition: height 0.3s ease-out, top 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col pb-20 md:pb-8">
+
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-3">
+                <div class="flex items-center justify-between w-full lg:w-auto gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shrink-0">
+                            <i class="ph-bold ph-math-operations text-2xl"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="px-2 py-0.5 text-[11px] font-black bg-blue-100 text-blue-700 rounded-md">七上 2-3 節</span>
+                                <span class="text-xs text-slate-500 font-medium">課本 P.128 ~ P.146 全題庫收錄</span>
+                            </div>
+                            <h1 class="text-base sm:text-lg font-black tracking-tight text-slate-900 truncate mt-0.5">
+                                分數的四則運算 (三節課完整互動版＋類似題)
+                            </h1>
+                        </div>
+                    </div>
+                    <button onclick="window.toggleGlobalPracticeMode()" id="mob-global-mode-btn" class="lg:hidden px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold shrink-0">
+                        切換類似題
+                    </button>
+                </div>
+
+                <div class="hidden md:flex items-center gap-2">
+                    <nav class="flex bg-slate-100 p-1 rounded-xl gap-1">
+                        <button onclick="window.switchPeriod(1)" id="tab-p1" class="period-tab flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-blue-600 shadow-sm transition">
+                            <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-[10px]">第 1 節</span> 最簡分數與加減
+                        </button>
+                        <button onclick="window.switchPeriod(2)" id="tab-p2" class="period-tab flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition">
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[10px]">第 2 節</span> 乘法、倒數與除法
+                        </button>
+                        <button onclick="window.switchPeriod(3)" id="tab-p3" class="period-tab flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition">
+                            <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px]">第 3 節</span> 四則應用與全評量
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] grid grid-cols-3 px-1 py-1.5">
+        <button onclick="window.switchPeriod(1)" id="mob-tab-p1" class="mob-period-tab flex flex-col items-center justify-center py-1.5 rounded-xl text-blue-600 bg-blue-50 font-bold transition">
+            <i class="ph-bold ph-plus-minus text-lg"></i>
+            <span class="text-[11px] mt-0.5">1.最簡與加減</span>
+        </button>
+        <button onclick="window.switchPeriod(2)" id="mob-tab-p2" class="mob-period-tab flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition">
+            <i class="ph-bold ph-x-circle text-lg"></i>
+            <span class="text-[11px] mt-0.5">2.乘除與倒數</span>
+        </button>
+        <button onclick="window.switchPeriod(3)" id="mob-tab-p3" class="mob-period-tab flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition">
+            <i class="ph-bold ph-exam text-lg"></i>
+            <span class="text-[11px] mt-0.5">3.應用與評量</span>
+        </button>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-5 w-full space-y-6">
+
+        <!-- 第 1 節課 -->
+        <section id="section-p1" class="period-section fade-in space-y-6">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1.5">第一節課（45 分鐘）‧ 課本 P.128 ~ P.135</span>
+                    <h2 class="text-lg sm:text-xl font-black">主題 1 最簡分數與大小比較 ＆ 主題 2 分數的加減（例1 ~ 例6）</h2>
+                    <p class="text-xs sm:text-sm text-blue-100 mt-1">完整收錄：負分數符號、最簡分數、P.129 數字迷宮、正負分數比大小、各類加減與類似題</p>
+                </div>
+                <button onclick="window.switchPeriod(2)" class="self-start sm:self-center shrink-0 px-4 py-2 bg-white text-blue-700 rounded-xl text-xs sm:text-sm font-bold shadow hover:bg-blue-50 transition flex items-center gap-1.5">
+                    <span>前往第 2 節課</span>
+                    <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-blue-100 text-blue-700">課本 P.128 ~ P.129 觀念與動動腦</span>
+                        <span class="text-xs text-slate-500 font-mono-code">(a, b) = 1 互質</span>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900">負分數符號規則與最簡分數</h3>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm space-y-2">
+                        <div class="font-bold text-slate-800">1. 負號位置三合一（P.128）：</div>
+                        <div class="text-center py-1 font-mono-code text-base text-blue-700 bg-white rounded-lg border border-slate-200">
+                            <span class="math-frac"><span>-7</span><span>4</span></span> = <span class="math-frac"><span>7</span><span>-4</span></span> = -<span class="math-frac"><span>7</span><span>4</span></span>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="font-bold text-slate-800">2. P.129 動動腦：同除以最大公因數是最簡分數嗎？</span>
+                            <button onclick="document.getElementById('p129-brain-ans').classList.toggle('hidden')" class="px-2 py-0.5 rounded bg-amber-100 hover:bg-amber-200 text-amber-800 text-[11px] font-bold transition">點選顯示解答</button>
+                        </div>
+                        <p id="p129-brain-ans" class="hidden text-slate-700 bg-amber-50/80 p-2.5 rounded-lg border border-amber-200 leading-relaxed fade-in">
+                            <strong>答：是！</strong>當分子和分母<strong>互質</strong>時稱為最簡分數。將分子與分母同除以它們的<strong>最大公因數</strong>後，公因數只剩下 1，必為最簡分數！
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-50/70 p-4 rounded-xl border border-blue-200 space-y-3">
+                        <div class="text-xs font-bold text-blue-900">✨ P.129 隨堂練習：互動逐步約分器</div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="window.setSimplifier(45, 60)" id="simp-btn-45" class="px-2.5 py-1 rounded bg-blue-600 text-white text-xs font-bold">隨堂(1) 45/60</button>
+                            <button onclick="window.setSimplifier(-36, 96)" id="simp-btn--36" class="px-2.5 py-1 rounded bg-white border border-blue-300 text-blue-700 text-xs font-bold">隨堂(2) -36/96</button>
+                            <button onclick="window.setSimplifier(16, -81)" id="simp-btn-16" class="px-2.5 py-1 rounded bg-white border border-blue-300 text-blue-700 text-xs font-bold">隨堂(3) 16/-81</button>
+                            <button onclick="window.setSimplifier(-21, 9)" id="simp-btn--21" class="px-2.5 py-1 rounded bg-white border border-blue-300 text-blue-700 text-xs font-bold">隨堂(4) -21/9</button>
+                        </div>
+                        <div id="simplifier-result" class="bg-white p-3 rounded-lg border border-blue-200 text-xs sm:text-sm space-y-2"></div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800">課本 P.129 數學好好玩</span>
+                            <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">等值分數「數字迷宮」互動挑戰</h3>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="window.resetMaze()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">重置迷宮</button>
+                            <button onclick="window.solveMaze()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm">顯示解答路線</button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600">
+                        規則：從左上角「入口 <span class="math-frac"><span>12</span><span>18</span></span>」出發，點擊與 <span class="math-frac"><span>12</span><span>18</span></span>（即最簡分數 <strong class="text-emerald-700"><span class="math-frac"><span>2</span><span>3</span></span></strong>）相等的分數格子，一路連通到右下角出口！
+                    </p>
+                    <div id="maze-status" class="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                        請點擊迷宮中數值等於 2/3 的格子！（注意負負得正的陷阱喔）
+                    </div>
+                    <div class="overflow-x-auto">
+                        <div id="maze-grid" class="grid grid-cols-6 gap-1.5 min-w-[420px] p-2 bg-emerald-50/50 rounded-xl border-2 border-emerald-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+                    <div>
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-indigo-100 text-indigo-800">課本 P.129 ~ P.135 全例題與隨堂練習</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">第一節課：例 1 ～ 例 6 ＆ 隨堂練習</h3>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="window.revealAllInPeriod('p1')" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold transition">本節全部顯示答案</button>
+                        <button onclick="window.resetAllInPeriod('p1')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">全部隱藏重練</button>
+                        <div class="flex bg-slate-100 p-1 rounded-xl shrink-0">
+                            <button onclick="window.setLessonExamplesMode('textbook')" class="ex-mode-btn-textbook px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-blue-600 shadow-sm">課本例題＋隨堂練習</button>
+                            <button onclick="window.setLessonExamplesMode('similar')" class="ex-mode-btn-similar px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900">✨ 切換類似題</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="p1-examples-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- 第 2 節課 -->
+        <section id="section-p2" class="period-section hidden fade-in space-y-6">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1.5">第二節課（45 分鐘）‧ 課本 P.136 ~ P.140</span>
+                    <h2 class="text-lg sm:text-xl font-black">主題 3 分數的乘法運算 ＆ 主題 4 倒數與分數的除法（例7 ~ 例9）</h2>
+                </div>
+                <button onclick="window.switchPeriod(3)" class="self-start sm:self-center shrink-0 px-4 py-2 bg-white text-emerald-700 rounded-xl text-xs sm:text-sm font-bold shadow hover:bg-emerald-50 transition flex items-center gap-1.5">
+                    <span>前往第 3 節課</span>
+                    <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                    <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800">課本 P.136 ~ P.138 觀念核心</span>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900">分數乘法：「定正負 → 帶化假 → 先約分再乘」</h3>
+                    <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li><strong>符號法則：</strong>偶數個負數相乘為<strong class="text-emerald-600">正</strong>；奇數個負數相乘為<strong class="text-rose-600">負</strong>。</li>
+                        <li><strong>含帶分數：</strong>必須先將帶分數化為<strong>假分數</strong>。</li>
+                    </ul>
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center space-y-2">
+                        <div class="text-xs font-bold text-emerald-800">課本 P.137 例7(2) 斜角對消約分示範：</div>
+                        <div class="text-sm sm:text-base font-mono-code flex items-center justify-center flex-wrap gap-2 py-2 bg-white rounded-lg border border-emerald-200">
+                            <span>(<span class="math-frac"><span>-3</span><span>7</span></span>) × (<span class="math-frac"><span>-14</span><span>15</span></span>)</span>
+                            <span>= + ( <span class="math-frac"><span><span class="strike">3</span><span class="strike-num">1</span> × <span class="strike">14</span><span class="strike-num">2</span></span><span><span class="strike">7</span><span class="strike-num">1</span> × <span class="strike">15</span><span class="strike-num">5</span></span></span> )</span>
+                            <span>= <strong class="text-emerald-700"><span class="math-frac"><span>2</span><span>5</span></span></strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                    <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-teal-100 text-teal-800">課本 P.139 倒數與隨堂練習</span>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900">倒數互動轉換器</h3>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="window.showReciprocal('2/3')" class="px-2.5 py-1.5 rounded-lg bg-teal-600 text-white text-xs font-bold">例: 2/3</button>
+                        <button onclick="window.showReciprocal('4_1/3')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-teal-50 text-slate-700 text-xs font-bold">例: 4又1/3</button>
+                        <button onclick="window.showReciprocal('3_2/5')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-teal-50 text-slate-700 text-xs font-bold">隨堂(1): 3又2/5</button>
+                        <button onclick="window.showReciprocal('-4/7')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-teal-50 text-slate-700 text-xs font-bold">隨堂(2): -4/7</button>
+                        <button onclick="window.showReciprocal('-11/4')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-teal-50 text-slate-700 text-xs font-bold">隨堂(3): -11/4</button>
+                        <button onclick="window.showReciprocal('-1')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-teal-50 text-slate-700 text-xs font-bold">隨堂(4): -1</button>
+                        <button onclick="window.showReciprocal('0')" class="px-2.5 py-1.5 rounded-lg bg-rose-100 text-rose-800 text-xs font-bold">陷阱: 0 的倒數？</button>
+                    </div>
+                    <div id="reciprocal-display" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm"></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+                    <div>
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800">課本 P.137 ~ P.140 全例題與隨堂練習</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">第二節課：例 7 ～ 例 9 ＆ 隨堂練習</h3>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="window.revealAllInPeriod('p2')" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold transition">本節全部顯示答案</button>
+                        <button onclick="window.resetAllInPeriod('p2')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">全部隱藏重練</button>
+                        <div class="flex bg-slate-100 p-1 rounded-xl shrink-0">
+                            <button onclick="window.setLessonExamplesMode('textbook')" class="ex-mode-btn-textbook px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-blue-600 shadow-sm">課本例題＋隨堂練習</button>
+                            <button onclick="window.setLessonExamplesMode('similar')" class="ex-mode-btn-similar px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900">✨ 切換類似題</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="p2-examples-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- 第 3 節課 -->
+        <section id="section-p3" class="period-section hidden fade-in space-y-6">
+            <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-5 text-white shadow-md flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-1.5">第三節課（45 分鐘）‧ 課本 P.141 ~ P.146</span>
+                    <h2 class="text-lg sm:text-xl font-black">主題 5 四則混合運算、雙情境應用動畫與自我評量全題庫</h2>
+                </div>
+                <button onclick="window.scrollToQuiz()" class="shrink-0 bg-white text-orange-600 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow hover:bg-orange-50 transition flex items-center gap-2 self-start md:self-center">
+                    <i class="ph-bold ph-pencil-simple text-lg"></i> 前往 16 題全題庫評量
+                </button>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+                    <div>
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-amber-100 text-amber-800">課本 P.141 ~ P.142 例10 & 例11</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">第三節課：四則運算、分配律與生活應用</h3>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="window.revealAllInPeriod('p3')" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold transition">本節全部顯示答案</button>
+                        <button onclick="window.resetAllInPeriod('p3')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">全部隱藏重練</button>
+                        <div class="flex bg-slate-100 p-1 rounded-xl shrink-0">
+                            <button onclick="window.setLessonExamplesMode('textbook')" class="ex-mode-btn-textbook px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-blue-600 shadow-sm">課本例題＋隨堂練習</button>
+                            <button onclick="window.setLessonExamplesMode('similar')" class="ex-mode-btn-similar px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900">✨ 切換類似題</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="p3-examples-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- 動畫模擬器 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div>
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-amber-100 text-amber-800">課本 P.142 例11 ＆ 隨堂練習 觀念解說動畫</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">部分量求全體量：農用無人機噴藥 ＆ 果汁瓶重量解謎</h3>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="window.switchSimScenario('juice')" id="sim-btn-juice" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-white shadow-sm">🧃 P.142 隨堂：果汁連瓶重</button>
+                        <button onclick="window.switchSimScenario('drone')" id="sim-btn-drone" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50">🚁 P.142 例11：農用無人機噴藥</button>
+                    </div>
+                </div>
+
+                <div id="sim-panel-juice" class="space-y-4">
+                    <p class="text-xs sm:text-sm text-slate-600">
+                        <strong>P.142 隨堂練習：</strong>有一瓶果汁，連瓶子共重 <strong class="text-slate-800">930 公克</strong>，喝了 <strong class="text-blue-600">2/3</strong> 的果汁後，剩餘的果汁連瓶子共重 <strong class="text-slate-800">430 公克</strong>，求空瓶子重多少公克？
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="relative w-24 h-40 border-4 border-slate-400 rounded-t-lg rounded-b-xl overflow-hidden bg-white shadow-inner">
+                                <div id="juice-liquid" class="bottle-liquid absolute bottom-0 left-0 w-full bg-amber-400 opacity-90" style="height: 100%;"></div>
+                                <div class="absolute bottom-[33.3%] left-0 w-full border-t-2 border-dashed border-slate-500/40 z-10"></div>
+                                <div class="absolute bottom-[66.6%] left-0 w-full border-t-2 border-dashed border-slate-500/40 z-10"></div>
+                            </div>
+                            <div class="w-40 bg-slate-300 rounded-lg p-2 text-center shadow-inner">
+                                <div class="bg-slate-800 text-emerald-400 font-mono-code font-bold text-xl rounded py-1" id="scale-display">930 g</div>
+                            </div>
+                            <div class="w-full max-w-xs space-y-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-600">
+                                    <span>滿瓶(0)</span>
+                                    <span>喝1/3</span>
+                                    <span class="text-amber-600">喝2/3(430g)</span>
+                                    <span>空瓶</span>
+                                </div>
+                                <input type="range" id="juice-slider" min="0" max="3" step="1" value="2" oninput="window.updateJuiceAnimation()">
+                            </div>
+                        </div>
+                        <div class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+                            <div class="flex flex-wrap gap-2 pb-1">
+                                <button onclick="window.stepSimSolution('juice', 1)" id="juice-next-btn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition">▶ 點擊顯示下一步 (0/3)</button>
+                                <button onclick="window.stepSimSolution('juice', 99)" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition">完整顯示答案</button>
+                                <button onclick="window.stepSimSolution('juice', 0)" class="px-2.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition">隱藏</button>
+                            </div>
+                            <div id="juice-step-placeholder" class="p-4 rounded-xl border border-dashed border-slate-300 bg-white text-center text-slate-500 text-xs font-bold">💡 請先思考看看，再點擊上方按鈕！</div>
+                            <div class="hidden p-3 rounded-lg border border-blue-200 bg-blue-50 fade-in" id="juice-step-1">
+                                <span class="font-bold text-blue-800">步驟 1：找出喝掉的果汁重量</span><br>
+                                喝掉的果汁重 = 930 - <span id="current-weight">430</span> = <span id="drunk-weight" class="font-bold text-blue-700">500</span> 公克。
+                            </div>
+                            <div class="hidden p-3 rounded-lg border border-blue-200 bg-blue-50 fade-in" id="juice-step-2">
+                                <span class="font-bold text-slate-800">步驟 2：用除法反推「全部純果汁」原重</span><br>
+                                500 公克占全部果汁的 <span class="math-frac"><span>2</span><span>3</span></span>，故果汁原重 = 500 ÷ <span class="math-frac"><span>2</span><span>3</span></span> = 500 × <span class="math-frac"><span>3</span><span>2</span></span> = <strong>750 公克</strong>。
+                            </div>
+                            <div class="hidden p-3 rounded-lg border border-emerald-200 bg-emerald-50 fade-in" id="juice-step-3">
+                                <span class="font-bold text-emerald-900">步驟 3：求空瓶子重量</span><br>
+                                空瓶重 = 總重 930 - 果汁原重 750 = <strong class="text-rose-600 text-base">180 公克</strong>。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sim-panel-drone" class="hidden space-y-4">
+                    <p class="text-xs sm:text-sm text-slate-600">
+                        <strong>P.142 例11：</strong>一臺農用無人機裝滿農藥重 <strong class="text-slate-800">45 公斤</strong>，飛行 <strong class="text-blue-600">50 分鐘</strong>可將農藥全部噴完。某次飛行 <strong class="text-blue-600">20 分鐘</strong>後，無人機與剩餘農藥重 <strong class="text-slate-800">37 公斤</strong>，求空機重量？
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="w-full max-w-xs bg-white p-4 rounded-xl border border-slate-200 text-center space-y-2">
+                                <div class="text-3xl">🚁</div>
+                                <div class="text-xs font-bold text-slate-500">飛行時間：<span id="drone-time-label" class="text-blue-600 font-mono-code text-sm">20 分鐘</span>（噴掉 <span id="drone-frac-label" class="font-mono-code">20/50</span>）</div>
+                                <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden">
+                                    <div id="drone-tank-bar" class="bg-emerald-500 h-full transition-all" style="width: 60%;"></div>
+                                </div>
+                                <div class="bg-slate-800 text-amber-400 font-mono-code font-bold text-lg rounded py-1.5" id="drone-weight-display">總重：37 kg</div>
+                            </div>
+                            <div class="w-full max-w-xs space-y-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-600">
+                                    <span>0分(45kg)</span>
+                                    <span class="text-blue-600">20分(37kg)</span>
+                                    <span>50分(空機)</span>
+                                </div>
+                                <input type="range" id="drone-slider" min="0" max="50" step="10" value="20" oninput="window.updateDroneAnimation()">
+                            </div>
+                        </div>
+                        <div class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+                            <div class="flex flex-wrap gap-2 pb-1">
+                                <button onclick="window.stepSimSolution('drone', 1)" id="drone-next-btn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition">▶ 點擊顯示下一步 (0/3)</button>
+                                <button onclick="window.stepSimSolution('drone', 99)" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition">完整顯示答案</button>
+                                <button onclick="window.stepSimSolution('drone', 0)" class="px-2.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition">隱藏</button>
+                            </div>
+                            <div id="drone-step-placeholder" class="p-4 rounded-xl border border-dashed border-slate-300 bg-white text-center text-slate-500 text-xs font-bold">💡 請先思考看看，再點擊上方按鈕！</div>
+                            <div class="hidden p-3 rounded-lg border border-blue-200 bg-blue-50 fade-in" id="drone-step-1">
+                                <span class="font-bold text-blue-800">步驟 1：飛行 20 分鐘噴掉多少農藥？</span><br>
+                                用掉農藥重 = 45 - 37 = <strong>8 公斤</strong>，占全部農藥的 <span class="math-frac"><span>20</span><span>50</span></span> = <span class="math-frac"><span>2</span><span>5</span></span>。
+                            </div>
+                            <div class="hidden p-3 rounded-lg border border-blue-200 bg-blue-50 fade-in" id="drone-step-2">
+                                <span class="font-bold text-blue-800">步驟 2：裝滿的農藥原本有幾公斤？</span><br>
+                                裝滿農藥重 = 8 ÷ <span class="math-frac"><span>2</span><span>5</span></span> = 8 × <span class="math-frac"><span>5</span><span>2</span></span> = <strong>20 公斤</strong>。
+                            </div>
+                            <div class="hidden p-3 rounded-lg border border-emerald-200 bg-emerald-50 fade-in" id="drone-step-3">
+                                <span class="font-bold text-emerald-900">步驟 3：無人機空機重量</span><br>
+                                無人機未裝農藥重量 = 45 - 20 = <strong class="text-rose-600 text-base">25 公斤</strong>。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 自我檢核 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-indigo-100 text-indigo-800">課本 P.143 重點整理與自我檢核</span>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">觀念自我檢核（5 題是非題快問快答）</h3>
+                    </div>
+                    <button onclick="window.renderSelfCheck143()" class="text-xs font-bold text-slate-500 hover:text-blue-600">重置作答</button>
+                </div>
+                <div id="self-check-143-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- 全題庫與挑錯題 -->
+            <div id="quiz-anchor" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-800 text-white p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-black flex items-center gap-2">
+                            <i class="ph-bold ph-exam text-2xl text-amber-400"></i> 課本 P.144 ~ P.146 自我評量全題庫
+                        </h3>
+                        <p class="text-xs text-slate-300 mt-1">一題不漏收錄第 1～7 大題所有小題，並可切換「類似題挑戰」！</p>
+                    </div>
+                    <div class="flex bg-slate-700 p-1 rounded-xl shrink-0">
+                        <button onclick="window.setQuizMode('original')" id="mode-btn-original" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-800 transition">課本原題</button>
+                        <button onclick="window.setQuizMode('similar')" id="mode-btn-similar" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">✨ 類似題挑戰</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border-b border-slate-200 px-5 py-3 flex justify-between items-center">
+                    <span class="text-xs sm:text-sm font-bold text-slate-600">完成進度：<span id="quiz-progress" class="text-blue-600">0 / 16</span></span>
+                    <span class="text-xs sm:text-sm font-bold text-slate-600">答對題數：<span id="quiz-score" class="text-emerald-600 text-base sm:text-lg">0</span></span>
+                </div>
+
+                <div id="quiz-container" class="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                <div class="p-5 border-t-4 border-amber-100 bg-amber-50/50">
+                    <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900 mb-3 inline-block">課本 P.146 壓軸挑錯題</span>
+                    <h4 class="text-sm sm:text-base font-black text-slate-900 mb-2">小翊與小妍的計算過程，誰出錯了？錯在哪一步？</h4>
+                    <div class="bg-white p-3 rounded-lg border border-amber-200 font-mono-code text-sm font-bold text-center mb-4 overflow-x-auto whitespace-nowrap">
+                        題目： <span class="math-frac"><span>7</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> ÷ [ ( -<span class="math-frac"><span>8</span><span>5</span></span> ) + <span class="math-frac"><span>7</span><span>5</span></span> ]
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200">
+                            <div class="font-bold text-blue-700 border-b pb-2 mb-2 flex justify-between">
+                                <span>👦 小翊的算式</span>
+                                <span class="text-xs text-slate-400 font-normal">點擊按鈕判斷</span>
+                            </div>
+                            <div class="font-mono-code text-xs space-y-1.5 text-slate-600">
+                                <div>= <span class="math-frac"><span>7</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> ÷ (-<span class="math-frac"><span>8</span><span>5</span></span>) <span class="text-rose-600 font-bold bg-rose-100 px-1 rounded">- <span class="math-frac"><span>4</span><span>5</span></span> ÷ <span class="math-frac"><span>7</span><span>5</span></span></span></div>
+                                <div>= <span class="math-frac"><span>7</span><span>2</span></span> + <span class="math-frac"><span>4</span><span>5</span></span> × <span class="math-frac"><span>5</span><span>8</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> × <span class="math-frac"><span>5</span><span>7</span></span></div>
+                                <div>= <span class="math-frac"><span>7</span><span>2</span></span> + <span class="math-frac"><span>1</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>7</span></span> = <span class="math-frac"><span>24</span><span>7</span></span></div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="window.checkErrorSpotting('xiaoyi', true)" class="flex-1 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-xs font-bold">小翊算對了</button>
+                                <button onclick="window.checkErrorSpotting('xiaoyi', false)" class="flex-1 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-xs font-bold text-rose-600">小翊算錯了</button>
+                            </div>
+                            <div id="fb-xiaoyi" class="hidden mt-2 p-2.5 text-xs rounded-lg"></div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-slate-200">
+                            <div class="font-bold text-emerald-700 border-b pb-2 mb-2 flex justify-between">
+                                <span>👧 小妍的算式</span>
+                                <span class="text-xs text-slate-400 font-normal">點擊按鈕判斷</span>
+                            </div>
+                            <div class="font-mono-code text-xs space-y-1.5 text-slate-600">
+                                <div>= <span class="math-frac"><span>7</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> ÷ [ -<span class="math-frac"><span>8</span><span>5</span></span> + <span class="math-frac"><span>7</span><span>5</span></span> ]</div>
+                                <div>= <span class="math-frac"><span>7</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> ÷ <span class="text-rose-600 font-bold bg-rose-100 px-1 rounded">(-<span class="math-frac"><span>15</span><span>5</span></span>)</span> = <span class="math-frac"><span>7</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> ÷ (-3)</div>
+                                <div>= <span class="math-frac"><span>7</span><span>2</span></span> + <span class="math-frac"><span>4</span><span>15</span></span> = <span class="math-frac"><span>113</span><span>30</span></span></div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="window.checkErrorSpotting('xiaoyan', true)" class="flex-1 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-xs font-bold">小妍算對了</button>
+                                <button onclick="window.checkErrorSpotting('xiaoyan', false)" class="flex-1 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-xs font-bold text-rose-600">小妍算錯了</button>
+                            </div>
+                            <div id="fb-xiaoyan" class="hidden mt-2 p-2.5 text-xs rounded-lg"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button onclick="document.getElementById('correct-solution').classList.toggle('hidden')" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-xs sm:text-sm font-bold shadow hover:bg-slate-700">查看 P.146 正確解法步驟</button>
+                    </div>
+                    <div id="correct-solution" class="hidden mt-3 bg-emerald-50 border border-emerald-200 p-4 rounded-xl font-mono-code text-xs sm:text-sm text-emerald-900 text-center overflow-x-auto whitespace-nowrap">
+                        正確解法：原式 = <span class="math-frac"><span>7</span><span>2</span></span> - <span class="math-frac"><span>4</span><span>5</span></span> ÷ (-<span class="math-frac"><span>1</span><span>5</span></span>) 
+                        = <span class="math-frac"><span>7</span><span>2</span></span> + <span class="math-frac"><span>4</span><span>5</span></span> × 5 
+                        = <span class="math-frac"><span>7</span><span>2</span></span> + 4 = <strong><span class="math-frac"><span>15</span><span>2</span></span> (或 7<span class="math-frac"><span>1</span><span>2</span></span>)</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript 邏輯 (掛載於 window 以確保觸發) -->
+    <script>
+        // ==========================================
+        // 全域函式宣告
+        // ==========================================
+        window.f = function(num, den) { return `<span class="math-frac"><span>${num}</span><span>${den}</span></span>`; };
+        window.mf = function(whole, num, den) { return `<span class="math-mixed">${whole}<span class="math-frac"><span>${num}</span><span>${den}</span></span></span>`; };
+        window.gcd = function(a, b) { a = Math.abs(a); b = Math.abs(b); while(b) { let t = b; b = a % b; a = t; } return a || 1; };
+
+        // 節次切換
+        window.switchPeriod = function(periodNumber) {
+            document.querySelectorAll('.period-section').forEach(el => el.classList.add('hidden'));
+            const sec = document.getElementById(`section-p${periodNumber}`);
+            if (sec) sec.classList.remove('hidden');
+
+            document.querySelectorAll('.period-tab').forEach(el => {
+                el.className = 'period-tab flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition';
+            });
+            const dTab = document.getElementById(`tab-p${periodNumber}`);
+            if (dTab) dTab.className = 'period-tab flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-blue-600 shadow-sm transition';
+
+            document.querySelectorAll('.mob-period-tab').forEach(el => {
+                el.className = 'mob-period-tab flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium transition';
+            });
+            const mTab = document.getElementById(`mob-tab-p${periodNumber}`);
+            if (mTab) {
+                mTab.className = 'mob-period-tab flex flex-col items-center justify-center py-1.5 rounded-xl font-bold transition';
+                if (periodNumber === 1) mTab.classList.add('text-blue-600', 'bg-blue-50');
+                if (periodNumber === 2) mTab.classList.add('text-emerald-600', 'bg-emerald-50');
+                if (periodNumber === 3) mTab.classList.add('text-amber-600', 'bg-amber-50');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.toggleGlobalPracticeMode = function() {
+            const nextMode = window.currentExamplesMode === 'textbook' ? 'similar' : 'textbook';
+            window.setLessonExamplesMode(nextMode);
+            window.setQuizMode(nextMode === 'similar' ? 'similar' : 'original');
+            const btn = document.getElementById('mob-global-mode-btn');
+            if(btn) btn.textContent = nextMode === 'similar' ? '切換課本原題' : '切換類似題';
+        };
+
+        // ==========================================
+        // P.129 互動約分器
+        // ==========================================
+        window.currentSimpSteps = [];
+        window.currentSimpStepIdx = 0;
+
+        window.setSimplifier = function(num, den) {
+            const g = window.gcd(num, den);
+            const isNegative = (num * den) < 0;
+            const absN = Math.abs(num), absD = Math.abs(den);
+            const simpN = absN / g, simpD = absD / g;
+            const signStr = isNegative ? '-' : '';
+
+            [45, -36, 16, -21].forEach(k => {
+                const b = document.getElementById(`simp-btn-${k}`);
+                if (b) {
+                    b.className = (k === num)
+                        ? 'px-2.5 py-1 rounded bg-blue-600 text-white text-xs font-bold shadow-sm'
+                        : 'px-2.5 py-1 rounded bg-white border border-blue-300 text-blue-700 text-xs font-bold';
+                }
+            });
+
+            if (g === 1) {
+                window.currentSimpSteps = [
+                    `步驟 1：找最大公因數 ➔ (${absN}, ${absD}) = <strong>1</strong>（兩數互質）`,
+                    `步驟 2：分子與分母互質無法約分，<strong>本身即為最簡分數</strong>！記法：<strong class="text-emerald-700 text-base">${signStr}${window.f(simpN, simpD)}</strong>`
+                ];
+            } else {
+                window.currentSimpSteps = [
+                    `步驟 1：找最大公因數 ➔ (${absN}, ${absD}) = <strong class="text-blue-600">${g}</strong>`,
+                    `步驟 2：同除以 ${g} ➔ ${signStr}${window.f(`${absN}÷${g}`, `${absD}÷${g}`)} = <strong class="text-emerald-700 text-base">${signStr}${window.f(simpN, simpD)}</strong>`
+                ];
+            }
+            window.currentSimpStepIdx = 0;
+            window.renderSimplifierBox(num, den);
+        };
+
+        window.stepSimplifier = function(action, num, den) {
+            if (action === 'next') window.currentSimpStepIdx = Math.min(window.currentSimpSteps.length, window.currentSimpStepIdx + 1);
+            else if (action === 'all') window.currentSimpStepIdx = window.currentSimpSteps.length;
+            else window.currentSimpStepIdx = 0;
+            window.renderSimplifierBox(num, den);
+        };
+
+        window.renderSimplifierBox = function(num, den) {
+            const box = document.getElementById('simplifier-result');
+            if(!box) return;
+            const total = window.currentSimpSteps.length;
+            const visibleHtml = window.currentSimpSteps.slice(0, window.currentSimpStepIdx).map(s => `<div class="p-2.5 rounded-lg bg-blue-50/70 border border-blue-200 text-slate-800 fade-in">${s}</div>`).join('');
+            
+            box.innerHTML = `
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-100">
+                    <span class="font-bold text-slate-800">題目：化簡 ${window.f(num, den)}</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="window.stepSimplifier('next', ${num}, ${den})" ${window.currentSimpStepIdx >= total ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-bold transition">下一步 (${window.currentSimpStepIdx}/${total})</button>
+                        <button onclick="window.stepSimplifier('all', ${num}, ${den})" ${window.currentSimpStepIdx >= total ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-bold transition">完整顯示</button>
+                        ${window.currentSimpStepIdx > 0 ? `<button onclick="window.stepSimplifier('reset', ${num}, ${den})" class="px-2 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold">隱藏</button>` : ''}
+                    </div>
+                </div>
+                ${window.currentSimpStepIdx === 0
+                    ? `<div class="text-slate-500 text-xs py-2 text-center font-medium">💡 點擊「下一步」逐步查看約分過程</div>`
+                    : `<div class="space-y-1.5 pt-1">${visibleHtml}</div>`
+                }
+            `;
+        };
+
+        // ==========================================
+        // P.129 數字迷宮
+        // ==========================================
+        window.mazeCells = [
+            { label: window.f(12, 18), ok: true, path: true }, { label: window.f(1, 2), ok: false }, { label: window.f(3, 8), ok: false }, { label: window.f(20, 30), ok: true }, { label: window.f(30, 45), ok: true }, { label: '-' + window.f(4, 6), ok: false },
+            { label: window.f(2, 3), ok: true, path: true }, { label: window.f(10, 15), ok: true, path: true }, { label: window.f(-4, -6), ok: true, path: true }, { label: '0', ok: false }, { label: window.f(-6, -9), ok: true }, { label: window.f(2, 8), ok: false },
+            { label: window.f(3, 4), ok: false }, { label: window.f(4, 10), ok: false }, { label: window.f(-6, -9), ok: true, path: true }, { label: window.f(14, 21), ok: true }, { label: window.f(18, 27), ok: true }, { label: window.f(2, -3), ok: false },
+            { label: window.f(9, 15), ok: false }, { label: '-' + window.f(12, 18), ok: false }, { label: window.f(42, 63), ok: true, path: true }, { label: '-' + window.f(12, 18), ok: false }, { label: window.f(-28, -42), ok: true }, { label: '-' + window.f(6, 9), ok: false },
+            { label: window.f(7, 21), ok: false }, { label: window.f(4, 3), ok: false }, { label: window.f(-16, -24), ok: true, path: true }, { label: window.f(32, 48), ok: true, path: true }, { label: window.f(3, 10), ok: false }, { label: window.f(40, 66), ok: false },
+            { label: window.f(20, 36), ok: false }, { label: window.f(1, 4), ok: false }, { label: window.f(25, 75), ok: false }, { label: window.f(48, 72), ok: true, path: true }, { label: window.f(96, 144), ok: true, path: true }, { label: window.f(22, 33), ok: true, path: true }
+        ];
+        window.mazeSelected = { 0: true };
+
+        window.renderMaze = function() {
+            const grid = document.getElementById('maze-grid');
+            if(!grid) return;
+            grid.innerHTML = window.mazeCells.map((cell, idx) => {
+                const isSel = window.mazeSelected[idx];
+                let bg = 'bg-white hover:bg-emerald-50 text-slate-800 border-slate-200';
+                if (isSel) {
+                    bg = cell.ok
+                        ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm ring-2 ring-emerald-300'
+                        : 'bg-rose-500 text-white border-rose-600';
+                }
+                const badge = idx === 0 ? '<span class="text-[9px] block text-amber-200">入口</span>' : (idx === 35 ? '<span class="text-[9px] block text-amber-200">出口</span>' : '');
+                return `<button onclick="window.clickMazeCell(${idx})" class="p-1.5 rounded-lg border font-mono-code text-xs sm:text-sm font-bold transition flex flex-col items-center justify-center min-h-[54px] ${bg}">
+                    ${badge}${cell.label}
+                </button>`;
+            }).join('');
+        };
+
+        window.clickMazeCell = function(idx) {
+            window.mazeSelected[idx] = true;
+            const c = window.mazeCells[idx];
+            const st = document.getElementById('maze-status');
+            if (c.ok) {
+                st.className = 'text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-2 rounded-lg border border-emerald-200';
+                st.innerHTML = `✔ 正確！該格約分後等於 ${window.f(2, 3)}！繼續找找看！`;
+            } else {
+                st.className = 'text-xs font-bold text-rose-800 bg-rose-50 px-3 py-2 rounded-lg border border-rose-200';
+                st.innerHTML = `✘ 陷阱！該格不等於 ${window.f(2, 3)}。`;
+            }
+            window.renderMaze();
+        };
+
+        window.resetMaze = function() {
+            window.mazeSelected = { 0: true };
+            window.renderMaze();
+            const st = document.getElementById('maze-status');
+            st.className = 'text-xs font-bold text-blue-700 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200';
+            st.innerHTML = '請點擊迷宮中數值等於 2/3 的格子！';
+        };
+
+        window.solveMaze = function() {
+            window.mazeSelected = {};
+            window.mazeCells.forEach((c, i) => { if (c.path) window.mazeSelected[i] = true; });
+            const st = document.getElementById('maze-status');
+            st.className = 'text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-2 rounded-lg border border-emerald-200';
+            st.innerHTML = `🎉 已顯示課本 P.137 正確迷宮連線解答！`;
+            window.renderMaze();
+        };
+
+        // ==========================================
+        // P.139 倒數互動轉換器
+        // ==========================================
+        window.currentRecipKey = '2/3';
+        window.currentRecipStep = 0;
+        window.reciprocalStepsMap = {
+            '2/3': { title: `課本例(1)：求 ${window.f(2,3)} 的倒數`, steps: [`步驟 1：將分子與分母直接對調位置`, `步驟 2：得到倒數為 <strong class="text-teal-700 text-base">${window.f(3,2)}</strong>`] },
+            '4_1/3': { title: `課本例(2)：求 ${window.mf(4,1,3)} 的倒數`, steps: [`步驟 1：帶分數必須化為假分數 ➔ ${window.f(13,3)}`, `步驟 2：分子分母對調，得 <strong class="text-teal-700 text-base">${window.f(3,13)}</strong>`] },
+            '3_2/5': { title: `隨堂(1)：求 ${window.mf(3,2,5)} 的倒數`, steps: [`步驟 1：化為假分數 ➔ ${window.f(17,5)}`, `步驟 2：分子分母對調，得 <strong class="text-teal-700 text-base">${window.f(5,17)}</strong>`] },
+            '-4/7': { title: `隨堂(2)：求 -${window.f(4,7)} 的倒數`, steps: [`步驟 1：負數的倒數仍為負數（正負號不變）`, `步驟 2：分子分母對調，得 <strong class="text-teal-700 text-base">-${window.f(7,4)}</strong>`] },
+            '-11/4': { title: `隨堂(3)：求 -${window.f(11,4)} 的倒數`, steps: [`步驟 1：保留負號`, `步驟 2：分子分母對調，得 <strong class="text-teal-700 text-base">-${window.f(4,11)}</strong>`] },
+            '-1': { title: `隨堂(4)：求 -1 的倒數`, steps: [`步驟 1：將 -1 看成 -${window.f(1,1)}`, `步驟 2：分子分母對調，倒數仍是 <strong class="text-teal-700 text-base">-1</strong>`] },
+            '0': { title: `觀念陷阱：0 有沒有倒數？`, steps: [`步驟 1：思考 0 × (?) = 1 ？不可能等於 1`, `<span class="text-rose-700 font-bold">結論：分母不能為 0，所以 <strong>0 沒有倒數</strong>！</span>`] }
+        };
+
+        window.showReciprocal = function(key) {
+            window.currentRecipKey = key;
+            window.currentRecipStep = 0;
+            window.renderReciprocalBox();
+        };
+
+        window.stepReciprocal = function(action) {
+            const total = window.reciprocalStepsMap[window.currentRecipKey].steps.length;
+            if (action === 'next') window.currentRecipStep = Math.min(total, window.currentRecipStep + 1);
+            else if (action === 'all') window.currentRecipStep = total;
+            else window.currentRecipStep = 0;
+            window.renderReciprocalBox();
+        };
+
+        window.renderReciprocalBox = function() {
+            const box = document.getElementById('reciprocal-display');
+            if(!box) return;
+            const item = window.reciprocalStepsMap[window.currentRecipKey];
+            const total = item.steps.length;
+            const visibleHtml = item.steps.slice(0, window.currentRecipStep).map(s => `<div class="p-2.5 rounded-lg bg-white border border-teal-200 text-slate-800 fade-in">${s}</div>`).join('');
+
+            box.innerHTML = `
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200">
+                    <span class="font-bold text-slate-900">${item.title}</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="window.stepReciprocal('next')" ${window.currentRecipStep >= total ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white text-xs font-bold transition">下一步 (${window.currentRecipStep}/${total})</button>
+                        <button onclick="window.stepReciprocal('all')" ${window.currentRecipStep >= total ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-bold transition">完整顯示</button>
+                        ${window.currentRecipStep > 0 ? `<button onclick="window.stepReciprocal('reset')" class="px-2 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold">隱藏</button>` : ''}
+                    </div>
+                </div>
+                ${window.currentRecipStep === 0
+                    ? `<div class="text-slate-400 text-xs py-2.5 text-center font-medium">💡 請先在心中想出倒數，再點擊「下一步」！</div>`
+                    : `<div class="space-y-1.5 pt-2">${visibleHtml}</div>`
+                }
+            `;
+        };
+
+        // ==========================================
+        // 三節課所有例題與隨堂練習 (步進顯示)
+        // ==========================================
+        window.currentExamplesMode = 'textbook';
+        window.exampleStepProgress = {};
+
+        window.lessonExamplesData = {
+            p1: [
+                {
+                    id: 'ex1-1', tag: '例 1(1) 正分數比較', tbTitle: `比較 ${window.f(2,3)}、${window.f(3,4)}、${window.f(5,6)} 大小`,
+                    tbSteps: [`通分母 [3,4,6] = 12 ➔ ${window.f(8,12)}, ${window.f(9,12)}, ${window.f(10,12)}`, `因為 ${window.f(8,12)} < ${window.f(9,12)} < ${window.f(10,12)}`, `故 <strong class="text-blue-700">${window.f(2,3)} < ${window.f(3,4)} < ${window.f(5,6)}</strong>`],
+                    simTitle: `類似題 1(1) 比較 ${window.f(3,4)}、${window.f(5,6)}、${window.f(7,8)} 大小`,
+                    simSteps: [`通分母 24 ➔ ${window.f(18,24)}, ${window.f(20,24)}, ${window.f(21,24)}`, `故 <strong class="text-indigo-700">${window.f(3,4)} < ${window.f(5,6)} < ${window.f(7,8)}</strong>`]
+                },
+                {
+                    id: 'ex1-2', tag: '例 1(2) 同分子比較', tbTitle: `比較 ${window.f(2,7)}、${window.f(3,13)}、${window.f(5,23)} 大小`,
+                    tbSteps: [`擴成同分子 [2,3,5]=30 ➔ ${window.f(30,105)}, ${window.f(30,130)}, ${window.f(30,138)}`, `分子相同，分母大者值小`, `故 <strong class="text-blue-700">${window.f(2,7)} > ${window.f(3,13)} > ${window.f(5,23)}</strong>`],
+                    simTitle: `類似題 1(2) 比較 ${window.f(2,9)}、${window.f(3,14)} 大小`,
+                    simSteps: [`擴成同分子 6 ➔ ${window.f(6,27)}, ${window.f(6,28)}`, `故 <strong class="text-indigo-700">${window.f(2,9)} > ${window.f(3,14)}</strong>`]
+                },
+                {
+                    id: 'ex1-3', tag: 'P.130 隨堂', tbTitle: `比較 ${window.f(3,5)} 和 ${window.f(9,11)} 大小`,
+                    tbSteps: [`擴成同分子 9 ➔ ${window.f(3,5)} = ${window.f(9,15)}`, `因 ${window.f(9,11)} > ${window.f(9,15)}`, `故 <strong class="text-emerald-700">${window.f(9,11)} > ${window.f(3,5)}</strong>`],
+                    simTitle: `類似隨堂 比較 ${window.f(4,9)} 和 ${window.f(12,25)} 大小`,
+                    simSteps: [`擴成同分子 12 ➔ ${window.f(4,9)} = ${window.f(12,27)}`, `故 <strong class="text-indigo-700">${window.f(12,25)} > ${window.f(4,9)}</strong>`]
+                },
+                {
+                    id: 'ex2-1', tag: '例 2(1) 負分數比較', tbTitle: `比較 -${window.f(2,3)}、-${window.f(3,5)} 大小`,
+                    tbSteps: [`絕對值 ${window.f(10,15)} > ${window.f(9,15)}`, `負數絕對值大者值小`, `故 <strong class="text-blue-700">-${window.f(2,3)} < -${window.f(3,5)}</strong>`],
+                    simTitle: `類似題 2(1) 比較 -${window.f(5,6)}、-${window.f(7,8)} 大小`,
+                    simSteps: [`絕對值 ${window.f(20,24)} < ${window.f(21,24)}`, `故 <strong class="text-indigo-700">-${window.f(5,6)} > -${window.f(7,8)}</strong>`]
+                },
+                {
+                    id: 'ex2-2', tag: '例 2(2) 負帶分數比較', tbTitle: `比較 -${window.mf(1,1,2)}、-${window.mf(1,2,3)}、-${window.mf(1,3,4)} 大小`,
+                    tbSteps: [`絕對值比較 ${window.mf(1,6,12)} < ${window.mf(1,8,12)} < ${window.mf(1,9,12)}`, `加上負號後反轉`, `故 <strong class="text-blue-700">-${window.mf(1,1,2)} > -${window.mf(1,2,3)} > -${window.mf(1,3,4)}</strong>`],
+                    simTitle: `類似題 2(2) 比較 -${window.mf(2,1,3)}、-${window.mf(2,3,4)} 大小`,
+                    simSteps: [`絕對值 ${window.mf(2,4,12)} < ${window.mf(2,9,12)}`, `故 <strong class="text-indigo-700">-${window.mf(2,1,3)} > -${window.mf(2,3,4)}</strong>`]
+                },
+                {
+                    id: 'ex2-3', tag: 'P.131 隨堂(1)', tbTitle: `比較 -${window.f(3,4)}、-${window.f(7,9)}、-${window.f(11,12)} 大小`,
+                    tbSteps: [`絕對值通分 36 ➔ ${window.f(27,36)} < ${window.f(28,36)} < ${window.f(33,36)}`, `故 <strong class="text-emerald-700">-${window.f(3,4)} > -${window.f(7,9)} > -${window.f(11,12)}</strong>`],
+                    simTitle: `類似隨堂(1) 比較 -${window.f(2,3)}、-${window.f(7,9)} 大小`,
+                    simSteps: [`絕對值通分 9 ➔ ${window.f(6,9)} < ${window.f(7,9)}`, `故 <strong class="text-indigo-700">-${window.f(2,3)} > -${window.f(7,9)}</strong>`]
+                },
+                {
+                    id: 'ex2-4', tag: 'P.131 隨堂(2)', tbTitle: `比較 -${window.mf(2,5,7)}、-${window.mf(2,2,3)} 大小`,
+                    tbSteps: [`絕對值通分 21 ➔ ${window.mf(2,15,21)} > ${window.mf(2,14,21)}`, `故 <strong class="text-emerald-700">-${window.mf(2,5,7)} < -${window.mf(2,2,3)}</strong>`],
+                    simTitle: `類似隨堂(2) 比較 -${window.mf(3,2,5)}、-${window.mf(3,3,7)} 大小`,
+                    simSteps: [`絕對值通分 35 ➔ ${window.mf(3,14,35)} < ${window.mf(3,15,35)}`, `故 <strong class="text-indigo-700">-${window.mf(3,2,5)} > -${window.mf(3,3,7)}</strong>`]
+                },
+                {
+                    id: 'ex3-1', tag: '例 3 同分母加減', tbTitle: `(1) (-7/5) + (-9/5)  (2) (-7/8) - (-3/8)`,
+                    tbSteps: [`(1) = ${window.f('(-7)+(-9)',5)} = <strong class="text-blue-700">-${window.f(16,5)}</strong>`, `(2) = ${window.f('(-7)-(-3)',8)} = ${window.f(-4,8)} = <strong class="text-blue-700">-${window.f(1,2)}</strong>`],
+                    simTitle: `類似題 3 (1) (-11/7) + (-5/7)  (2) (-13/10) - (-3/10)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(16,7)}</strong>`, `(2) = <strong class="text-indigo-700">-1</strong>`]
+                },
+                {
+                    id: 'ex3-2', tag: 'P.133 隨堂', tbTitle: `(1) (-7/3) + 2/3  (2) 9/4 - (-3/4)`,
+                    tbSteps: [`(1) = ${window.f('(-7)+2',3)} = <strong class="text-emerald-700">-${window.f(5,3)}</strong>`, `(2) = ${window.f('9+3',4)} = ${window.f(12,4)} = <strong class="text-emerald-700">3</strong>`],
+                    simTitle: `類似隨堂 (1) (-8/3) + 5/3  (2) 11/4 - (-5/4)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-1</strong>`, `(2) = <strong class="text-indigo-700">4</strong>`]
+                },
+                {
+                    id: 'ex4-1', tag: '例 4 異分母加減', tbTitle: `(1) (-5/6) - 11/8  (2) 2/3 - (-3/4) + (-1/6)`,
+                    tbSteps: [`(1) 通分 24 ➔ (${window.f(-20,24)}) - ${window.f(33,24)} = <strong class="text-blue-700">-${window.f(53,24)}</strong>`, `(2) 通分 12 ➔ ${window.f('8+9-2',12)} = <strong class="text-blue-700">${window.f(5,4)}</strong>`],
+                    simTitle: `類似題 4 (1) (-3/4) - 5/6  (2) 3/4 - (-1/6) + (-5/12)`,
+                    simSteps: [`(1) 通分 12 = <strong class="text-indigo-700">-${window.f(19,12)}</strong>`, `(2) 通分 12 = <strong class="text-indigo-700">${window.f(1,2)}</strong>`]
+                },
+                {
+                    id: 'ex4-2', tag: 'P.133 隨堂', tbTitle: `(1) (-7/12) + 3/8  (2) 2/3 - 3/5 + (-1/6)`,
+                    tbSteps: [`(1) 通分 24 ➔ ${window.f('-14+9',24)} = <strong class="text-emerald-700">-${window.f(5,24)}</strong>`, `(2) 通分 30 ➔ ${window.f('20-18-5',30)} = <strong class="text-emerald-700">-${window.f(1,10)}</strong>`],
+                    simTitle: `類似隨堂 (1) (-5/9) + 1/6  (2) 3/4 - 2/5 + (-3/10)`,
+                    simSteps: [`(1) 通分 18 = <strong class="text-indigo-700">-${window.f(7,18)}</strong>`, `(2) 通分 20 = <strong class="text-indigo-700">${window.f(1,20)}</strong>`]
+                },
+                {
+                    id: 'ex5-1', tag: '例 5 去括號規則', tbTitle: `(1) 1/7 + (-1/7 - 2/9)  (2) (-28/29) - (-32/31 + 1/29)`,
+                    tbSteps: [`(1) = 1/7 - 1/7 - 2/9 = <strong class="text-blue-700">-${window.f(2,9)}</strong>`, `(2) 去括號 = (-28/29) + 32/31 - 1/29 = (-1) + 32/31 = <strong class="text-blue-700">${window.f(1,31)}</strong>`],
+                    simTitle: `類似題 5 (1) 5/13 + (-5/13 - 4/7)  (2) (-16/17) - (-25/23 + 1/17)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(4,7)}</strong>`, `(2) = <strong class="text-indigo-700">${window.f(2,23)}</strong>`]
+                },
+                {
+                    id: 'ex5-2', tag: 'P.134 隨堂', tbTitle: `(1) 15/91 + (-12/13 - 8/91)  (2) 34/99 - (7/99 - 17/22)`,
+                    tbSteps: [`(1) = (15/91 - 8/91) - 12/13 = 1/13 - 12/13 = <strong class="text-emerald-700">-${window.f(11,13)}</strong>`, `(2) = (34/99 - 7/99) + 17/22 = 3/11 + 17/22 = <strong class="text-emerald-700">${window.f(23,22)}</strong>`],
+                    simTitle: `類似隨堂 (1) 19/65 + (-9/13 - 6/65)  (2) 29/77 - (8/77 - 5/22)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(8,13)}</strong>`, `(2) = <strong class="text-indigo-700">${window.f(1,2)}</strong>`]
+                },
+                {
+                    id: 'ex6-1', tag: '例 6 帶分數加減', tbTitle: `計算 (-2又3/4) + 1又2/7`,
+                    tbSteps: [`拆整數與分數 = (-2+1) + (-3/4+2/7)`, `= (-1) - 13/28 = <strong class="text-blue-700">-${window.mf(1,13,28)}</strong>`],
+                    simTitle: `類似題 6 計算 -4又1/3 - 2又1/6`,
+                    simSteps: [`= (-4-2) + (-2/6-1/6) = <strong class="text-indigo-700">-${window.mf(6,1,2)}</strong>`]
+                },
+                {
+                    id: 'ex6-2', tag: 'P.135 隨堂(1)', tbTitle: `計算 -3又1/4 - 5又1/2`,
+                    tbSteps: [`= (-3-5) + (-1/4-2/4) = -8 - 3/4`, `= <strong class="text-emerald-700">-${window.mf(8,3,4)}</strong>`],
+                    simTitle: `類似隨堂(1) 計算 -2又1/5 - 3又2/5`,
+                    simSteps: [`= -5 - 3/5 = <strong class="text-indigo-700">-${window.mf(5,3,5)}</strong>`]
+                },
+                {
+                    id: 'ex6-3', tag: 'P.135 隨堂(2)', tbTitle: `計算 (-2又1/6) + 1又2/9 - (-1又1/3)`,
+                    tbSteps: [`化假分數 = (-13/6) + 11/9 + 4/3`, `通分 18 ➔ (-39+22+24)/18 = <strong class="text-emerald-700">${window.f(7,18)}</strong>`],
+                    simTitle: `類似隨堂(2) 計算 (-1又1/4) + 2又1/6 - 1又1/3`,
+                    simSteps: [`通分 12 ➔ (-15+26-16)/12 = <strong class="text-indigo-700">-${window.f(5,12)}</strong>`]
+                }
+            ],
+            p2: [
+                {
+                    id: 'ex7-1', tag: '例 7 分數乘法', tbTitle: `(1) (-3/2) × 1/4  (2) (-3/7) × (-14/15)`,
+                    tbSteps: [`(1) 異號得負 = -(${window.f(3,2)} × ${window.f(1,4)}) = <strong class="text-blue-700">-${window.f(3,8)}</strong>`, `(2) 同號得正，斜角約分(3約15,7約14) = <strong class="text-blue-700">${window.f(2,5)}</strong>`],
+                    simTitle: `類似題 7 (1) (-5/12) × 9/10  (2) (-15/16) × (-24/25)`,
+                    simSteps: [`(1) 約分 = <strong class="text-indigo-700">-${window.f(3,8)}</strong>`, `(2) 約分 = <strong class="text-indigo-700">${window.f(9,10)}</strong>`]
+                },
+                {
+                    id: 'ex7-2', tag: 'P.137 隨堂', tbTitle: `(1) 8/21 × (-7/4)  (2) (-16/9) × (-27/28)`,
+                    tbSteps: [`(1) 異號得負約分 = <strong class="text-emerald-700">-${window.f(2,3)}</strong>`, `(2) 同號得正約分 = <strong class="text-emerald-700">${window.f(12,7)}</strong>`],
+                    simTitle: `類似隨堂 (1) 9/20 × (-5/3)  (2) (-15/16) × (-24/25)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(3,4)}</strong>`, `(2) = <strong class="text-indigo-700">${window.f(9,10)}</strong>`]
+                },
+                {
+                    id: 'ex8-1', tag: '例 8 連乘', tbTitle: `(1) (-2又1/3) × (-5/21) × (-1又1/5)  (2) (-2/3) 連乘 4 次`,
+                    tbSteps: [`(1) 3 個負數相乘為負，帶化假 = -(${window.f(7,3)} × ${window.f(5,21)} × ${window.f(6,5)}) = <strong class="text-blue-700">-${window.f(2,3)}</strong>`, `(2) 4 個負數相乘為正 = +(${window.f(16,81)}) = <strong class="text-blue-700">${window.f(16,81)}</strong>`],
+                    simTitle: `類似題 8 (1) (-1又3/4) × (-8/15) × (-1又1/7)  (2) (-3/4) 連乘 3 次`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(16,15)}</strong>`, `(2) = <strong class="text-indigo-700">-${window.f(27,64)}</strong>`]
+                },
+                {
+                    id: 'ex8-2', tag: 'P.138 隨堂', tbTitle: `(1) (-1又2/3) × 1/6 × (-1又4/5)  (2) (-1/2) 連乘 5 次`,
+                    tbSteps: [`(1) 2 負相乘為正 = +(${window.f(5,3)} × ${window.f(1,6)} × ${window.f(9,5)}) = <strong class="text-emerald-700">${window.f(1,2)}</strong>`, `(2) 5 負相乘為負 = <strong class="text-emerald-700">-${window.f(1,32)}</strong>`],
+                    simTitle: `類似隨堂 (1) (-2又1/2) × 3/10 × (-1又1/3)  (2) (-1/3) 連乘 4 次`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">1</strong>`, `(2) = <strong class="text-indigo-700">${window.f(1,81)}</strong>`]
+                },
+                {
+                    id: 'ex9-1', tag: '例 9 除法運算', tbTitle: `(1) 5/6 ÷ (-3又1/3)  (2) (-9/8) ÷ (-3/4) ÷ 1/3`,
+                    tbSteps: [`(1) 帶化假並乘倒數 = -(${window.f(5,6)} × ${window.f(3,10)}) = <strong class="text-blue-700">-${window.f(1,4)}</strong>`, `(2) 改乘倒數 = ${window.f(9,8)} × ${window.f(4,3)} × ${window.f(3,1)} = <strong class="text-blue-700">${window.f(9,2)}</strong>`],
+                    simTitle: `類似題 9 (1) (-7/12) ÷ 2又1/3  (2) (-15/16) ÷ (-5/8) ÷ (-3/2)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(1,4)}</strong>`, `(2) = <strong class="text-indigo-700">-1</strong>`]
+                },
+                {
+                    id: 'ex9-2', tag: 'P.140 隨堂', tbTitle: `(1) (-2/3) ÷ 1又3/5  (2) (-3/4) ÷ (-1又1/6) ÷ (-9/4)`,
+                    tbSteps: [`(1) = -(${window.f(2,3)} × ${window.f(5,8)}) = <strong class="text-emerald-700">-${window.f(5,12)}</strong>`, `(2) 3 負得負 = -(${window.f(3,4)} × ${window.f(6,7)} × ${window.f(4,9)}) = <strong class="text-emerald-700">-${window.f(2,7)}</strong>`],
+                    simTitle: `類似隨堂 (1) (-4/5) ÷ 2又2/5  (2) (-5/6) ÷ (-1又1/9) ÷ (-3/2)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">-${window.f(1,3)}</strong>`, `(2) = <strong class="text-indigo-700">-${window.f(1,2)}</strong>`]
+                }
+            ],
+            p3: [
+                {
+                    id: 'ex10-1', tag: '例 10 四則運算與分配律', tbTitle: `(1) 3/2 ÷ (-0.6) × (-3/5) - 1/2  (2) 3又9/11 × (-57) - 1又9/11 × (-57)`,
+                    tbSteps: [`(1) 先乘除後加減 = ${window.f(3,2)} × (-${window.f(5,3)}) × (-${window.f(3,5)}) - ${window.f(1,2)} = ${window.f(3,2)} - ${window.f(1,2)} = <strong class="text-blue-700">1</strong>`, `(2) 提出 (-57) ➔ (${window.mf(3,9,11)} - ${window.mf(1,9,11)}) × (-57) = 2 × (-57) = <strong class="text-blue-700">-114</strong>`],
+                    simTitle: `類似題 10 (1) 5/4 ÷ (-0.5) × (-2/5) - 1/4  (2) 5又3/7 × (-42) - 2又3/7 × (-42)`,
+                    simSteps: [`(1) = 1 - 1/4 = <strong class="text-indigo-700">${window.f(3,4)}</strong>`, `(2) 提出 (-42) = 3 × (-42) = <strong class="text-indigo-700">-126</strong>`]
+                },
+                {
+                    id: 'ex10-2', tag: 'P.141 隨堂', tbTitle: `(1) (-1/3) × (3/5 + 1.5) ÷ (-21/5)  (2) 9又1/5 × 239 + 9又1/5 × (-39)`,
+                    tbSteps: [`(1) = (-${window.f(1,3)}) × ${window.f(21,10)} × (-${window.f(5,21)}) = <strong class="text-emerald-700">${window.f(1,6)}</strong>`, `(2) 提出 9又1/5 = ${window.f(46,5)} × [239 + (-39)] = ${window.f(46,5)} × 200 = <strong class="text-emerald-700">1840</strong>`],
+                    simTitle: `類似隨堂 (1) (-1/4) × (2/3 + 0.5) ÷ (-7/6)  (2) 6又1/4 × 178 + 6又1/4 × (-78)`,
+                    simSteps: [`(1) = <strong class="text-indigo-700">${window.f(1,4)}</strong>`, `(2) = <strong class="text-indigo-700">625</strong>`]
+                }
+            ]
+        };
+
+        window.setLessonExamplesMode = function(mode) {
+            window.currentExamplesMode = mode;
+            document.querySelectorAll('.ex-mode-btn-textbook').forEach(b => {
+                b.className = mode === 'textbook'
+                    ? 'ex-mode-btn-textbook px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-blue-600 shadow-sm'
+                    : 'ex-mode-btn-textbook px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900';
+            });
+            document.querySelectorAll('.ex-mode-btn-similar').forEach(b => {
+                b.className = mode === 'similar'
+                    ? 'ex-mode-btn-similar px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm'
+                    : 'ex-mode-btn-similar px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900';
+            });
+            window.renderAllLessonExamples();
+        };
+
+        window.renderAllLessonExamples = function() {
+            ['p1', 'p2', 'p3'].forEach(pKey => {
+                const container = document.getElementById(`${pKey}-examples-container`);
+                if (!container) return;
+                container.innerHTML = window.lessonExamplesData[pKey].map(item => {
+                    const isSim = window.currentExamplesMode === 'similar';
+                    const steps = isSim ? item.simSteps : item.tbSteps;
+                    const total = steps.length;
+                    const currentStep = window.exampleStepProgress[item.id] || 0;
+                    
+                    const visibleHtml = steps.slice(0, currentStep).map(s => `<div class="p-2.5 rounded-lg ${isSim ? 'bg-indigo-50/70 border-indigo-100' : 'bg-blue-50/70 border-blue-100'} text-slate-800 fade-in border">${s}</div>`).join('');
+                    
+                    return `
+                        <div class="p-4 rounded-xl border ${isSim ? 'bg-indigo-50/40 border-indigo-200' : 'bg-slate-50 border-slate-200'} space-y-2 flex flex-col h-full">
+                            <div class="flex items-center justify-between border-b ${isSim ? 'border-indigo-100' : 'border-slate-200'} pb-2">
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded ${isSim ? 'bg-indigo-600 text-white' : 'bg-blue-100 text-blue-800'}">${item.tag}</span>
+                                <span class="text-[11px] font-bold ${isSim ? 'text-indigo-700' : 'text-slate-400'}">${isSim ? '★ 類似題' : '課本原題'}</span>
+                            </div>
+                            <h4 class="text-xs sm:text-sm font-black text-slate-900 leading-relaxed">${isSim ? item.simTitle : item.tbTitle}</h4>
+                            <div class="flex flex-wrap gap-1.5 pt-1 mt-auto">
+                                <button onclick="window.stepExampleItem('${pKey}', '${item.id}', 'next')" ${currentStep >= total ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-bold transition">下一步 (${currentStep}/${total})</button>
+                                <button onclick="window.stepExampleItem('${pKey}', '${item.id}', 'all')" ${currentStep >= total ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-bold transition">完整顯示</button>
+                                ${currentStep > 0 ? `<button onclick="window.stepExampleItem('${pKey}', '${item.id}', 'reset')" class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50">隱藏</button>` : ''}
+                            </div>
+                            ${currentStep === 0 
+                                ? `<div class="text-slate-400 text-xs py-3 text-center bg-white rounded-lg border border-slate-200 font-medium">💡 點擊上方按鈕逐步解題！</div>`
+                                : `<div class="space-y-1.5 bg-white p-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm leading-relaxed">${visibleHtml}</div>`
+                            }
+                        </div>
+                    `;
+                }).join('');
+            });
+        };
+
+        window.stepExampleItem = function(pKey, exId, action) {
+            const item = window.lessonExamplesData[pKey].find(x => x.id === exId);
+            const isSim = window.currentExamplesMode === 'similar';
+            const total = (isSim ? item.simSteps : item.tbSteps).length;
+            
+            if (action === 'next') {
+                window.exampleStepProgress[exId] = Math.min(total, (window.exampleStepProgress[exId] || 0) + 1);
+            } else if (action === 'all') {
+                window.exampleStepProgress[exId] = total;
+            } else {
+                window.exampleStepProgress[exId] = 0;
+            }
+            window.renderAllLessonExamples();
+        };
+
+        window.handlePeriodExamplesBulk = function(pKey, op) {
+            const isSim = window.currentExamplesMode === 'similar';
+            if (!window.lessonExamplesData[pKey]) return;
+            window.lessonExamplesData[pKey].forEach(item => {
+                const steps = isSim ? item.simSteps : item.tbSteps;
+                window.exampleStepProgress[item.id] = (op === 'reveal') ? steps.length : 0;
+            });
+            window.renderAllLessonExamples();
+        };
+
+        window.revealAllInPeriod = function(pKey) { window.handlePeriodExamplesBulk(pKey, 'reveal'); };
+        window.resetAllInPeriod = function(pKey) { window.handlePeriodExamplesBulk(pKey, 'reset'); };
+
+        // ==========================================
+        // 第三節課：雙模擬動畫 (果汁瓶 & 農用無人機)
+        // ==========================================
+        window.switchSimScenario = function(type) {
+            const pJ = document.getElementById('sim-panel-juice');
+            const pD = document.getElementById('sim-panel-drone');
+            const bJ = document.getElementById('sim-btn-juice');
+            const bD = document.getElementById('sim-btn-drone');
+            if (type === 'juice') {
+                pJ.classList.remove('hidden');
+                pD.classList.add('hidden');
+                bJ.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-white shadow-sm';
+                bD.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50';
+            } else {
+                pD.classList.remove('hidden');
+                pJ.classList.add('hidden');
+                bD.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-white shadow-sm';
+                bJ.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50';
+            }
+        };
+
+        window.updateJuiceAnimation = function() {
+            const val = parseInt(document.getElementById('juice-slider').value);
+            const weights = [930, 680, 430, 180];
+            const heights = ['100%', '66.6%', '33.3%', '0%'];
+            document.getElementById('juice-liquid').style.height = heights[val];
+            document.getElementById('scale-display').textContent = weights[val] + ' g';
+            const curEl = document.getElementById('current-weight');
+            const drEl = document.getElementById('drunk-weight');
+            if(curEl) curEl.textContent = weights[val];
+            if(drEl) drEl.textContent = 930 - weights[val];
+        };
+
+        window.updateDroneAnimation = function() {
+            const mins = parseInt(document.getElementById('drone-slider').value);
+            const usedKg = (mins / 50) * 20;
+            const curWeight = 45 - usedKg;
+            const remainPct = Math.round(((50 - mins) / 50) * 100);
+            document.getElementById('drone-time-label').textContent = `${mins} 分鐘`;
+            document.getElementById('drone-frac-label').textContent = `${mins}/50`;
+            document.getElementById('drone-tank-bar').style.width = `${remainPct}%`;
+            document.getElementById('drone-weight-display').textContent = `總重：${curWeight} kg`;
+        };
+
+        window.stepSimSolution = function(type, step) {
+            const placeholder = document.getElementById(`${type}-step-placeholder`);
+            const btn = document.getElementById(`${type}-next-btn`);
+            let currentS = 0;
+            for(let i=1; i<=3; i++) {
+                if(!document.getElementById(`${type}-step-${i}`).classList.contains('hidden')) currentS++;
+            }
+            
+            if (step === 99) {
+                [1, 2, 3].forEach(i => document.getElementById(`${type}-step-${i}`).classList.remove('hidden'));
+                if(placeholder) placeholder.classList.add('hidden');
+                if(btn) btn.textContent = `▶ 顯示下一步 (3/3)`;
+                if(btn) btn.disabled = true;
+            } else if (step === 0) {
+                [1, 2, 3].forEach(i => document.getElementById(`${type}-step-${i}`).classList.add('hidden'));
+                if(placeholder) placeholder.classList.remove('hidden');
+                if(btn) btn.textContent = `▶ 顯示下一步 (0/3)`;
+                if(btn) btn.disabled = false;
+            } else {
+                if(currentS < 3) {
+                    currentS++;
+                    document.getElementById(`${type}-step-${currentS}`).classList.remove('hidden');
+                    if(placeholder) placeholder.classList.add('hidden');
+                    if(btn) btn.textContent = `▶ 顯示下一步 (${currentS}/3)`;
+                    if(currentS === 3 && btn) btn.disabled = true;
+                }
+            }
+        };
+
+        // ==========================================
+        // 課本 P.143 自我檢核 (5題是非題)
+        // ==========================================
+        window.selfCheck143Items = [
+            { id: 1, q: `1.「${window.f(13, 91)} 為最簡分數」這個說法是否正確？`, ans: false, exp: `錯誤！因為 91 = 13 × 7，分子分母可同除以 13 約分成 ${window.f(1, 7)}。` },
+            { id: 2, q: `2.「-${window.f(3, 4)} > -${window.f(4, 5)}」這個式子是否正確？`, ans: true, exp: `正確！|-${window.f(3,4)}| = ${window.f(15,20)} < |-${window.f(4,5)}| = ${window.f(16,20)}，負數絕對值愈小其值愈大。` },
+            { id: 3, q: `3.「-${window.mf(3, 2, 5)} 的倒數為 -${window.mf(3, 5, 2)}」這個說法是否正確？`, ans: false, exp: `錯誤！帶分數求倒數必須先化為假分數：-${window.mf(3,2,5)} = -${window.f(17,5)}，倒數應為 -${window.f(5,17)}。` },
+            { id: 4, q: `4.「${window.f(3, 5)} + ${window.f(2, 7)} = ${window.f('3+2', '5+7')}」這個式子是否正確？`, ans: false, exp: `錯誤！異分母相加必須先通分（公分母 35），不能將分母與分母直接相加！` },
+            { id: 5, q: `5.「${window.mf(1, 2, 3)} × ${window.f(1, 2)} = ${window.f('5×1', '3×2')}」這個式子是否正確？`, ans: true, exp: `正確！將帶分數 ${window.mf(1,2,3)} 化為假分數 ${window.f(5,3)} 後，分子乘分子、分母乘分母。` }
+        ];
+
+        window.renderSelfCheck143 = function() {
+            const container = document.getElementById('self-check-143-container');
+            if(!container) return;
+            container.innerHTML = window.selfCheck143Items.map(item => `
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div class="text-xs sm:text-sm font-bold text-slate-800">${item.q}</div>
+                    <div class="flex gap-2">
+                        <button onclick="window.ansSelfCheck143(${item.id}, true)" class="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold hover:bg-blue-50">是（正確）</button>
+                        <button onclick="window.ansSelfCheck143(${item.id}, false)" class="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold hover:bg-rose-50">否（錯誤）</button>
+                    </div>
+                    <div id="sc143-fb-${item.id}" class="hidden text-xs p-2.5 rounded-lg"></div>
+                </div>
+            `).join('');
+        };
+
+        window.ansSelfCheck143 = function(id, choice) {
+            const it = window.selfCheck143Items.find(x => x.id === id);
+            const fb = document.getElementById(`sc143-fb-${id}`);
+            const ok = choice === it.ans;
+            fb.classList.remove('hidden');
+            fb.className = `text-xs p-2.5 rounded-lg ${ok ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+            fb.innerHTML = `<strong>${ok ? '✔ 答對了！' : '✘ 答錯囉！'}</strong> ${it.exp}`;
+        };
+
+        // ==========================================
+        // 課本 P.144 ~ P.146 自我評量全題庫 (16題)
+        // ==========================================
+        window.quizData = {
+            'original': [
+                { id: 'o1', tag: 'P.144 1-(1)', q: `將 -${window.f(14, 42)} 化成最簡分數。`, opts: [`-${window.f(7, 21)}`, `-${window.f(1, 3)}`, `-${window.f(2, 6)}`, `${window.f(1, 3)}`], ans: 1, exp: `分子分母同除以最大公因數 14 得 -${window.f(1, 3)}。` },
+                { id: 'o2', tag: 'P.144 1-(2)', q: `將 -${window.f(75, 60)} 化成最簡分數。`, opts: [`-${window.f(15, 12)}`, `-${window.f(5, 4)}`, `-${window.f(3, 4)}`, `${window.f(5, 4)}`], ans: 1, exp: `分子分母同除以 15 得 -${window.f(5, 4)}。` },
+                { id: 'o3', tag: 'P.144 2-(1)', q: `比較 -${window.f(4, 7)} 和 -${window.f(4, 5)} 的大小。`, opts: [`-${window.f(4, 7)} > -${window.f(4, 5)}`, `-${window.f(4, 7)} < -${window.f(4, 5)}`, `相等`, `無法比較`], ans: 0, exp: `絕對值 ${window.f(4,7)} < ${window.f(4,5)}，負數絕對值愈小其值愈大。` },
+                { id: 'o4', tag: 'P.144 2-(2)', q: `比較 -${window.mf(1, 2, 3)}、-${window.mf(1, 5, 12)}、-${window.mf(2, 5, 19)} 的大小。`, opts: [`-${window.mf(2,5,19)} < -${window.mf(1,2,3)} < -${window.mf(1,5,12)}`, `-${window.mf(1,5,12)} < -${window.mf(1,2,3)} < -${window.mf(2,5,19)}`, `-${window.mf(2,5,19)} < -${window.mf(1,5,12)} < -${window.mf(1,2,3)}`, `-${window.mf(1,2,3)} < -${window.mf(2,5,19)} < -${window.mf(1,5,12)}`], ans: 0, exp: `絕對值比較後加負號反轉。` },
+                { id: 'o5', tag: 'P.144 3-(1)', q: `計算 (-${window.f(7, 6)}) + ${window.f(4, 3)} 的值。`, opts: [`-${window.f(1, 6)}`, `${window.f(1, 6)}`, `-${window.f(15, 6)}`, `${window.f(1, 3)}`], ans: 1, exp: `通分得 ${window.f('-7+8', 6)} = ${window.f(1, 6)}。` },
+                { id: 'o6', tag: 'P.144 3-(2)', q: `計算 (-${window.f(11, 20)}) - (-${window.f(5, 12)}) 的值。`, opts: [`-${window.f(16, 60)}`, `-${window.f(2, 15)}`, `${window.f(2, 15)}`, `-${window.f(4, 15)}`], ans: 1, exp: `通分母 60 得 -${window.f(33,60)} + ${window.f(25,60)} = -${window.f(2,15)}。` },
+                { id: 'o7', tag: 'P.144 3-(3)', q: `計算 (${window.mf(5, 1, 3)} + ${window.mf(3, 1, 2)}) - (${window.mf(5, 1, 3)} - ${window.mf(3, 1, 2)}) 的值。`, opts: [`0`, `7`, `${window.mf(10, 2, 3)}`, `${window.mf(3, 1, 2)}`], ans: 1, exp: `去括號對消得 0 + 7 = 7。` },
+                { id: 'o8', tag: 'P.144 3-(4)', q: `計算 ${window.mf(3, 1, 2)} - ${window.mf(1, 2, 3)} + (-${window.f(5, 6)}) 的值。`, opts: [`1`, `2`, `${window.f(5, 6)}`, `0`], ans: 0, exp: `化假分數通分得 ${window.f(6,6)} = 1。` },
+                { id: 'o9', tag: 'P.145 4', q: `如果 ${window.f(5, 6)} 的分母加上 18，分子要加上多少其值不變？`, opts: [`18`, `20`, `15`, `24`], ans: 2, exp: `分母變為 24（4倍），分子 5×4 = 20，故分子需加 15。` },
+                { id: 'o10', tag: 'P.145 5-(1)&(2)', q: `分別寫出 ${window.f(5, 8)} 與 -${window.f(11, 12)} 的倒數。`, opts: [`${window.f(8, 5)} 與 -${window.f(12, 11)}`, `-${window.f(8, 5)} 與 ${window.f(12, 11)}`, `${window.f(8, 5)} 與 ${window.f(12, 11)}`, `${window.f(5, 8)} 與 -${window.f(11, 12)}`], ans: 0, exp: `分子分母直接對調。` },
+                { id: 'o11', tag: 'P.145 5-(3)&(4)', q: `分別寫出 -3 與 -${window.mf(2, 1, 5)} 的倒數。`, opts: [`-${window.f(1, 3)} 與 -${window.f(5, 11)}`, `${window.f(1, 3)} 與 -${window.f(5, 11)}`, `-${window.f(1, 3)} 與 -${window.mf(2, 5, 1)}`, `-3 與 -${window.f(11, 5)}`], ans: 0, exp: `-3 = -${window.f(3,1)} 倒數為 -${window.f(1,3)}；-${window.mf(2,1,5)} = -${window.f(11,5)} 倒數為 -${window.f(5,11)}。` },
+                { id: 'o12', tag: 'P.145 6-(1)', q: `計算 ${window.f(1, 4)} ÷ (-${window.mf(1, 1, 2)}) × ${window.f(4, 3)} 的值。`, opts: [`-${window.f(2, 9)}`, `${window.f(2, 9)}`, `-${window.f(1, 9)}`, `-${window.f(4, 9)}`], ans: 0, exp: `${window.f(1, 4)} × (-${window.f(2, 3)}) × ${window.f(4, 3)} = -${window.f(2, 9)}。` },
+                { id: 'o13', tag: 'P.145 6-(2)', q: `計算 (-${window.f(1, 2)}) ÷ ${window.f(8, 5)} × (-${window.mf(2, 2, 5)}) 的值。`, opts: [`-${window.f(3, 4)}`, `${window.f(3, 4)}`, `${window.f(5, 16)}`, `-${window.f(5, 16)}`], ans: 1, exp: `負負得正計算得 ${window.f(3, 4)}。` },
+                { id: 'o14', tag: 'P.145 6-(3)', q: `計算 6 - [ (-15) ÷ (-0.6) - (-0.6) × 15 ] 的值。`, opts: [`-28`, `-10`, `22`, `40`], ans: 0, exp: `6 - (25 + 9) = -28。` },
+                { id: 'o15', tag: 'P.145 6-(4)', q: `計算 ${window.mf(200, 1, 4)} × 423 - ${window.mf(200, 1, 4)} × 23 的值。`, opts: [`80100`, `80000`, `80400`, `40000`], ans: 0, exp: `分配律：${window.mf(200,1,4)} × 400 = 80100。` },
+                { id: 'o16', tag: 'P.146 7', q: `圖書館添購 450 本新書，添購前數量是添購後的 ${window.f(7, 10)} 倍，添購前共有幾本書？`, opts: [`1500 本`, `1050 本`, `750 本`, `630 本`], ans: 1, exp: `新書占後來的 ${window.f(3, 10)}，後來有 1500 本，添購前有 1500 - 450 = 1050 本。` }
+            ],
+            'similar': [
+                { id: 's1', tag: '類似題 1-(1)', q: `將 -${window.f(18, 45)} 化成最簡分數。`, opts: [`-${window.f(6, 15)}`, `-${window.f(2, 5)}`, `-${window.f(3, 5)}`, `${window.f(2, 5)}`], ans: 1, exp: `同除以 9 得 -${window.f(2, 5)}。` },
+                { id: 's2', tag: '類似題 1-(2)', q: `將 -${window.f(84, 48)} 化成最簡分數。`, opts: [`-${window.f(21, 12)}`, `-${window.f(7, 4)}`, `-${window.f(4, 7)}`, `${window.f(7, 4)}`], ans: 1, exp: `同除以 12 得 -${window.f(7, 4)}。` },
+                { id: 's3', tag: '類似題 2-(1)', q: `比較 -${window.f(6, 11)} 和 -${window.f(6, 13)} 的大小。`, opts: [`-${window.f(6, 11)} < -${window.f(6, 13)}`, `-${window.f(6, 11)} > -${window.f(6, 13)}`, `相等`, `無法比較`], ans: 0, exp: `加負號後反轉。` },
+                { id: 's4', tag: '類似題 2-(2)', q: `比較 -${window.mf(1, 3, 4)}、-${window.mf(1, 7, 12)}、-${window.mf(2, 1, 9)} 的大小。`, opts: [`-${window.mf(2,1,9)} < -${window.mf(1,3,4)} < -${window.mf(1,7,12)}`, `-${window.mf(1,7,12)} < -${window.mf(1,3,4)} < -${window.mf(2,1,9)}`, `-${window.mf(2,1,9)} < -${window.mf(1,7,12)} < -${window.mf(1,3,4)}`, `-${window.mf(1,3,4)} < -${window.mf(2,1,9)} < -${window.mf(1,7,12)}`], ans: 0, exp: `絕對值比較後加負號。` },
+                { id: 's5', tag: '類似題 3-(1)', q: `計算 (-${window.f(9, 8)}) + ${window.f(5, 4)} 的值。`, opts: [`-${window.f(1, 8)}`, `${window.f(1, 8)}`, `${window.f(3, 8)}`, `-${window.f(19, 8)}`], ans: 1, exp: `通分得 ${window.f(1, 8)}。` },
+                { id: 's6', tag: '類似題 3-(2)', q: `計算 (-${window.f(7, 15)}) - (-${window.f(3, 10)}) 的值。`, opts: [`-${window.f(1, 6)}`, `${window.f(1, 6)}`, `-${window.f(23, 30)}`, `-${window.f(1, 5)}`], ans: 0, exp: `通分母 30 得 -${window.f(1, 6)}。` },
+                { id: 's7', tag: '類似題 3-(3)', q: `計算 (${window.mf(7, 2, 5)} + ${window.mf(4, 1, 2)}) - (${window.mf(7, 2, 5)} - ${window.mf(4, 1, 2)}) 的值。`, opts: [`0`, `9`, `${window.mf(14, 4, 5)}`, `${window.mf(4, 1, 2)}`], ans: 1, exp: `去括號對消得 9。` },
+                { id: 's8', tag: '類似題 3-(4)', q: `計算 ${window.mf(4, 1, 3)} - ${window.mf(2, 1, 2)} + (-${window.f(5, 6)}) 的值。`, opts: [`1`, `2`, `${window.f(1, 6)}`, `0`], ans: 0, exp: `化假分數計算得 1。` },
+                { id: 's9', tag: '類似題 4', q: `如果 ${window.f(3, 8)} 的分母加上 24，分子要加上多少其值不變？`, opts: [`24`, `12`, `9`, `15`], ans: 2, exp: `分母變 32（4倍），分子需加 9。` },
+                { id: 's10', tag: '類似題 5-(1)&(2)', q: `分別寫出 ${window.f(7, 9)} 與 -${window.f(13, 6)} 的倒數。`, opts: [`${window.f(9, 7)} 與 -${window.f(6, 13)}`, `-${window.f(9, 7)} 與 ${window.f(6, 13)}`, `${window.f(9, 7)} 與 ${window.f(6, 13)}`, `${window.f(7, 9)} 與 -${window.f(6, 13)}`], ans: 0, exp: `分子分母對調。` },
+                { id: 's11', tag: '類似題 5-(3)&(4)', q: `分別寫出 -5 與 -${window.mf(3, 1, 4)} 的倒數。`, opts: [`-${window.f(1, 5)} 與 -${window.f(4, 13)}`, `${window.f(1, 5)} 與 -${window.f(4, 13)}`, `-${window.f(1, 5)} 與 -${window.mf(3, 4, 1)}`, `-5 與 -${window.f(13, 4)}`], ans: 0, exp: `倒數為 -${window.f(1,5)} 與 -${window.f(4,13)}。` },
+                { id: 's12', tag: '類似題 6-(1)', q: `計算 ${window.f(3, 8)} ÷ (-${window.mf(1, 1, 4)}) × ${window.f(5, 6)} 的值。`, opts: [`-${window.f(1, 4)}`, `${window.f(1, 4)}`, `-${window.f(3, 16)}`, `-${window.f(5, 16)}`], ans: 0, exp: `計算得 -${window.f(1, 4)}。` },
+                { id: 's13', tag: '類似題 6-(2)', q: `計算 (-${window.f(2, 3)}) ÷ ${window.f(4, 9)} × (-${window.mf(1, 1, 3)}) 的值。`, opts: [`-2`, `2`, `${window.f(8, 27)}`, `-${window.f(8, 27)}`], ans: 1, exp: `計算得 2。` },
+                { id: 's14', tag: '類似題 6-(3)', q: `計算 10 - [ (-12) ÷ (-0.4) - (-0.4) × 15 ] 的值。`, opts: [`-26`, `-14`, `16`, `34`], ans: 0, exp: `計算得 -26。` },
+                { id: 's15', tag: '類似題 6-(4)', q: `計算 ${window.mf(100, 1, 5)} × 317 - ${window.mf(100, 1, 5)} × 17 的值。`, opts: [`30060`, `30000`, `30600`, `30020`], ans: 0, exp: `分配律計算得 30060。` },
+                { id: 's16', tag: '類似題 7', q: `果園新種 360 棵果樹，新種前數量是新種後的 ${window.f(5, 8)} 倍，新種前共有幾棵？`, opts: [`960 棵`, `600 棵`, `540 棵`, `480 棵`], ans: 1, exp: `新種前有 600 棵。` }
+            ]
+        };
+
+        window.quizMode = 'original';
+        window.quizAnsweredState = {};
+
+        window.setQuizMode = function(mode) {
+            window.quizMode = mode;
+            window.quizAnsweredState = {};
+            
+            const btnOrig = document.getElementById('mode-btn-original');
+            const btnSim = document.getElementById('mode-btn-similar');
+            if(btnOrig) btnOrig.className = mode === 'original' ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-800 transition' : 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition';
+            if(btnSim) btnSim.className = mode === 'similar' ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-800 transition' : 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition';
+            
+            window.renderTextbookQuiz();
+        };
+
+        window.renderTextbookQuiz = function() {
+            const container = document.getElementById('quiz-container');
+            if(!container) return;
+            const questions = window.quizData[window.quizMode];
+            container.innerHTML = questions.map(q => `
+                <div class="bg-slate-50/70 border border-slate-200 rounded-xl p-4 flex flex-col space-y-3">
+                    <div>
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded ${window.quizMode === 'similar' ? 'bg-indigo-100 text-indigo-700' : 'bg-blue-100 text-blue-700'}">${q.tag}</span>
+                        <div class="mt-2 text-xs sm:text-sm font-bold text-slate-900 leading-relaxed">${q.q}</div>
+                    </div>
+                    <div class="space-y-1.5 mt-auto">
+                        ${q.opts.map((opt, idx) => `
+                            <button onclick="window.submitQuizOption('${q.id}', ${idx}, ${q.ans})" id="btn-${q.id}-${idx}" class="w-full text-left px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs sm:text-sm bg-white hover:border-blue-400 transition">
+                                (${String.fromCharCode(65 + idx)}) ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="fb-${q.id}" class="hidden mt-2 p-3 rounded-lg text-xs leading-relaxed"></div>
+                </div>
+            `).join('');
+            window.updateQuizScore();
+        };
+
+        window.submitQuizOption = function(qId, selectedIdx, correctIdx) {
+            if (window.quizAnsweredState[qId] !== undefined) return;
+            const isCorrect = selectedIdx === correctIdx;
+            window.quizAnsweredState[qId] = isCorrect;
+
+            const q = window.quizData[window.quizMode].find(x => x.id === qId);
+            if (!q) return;
+            
+            q.opts.forEach((_, idx) => {
+                const btn = document.getElementById(`btn-${qId}-${idx}`);
+                if (!btn) return;
+                btn.classList.remove('hover:border-blue-400');
+                if (idx === correctIdx) {
+                    btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-700', 'font-bold');
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+                } else {
+                    btn.classList.add('opacity-50', 'bg-slate-100');
+                }
+                btn.disabled = true;
+            });
+
+            const fb = document.getElementById(`fb-${qId}`);
+            if (fb) {
+                fb.classList.remove('hidden');
+                fb.className = `mt-2 p-3 rounded-lg text-xs leading-relaxed border ${isCorrect ? 'bg-emerald-50 text-emerald-900 border-emerald-200' : 'bg-rose-50 text-rose-900 border-rose-200'}`;
+                fb.innerHTML = `<strong>${isCorrect ? '✔ 答對了！' : '✘ 答錯囉！'}</strong><div class="mt-1">${q.exp}</div>`;
+            }
+            window.updateQuizScore();
+        };
+
+        window.updateQuizScore = function() {
+            const total = window.quizData[window.quizMode].length;
+            const answeredCount = Object.keys(window.quizAnsweredState).length;
+            const correctCount = Object.values(window.quizAnsweredState).filter(v => v).length;
+            const progEl = document.getElementById('quiz-progress');
+            const scoreEl = document.getElementById('quiz-score');
+            if (progEl) progEl.textContent = `${answeredCount} / ${total}`;
+            if (scoreEl) scoreEl.textContent = correctCount;
+        };
+
+        window.scrollToQuiz = function() {
+            document.getElementById('quiz-anchor').scrollIntoView({ behavior: 'smooth' });
+        };
+        
+        window.checkErrorSpotting = function(who, isCorrect) {
+            if (who === 'xiaoyi') {
+                const fb = document.getElementById('fb-xiaoyi');
+                const right = (isCorrect === false);
+                fb.classList.remove('hidden');
+                fb.className = `mt-2 text-xs p-2.5 rounded-lg ${right ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+                fb.innerHTML = `<strong>${right ? '✔ 判斷正確！' : '✘ 再想一想！'}</strong> 小翊算錯了！除法「不」適用對加減法的分配律。`;
+            } else {
+                const fb = document.getElementById('fb-xiaoyan');
+                const right = (isCorrect === false);
+                fb.classList.remove('hidden');
+                fb.className = `mt-2 text-xs p-2.5 rounded-lg ${right ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`;
+                fb.innerHTML = `<strong>${right ? '✔ 判斷正確！' : '✘ 再想一想！'}</strong> 小妍也算錯了！中括號內異號相加 (-8)+7 = -1，不是 -15 喔。`;
+            }
+        };
+
+        // ==========================================
+        // 初始化載入
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            window.setSimplifier(45, 60);
+            window.renderMaze();
+            window.showReciprocal('2/3');
+            window.setLessonExamplesMode('textbook');
+            window.renderSelfCheck143();
+            window.setQuizMode('original');
+            window.updateJuiceAnimation();
+            window.updateDroneAnimation();
+            window.switchPeriod(1);
+        });
+
+    </script>
+</body>
+</html>
