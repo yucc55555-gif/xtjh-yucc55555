@@ -1,0 +1,2777 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-4 指數律｜國中七年級數學三節課互動教學系統</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --math-scale: 1;
+        }
+        body.projector-mode {
+            --math-scale: 1.25;
+            font-size: 1.15rem;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        /* 專業數學排版元件 */
+        .math-expr {
+            font-family: 'Times New Roman', 'Noto Sans TC', serif;
+            display: inline;
+            vertical-align: middle;
+            font-size: calc(1.15rem * var(--math-scale));
+            line-height: 1.8;
+            margin: 0 2px;
+        }
+        .mfrac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 3px;
+            font-family: 'Times New Roman', serif;
+        }
+        .mfrac > .num {
+            border-bottom: 1.6px solid currentColor;
+            padding: 0 5px 1px 5px;
+            line-height: 1.15;
+            text-align: center;
+            width: 100%;
+        }
+        .mfrac > .den {
+            padding: 1px 5px 0 5px;
+            line-height: 1.15;
+            text-align: center;
+            width: 100%;
+        }
+        .mparen {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            position: relative;
+        }
+        .mparen::before {
+            content: "(";
+            font-size: 1.65em;
+            font-weight: 300;
+            line-height: 0.85;
+            margin-right: 1px;
+            transform: scaleY(1.18);
+        }
+        .mparen::after {
+            content: ")";
+            font-size: 1.65em;
+            font-weight: 300;
+            line-height: 0.85;
+            margin-left: 1px;
+            transform: scaleY(1.18);
+        }
+        .mbracket {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .mbracket::before {
+            content: "[";
+            font-size: 1.75em;
+            font-weight: 300;
+            line-height: 0.85;
+            margin-right: 2px;
+            transform: scaleY(1.22);
+        }
+        .mbracket::after {
+            content: "]";
+            font-size: 1.75em;
+            font-weight: 300;
+            line-height: 0.85;
+            margin-left: 2px;
+            transform: scaleY(1.22);
+        }
+        /* 修正圖二：強制上標位置在右上角，不受 flex 置中影響 */
+        .msup {
+            display: inline-block;
+            font-size: 0.7em;
+            line-height: 1;
+            position: relative;
+            top: -0.52em;
+            vertical-align: baseline;
+            margin-left: 1px;
+            margin-right: 1px;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+        .mfrac-sup {
+            display: inline-block;
+            font-size: 0.72em;
+            line-height: 1;
+            position: relative;
+            top: -0.85em;
+            vertical-align: middle;
+            margin-left: 2px;
+            margin-right: 2px;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+        /* 填空方框 */
+        .ans-box {
+            width: 3.4rem;
+            height: 2.2rem;
+            text-align: center;
+            border: 2px solid #6366f1;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            font-family: 'JetBrains Mono', 'Noto Sans TC', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1e1b4b;
+            transition: all 0.2s;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            vertical-align: middle;
+        }
+        .ans-box::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+            font-size: 0.8rem;
+        }
+        .ans-box:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+            background-color: #eef2ff;
+        }
+        .ans-box.sup-input {
+            width: 2.3rem;
+            height: 1.75rem;
+            font-size: 0.85rem;
+            position: relative;
+            top: -0.55em;
+            vertical-align: baseline;
+            margin-left: 2px;
+        }
+        .ans-box.frac-sup-input {
+            width: 2.3rem;
+            height: 1.75rem;
+            font-size: 0.85rem;
+            position: relative;
+            top: -0.85em;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+        .ans-box.correct {
+            border-color: #10b981;
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .ans-box.wrong {
+            border-color: #ef4444;
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* 動畫效果 */
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .cancel-slash {
+            position: relative;
+            display: inline-block;
+        }
+        .cancel-slash::after {
+            content: '';
+            position: absolute;
+            left: -10%;
+            top: 45%;
+            width: 120%;
+            height: 2.5px;
+            background-color: #ef4444;
+            transform: rotate(-28deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 頂部固定導覽列 -->
+    <header class="sticky top-0 z-50 bg-slate-900 text-white shadow-lg border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+            <!-- 標題區 -->
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white font-black px-3 py-1.5 rounded-xl text-sm sm:text-base shadow-inner flex items-center gap-1.5">
+                    <span>2-4</span>
+                    <span class="hidden sm:inline">指數律</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg leading-tight">國中七年級數學｜互動教學與隨堂評量</h1>
+                    <p class="text-xs text-slate-400 hidden md:block">100% 完整收錄課本 P.147~P.161 所有例題、隨堂練習、自我評量與素養題 + 動態類似題</p>
+                </div>
+            </div>
+
+            <!-- 進度與教師控制工具 -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="bg-slate-800 px-3 py-1 rounded-xl border border-slate-700 flex items-center gap-2 text-xs sm:text-sm">
+                    <span class="text-emerald-400 font-bold">★ 完成進度：</span>
+                    <span id="score-counter" class="font-mono font-bold text-white">0 / 34</span>
+                    <div class="w-16 sm:w-24 h-2 bg-slate-700 rounded-full overflow-hidden hidden sm:block">
+                        <div id="score-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleProjectorMode()" id="btn-projector" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs sm:text-sm font-medium transition flex items-center gap-1" title="放大字體適合課堂投影">
+                    <span>🔍 投影放大</span>
+                </button>
+
+                <button onclick="toggleAllSolutions()" id="btn-all-sol" class="px-2.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm font-bold transition flex items-center gap-1 shadow">
+                    <span>💡 全展開詳解</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 三節課切換頁籤 -->
+        <div class="bg-slate-800/90 border-t border-slate-700/80">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 flex overflow-x-auto no-scrollbar">
+                <button onclick="switchLesson(1)" id="tab-lesson-1" class="lesson-tab flex-1 min-w-[160px] py-2.5 px-3 text-center font-bold text-xs sm:text-sm border-b-4 border-indigo-400 bg-indigo-950/60 text-indigo-200 transition flex items-center justify-center gap-2">
+                    <span class="bg-indigo-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">1</span>
+                    <span>第一節：數的乘方與四則運算 (P.147~150)</span>
+                </button>
+                <button onclick="switchLesson(2)" id="tab-lesson-2" class="lesson-tab flex-1 min-w-[160px] py-2.5 px-3 text-center font-bold text-xs sm:text-sm border-b-4 border-transparent text-slate-300 hover:text-white hover:bg-slate-700/50 transition flex items-center justify-center gap-2">
+                    <span class="bg-slate-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">2</span>
+                    <span>第二節：指數律四大公式與 a⁰=1 (P.151~155)</span>
+                </button>
+                <button onclick="switchLesson(3)" id="tab-lesson-3" class="lesson-tab flex-1 min-w-[160px] py-2.5 px-3 text-center font-bold text-xs sm:text-sm border-b-4 border-transparent text-slate-300 hover:text-white hover:bg-slate-700/50 transition flex items-center justify-center gap-2">
+                    <span class="bg-slate-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">3</span>
+                    <span>第三節：應用、總評量與捷運素養 (P.156~161)</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 space-y-8">
+
+        <!-- =====================================================================
+             第一節課：主題1 數的乘方與四則運算 (P.147 ~ P.150)
+             ===================================================================== -->
+        <section id="lesson-1" class="space-y-8">
+            <!-- 節次橫幅 -->
+            <div class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl p-5 sm:p-6 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-block bg-white/20 px-3 py-0.5 rounded-full text-xs font-semibold mb-2">第一節課（45分鐘）｜課本 P.147 ~ P.150</div>
+                    <h2 class="text-xl sm:text-2xl font-black">主題 1：數的乘方、比較大小與含乘方的四則運算</h2>
+                    <p class="text-indigo-100 text-sm mt-1">學習核心：理解分數與小數的乘方記法、探索底數大於1或小於1時的次方大小變化，並熟練先算乘方的四則運算。</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs font-bold shrink-0">
+                    <a href="#sec-p147" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.147 分數乘方</a>
+                    <a href="#sec-p148" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.148~149 乘方比大小</a>
+                    <a href="#sec-p150" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.150 四則運算</a>
+                </div>
+            </div>
+
+            <!-- 課本 P.147 導讀與互動實驗室 1 -->
+            <div id="sec-p147" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-indigo-50 px-5 py-3.5 border-b border-indigo-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.147</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">觀念動畫 1：什麼是數的乘方與分數乘方？</h3>
+                    </div>
+                    <span class="text-xs text-indigo-600 font-semibold">學習內容 N-7-6</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <!-- 課本導讀 3 個基礎範例 -->
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                        <p class="text-sm font-bold text-slate-700 mb-3">📖 課本 P.147 溫故知新（點擊卡片可切換展開過程）：</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                                <div class="text-xs text-slate-500 font-semibold mb-1">整數的連乘（1-4節學過）</div>
+                                <div class="math-expr font-bold text-slate-800">
+                                    (−7) × (−7) × (−7) × (−7) = (−7)<span class="msup">4</span>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                                <div class="text-xs text-slate-500 font-semibold mb-1">相同分數的連乘</div>
+                                <div class="math-expr font-bold text-slate-800">
+                                    <span class="mfrac"><span class="num">3</span><span class="den">2</span></span> ×
+                                    <span class="mfrac"><span class="num">3</span><span class="den">2</span></span> ×
+                                    <span class="mfrac"><span class="num">3</span><span class="den">2</span></span> ×
+                                    <span class="mfrac"><span class="num">3</span><span class="den">2</span></span> =
+                                    <span class="mparen"><span class="mfrac"><span class="num">3</span><span class="den">2</span></span></span><span class="mfrac-sup">4</span>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                                <div class="text-xs text-slate-500 font-semibold mb-1">相同小數的連乘</div>
+                                <div class="math-expr font-bold text-slate-800">
+                                    (−5.6) × (−5.6) × (−5.6) = (−5.6)<span class="msup">3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分數乘方展開互動實驗室 -->
+                    <div class="bg-gradient-to-br from-indigo-50/70 to-blue-50/70 rounded-2xl p-4 sm:p-5 border border-indigo-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                            <div>
+                                <h4 class="font-bold text-indigo-950 text-base flex items-center gap-2">
+                                    <span>🔬 互動實驗室：分數乘方展開動畫</span>
+                                </h4>
+                                <p class="text-xs text-slate-600 mt-0.5">拉動指數 <span class="font-mono font-bold">n</span> 或切換分數底數，觀察分子與分母如何同步連乘！</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="setFracLab(7, 9, false)" class="px-3 py-1 rounded-lg bg-white border border-indigo-300 text-xs font-bold hover:bg-indigo-100 transition">例1(1): (7/9)ⁿ</button>
+                                <button onclick="setFracLab(-4, 3, true)" class="px-3 py-1 rounded-lg bg-white border border-indigo-300 text-xs font-bold hover:bg-indigo-100 transition">例1(2): (-4/3)ⁿ</button>
+                                <button onclick="setFracLab(2, -3, false)" class="px-3 py-1 rounded-lg bg-white border border-indigo-300 text-xs font-bold hover:bg-indigo-100 transition">隨堂(1): (2/-3)ⁿ</button>
+                            </div>
+                        </div>
+
+                        <!-- 控制桿 -->
+                        <div class="flex flex-wrap items-center gap-4 bg-white p-3.5 rounded-xl border border-indigo-100 mb-4">
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-bold text-slate-700">分子 b：</label>
+                                <input type="number" id="lab1-num" value="7" min="-15" max="15" onchange="updateFracLab()" class="w-16 px-2 py-1 border rounded-lg text-center font-bold text-sm">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-bold text-slate-700">分母 a：</label>
+                                <input type="number" id="lab1-den" value="9" min="-15" max="15" onchange="updateFracLab()" class="w-16 px-2 py-1 border rounded-lg text-center font-bold text-sm">
+                            </div>
+                            <div class="flex items-center gap-3 flex-1 min-w-[200px]">
+                                <label class="text-xs font-bold text-indigo-700 shrink-0">指數 n = <span id="lab1-n-val" class="text-base font-black">5</span></label>
+                                <input type="range" id="lab1-n" min="1" max="6" value="5" oninput="updateFracLab()" class="w-full accent-indigo-600 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- 動態展示舞台 -->
+                        <div id="lab1-stage" class="bg-white rounded-xl p-4 sm:p-6 border border-indigo-200 text-center overflow-x-auto">
+                            <!-- 由 JS 動態渲染 -->
+                        </div>
+
+                        <!-- Key Point P.148 -->
+                        <div class="mt-4 bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-xl flex items-start gap-3">
+                            <span class="bg-amber-500 text-white text-xs font-black px-2 py-0.5 rounded shrink-0 mt-0.5">Key point</span>
+                            <div class="text-sm text-amber-950">
+                                <strong>分數的乘方（課本 P.148）：</strong>
+                                已知 <span class="font-serif italic">a、b</span> 為整數、<span class="font-serif italic">n</span> 是正整數，其中 <span class="font-serif italic">a ≠ 0</span>，則
+                                <span class="math-expr font-bold">
+                                    <span class="mparen"><span class="mfrac"><span class="num">b</span><span class="den">a</span></span></span><span class="mfrac-sup">n</span> =
+                                    <span class="mfrac"><span class="num">b<span class="msup">n</span></span><span class="den">a<span class="msup">n</span></span></span>
+                                </span>
+                                <span class="text-xs text-amber-800 block mt-1">⚠️ 貼心提醒：分母與分子都要記得加上 <span class="font-serif italic">n</span> 次方喔！若分子或分母是負數，別忘了加上括號，例如 (−4)³。</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 例 1 與 隨堂練習 題目卡片區 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p147"></div>
+                </div>
+            </div>
+
+            <!-- 課本 P.148 ~ P.149 乘方的比較大小與計算機檢驗 -->
+            <div id="sec-p148" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-blue-50 px-5 py-3.5 border-b border-blue-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.148 ~ P.149</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">觀念動畫 2：乘方的比較大小與計算機連乘檢驗</h3>
+                    </div>
+                    <span class="text-xs text-blue-600 font-semibold">學習內容 N-7-6</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <!-- 國小先備知識回顧 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3.5">
+                            <div class="text-xs font-bold text-emerald-700 mb-1">📈 性質 (1)：乘上大於 1 的正數 → 越乘越大</div>
+                            <p class="text-sm text-slate-700">對於一個正數，若乘上一個<strong>大於 1</strong> 的正數，乘積會<strong>大於</strong>原來的正數。<br>例如：<span class="font-mono font-bold text-emerald-800">100 × 1.1 = 110 &gt; 100</span></p>
+                        </div>
+                        <div class="bg-rose-50/70 border border-rose-200 rounded-xl p-3.5">
+                            <div class="text-xs font-bold text-rose-700 mb-1">📉 性質 (2)：乘上小於 1 的正數 → 越乘越小</div>
+                            <p class="text-sm text-slate-700">對於一個正數，若乘上一個<strong>小於 1</strong> 的正數，乘積會<strong>小於</strong>原來的正數。<br>例如：<span class="font-mono font-bold text-rose-800">100 × 0.99 = 99 &lt; 100</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 乘方比大小視覺化實驗室 + 課本 P.149 計算機檢驗模擬器 -->
+                    <div class="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 rounded-2xl p-4 sm:p-5 border border-blue-200 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h4 class="font-bold text-blue-950 text-base">📊 互動實驗室：次方與數值變化圖 ＆ 課本 P.149 計算機檢驗</h4>
+                                <p class="text-xs text-slate-600">點擊下方底數按鈕，觀察當指數 n = 1, 2, 3, 4, 5 時，數值長條圖是「步步高升」還是「越來越矮」！</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="setCompareLab(0.6, '3/5 (即 0.6)')" id="btn-cmp-06" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold shadow transition">課本 (3/5)ⁿ = 0.6ⁿ (小於1)</button>
+                                <button onclick="setCompareLab(1.2, '1.2')" id="btn-cmp-12" class="px-3 py-1.5 rounded-xl bg-white text-slate-700 border border-blue-300 text-xs font-bold hover:bg-blue-100 transition">課本 1.2ⁿ (大於1)</button>
+                                <button onclick="setCompareLab(0.5, '0.5')" id="btn-cmp-05" class="px-3 py-1.5 rounded-xl bg-white text-slate-700 border border-blue-300 text-xs font-bold hover:bg-blue-100 transition">隨堂 0.5ⁿ</button>
+                                <button onclick="setCompareLab(1.333, '4/3')" id="btn-cmp-43" class="px-3 py-1.5 rounded-xl bg-white text-slate-700 border border-blue-300 text-xs font-bold hover:bg-blue-100 transition">隨堂 (4/3)ⁿ</button>
+                            </div>
+                        </div>
+
+                        <!-- 動態長條圖與計算機連乘步驟 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                            <!-- 左側視覺長條圖 -->
+                            <div class="lg:col-span-7 bg-white rounded-xl p-4 border border-blue-100">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span id="cmp-chart-title" class="text-sm font-bold text-slate-800">底數 a = 3/5 = 0.6 &lt; 1（越乘越小）</span>
+                                    <span class="text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">基準線 = 1</span>
+                                </div>
+                                <div id="cmp-bars" class="h-48 flex items-end justify-around gap-2 pt-6 pb-2 px-2 border-b border-slate-200 relative">
+                                    <!-- JS 渲染長條圖 -->
+                                </div>
+                                <div id="cmp-summary" class="mt-3 text-center font-bold text-sm text-indigo-900 bg-indigo-50 py-2 rounded-lg"></div>
+                            </div>
+
+                            <!-- 右側：課本 P.149 計算機連乘檢驗面板 -->
+                            <div class="lg:col-span-5 bg-slate-900 text-white rounded-xl p-4 border border-slate-700 shadow-inner">
+                                <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+                                    <span class="text-xs font-bold text-emerald-400">🖩 課本 P.149 計算機連乘檢驗</span>
+                                    <span class="text-[11px] text-slate-400">點擊按鈕模擬按計算機</span>
+                                </div>
+                                <div id="calc-screen" class="bg-emerald-950/90 border-2 border-emerald-700/80 rounded-lg p-3 font-mono text-right mb-3">
+                                    <div id="calc-expr" class="text-xs text-emerald-300 h-4">0.6 × 0.6 × 0.6 =</div>
+                                    <div id="calc-result" class="text-2xl font-black text-emerald-400 tracking-wider">0.216</div>
+                                </div>
+                                <div class="space-y-2 text-xs" id="calc-steps">
+                                    <!-- JS 動態更新課本 P.149 計算機步驟 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Point P.149 -->
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-xl flex items-start gap-3">
+                            <span class="bg-amber-500 text-white text-xs font-black px-2 py-0.5 rounded shrink-0 mt-0.5">Key point</span>
+                            <div class="text-sm text-amber-950 space-y-1">
+                                <strong>乘方的比較大小（課本 P.149）：</strong>對於任何一個正數 <span class="font-serif italic">a</span> 及正整數 <span class="font-serif italic">n</span>：
+                                <div>(1) 當 <strong>0 &lt; a &lt; 1</strong> 時，<strong>a<span class="msup">n</span> &lt; 1</strong>，且 <span class="font-serif italic">n</span> 的值愈大，a<span class="msup">n</span> 的值<strong>愈小</strong>。（例如：0.99<span class="msup">20</span> &gt; 0.99<span class="msup">30</span>）</div>
+                                <div>(2) 當 <strong>a &gt; 1</strong> 時，<strong>a<span class="msup">n</span> &gt; 1</strong>，且 <span class="font-serif italic">n</span> 的值愈大，a<span class="msup">n</span> 的值<strong>愈大</strong>。（例如：1.01<span class="msup">10</span> &lt; 1.01<span class="msup">20</span>）</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 例 2、隨堂練習 1、隨堂練習 2 題目卡片區 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p148"></div>
+                </div>
+            </div>
+
+            <!-- 課本 P.150 含乘方的分數四則運算 -->
+            <div id="sec-p150" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-violet-50 px-5 py-3.5 border-b border-violet-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-violet-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.150</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">觀念重點 3：含乘方的分數四則運算（乘方優先！）</h3>
+                    </div>
+                    <span class="text-xs text-violet-600 font-semibold">學習內容 N-7-6</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <!-- 運算順序視覺提醒 -->
+                    <div class="bg-violet-50/70 border border-violet-200 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-violet-950 text-sm sm:text-base">⚡ 含乘方的四則運算黃金順序（課本 P.150）：</h4>
+                            <p class="text-xs sm:text-sm text-slate-700">進行含有乘方的四則運算時，<strong>「乘方的部分要先計算」</strong>，並注意負數的偶次方為正、奇次方為負！</p>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs sm:text-sm font-bold shrink-0">
+                            <span class="bg-violet-600 text-white px-3 py-1.5 rounded-lg shadow">1. 先算乘方與括號</span>
+                            <span class="text-violet-400">➔</span>
+                            <span class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg shadow">2. 再算乘除(除變乘倒數)</span>
+                            <span class="text-indigo-400">➔</span>
+                            <span class="bg-blue-600 text-white px-3 py-1.5 rounded-lg shadow">3. 最後加減</span>
+                        </div>
+                    </div>
+
+                    <!-- 例 3、隨堂 3、例 4、隨堂 4 題目卡片區 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p150"></div>
+                </div>
+            </div>
+
+            <!-- 切換至第二節課按鈕 -->
+            <div class="flex justify-end">
+                <button onclick="switchLesson(2); window.scrollTo({top:0, behavior:'smooth'})" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg transition flex items-center gap-2">
+                    <span>進入第二節課：主題 2 指數律四大公式與 a⁰=1</span>
+                    <span>➔</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             第二節課：主題2 指數律四大公式與 a⁰=1 (P.151 ~ P.155)
+             ===================================================================== -->
+        <section id="lesson-2" class="space-y-8 hidden">
+            <!-- 節次橫幅 -->
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-5 sm:p-6 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-block bg-white/20 px-3 py-0.5 rounded-full text-xs font-semibold mb-2">第二節課（45分鐘）｜課本 P.151 ~ P.155</div>
+                    <h2 class="text-xl sm:text-2xl font-black">主題 2：指數律四大公式、零次方 a⁰=1 與正負號陷阱</h2>
+                    <p class="text-emerald-100 text-sm mt-1">學習核心：透過展開與約分動畫推導指數律四大公式，理解為什麼 a⁰ = 1，並破解 (-3⁴)³ 與 (-3³)⁴ 的正負號差異。</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs font-bold shrink-0">
+                    <a href="#sec-laws-lab" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">四大公式動畫室</a>
+                    <a href="#sec-p151" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.151~154 例5~例8</a>
+                    <a href="#sec-p155" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.155 零次方與動動腦</a>
+                </div>
+            </div>
+
+            <!-- 指數律四大公式互動拆解實驗室 -->
+            <div id="sec-laws-lab" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-emerald-50 px-5 py-3.5 border-b border-emerald-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.151 ~ P.155</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">觀念動畫 3：指數律四大公式視覺拆解實驗室</h3>
+                    </div>
+                    <span class="text-xs text-emerald-700 font-semibold">學習內容 N-7-7</span>
+                </div>
+
+                <div class="p-5 space-y-5">
+                    <!-- 切換四大公式頁籤 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <button onclick="selectLawTab(1)" id="law-btn-1" class="p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-left transition">
+                            <div class="text-xs font-bold text-emerald-700">公式 1 (P.151 例5)</div>
+                            <div class="font-serif font-black text-base sm:text-lg text-slate-900">a<span class="msup">m</span> × a<span class="msup">n</span> = a<span class="msup">m+n</span></div>
+                            <div class="text-[11px] text-slate-500">底數相同相乘 ➔ 指數相加</div>
+                        </button>
+                        <button onclick="selectLawTab(2)" id="law-btn-2" class="p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 bg-white text-left transition">
+                            <div class="text-xs font-bold text-slate-500">公式 2 (P.152 例6)</div>
+                            <div class="font-serif font-black text-base sm:text-lg text-slate-900">a<span class="msup">m</span> ÷ a<span class="msup">n</span> = a<span class="msup">m−n</span></div>
+                            <div class="text-[11px] text-slate-500">底數相同相除 ➔ 約分指數相減</div>
+                        </button>
+                        <button onclick="selectLawTab(3)" id="law-btn-3" class="p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 bg-white text-left transition">
+                            <div class="text-xs font-bold text-slate-500">公式 3 (P.153 例7)</div>
+                            <div class="font-serif font-black text-base sm:text-lg text-slate-900">(a<span class="msup">m</span>)<span class="msup">n</span> = a<span class="msup">m×n</span></div>
+                            <div class="text-[11px] text-slate-500">乘方的乘方 ➔ 群組複製指數相乘</div>
+                        </button>
+                        <button onclick="selectLawTab(4)" id="law-btn-4" class="p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 bg-white text-left transition">
+                            <div class="text-xs font-bold text-slate-500">公式 4 (P.154 例8)</div>
+                            <div class="font-serif font-black text-base sm:text-lg text-slate-900">(a × b)<span class="msup">m</span> = a<span class="msup">m</span> × b<span class="msup">m</span></div>
+                            <div class="text-[11px] text-slate-500">兩數相乘的乘方 ➔ 各自乘方</div>
+                        </button>
+                    </div>
+
+                    <!-- 互動參數控制與展開舞台 -->
+                    <div class="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-3.5 rounded-xl border border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-700">選擇課本範例底數：</span>
+                                <select id="law-base-select" onchange="renderLawAnimation()" class="px-2.5 py-1.5 border rounded-lg text-xs sm:text-sm font-bold bg-slate-50">
+                                    <option value="5">整數 5 (課本例5/例7)</option>
+                                    <option value="(-2)">負整數 (-2) (課本例6)</option>
+                                    <option value="1/2">分數 1/2 (課本例5)</option>
+                                    <option value="3/4">分數 3/4 (課本例6)</option>
+                                    <option value="5/3">分數 5/3 (課本例7)</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <div class="flex items-center gap-2">
+                                    <label class="text-xs font-bold text-emerald-700">指數 m = <span id="law-m-val" class="text-base font-black">5</span></label>
+                                    <input type="range" id="law-m" min="1" max="6" value="5" oninput="renderLawAnimation()" class="w-24 sm:w-32 accent-emerald-600">
+                                </div>
+                                <div class="flex items-center gap-2" id="law-n-wrap">
+                                    <label class="text-xs font-bold text-indigo-700">指數 n = <span id="law-n-val" class="text-base font-black">2</span></label>
+                                    <input type="range" id="law-n" min="1" max="5" value="2" oninput="renderLawAnimation()" class="w-24 sm:w-32 accent-indigo-600">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 視覺拆解畫布 -->
+                        <div id="law-stage" class="bg-white rounded-xl p-4 sm:p-6 border border-emerald-200 text-center min-h-[160px] flex flex-col items-center justify-center space-y-3 overflow-x-auto">
+                            <!-- JS 渲染展開過程 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 課本 P.151 ~ P.154 例5 ~ 例8 與隨堂練習完整題庫 -->
+            <div id="sec-p151" class="space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p151-154"></div>
+            </div>
+
+            <!-- 課本 P.155：a⁰ = 1 推導、4個實例、Key Point 與 動動腦 -->
+            <div id="sec-p155" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-teal-50 px-5 py-3.5 border-b border-teal-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-teal-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.155</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">觀念動畫 4：為什麼 a⁰ = 1？以及「動動腦」正負號陷阱對決</h3>
+                    </div>
+                    <span class="text-xs text-teal-700 font-semibold">學習內容 N-7-7</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <!-- a^0 = 1 推導與課本 6 個例子 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        <div class="lg:col-span-6 bg-teal-50/60 border border-teal-200 rounded-xl p-4 space-y-3">
+                            <h4 class="font-bold text-teal-950 text-base">💡 當 m = n 時，為什麼規定 a<span class="msup">0</span> = 1？（a ≠ 0）</h4>
+                            <p class="text-xs sm:text-sm text-slate-700">看看課本 P.155 計算 <span class="font-mono font-bold">7³ ÷ 7³</span> 的兩種角度：</p>
+                            <div class="bg-white p-3.5 rounded-xl border border-teal-200 space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-600 text-white text-xs px-2 py-0.5 rounded font-bold">分數約分角度</span>
+                                    <span class="math-expr font-bold">
+                                        7<span class="msup">3</span> ÷ 7<span class="msup">3</span> =
+                                        <span class="mfrac"><span class="num">7<span class="msup">3</span></span><span class="den">7<span class="msup">3</span></span></span> =
+                                        <span class="mfrac"><span class="num"><span class="cancel-slash">7</span> × <span class="cancel-slash">7</span> × <span class="cancel-slash">7</span></span><span class="den"><span class="cancel-slash">7</span> × <span class="cancel-slash">7</span> × <span class="cancel-slash">7</span></span></span> = <strong class="text-emerald-600 text-lg">1</strong>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-indigo-600 text-white text-xs px-2 py-0.5 rounded font-bold">指數律角度</span>
+                                    <span class="math-expr font-bold">
+                                        7<span class="msup">3</span> ÷ 7<span class="msup">3</span> = 7<span class="msup">3−3</span> = <strong class="text-indigo-600 text-lg">7<span class="msup">0</span></strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-xs sm:text-sm text-teal-950 font-semibold">
+                                為了使指數律「a<span class="msup">m</span> ÷ a<span class="msup">n</span> = a<span class="msup">m−n</span>」也適用於 m = n 的情形，我們規定：<br>
+                                <span class="inline-block mt-1 bg-amber-100 border border-amber-400 px-3 py-1 rounded-lg text-amber-950 font-black">若 a 是不為 0 的數，則 a⁰ = 1。例如：10⁰ = 1、(-3)⁰ = 1</span>
+                            </p>
+                        </div>
+
+                        <!-- 課本 P.155 當指數為 0 時四大指數律均成立的 4 個實例 -->
+                        <div class="lg:col-span-6 bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5">
+                            <h4 class="font-bold text-slate-800 text-sm sm:text-base">✅ 課本 P.155 驗證：當指數為 0 時，四大指數律均成立！</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm">
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <div class="text-[11px] text-slate-400 font-bold mb-1">例 1：同底相乘</div>
+                                    <div class="math-expr font-bold text-slate-800">3<span class="msup">5</span> × 3<span class="msup">0</span> = 3<span class="msup">5</span> × 1 = 3<span class="msup">5</span> = 3<span class="msup">5+0</span></div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <div class="text-[11px] text-slate-400 font-bold mb-1">例 2：同底相除</div>
+                                    <div class="math-expr font-bold text-slate-800">(−10)<span class="msup">8</span> ÷ (−10)<span class="msup">0</span> = (−10)<span class="msup">8</span> ÷ 1 = (−10)<span class="msup">8−0</span></div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <div class="text-[11px] text-slate-400 font-bold mb-1">例 3：兩數相乘的 0 次方</div>
+                                    <div class="math-expr font-bold text-slate-800">
+                                        <span class="mparen"><span class="mfrac"><span class="num">1</span><span class="den">2</span></span> × 5</span><span class="mfrac-sup">0</span> = 1 = 1 × 1 =
+                                        <span class="mparen"><span class="mfrac"><span class="num">1</span><span class="den">2</span></span></span><span class="mfrac-sup">0</span> × 5<span class="msup">0</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <div class="text-[11px] text-slate-400 font-bold mb-1">例 4：乘方的 0 次方</div>
+                                    <div class="math-expr font-bold text-slate-800">
+                                        <span class="mbracket"><span class="mparen">−<span class="mfrac"><span class="num">5</span><span class="den">3</span></span></span><span class="mfrac-sup">3</span></span><span class="mfrac-sup">0</span> = 1 =
+                                        <span class="mparen">−<span class="mfrac"><span class="num">5</span><span class="den">3</span></span></span><span class="mfrac-sup">0</span> =
+                                        <span class="mparen">−<span class="mfrac"><span class="num">5</span><span class="den">3</span></span></span><span class="mfrac-sup">3×0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 課本 P.155 動動腦：(-3^4)^3 vs (-3^3)^4 互動對決 -->
+                    <div class="bg-gradient-to-r from-rose-50 via-amber-50 to-indigo-50 rounded-2xl p-5 border-2 border-amber-300 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-1 rounded-lg">🧠 課本 P.155 動動腦</span>
+                                <h4 class="font-bold text-slate-900 text-base sm:text-lg">判斷 <span class="math-expr font-black">(−3<span class="msup">4</span>)<span class="msup">3</span></span> 與 <span class="math-expr font-black">(−3<span class="msup">3</span>)<span class="msup">4</span></span> 的值是否相同？說說看你的理由。</h4>
+                            </div>
+                            <button onclick="generateBrainSimilar()" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow transition">🎲 出一個類似動動腦題</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- 左式 (-3^4)^3 -->
+                            <div class="bg-white rounded-xl p-4 border-2 border-rose-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full">左式：(−3⁴)³ ➔ 括號外是 3 (奇數) 次方</span>
+                                    <span class="text-rose-600 font-black text-sm">結果為負數 (&lt; 0)</span>
+                                </div>
+                                <div class="math-expr font-bold text-slate-800 block space-y-1 text-sm sm:text-base">
+                                    <div>(−3<span class="msup">4</span>)<span class="msup">3</span> = (−3<span class="msup">4</span>) × (−3<span class="msup">4</span>) × (−3<span class="msup">4</span>)</div>
+                                    <div class="text-rose-700">= −3<span class="msup">4+4+4</span> = <strong>−3<span class="msup">12</span> &lt; 0</strong>（3個負數相乘還是負數）</div>
+                                </div>
+                            </div>
+
+                            <!-- 右式 (-3^3)^4 -->
+                            <div class="bg-white rounded-xl p-4 border-2 border-emerald-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">右式：(−3³)⁴ ➔ 括號外是 4 (偶數) 次方</span>
+                                    <span class="text-emerald-600 font-black text-sm">結果為正數 (&gt; 0)</span>
+                                </div>
+                                <div class="math-expr font-bold text-slate-800 block space-y-1 text-sm sm:text-base">
+                                    <div>(−3<span class="msup">3</span>)<span class="msup">4</span> = (−3<span class="msup">3</span>) × (−3<span class="msup">3</span>) × (−3<span class="msup">3</span>) × (−3<span class="msup">3</span>)</div>
+                                    <div class="text-emerald-700">= +3<span class="msup">3+3+3+3</span> = <strong>3<span class="msup">12</span> &gt; 0</strong>（4個負數相乘負負得正）</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 互動快問快答 -->
+                        <div id="brain-quiz-box" class="bg-white/90 rounded-xl p-4 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div id="brain-quiz-text" class="text-sm font-bold text-slate-800">
+                                課本原題結論：因為 (−3⁴)³ = −3¹² &lt; 0，而 (−3³)⁴ = 3¹² &gt; 0，兩者的值一正一負，所以<strong>不相同</strong>！
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0" id="brain-quiz-btns">
+                                <span class="text-xs text-slate-500">點擊上方「出一個類似動動腦題」可進行隨堂搶答！</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 切換節次按鈕 -->
+            <div class="flex justify-between">
+                <button onclick="switchLesson(1); window.scrollTo({top:0, behavior:'smooth'})" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                    ⬅ 回到第一節課
+                </button>
+                <button onclick="switchLesson(3); window.scrollTo({top:0, behavior:'smooth'})" class="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-lg transition flex items-center gap-2">
+                    <span>進入第三節課：指數律應用、自我評量與捷運素養</span>
+                    <span>➔</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             第三節課：指數律應用、總複習評量與素養延伸 (P.156 ~ P.161)
+             ===================================================================== -->
+        <section id="lesson-3" class="space-y-8 hidden">
+            <!-- 節次橫幅 -->
+            <div class="bg-gradient-to-r from-amber-600 to-orange-600 rounded-2xl p-5 sm:p-6 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-block bg-white/20 px-3 py-0.5 rounded-full text-xs font-semibold mb-2">第三節課（45分鐘）｜課本 P.156 ~ P.161</div>
+                    <h2 class="text-xl sm:text-2xl font-black">綜合應用、自我檢核、自我評量、捷運素養與一題多解</h2>
+                    <p class="text-amber-100 text-sm mt-1">學習核心：靈活逆用 aᵐ × bᵐ = (a × b)ᵐ 簡化計算、完成 P.157~159 總複習與挑錯題，並挑戰臺北捷運通勤素養與分數比大小一題多解。</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs font-bold shrink-0">
+                    <a href="#sec-p156" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.156 例9應用</a>
+                    <a href="#sec-p157" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.157 自我檢核</a>
+                    <a href="#sec-p158" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.158~159 自我評量</a>
+                    <a href="#sec-p160" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl transition">P.160~161 素養與多解</a>
+                </div>
+            </div>
+
+            <!-- 課本 P.156 例9 指數律的應用 -->
+            <div id="sec-p156" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-amber-50 px-5 py-3.5 border-b border-amber-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-amber-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.156</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">指數律的進階應用（逆用公式先約分再乘方）</h3>
+                    </div>
+                    <span class="text-xs text-amber-700 font-semibold">Hint: aᵐ × bᵐ = (a × b)ᵐ</span>
+                </div>
+                <div class="p-5 space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p156"></div>
+                </div>
+            </div>
+
+            <!-- 課本 P.157 重點整理與自我檢核 (5題是非題) -->
+            <div id="sec-p157" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-sky-50 px-5 py-3.5 border-b border-sky-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-sky-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.157</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">重點整理 ＆ 自我檢核（全 5 題是非快篩 + 隨機變體挑戰）</h3>
+                    </div>
+                    <button onclick="generateSelfCheckSimilar()" class="px-3 py-1 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition shadow">🔄 產生新一輪是非變體題</button>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <div id="self-check-list" class="space-y-3">
+                        <!-- JS 渲染 P.157 5題是非題 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 課本 P.158 ~ P.159 自我評量 (第1~5題完整收錄) -->
+            <div id="sec-p158" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-indigo-50 px-5 py-3.5 border-b border-indigo-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.158 ~ P.159</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">自我評量（完整收錄第 1 ~ 5 題 + 類似題練習）</h3>
+                    </div>
+                    <span class="text-xs text-indigo-700 font-bold">配分：100 分</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p158"></div>
+
+                    <!-- 第 5 題：小妍與小翊的挑錯題專區 (P.159) -->
+                    <div class="bg-rose-50/70 rounded-2xl p-5 border-2 border-rose-200 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-rose-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">自我評量 第 5 題 (P.159 挑錯題｜10分)</span>
+                                <h4 class="font-bold text-slate-900 text-base sm:text-lg">小妍和小翊計算「<span class="math-expr font-black">(−5)<span class="msup">6</span> × (−2<span class="msup">6</span>)</span>」的過程，請找出誰錯在哪一步！</h4>
+                            </div>
+                            <button onclick="generateSpotErrorSimilar()" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow transition">🎲 練習類似挑錯題</button>
+                        </div>
+
+                        <div id="spot-error-container" class="space-y-4">
+                            <!-- 由 JS 渲染課本原題與互動挑錯 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 課本 P.160 扉選素養：臺北捷運常客優惠 vs 通勤月票 互動決策模擬器 -->
+            <div id="sec-p160" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-emerald-50 px-5 py-3.5 border-b border-emerald-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.160 扉選素養</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">生活素養：臺北捷運「常客優惠方案」vs「1200 通勤月票」</h3>
+                    </div>
+                    <span class="text-xs text-emerald-700 font-bold">真實生活決策應用</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <!-- 方案說明與回饋級距表 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                        <div class="lg:col-span-6 space-y-3">
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                捷運是臺北都會區許多學生、上班族和旅客通勤往來的必備交通工具，捷運公司與行政院分別推出了以下兩種優惠方案：
+                            </p>
+                            <div class="bg-blue-50/70 p-3.5 rounded-xl border border-blue-200 space-y-1">
+                                <div class="font-bold text-blue-950 text-sm">一、常客優惠方案：</div>
+                                <p class="text-xs text-slate-700">依照旅客前月搭乘的次數分級，搭乘次數愈多，可享受的回饋金就愈多（如右表）。</p>
+                                <p class="text-xs font-bold text-blue-800 pt-1">📌 當月回饋金 ＝ 前月累計搭乘金額 × 現金回饋比例<br><span class="font-normal text-slate-500">（尾數不滿 1 元者，以四捨五入計算）</span></p>
+                            </div>
+                            <div class="bg-amber-50/70 p-3.5 rounded-xl border border-amber-200 space-y-1">
+                                <div class="font-bold text-amber-950 text-sm">二、通勤月票方案：</div>
+                                <p class="text-xs text-slate-700">購買專屬通勤月票，<strong>每月只要 1200 元</strong>，可享 30 天無限次搭乘。</p>
+                            </div>
+                        </div>
+
+                        <!-- 課本表格 -->
+                        <div class="lg:col-span-6">
+                            <table class="w-full text-sm border-collapse rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                                <thead>
+                                    <tr class="bg-slate-800 text-white">
+                                        <th class="py-2.5 px-4 text-left">前月累計搭乘次數</th>
+                                        <th class="py-2.5 px-4 text-right">現金回饋比例</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white font-medium">
+                                    <tr id="mrt-row-0" class="hover:bg-slate-50"><td class="py-2 px-4">10 次以下</td><td class="py-2 px-4 text-right text-slate-400">0%</td></tr>
+                                    <tr id="mrt-row-1" class="hover:bg-slate-50"><td class="py-2 px-4">11 ~ 20 次</td><td class="py-2 px-4 text-right font-bold text-emerald-600">10%</td></tr>
+                                    <tr id="mrt-row-2" class="hover:bg-slate-50"><td class="py-2 px-4">21 ~ 30 次</td><td class="py-2 px-4 text-right font-bold text-emerald-600">15%</td></tr>
+                                    <tr id="mrt-row-3" class="hover:bg-slate-50"><td class="py-2 px-4">31 ~ 40 次</td><td class="py-2 px-4 text-right font-bold text-emerald-600">20%</td></tr>
+                                    <tr id="mrt-row-4" class="hover:bg-slate-50"><td class="py-2 px-4">41 ~ 50 次</td><td class="py-2 px-4 text-right font-bold text-emerald-600">25%</td></tr>
+                                    <tr id="mrt-row-5" class="hover:bg-slate-50"><td class="py-2 px-4">51 次以上</td><td class="py-2 px-4 text-right font-bold text-emerald-600">30%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 互動捷運精算儀表板 -->
+                    <div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h4 class="font-bold text-sm sm:text-base text-emerald-400">🚇 互動捷運通勤精算機（可一鍵帶入小妍、小翊或自訂試算）</h4>
+                            <div class="flex gap-2">
+                                <button onclick="setMrtSim(30, 44)" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold transition">帶入 01 小妍 (單程30元, 22天往返44次)</button>
+                                <button onclick="setMrtSim(40, 38)" class="px-3 py-1 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs font-bold transition">帶入 02 小翊 (單程40元, 搭乘38次)</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-800 p-4 rounded-xl">
+                            <div>
+                                <label class="text-xs text-slate-300 flex justify-between">
+                                    <span>單程票價：<strong id="mrt-price-val" class="text-white text-base">30</strong> 元</span>
+                                </label>
+                                <input type="range" id="mrt-price" min="20" max="65" step="5" value="30" oninput="updateMrtSim()" class="w-full accent-emerald-400 mt-1">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-300 flex justify-between">
+                                    <span>當月累計搭乘次數：<strong id="mrt-trips-val" class="text-white text-base">44</strong> 次</span>
+                                </label>
+                                <input type="range" id="mrt-trips" min="5" max="65" step="1" value="44" oninput="updateMrtSim()" class="w-full accent-emerald-400 mt-1">
+                            </div>
+                        </div>
+                        <div id="mrt-sim-output" class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center">
+                            <!-- JS 動態計算 -->
+                        </div>
+                    </div>
+
+                    <!-- 課本 P.160 01、02 題目卡片與類似題 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards-p160"></div>
+                </div>
+            </div>
+
+            <!-- 課本 P.161 一題多解：比較 2/5、7/10、22/25 三數的大小 -->
+            <div id="sec-p161" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-purple-50 px-5 py-3.5 border-b border-purple-100 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">課本 P.161 一題多解</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">比較 <span class="math-expr font-bold"><span class="mfrac"><span class="num">2</span><span class="den">5</span></span>、<span class="mfrac"><span class="num">7</span><span class="den">10</span></span>、<span class="mfrac"><span class="num">22</span><span class="den">25</span></span></span> 三數的大小（三種思維切換）</h3>
+                    </div>
+                    <span class="text-xs text-purple-700 font-bold">培養多元解題策略</span>
+                </div>
+
+                <div class="p-5 space-y-6">
+                    <!-- 三種解法互動頁籤 -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="switchMultiMethod(1)" id="mm-btn-1" class="px-4 py-2 rounded-xl font-bold text-xs sm:text-sm bg-purple-600 text-white shadow transition">解法 1：化成「同分母」再比大小</button>
+                        <button onclick="switchMultiMethod(2)" id="mm-btn-2" class="px-4 py-2 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-700 hover:bg-purple-100 transition">解法 2：化成「小數」再比大小</button>
+                        <button onclick="switchMultiMethod(3)" id="mm-btn-3" class="px-4 py-2 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-700 hover:bg-purple-100 transition">解法 3：利用「分子與分母的差相同」比大小</button>
+                    </div>
+
+                    <!-- 解法展示區 -->
+                    <div id="mm-stage" class="bg-purple-50/50 rounded-2xl p-5 border border-purple-200">
+                        <!-- JS 渲染三種解法與視覺數線 -->
+                    </div>
+
+                    <!-- 一題多解隨堂與類似題卡片 -->
+                    <div class="grid grid-cols-1 gap-6" id="cards-p161"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-start">
+                <button onclick="switchLesson(2); window.scrollTo({top:0, behavior:'smooth'})" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                    ⬅ 回到第二節課
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-5 px-4 text-center border-t border-slate-800 mt-12 space-y-1">
+        <p>國中數學 1 上 2-4 指數律 互動教學系統｜完整對應課本 P.147 ~ P.161 所有例題、隨堂練習、自我檢核、自我評量、扉選素養與一題多解</p>
+        <p class="text-slate-500 font-mono">Made by Xtjh-yucc</p>
+    </footer>
+
+    <!-- =========================================================================
+         JavaScript 核心互動邏輯與完整題庫系統
+         ========================================================================= -->
+    <script>
+        // 輔助數學排版函數
+        function frac(num, den) {
+            return `<span class="mfrac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
+        }
+        function pfrac(num, den, sup = '') {
+            const s = sup !== '' ? `<span class="mfrac-sup">${sup}</span>` : '';
+            return `<span class="mparen">${frac(num, den)}</span>${s}`;
+        }
+        function npfrac(num, den, sup = '') {
+            const s = sup !== '' ? `<span class="mfrac-sup">${sup}</span>` : '';
+            return `<span class="mparen">−${frac(num, den)}</span>${s}`;
+        }
+        function sup(base, exp) {
+            return `${base}<span class="msup">${exp}</span>`;
+        }
+        function gcd(a, b) {
+            a = Math.abs(a); b = Math.abs(b);
+            while (b) { [a, b] = [b, a % b]; }
+            return a || 1;
+        }
+
+        // 全域狀態
+        let completedQuestions = new Set();
+        let allSolutionsExpanded = false;
+        let currentLawTab = 1;
+
+        // 切換節次
+        function switchLesson(lessonNum) {
+            for (let i = 1; i <= 3; i++) {
+                const sec = document.getElementById(`lesson-${i}`);
+                const tab = document.getElementById(`tab-lesson-${i}`);
+                if (i === lessonNum) {
+                    sec.classList.remove('hidden');
+                    tab.className = "lesson-tab flex-1 min-w-[160px] py-2.5 px-3 text-center font-bold text-xs sm:text-sm border-b-4 border-indigo-400 bg-indigo-950/60 text-indigo-200 transition flex items-center justify-center gap-2";
+                } else {
+                    sec.classList.add('hidden');
+                    tab.className = "lesson-tab flex-1 min-w-[160px] py-2.5 px-3 text-center font-bold text-xs sm:text-sm border-b-4 border-transparent text-slate-300 hover:text-white hover:bg-slate-700/50 transition flex items-center justify-center gap-2";
+                }
+            }
+        }
+
+        // 投影放大模式
+        function toggleProjectorMode() {
+            document.body.classList.toggle('projector-mode');
+            const btn = document.getElementById('btn-projector');
+            if (document.body.classList.contains('projector-mode')) {
+                btn.classList.replace('bg-slate-800', 'bg-indigo-600');
+                btn.innerHTML = '<span>🔍 正常字體</span>';
+            } else {
+                btn.classList.replace('bg-indigo-600', 'bg-slate-800');
+                btn.innerHTML = '<span>🔍 投影放大</span>';
+            }
+        }
+
+        // 一鍵展開/隱藏全班詳解
+        function toggleAllSolutions() {
+            allSolutionsExpanded = !allSolutionsExpanded;
+            const sols = document.querySelectorAll('.sol-panel');
+            sols.forEach(el => {
+                if (allSolutionsExpanded) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
+            const btn = document.getElementById('btn-all-sol');
+            btn.innerHTML = allSolutionsExpanded ? '<span>🙈 隱藏全部詳解</span>' : '<span>💡 全展開詳解</span>';
+        }
+
+        // 更新得分進度條
+        function markCompleted(qId) {
+            completedQuestions.add(qId);
+            const total = 34;
+            const count = completedQuestions.size;
+            document.getElementById('score-counter').textContent = `${count} / ${total}`;
+            const pct = Math.min(100, Math.round((count / total) * 100));
+            document.getElementById('score-bar').style.width = `${pct}%`;
+        }
+
+        /* =====================================================================
+           互動實驗室 1：分數乘方展開動畫 (P.147)
+           ===================================================================== */
+        function setFracLab(num, den, negOutside) {
+            document.getElementById('lab1-num').value = num;
+            document.getElementById('lab1-den').value = den;
+            updateFracLab();
+        }
+
+        function updateFracLab() {
+            let b = parseInt(document.getElementById('lab1-num').value) || 7;
+            let a = parseInt(document.getElementById('lab1-den').value) || 9;
+            if (a === 0) { a = 1; document.getElementById('lab1-den').value = 1; }
+            const n = parseInt(document.getElementById('lab1-n').value) || 5;
+            document.getElementById('lab1-n-val').textContent = n;
+
+            const bStr = b < 0 ? `(${b})` : `${b}`;
+            const aStr = a < 0 ? `(${a})` : `${a}`;
+
+            // 建立連乘項目
+            const fracItems = Array(n).fill(pfrac(b, a)).join(' × ');
+            const numItems = Array(n).fill(bStr).join(' × ');
+            const denItems = Array(n).fill(aStr).join(' × ');
+
+            document.getElementById('lab1-stage').innerHTML = `
+                <div class="flex flex-wrap items-center justify-center gap-3 text-slate-800 animate-pop">
+                    <div class="bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-200">
+                        <div class="text-[11px] text-indigo-600 font-bold mb-1">原式</div>
+                        <div class="math-expr font-black">${pfrac(b, a, n)}</div>
+                    </div>
+                    <span class="text-xl font-bold text-slate-400">=</span>
+                    <div class="bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+                        <div class="text-[11px] text-slate-500 font-bold mb-1">${n} 個分數連乘</div>
+                        <div class="math-expr font-bold">${fracItems}</div>
+                    </div>
+                    <span class="text-xl font-bold text-slate-400">=</span>
+                    <div class="bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+                        <div class="text-[11px] text-slate-500 font-bold mb-1">分子、分母各自連乘 ${n} 次</div>
+                        <div class="math-expr font-bold">${frac(numItems, denItems)}</div>
+                    </div>
+                    <span class="text-xl font-bold text-slate-400">=</span>
+                    <div class="bg-emerald-50 px-4 py-2 rounded-xl border-2 border-emerald-400">
+                        <div class="text-[11px] text-emerald-700 font-bold mb-1">簡記結果</div>
+                        <div class="math-expr font-black text-emerald-900">${frac(sup(bStr, n), sup(aStr, n))}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* =====================================================================
+           互動實驗室 2：乘方比大小長條圖與課本 P.149 計算機檢驗
+           ===================================================================== */
+        function setCompareLab(base, label) {
+            const barsContainer = document.getElementById('cmp-bars');
+            const titleEl = document.getElementById('cmp-chart-title');
+            const summaryEl = document.getElementById('cmp-summary');
+            const calcStepsEl = document.getElementById('calc-steps');
+
+            const isLess = base < 1;
+            titleEl.innerHTML = isLess
+                ? `底數 a = ${label} &lt; 1 <span class="text-rose-600">（每多乘一次，乘積變小一次！）</span>`
+                : `底數 a = ${label} &gt; 1 <span class="text-emerald-600">（每多乘一次，乘積變大一次！）</span>`;
+
+            const maxVal = isLess ? 1.05 : Math.pow(base, 5) * 1.05;
+            let barsHtml = '';
+
+            for (let n = 1; n <= 5; n++) {
+                const val = Math.pow(base, n);
+                const valStr = Number(val.toFixed(5));
+                const heightPct = Math.max(8, Math.min(95, (val / maxVal) * 100));
+                const barColor = isLess ? 'from-rose-500 to-orange-400' : 'from-emerald-500 to-teal-400';
+                barsHtml += `
+                    <div class="flex flex-col items-center justify-end h-full flex-1">
+                        <span class="text-[11px] font-mono font-bold text-slate-700 mb-1">${valStr}</span>
+                        <div class="w-full max-w-[44px] rounded-t-lg bg-gradient-to-t ${barColor} transition-all duration-500 shadow" style="height: ${heightPct}%"></div>
+                        <span class="text-xs font-bold text-slate-700 mt-1.5">n=${n}</span>
+                    </div>
+                `;
+            }
+            barsContainer.innerHTML = barsHtml;
+
+            if (base === 0.6) {
+                summaryEl.innerHTML = `課本 P.149 結論：<span class="math-expr font-bold">${pfrac(3,5,3)} &gt; ${pfrac(3,5,4)} &gt; ${pfrac(3,5,5)}</span> （隨著 n 愈大，值愈小）`;
+                document.getElementById('calc-expr').textContent = '0.6 × 0.6 × 0.6 =';
+                document.getElementById('calc-result').textContent = '0.216';
+                calcStepsEl.innerHTML = `
+                    <button onclick="showCalcStep('0.6 × 0.6 × 0.6 =', '0.216')" class="w-full text-left p-2 rounded bg-slate-800 hover:bg-slate-700 flex justify-between items-center">
+                        <span>① 0.6³ ➔ 按 0.6 × 0.6 × 0.6 =</span>
+                        <span class="font-mono font-bold text-emerald-400">0.216</span>
+                    </button>
+                    <button onclick="showCalcStep('0.216 × 0.6 =', '0.1296 (變小!)')" class="w-full text-left p-2 rounded bg-slate-800 hover:bg-slate-700 flex justify-between items-center">
+                        <span>② 0.6⁴ ➔ 0.216 × 0.6 =</span>
+                        <span class="font-mono font-bold text-rose-400">0.1296 ↘變小</span>
+                    </button>
+                    <button onclick="showCalcStep('0.1296 × 0.6 =', '0.07776 (更小!)')" class="w-full text-left p-2 rounded bg-slate-800 hover:bg-slate-700 flex justify-between items-center">
+                        <span>③ 0.6⁵ ➔ 0.1296 × 0.6 =</span>
+                        <span class="font-mono font-bold text-rose-400">0.07776 ↘變小</span>
+                    </button>
+                `;
+            } else if (base === 1.2) {
+                summaryEl.innerHTML = `課本 P.149 結論：<span class="math-expr font-bold">1.2<span class="msup">3</span> &lt; 1.2<span class="msup">4</span> &lt; 1.2<span class="msup">5</span></span> （隨著 n 愈大，值愈大）`;
+                document.getElementById('calc-expr').textContent = '1.2 × 1.2 × 1.2 =';
+                document.getElementById('calc-result').textContent = '1.728';
+                calcStepsEl.innerHTML = `
+                    <button onclick="showCalcStep('1.2 × 1.2 × 1.2 =', '1.728')" class="w-full text-left p-2 rounded bg-slate-800 hover:bg-slate-700 flex justify-between items-center">
+                        <span>① 1.2³ ➔ 按 1.2 × 1.2 × 1.2 =</span>
+                        <span class="font-mono font-bold text-emerald-400">1.728</span>
+                    </button>
+                    <button onclick="showCalcStep('1.728 × 1.2 =', '2.0736 (變大!)')" class="w-full text-left p-2 rounded bg-slate-800 hover:bg-slate-700 flex justify-between items-center">
+                        <span>② 1.2⁴ ➔ 1.728 × 1.2 =</span>
+                        <span class="font-mono font-bold text-emerald-400">2.0736 ↗變大</span>
+                    </button>
+                    <button onclick="showCalcStep('2.0736 × 1.2 =', '2.48832 (更大!)')" class="w-full text-left p-2 rounded bg-slate-800 hover:bg-slate-700 flex justify-between items-center">
+                        <span>③ 1.2⁵ ➔ 2.0736 × 1.2 =</span>
+                        <span class="font-mono font-bold text-emerald-400">2.48832 ↗變大</span>
+                    </button>
+                `;
+            } else {
+                const v3 = Number(Math.pow(base, 3).toFixed(4));
+                const v4 = Number(Math.pow(base, 4).toFixed(4));
+                const v5 = Number(Math.pow(base, 5).toFixed(4));
+                const dispBase = label === '4/3' ? pfrac(4, 3) : label;
+                const dispPow = (e) => label === '4/3' ? pfrac(4, 3, e) : `${label}<span class="msup">${e}</span>`;
+                summaryEl.innerHTML = isLess
+                    ? `當底數 <span class="math-expr font-bold">${dispBase} &lt; 1</span> 時：<span class="math-expr font-bold">${dispPow(3)} &gt; ${dispPow(4)} &gt; ${dispPow(5)}</span>`
+                    : `當底數 <span class="math-expr font-bold">${dispBase} &gt; 1</span> 時：<span class="math-expr font-bold">${dispPow(3)} &lt; ${dispPow(4)} &lt; ${dispPow(5)}</span>`;
+                showCalcStep(`(${label})³ ➔ (${label})⁴ ➔ (${label})⁵`, `${v3} ➔ ${v4} ➔ ${v5}`);
+            }
+        }
+
+        function showCalcStep(expr, res) {
+            document.getElementById('calc-expr').textContent = expr;
+            document.getElementById('calc-result').textContent = res;
+        }
+
+        /* =====================================================================
+           互動實驗室 3：指數律四大公式拆解動畫 (P.151 ~ P.154)
+           ===================================================================== */
+        function selectLawTab(tabNum) {
+            currentLawTab = tabNum;
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`law-btn-${i}`);
+                if (i === tabNum) {
+                    btn.className = "p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-left transition shadow-sm";
+                } else {
+                    btn.className = "p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 bg-white text-left transition";
+                }
+            }
+            const nWrap = document.getElementById('law-n-wrap');
+            if (tabNum === 4) {
+                nWrap.classList.add('hidden');
+            } else {
+                nWrap.classList.remove('hidden');
+            }
+            renderLawAnimation();
+        }
+
+        function renderLawAnimation() {
+            const baseRaw = document.getElementById('law-base-select').value;
+            let m = parseInt(document.getElementById('law-m').value) || 3;
+            let n = parseInt(document.getElementById('law-n').value) || 2;
+
+            // 若是除法公式，確保 m > n 以符合 P.152 視覺約分
+            if (currentLawTab === 2 && m <= n) {
+                m = Math.min(6, n + 1);
+                if (m <= n) { n = m - 1; document.getElementById('law-n').value = n; }
+                document.getElementById('law-m').value = m;
+            }
+            // 若是乘方的乘方，避免展開過長
+            if (currentLawTab === 3 && m > 4) {
+                m = 4; document.getElementById('law-m').value = 4;
+            }
+            if (currentLawTab === 3 && n > 3) {
+                n = 3; document.getElementById('law-n').value = 3;
+            }
+
+            document.getElementById('law-m-val').textContent = m;
+            document.getElementById('law-n-val').textContent = n;
+
+            let aDisplay = baseRaw;
+            if (baseRaw.includes('/')) {
+                const [num, den] = baseRaw.split('/');
+                aDisplay = pfrac(num, den);
+            }
+            const aSup = (exp) => {
+                if (baseRaw.includes('/')) {
+                    const [num, den] = baseRaw.split('/');
+                    return pfrac(num, den, exp);
+                }
+                return `${baseRaw}<span class="msup">${exp}</span>`;
+            };
+
+            const stage = document.getElementById('law-stage');
+
+            if (currentLawTab === 1) {
+                // 公式1：a^m * a^n = a^(m+n)
+                const partM = Array(m).fill(`<span class="text-emerald-700 font-bold">${aDisplay}</span>`).join(' × ');
+                const partN = Array(n).fill(`<span class="text-indigo-700 font-bold">${aDisplay}</span>`).join(' × ');
+                stage.innerHTML = `
+                    <div class="text-xs font-bold text-slate-500">公式 1：底數相同的乘方相乘（課本 P.151 例 5）</div>
+                    <div class="flex flex-wrap items-center justify-center gap-3 math-expr animate-pop">
+                        <span>${aSup(m)} × ${aSup(n)} =</span>
+                        <span class="bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200" title="${m}個">(${partM})</span>
+                        <span>×</span>
+                        <span class="bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200" title="${n}個">(${partN})</span>
+                        <span>= ${aSup(`${m}+${n}`)} = <strong class="text-emerald-700 text-xl">${aSup(m + n)}</strong></span>
+                    </div>
+                    <div class="text-xs text-slate-600">共有 <strong class="text-emerald-700">${m} 個</strong> 與 <strong class="text-indigo-700">${n} 個</strong> 連乘，合起來總共 <strong>(${m} + ${n}) = ${m + n} 個</strong>！</div>
+                `;
+            } else if (currentLawTab === 2) {
+                // 公式2：a^m / a^n = a^(m-n)
+                let numArr = [];
+                for (let i = 0; i < m; i++) {
+                    if (i < n) numArr.push(`<span class="cancel-slash text-slate-400">${aDisplay}</span>`);
+                    else numArr.push(`<span class="text-emerald-700 font-bold">${aDisplay}</span>`);
+                }
+                let denArr = Array(n).fill(`<span class="cancel-slash text-slate-400">${aDisplay}</span>`);
+
+                stage.innerHTML = `
+                    <div class="text-xs font-bold text-slate-500">公式 2：底數相同的乘方相除（課本 P.152 例 6 上下約分消去）</div>
+                    <div class="flex flex-wrap items-center justify-center gap-3 math-expr animate-pop">
+                        <span>${aSup(m)} ÷ ${aSup(n)} =</span>
+                        <span>${frac(numArr.join(' × '), denArr.join(' × '))}</span>
+                        <span>= ${aSup(`${m}−${n}`)} = <strong class="text-emerald-700 text-xl">${aSup(m - n)}</strong></span>
+                    </div>
+                    <div class="text-xs text-slate-600">分子 ${m} 個與分母 ${n} 個上下約分消去 <strong class="text-rose-600">${n} 個</strong> 後，剩下 <strong>(${m} − ${n}) = ${m - n} 個</strong>！</div>
+                `;
+            } else if (currentLawTab === 3) {
+                // 公式3：(a^m)^n = a^(m*n)
+                const groups = Array(n).fill(`<span class="bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">${aSup(m)}</span>`).join(' × ');
+                const sumExp = Array(n).fill(m).join('+');
+                stage.innerHTML = `
+                    <div class="text-xs font-bold text-slate-500">公式 3：乘方的乘方（課本 P.153 例 7 群組複製展開）</div>
+                    <div class="flex flex-wrap items-center justify-center gap-3 math-expr animate-pop">
+                        <span>[ ${aSup(m)} ]<span class="msup">${n}</span> =</span>
+                        <span>${groups}</span>
+                        <span>= ${aSup(sumExp)} = ${aSup(`${m}×${n}`)} = <strong class="text-emerald-700 text-xl">${aSup(m * n)}</strong></span>
+                    </div>
+                    <div class="text-xs text-slate-600">把 ${aSup(m)} 連乘 <strong class="text-indigo-700">${n} 次</strong>，指數相當於 ${n} 個 ${m} 相加，即 <strong>${m} × ${n} = ${m * n}</strong>！</div>
+                `;
+            } else {
+                // 公式4：(a * b)^m = a^m * b^m
+                const bVal = baseRaw === '5' ? '11' : (baseRaw.includes('/') ? pfrac(1, 3) : '7');
+                const bSup = (exp) => baseRaw.includes('/') ? pfrac(1, 3, exp) : `${bVal}<span class="msup">${exp}</span>`;
+                const pairs = Array(m).fill(`(${aDisplay} × ${bVal})`).join(' × ');
+                const groupA = Array(m).fill(`<span class="text-emerald-700">${aDisplay}</span>`).join(' × ');
+                const groupB = Array(m).fill(`<span class="text-indigo-700">${bVal}</span>`).join(' × ');
+
+                stage.innerHTML = `
+                    <div class="text-xs font-bold text-slate-500">公式 4：兩數相乘的乘方（課本 P.154 例 8 交換律與結合律分組）</div>
+                    <div class="flex flex-wrap items-center justify-center gap-2 math-expr animate-pop">
+                        <span>( ${aDisplay} × ${bVal} )<span class="msup">${m}</span> = ${pairs}</span>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-center gap-2 math-expr animate-pop">
+                        <span>= (${groupA}) × (${groupB}) = <strong class="text-emerald-700 text-xl">${aSup(m)} × ${bSup(m)}</strong></span>
+                    </div>
+                    <div class="text-xs text-slate-600">括號外的 <strong class="text-indigo-700">${m} 次方</strong> 會同時分配給括號內相乘的每一個數！</div>
+                `;
+            }
+        }
+
+        /* =====================================================================
+           課本 P.155 動動腦：動態隨機類似題
+           ===================================================================== */
+        function generateBrainSimilar() {
+            const bases = [2, 3, 5, 7];
+            const b = bases[Math.floor(Math.random() * bases.length)];
+            // 隨機一奇一偶或兩奇或兩偶
+            const pairs = [[2, 3], [4, 5], [2, 5], [3, 5]];
+            const [m, n] = pairs[Math.floor(Math.random() * pairs.length)];
+            const leftNeg = (n % 2 === 1);
+            const rightNeg = (m % 2 === 1);
+            const isSame = (leftNeg === rightNeg);
+
+            const box = document.getElementById('brain-quiz-box');
+            document.getElementById('brain-quiz-text').innerHTML = `
+                <span class="bg-indigo-600 text-white text-xs px-2 py-0.5 rounded mr-1">新挑戰</span>
+                請問 <span class="math-expr font-black">(−${b}<span class="msup">${m}</span>)<span class="msup">${n}</span></span> 與 <span class="math-expr font-black">(−${b}<span class="msup">${n}</span>)<span class="msup">${m}</span></span> 的值是否相同？
+            `;
+            document.getElementById('brain-quiz-btns').innerHTML = `
+                <button onclick="ansBrainQuiz(${isSame}, true, ${b}, ${m}, ${n})" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500">相同</button>
+                <button onclick="ansBrainQuiz(${isSame}, false, ${b}, ${m}, ${n})" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-500">不相同</button>
+            `;
+        }
+
+        function ansBrainQuiz(actualSame, userSame, b, m, n) {
+            const correct = actualSame === userSame;
+            const leftSign = (n % 2 === 1) ? `−${b}<span class="msup">${m*n}</span> &lt; 0 (負)` : `${b}<span class="msup">${m*n}</span> &gt; 0 (正)`;
+            const rightSign = (m % 2 === 1) ? `−${b}<span class="msup">${m*n}</span> &lt; 0 (負)` : `${b}<span class="msup">${m*n}</span> &gt; 0 (正)`;
+            document.getElementById('brain-quiz-btns').innerHTML = `
+                <span class="text-xs font-bold px-3 py-1.5 rounded-lg ${correct ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                    ${correct ? '✅ 答對了！' : '❌ 再想一下！'} 左式 = ${leftSign}，右式 = ${rightSign}，故兩者<strong>${actualSame ? '相同' : '不相同'}</strong>！
+                </span>
+            `;
+            markCompleted('p155-brain');
+        }
+
+        /* =====================================================================
+           課本 P.157 自我檢核（5題是非題 + 類似變體題，全面採用國中數學印刷格式）
+           ===================================================================== */
+        const selfCheckItems = [
+            {
+                id: 'sc-1',
+                bookHtml: `1. 「<span class="math-expr font-bold">${pfrac(3, 7, 6)} = ${frac(sup(3, 6), sup(7, 6))}</span>」這個式子是否正確？`,
+                ans: true,
+                explain: `正確！根據分數的乘方公式 <span class="math-expr font-bold">${pfrac('b', 'a', 'n')} = ${frac(sup('b', 'n'), sup('a', 'n'))}</span>，分子與分母皆為 6 次方。`
+            },
+            {
+                id: 'sc-2',
+                bookHtml: `2. 「<span class="math-expr font-bold">${pfrac(3, 2, 2)} &lt; ${pfrac(3, 2, 3)}</span>」這個式子是否正確？`,
+                ans: true,
+                explain: `正確！因為底數 <span class="math-expr font-bold">${frac(3, 2)} = 1.5 &gt; 1</span>，指數愈大，其乘方的值愈大，所以 <span class="math-expr font-bold">${pfrac(3, 2, 2)} &lt; ${pfrac(3, 2, 3)}</span>。`
+            },
+            {
+                id: 'sc-3',
+                bookHtml: `3. 「<span class="math-expr font-bold">${pfrac(5, 6, 10)} &gt; 1</span>」這個式子是否正確？`,
+                ans: false,
+                explain: `不正確（否）！因為底數 <span class="math-expr font-bold">0 &lt; ${frac(5, 6)} &lt; 1</span>，小於 1 的正數不管乘幾次都還是小於 1，所以 <span class="math-expr font-bold">${pfrac(5, 6, 10)} &lt; 1</span>。`
+            },
+            {
+                id: 'sc-4',
+                bookHtml: `4. 「<span class="math-expr font-bold">(7<span class="msup">3</span>)<span class="msup">2</span> = 7<span class="msup">3+2</span></span>」這個式子是否正確？`,
+                ans: false,
+                explain: `不正確（否）！乘方的乘方應將指數相乘：<span class="math-expr font-bold">(7<span class="msup">3</span>)<span class="msup">2</span> = 7<span class="msup">3×2</span> = 7<span class="msup">6</span></span>，而不是 <span class="math-expr font-bold">7<span class="msup">3+2</span></span>。`
+            },
+            {
+                id: 'sc-5',
+                bookHtml: `5. 「<span class="math-expr font-bold">(2 × 3)<span class="msup">5+4</span> = 2<span class="msup">5</span> × 3<span class="msup">4</span></span>」這個式子是否正確？`,
+                ans: false,
+                explain: `不正確（否）！<span class="math-expr font-bold">(2 × 3)<span class="msup">5+4</span> = (2 × 3)<span class="msup">9</span> = 2<span class="msup">9</span> × 3<span class="msup">9</span></span>，兩個底數分配到的次方必須相同。`
+            }
+        ];
+
+        function renderSelfCheck(items) {
+            const container = document.getElementById('self-check-list');
+            container.innerHTML = items.map((item, idx) => `
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="space-y-1.5">
+                        <div class="text-sm sm:text-base font-medium text-slate-800">${item.bookHtml}</div>
+                        <div id="sc-exp-${idx}" class="sol-panel hidden text-xs sm:text-sm font-bold text-indigo-800 bg-indigo-50 px-3.5 py-2 rounded-lg border border-indigo-200 leading-relaxed">
+                            💡 解析：${item.explain}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="checkSC(${idx}, true, ${item.ans}, '${item.id}')" id="sc-btn-t-${idx}" class="px-4 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-emerald-50 font-bold text-xs sm:text-sm transition">⭕ 是</button>
+                        <button onclick="checkSC(${idx}, false, ${item.ans}, '${item.id}')" id="sc-btn-f-${idx}" class="px-4 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-rose-50 font-bold text-xs sm:text-sm transition">❌ 否</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function checkSC(idx, userChoice, actualAns, qId) {
+            const expEl = document.getElementById(`sc-exp-${idx}`);
+            const btnT = document.getElementById(`sc-btn-t-${idx}`);
+            const btnF = document.getElementById(`sc-btn-f-${idx}`);
+            expEl.classList.remove('hidden');
+
+            const isRight = userChoice === actualAns;
+            if (userChoice) {
+                btnT.className = `px-4 py-1.5 rounded-lg font-bold text-xs sm:text-sm ${isRight ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}`;
+            } else {
+                btnF.className = `px-4 py-1.5 rounded-lg font-bold text-xs sm:text-sm ${isRight ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}`;
+            }
+            if (isRight) markCompleted(qId);
+        }
+
+        function generateSelfCheckSimilar() {
+            const a = Math.floor(Math.random() * 4) + 2;
+            const b = a + Math.floor(Math.random() * 3) + 1;
+            const n = Math.floor(Math.random() * 5) + 3;
+            const variantItems = [
+                {
+                    id: 'sc-1',
+                    bookHtml: `1. [類似題] 「<span class="math-expr font-bold">${pfrac(a, b, n)} = ${frac(sup(a, n), sup(b, n))}</span>」這個式子是否正確？`,
+                    ans: true,
+                    explain: `正確！根據 <span class="math-expr font-bold">${pfrac('b', 'a', 'n')} = ${frac(sup('b', 'n'), sup('a', 'n'))}</span>，分子與分母皆為 ${n} 次方。`
+                },
+                {
+                    id: 'sc-2',
+                    bookHtml: `2. [類似題] 「<span class="math-expr font-bold">${pfrac(b, a, n)} &gt; ${pfrac(b, a, n+1)}</span>」這個式子是否正確？`,
+                    ans: false,
+                    explain: `不正確（否）！因為底數 <span class="math-expr font-bold">${frac(b, a)} &gt; 1</span>，次方愈大值愈大，所以應該小於 (<span class="math-expr font-bold">${pfrac(b, a, n)} &lt; ${pfrac(b, a, n+1)}</span>)。`
+                },
+                {
+                    id: 'sc-3',
+                    bookHtml: `3. [類似題] 「<span class="math-expr font-bold">${pfrac(a, b, 15)} &lt; 1</span>」這個式子是否正確？`,
+                    ans: true,
+                    explain: `正確（是）！因為底數 <span class="math-expr font-bold">0 &lt; ${frac(a, b)} &lt; 1</span>，其正整數次方必小於 1。`
+                },
+                {
+                    id: 'sc-4',
+                    bookHtml: `4. [類似題] 「<span class="math-expr font-bold">(${b}<span class="msup">4</span>)<span class="msup">3</span> = ${b}<span class="msup">12</span></span>」這個式子是否正確？`,
+                    ans: true,
+                    explain: `正確（是）！乘方的乘方指數相乘：<span class="math-expr font-bold">(${b}<span class="msup">4</span>)<span class="msup">3</span> = ${b}<span class="msup">4×3</span> = ${b}<span class="msup">12</span></span>。`
+                },
+                {
+                    id: 'sc-5',
+                    bookHtml: `5. [類似題] 「<span class="math-expr font-bold">(−${a})<span class="msup">0</span> = 0</span>」這個式子是否正確？`,
+                    ans: false,
+                    explain: `不正確（否）！任何不為 0 的數的 0 次方皆等於 1，即 <span class="math-expr font-bold">(−${a})<span class="msup">0</span> = 1</span>。`
+                }
+            ];
+            renderSelfCheck(variantItems);
+        }
+
+        /* =====================================================================
+           課本 P.159 自我評量 第 5 題：小妍與小翊的挑錯題
+           ===================================================================== */
+        function renderSpotError(base1 = 5, base2 = 2, exp = 6) {
+            const ansPow = base1 * base2;
+            const zeros = '0'.repeat(exp);
+            const container = document.getElementById('spot-error-container');
+            container.innerHTML = `
+                <p class="text-sm text-slate-700">以下是小妍和小翊計算「<span class="math-expr font-bold">(−${base1})<span class="msup">${exp}</span> × (−${base2}<span class="msup">${exp}</span>)</span>」的過程。判斷他們的解法是否正確？請點擊他們<strong>開始發生錯誤的那一行</strong>：</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 小妍 -->
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 space-y-2">
+                        <div class="font-bold text-rose-800 text-sm border-b pb-1">👧 小妍的算式（請點擊開始出錯的步驟）：</div>
+                        <div class="math-expr font-bold text-slate-800 block">(−${base1})<span class="msup">${exp}</span> × (−${base2}<span class="msup">${exp}</span>)</div>
+                        <button onclick="spotErrorClick('yan', 1)" id="yan-step-1" class="w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-rose-100 transition math-expr font-bold block">
+                            = [ (−${base1}) × (−${base2}) ]<span class="msup">${exp}</span> 👈 點擊檢查此步
+                        </button>
+                        <button onclick="spotErrorClick('yan', 2)" id="yan-step-2" class="w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-rose-100 transition math-expr font-bold block">
+                            = ${ansPow}<span class="msup">${exp}</span> = 1${zeros}
+                        </button>
+                        <div id="yan-feedback" class="text-xs font-bold text-rose-700 hidden"></div>
+                    </div>
+
+                    <!-- 小翊 -->
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 space-y-2">
+                        <div class="font-bold text-rose-800 text-sm border-b pb-1">👦 小翊的算式（請點擊開始出錯的步驟）：</div>
+                        <div class="math-expr font-bold text-slate-800 block">(−${base1})<span class="msup">${exp}</span> × (−${base2}<span class="msup">${exp}</span>)</div>
+                        <button onclick="spotErrorClick('yi', 1)" id="yi-step-1" class="w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-rose-100 transition math-expr font-bold block">
+                            = ${base1}<span class="msup">${exp}</span> × ${base2}<span class="msup">${exp}</span> 👈 點擊檢查此步
+                        </button>
+                        <button onclick="spotErrorClick('yi', 2)" id="yi-step-2" class="w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-rose-100 transition math-expr font-bold block">
+                            = (${base1} × ${base2})<span class="msup">${exp}</span> = ${ansPow}<span class="msup">${exp}</span> = 1${zeros}
+                        </button>
+                        <div id="yi-feedback" class="text-xs font-bold text-rose-700 hidden"></div>
+                    </div>
+                </div>
+
+                <!-- 正確解法填空與詳解 -->
+                <div class="bg-white p-4 rounded-xl border-2 border-emerald-300 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="font-bold text-emerald-900 text-sm">✅ 正確解法互動作答：請填入最終答案（含正負號）</span>
+                        <div class="flex items-center gap-2">
+                            <span class="math-expr font-bold">(−${base1})<span class="msup">${exp}</span> × (−${base2}<span class="msup">${exp}</span>) = </span>
+                            <input type="text" id="spot-final-ans" placeholder="請填整數答案" class="ans-box w-36">
+                            <button onclick="checkSpotFinal('-1${zeros}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500">批改答案</button>
+                        </div>
+                    </div>
+                    <div id="spot-sol-panel" class="sol-panel hidden bg-emerald-50 p-3.5 rounded-lg text-xs sm:text-sm text-emerald-950 space-y-1">
+                        <div><strong>📖 課本 P.159 完整正確解法：</strong></div>
+                        <div class="math-expr font-bold block">
+                            (−${base1})<span class="msup">${exp}</span> × (−${base2}<span class="msup">${exp}</span>) = ${base1}<span class="msup">${exp}</span> × (−${base2}<span class="msup">${exp}</span>) = −(${base1}<span class="msup">${exp}</span> × ${base2}<span class="msup">${exp}</span>) = −(${base1} × ${base2})<span class="msup">${exp}</span> = −${ansPow}<span class="msup">${exp}</span> = <strong>−1${zeros}</strong>
+                        </div>
+                        <div class="text-xs text-slate-600">關鍵觀念：<span class="math-expr font-bold">(−${base1})<span class="msup">${exp}</span> = +${base1}<span class="msup">${exp}</span></span> 是正數，但 <span class="math-expr font-bold">−${base2}<span class="msup">${exp}</span> = −(${base2}<span class="msup">${exp}</span>)</span> 負號在括號外（沒有被偶次方消掉），所以是負數！正負相乘必為負數。</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function spotErrorClick(who, step) {
+            const fb = document.getElementById(`${who}-feedback`);
+            const btn = document.getElementById(`${who}-step-${step}`);
+            fb.classList.remove('hidden');
+            if (step === 1) {
+                btn.classList.add('bg-rose-100', 'border-rose-500');
+                fb.innerHTML = who === 'yan'
+                    ? '🎯 抓到了！小妍在第一步就錯了，因為 −2⁶ 的負號沒有括號，底數是 2 而不是 −2，不能寫成 (−2)⁶！'
+                    : '🎯 抓到了！小翊在第一步就錯了，因為 −2⁶ 是負數，不等於正的 2⁶！';
+                document.getElementById('spot-sol-panel').classList.remove('hidden');
+                markCompleted('p159-q5');
+            } else {
+                fb.innerHTML = '⚠️ 其實更早一步（第一步）正負號就已經發生錯誤囉！請點第一步看看。';
+            }
+        }
+
+        function checkSpotFinal(expected) {
+            const inp = document.getElementById('spot-final-ans');
+            const val = inp.value.trim().replace(/,/g, '');
+            const sol = document.getElementById('spot-sol-panel');
+            sol.classList.remove('hidden');
+            if (val === expected || val === '-10^6') {
+                inp.classList.remove('wrong');
+                inp.classList.add('correct');
+                markCompleted('p159-q5');
+            } else {
+                inp.classList.remove('correct');
+                inp.classList.add('wrong');
+            }
+        }
+
+        function generateSpotErrorSimilar() {
+            const exps = [4, 6, 8];
+            const e = exps[Math.floor(Math.random() * exps.length)];
+            renderSpotError(5, 2, e);
+        }
+
+        /* =====================================================================
+           課本 P.160 臺北捷運常客優惠模擬器
+           ===================================================================== */
+        function setMrtSim(price, trips) {
+            document.getElementById('mrt-price').value = price;
+            document.getElementById('mrt-trips').value = trips;
+            updateMrtSim();
+        }
+
+        function updateMrtSim() {
+            const price = parseInt(document.getElementById('mrt-price').value) || 30;
+            const trips = parseInt(document.getElementById('mrt-trips').value) || 44;
+            document.getElementById('mrt-price-val').textContent = price;
+            document.getElementById('mrt-trips-val').textContent = trips;
+
+            let rate = 0;
+            let activeRow = 0;
+            if (trips >= 51) { rate = 30; activeRow = 5; }
+            else if (trips >= 41) { rate = 25; activeRow = 4; }
+            else if (trips >= 31) { rate = 20; activeRow = 3; }
+            else if (trips >= 21) { rate = 15; activeRow = 2; }
+            else if (trips >= 11) { rate = 10; activeRow = 1; }
+
+            for (let i = 0; i <= 5; i++) {
+                const r = document.getElementById(`mrt-row-${i}`);
+                if (r) {
+                    r.className = (i === activeRow)
+                        ? "bg-emerald-100 font-black text-emerald-950"
+                        : "hover:bg-slate-50";
+                }
+            }
+
+            const totalRaw = price * trips;
+            const rebate = Math.round(totalRaw * (rate / 100));
+            const netCost = totalRaw - rebate;
+            const passBetter = netCost > 1200;
+
+            document.getElementById('mrt-sim-output').innerHTML = `
+                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
+                    <div class="text-xs text-slate-400">累計搭乘總額</div>
+                    <div class="text-lg font-mono font-bold text-white">${price} × ${trips} = ${totalRaw} 元</div>
+                </div>
+                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
+                    <div class="text-xs text-slate-400">回饋比例與回饋金</div>
+                    <div class="text-lg font-mono font-bold text-emerald-400">${rate}% ➔ 回饋 ${rebate} 元</div>
+                </div>
+                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
+                    <div class="text-xs text-slate-400">常客優惠實付金額</div>
+                    <div class="text-lg font-mono font-bold text-amber-300">${netCost} 元</div>
+                </div>
+                <div class="p-3 rounded-xl border ${passBetter ? 'bg-amber-600/30 border-amber-400' : 'bg-emerald-600/30 border-emerald-400'}">
+                    <div class="text-xs text-slate-200">與 1200 月票比較</div>
+                    <div class="text-sm font-black text-white mt-0.5">${passBetter ? `選「通勤月票(1200元)」省 ${netCost - 1200} 元！` : (netCost === 1200 ? '兩方案一樣划算 (1200元)' : `選「常客優惠(${netCost}元)」省 ${1200 - netCost} 元！`)}</div>
+                </div>
+            `;
+        }
+
+        /* =====================================================================
+           課本 P.161 一題多解：三種策略切換展示
+           ===================================================================== */
+        function switchMultiMethod(m) {
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`mm-btn-${i}`);
+                btn.className = (i === m)
+                    ? "px-4 py-2 rounded-xl font-bold text-xs sm:text-sm bg-purple-600 text-white shadow transition"
+                    : "px-4 py-2 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-700 hover:bg-purple-100 transition";
+            }
+
+            const stage = document.getElementById('mm-stage');
+            if (m === 1) {
+                stage.innerHTML = `
+                    <div class="space-y-3 animate-pop">
+                        <div class="text-sm font-bold text-purple-900">💡 解法 1：化成「同分母（公分母 50）」再比大小</div>
+                        <div class="math-expr font-bold text-slate-800 block space-y-2">
+                            <div>因為 ${frac(2,5)} = ${frac(20,50)} ， ${frac(7,10)} = ${frac(35,50)} ， ${frac(22,25)} = ${frac(44,50)}</div>
+                            <div>即 ${frac(44,50)} &gt; ${frac(35,50)} &gt; ${frac(20,50)}</div>
+                            <div class="text-purple-800">所以 <strong>${frac(22,25)} &gt; ${frac(7,10)} &gt; ${frac(2,5)}</strong></div>
+                        </div>
+                    </div>
+                `;
+            } else if (m === 2) {
+                stage.innerHTML = `
+                    <div class="space-y-3 animate-pop">
+                        <div class="text-sm font-bold text-purple-900">💡 解法 2：化成「小數」再比大小</div>
+                        <div class="math-expr font-bold text-slate-800 block space-y-2">
+                            <div>因為 ${frac(2,5)} = 0.4 ， ${frac(7,10)} = 0.7 ， ${frac(22,25)} = 0.88</div>
+                            <div>即 0.88 &gt; 0.7 &gt; 0.4</div>
+                            <div class="text-purple-800">所以 <strong>${frac(22,25)} &gt; ${frac(7,10)} &gt; ${frac(2,5)}</strong></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                stage.innerHTML = `
+                    <div class="space-y-3 animate-pop">
+                        <div class="text-sm font-bold text-purple-900">💡 解法 3：利用「分子與分母的差相同（都差 3）」與 1 的距離來比大小</div>
+                        <div class="math-expr font-bold text-slate-800 block space-y-2">
+                            <div>因為 ${frac(2,5)} = 1 − ${frac(3,5)} ， ${frac(7,10)} = 1 − ${frac(3,10)} ， ${frac(22,25)} = 1 − ${frac(3,25)}</div>
+                            <div>由於被減掉的部分：${frac(3,5)} &gt; ${frac(3,10)} &gt; ${frac(3,25)} （扣掉愈少，剩下的愈大！）</div>
+                            <div>即 1 − ${frac(3,5)} &lt; 1 − ${frac(3,10)} &lt; 1 − ${frac(3,25)}</div>
+                            <div class="text-purple-800">所以 <strong>${frac(22,25)} &gt; ${frac(7,10)} &gt; ${frac(2,5)}</strong></div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        /* =====================================================================
+           100% 完整收錄課本題庫與動態類似題產生器（無答案洩漏、純教科書印刷格式）
+           ===================================================================== */
+        const questionBank = [
+            // ---------------- P.147 例1 & 隨堂練習 ----------------
+            {
+                id: 'p147-ex1',
+                container: 'cards-p147',
+                badge: '課本 P.147 例 1',
+                title: '分數的乘方',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${pfrac(7, 9, 5)} = ${frac(`7<input data-idx="0" placeholder="□" class="ans-box sup-input">`, `9<input data-idx="1" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                            answers: ['5', '5']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(4, 3, 3)} = ${frac(`(−4)<input data-idx="2" placeholder="□" class="ans-box sup-input">`, `3<input data-idx="3" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                            answers: ['3', '3']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">${pfrac(7,9,5)} = ${frac('7×7×7×7×7','9×9×9×9×9')} = ${frac(sup(7,5), sup(9,5))}</span>，所以 □ 中皆填 <strong>5</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${npfrac(4,3,3)} = ${frac('(−4)×(−4)×(−4)','3×3×3')} = ${frac(sup('(−4)',3), sup(3,3))}</span>，所以 □ 中皆填 <strong>3</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e1 = Math.floor(Math.random() * 5) + 4;
+                    const e2 = Math.floor(Math.random() * 4) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">${pfrac(5, 8, e1)} = ${frac(`5<input data-idx="0" placeholder="□" class="ans-box sup-input">`, `8<input data-idx="1" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                                answers: [String(e1), String(e1)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${npfrac(7, 4, e2)} = ${frac(`(−7)<input data-idx="2" placeholder="□" class="ans-box sup-input">`, `4<input data-idx="3" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                                answers: [String(e2), String(e2)]
+                            }
+                        ],
+                        solHtml: `根據分數的乘方公式 <span class="math-expr font-bold">${pfrac('b', 'a', 'n')} = ${frac(sup('b', 'n'), sup('a', 'n'))}</span>，(1) □ 皆填 <strong>${e1}</strong>；(2) □ 皆填 <strong>${e2}</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p147-prac1',
+                container: 'cards-p147',
+                badge: '課本 P.147 隨堂練習',
+                title: '分數的乘方練習',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${pfrac(2, '−3', 4)} = ${frac(`2<input data-idx="0" placeholder="□" class="ans-box sup-input">`, `(−3)<input data-idx="1" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                            answers: ['4', '4']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${pfrac('−5', 3, 3)} = ${frac(`(−5)<input data-idx="2" placeholder="□" class="ans-box sup-input">`, `3<input data-idx="3" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                            answers: ['3', '3']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">${pfrac(2,'−3',4)} = ${frac('2×2×2×2','(−3)×(−3)×(−3)×(−3)')} = ${frac(sup(2,4), sup('(−3)',4))}</span>，所以 □ 中皆填 <strong>4</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${pfrac('−5',3,3)} = ${frac('(−5)×(−5)×(−5)','3×3×3')} = ${frac(sup('(−5)',3), sup(3,3))}</span>，所以 □ 中皆填 <strong>3</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e1 = Math.floor(Math.random() * 5) + 3;
+                    const e2 = Math.floor(Math.random() * 4) + 4;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">${pfrac(4, '−7', e1)} = ${frac(`4<input data-idx="0" placeholder="□" class="ans-box sup-input">`, `(−7)<input data-idx="1" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                                answers: [String(e1), String(e1)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${pfrac('−8', 5, e2)} = ${frac(`(−8)<input data-idx="2" placeholder="□" class="ans-box sup-input">`, `5<input data-idx="3" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                                answers: [String(e2), String(e2)]
+                            }
+                        ],
+                        solHtml: `(1) 分子與分母皆連乘 ${e1} 次，填 <strong>${e1}</strong>；(2) 分子與分母皆連乘 ${e2} 次，填 <strong>${e2}</strong>。`
+                    };
+                }
+            },
+
+            // ---------------- P.148 ~ P.149 例2 & 隨堂1 & 隨堂2 ----------------
+            {
+                id: 'p148-ex2',
+                container: 'cards-p148',
+                badge: '課本 P.148 例 2',
+                title: '乘方的比較大小',
+                prompt: '比較下列各組數的大小（請選擇 > 或 <）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${pfrac(3, 5, 2)} <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> ${pfrac(3, 5, 3)}</span>`,
+                            answers: ['>']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">1.2<span class="msup">2</span> <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 1.2<span class="msup">3</span></span>`,
+                            answers: ['<']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> 因為 <span class="math-expr">${pfrac(3,5,3)} = ${pfrac(3,5,2)} × ${frac(3,5)}</span>，而 <span class="math-expr">${frac(3,5)} &lt; 1</span>（越乘越小），所以 <span class="math-expr">${pfrac(3,5,3)} &lt; ${pfrac(3,5,2)}</span>，即 <strong><span class="math-expr">${pfrac(3,5,2)} &gt; ${pfrac(3,5,3)}</span></strong>。</div>
+                        <div><strong>(2)</strong> 因為 <span class="math-expr">1.2<span class="msup">3</span> = 1.2<span class="msup">2</span> × 1.2</span>，而 <span class="math-expr">1.2 &gt; 1</span>（越乘越大），所以 <span class="math-expr">1.2<span class="msup">3</span> &gt; 1.2<span class="msup">2</span></span>，即 <strong><span class="math-expr">1.2<span class="msup">2</span> &lt; 1.2<span class="msup">3</span></span></strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e = Math.floor(Math.random() * 4) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">${pfrac(2, 7, e)} <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> ${pfrac(2, 7, e+1)}</span>`,
+                                answers: ['>']
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">1.5<span class="msup">${e}</span> <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 1.5<span class="msup">${e+1}</span></span>`,
+                                answers: ['<']
+                            }
+                        ],
+                        solHtml: `(1) 底數 <span class="math-expr">${frac(2,7)} &lt; 1</span>，次方愈大值愈小，故填 <strong>&gt;</strong>；(2) 底數 <span class="math-expr">1.5 &gt; 1</span>，次方愈大值愈大，故填 <strong>&lt;</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p148-prac2a',
+                container: 'cards-p148',
+                badge: '課本 P.148 隨堂練習',
+                title: '乘方的比較大小練習 1',
+                prompt: '比較下列各組數的大小（請選擇 > 或 <）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">0.5<span class="msup">4</span> <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 0.5<span class="msup">5</span></span>`,
+                            answers: ['>']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${pfrac(4, 3, 3)} <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> ${pfrac(4, 3, 4)}</span>`,
+                            answers: ['<']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> 因為 <span class="math-expr">0.5<span class="msup">5</span> = 0.5<span class="msup">4</span> × 0.5</span>，而 <span class="math-expr">0.5 &lt; 1</span>，所以 <span class="math-expr">0.5<span class="msup">5</span> &lt; 0.5<span class="msup">4</span></span>，即 <strong><span class="math-expr">0.5<span class="msup">4</span> &gt; 0.5<span class="msup">5</span></span></strong>。</div>
+                        <div><strong>(2)</strong> 因為 <span class="math-expr">${pfrac(4,3,4)} = ${pfrac(4,3,3)} × ${frac(4,3)}</span>，而 <span class="math-expr">${frac(4,3)} &gt; 1</span>，所以 <span class="math-expr">${pfrac(4,3,4)} &gt; ${pfrac(4,3,3)}</span>，即 <strong><span class="math-expr">${pfrac(4,3,3)} &lt; ${pfrac(4,3,4)}</span></strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e = Math.floor(Math.random() * 5) + 4;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">0.8<span class="msup">${e}</span> <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 0.8<span class="msup">${e+1}</span></span>`,
+                                answers: ['>']
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${pfrac(7, 5, e)} <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> ${pfrac(7, 5, e+1)}</span>`,
+                                answers: ['<']
+                            }
+                        ],
+                        solHtml: `(1) 底數 <span class="math-expr">0.8 &lt; 1</span>，次方愈大值愈小，故 <span class="math-expr">0.8<span class="msup">${e}</span> &gt; 0.8<span class="msup">${e+1}</span></span>；(2) 底數 <span class="math-expr">${frac(7,5)} &gt; 1</span>，次方愈大值愈大，故填 <strong>&lt;</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p149-prac2b',
+                container: 'cards-p148',
+                badge: '課本 P.149 隨堂練習',
+                title: '高次方與 1 的基準比較',
+                prompt: '比較下列各組數的大小（請選擇 > 或 <）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">1.01<span class="msup">10</span> <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 1.01<span class="msup">20</span></span>`,
+                            answers: ['<']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">0.99<span class="msup">20</span> <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 0.99<span class="msup">30</span></span>`,
+                            answers: ['>']
+                        },
+                        {
+                            html: `(3) <span class="math-expr">1.01<span class="msup">10</span> <select data-idx="2" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 0.99<span class="msup">30</span></span>`,
+                            answers: ['>']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> 因為 <span class="math-expr">1.01 &gt; 1</span>，指數愈大值愈大，所以 <strong><span class="math-expr">1.01<span class="msup">10</span> &lt; 1.01<span class="msup">20</span></span></strong>。</div>
+                        <div><strong>(2)</strong> 因為 <span class="math-expr">0.99 &lt; 1</span>，指數愈大值愈小，所以 <strong><span class="math-expr">0.99<span class="msup">20</span> &gt; 0.99<span class="msup">30</span></span></strong>。</div>
+                        <div><strong>(3)</strong> 因為 <span class="math-expr">1.01<span class="msup">10</span> &gt; 1</span>，又 <span class="math-expr">0.99<span class="msup">30</span> &lt; 1</span>（以 1 為中間橋樑），所以 <strong><span class="math-expr">1.01<span class="msup">10</span> &gt; 0.99<span class="msup">30</span></span></strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e1 = Math.floor(Math.random() * 10) + 12;
+                    const e2 = e1 + 10;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">1.02<span class="msup">${e1}</span> <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 1.02<span class="msup">${e2}</span></span>`,
+                                answers: ['<']
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">0.98<span class="msup">${e1}</span> <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 0.98<span class="msup">${e2}</span></span>`,
+                                answers: ['>']
+                            },
+                            {
+                                html: `(3) [類似題] <span class="math-expr">0.98<span class="msup">${e2}</span> <select data-idx="2" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 1.02<span class="msup">${e1}</span></span>`,
+                                answers: ['<']
+                            }
+                        ],
+                        solHtml: `(1) <span class="math-expr">1.02 &gt; 1</span>，故填 <strong>&lt;</strong>；(2) <span class="math-expr">0.98 &lt; 1</span>，故填 <strong>&gt;</strong>；(3) <span class="math-expr">0.98<span class="msup">${e2}</span> &lt; 1</span> 且 <span class="math-expr">1.02<span class="msup">${e1}</span> &gt; 1</span>，故填 <strong>&lt;</strong>。`
+                    };
+                }
+            },
+
+            // ---------------- P.150 例3、隨堂3、例4、隨堂4 ----------------
+            {
+                id: 'p150-ex3',
+                container: 'cards-p150',
+                badge: '課本 P.150 例 3',
+                title: '含乘方的分數乘除運算',
+                prompt: '計算下列各式的值（若答案為分數，請以「分子/分母」格式作答，例如 -2/5）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${npfrac(1,2,3)} × ${npfrac(2,3,2)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-1/18']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(3,2,4)} ÷ ${pfrac(3,4,2)} = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['9']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = (−${frac(1,8)}) × ${frac(4,9)} = <strong>−${frac(1,18)}</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = ${frac(81,16)} ÷ ${frac(9,16)} = ${frac(81,16)} × ${frac(16,9)} = <strong>9</strong></span></div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `(1) [類似題] <span class="math-expr">${npfrac(1,3,3)} × ${npfrac(3,2,2)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-1/12']
+                        },
+                        {
+                            html: `(2) [類似題] <span class="math-expr">${npfrac(2,3,4)} ÷ ${pfrac(2,9,2)} = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['4']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = (−${frac(1,27)}) × ${frac(9,4)} = <strong>−${frac(1,12)}</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = ${frac(16,81)} ÷ ${frac(4,81)} = ${frac(16,81)} × ${frac(81,4)} = <strong>4</strong></span></div>
+                    `
+                })
+            },
+            {
+                id: 'p150-prac3',
+                container: 'cards-p150',
+                badge: '課本 P.150 隨堂練習',
+                title: '含乘方的分數運算練習',
+                prompt: '計算下列各式的值（若答案為分數，請以「分子/分母」格式作答）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${pfrac(1,4,2)} × ${pfrac('−2',5,3)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-1/250']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${pfrac(5,2,3)} ÷ ${npfrac(5,4,2)} = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['10']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = ${frac(1,16)} × (${frac('−8',125)}) = <strong>−${frac(1,250)}</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = ${frac(125,8)} ÷ ${frac(25,16)} = ${frac(125,8)} × ${frac(16,25)} = <strong>10</strong></span></div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `(1) [類似題] <span class="math-expr">${pfrac(1,2,2)} × ${pfrac('−2',3,3)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-2/27']
+                        },
+                        {
+                            html: `(2) [類似題] <span class="math-expr">${pfrac(3,2,3)} ÷ ${npfrac(3,4,2)} = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['6']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = ${frac(1,4)} × (${frac('−8',27)}) = <strong>−${frac(2,27)}</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = ${frac(27,8)} ÷ ${frac(9,16)} = ${frac(27,8)} × ${frac(16,9)} = <strong>6</strong></span></div>
+                    `
+                })
+            },
+            {
+                id: 'p150-ex4',
+                container: 'cards-p150',
+                badge: '課本 P.150 例 4',
+                title: '含乘方的四則運算',
+                prompt: '計算下列算式的值（先算乘方，再算括號內）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `<span class="math-expr"><span class="mbracket">4 × ${npfrac(1,2,2)} + ${frac(3,2)}</span> ÷ ${npfrac(1,2,3)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-20']
+                        }
+                    ],
+                    solHtml: `
+                        <div><span class="math-expr">原式 = (4 × ${frac(1,4)} + ${frac(3,2)}) ÷ (−${frac(1,8)})</span></div>
+                        <div><span class="math-expr">= (1 + ${frac(3,2)}) ÷ (−${frac(1,8)}) = ${frac(5,2)} × (−8) = <strong>−20</strong></span></div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `[類似題] <span class="math-expr"><span class="mbracket">8 × ${npfrac(1,2,2)} + ${frac(1,2)}</span> ÷ ${npfrac(1,2,3)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-20']
+                        }
+                    ],
+                    solHtml: `<span class="math-expr">原式 = (8 × ${frac(1,4)} + ${frac(1,2)}) ÷ (−${frac(1,8)}) = (2 + ${frac(1,2)}) × (−8) = ${frac(5,2)} × (−8) = <strong>−20</strong></span>`
+                })
+            },
+            {
+                id: 'p150-prac4',
+                container: 'cards-p150',
+                badge: '課本 P.150 隨堂練習',
+                title: '含乘方的四則運算練習',
+                prompt: '計算下列算式的值（若為分數請以「分子/分母」格式作答）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `<span class="math-expr">${npfrac(1,2,3)} × 8 + ${npfrac(1,5,2)} ÷ ${npfrac(1,3,2)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-16/25']
+                        }
+                    ],
+                    solHtml: `
+                        <div><span class="math-expr">原式 = (−${frac(1,8)}) × 8 + ${frac(1,25)} ÷ ${frac(1,9)}</span></div>
+                        <div><span class="math-expr">= −1 + ${frac(1,25)} × 9 = −1 + ${frac(9,25)} = <strong>−${frac(16,25)}</strong></span></div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `[類似題] <span class="math-expr">${npfrac(1,3,3)} × 27 + ${npfrac(1,4,2)} ÷ ${npfrac(1,3,2)} = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-7/16']
+                        }
+                    ],
+                    solHtml: `<span class="math-expr">原式 = (−${frac(1,27)}) × 27 + ${frac(1,16)} ÷ ${frac(1,9)} = −1 + ${frac(9,16)} = <strong>−${frac(7,16)}</strong></span>`
+                })
+            },
+
+            // ---------------- P.151 ~ P.154 例5~例8 與隨堂練習 ----------------
+            {
+                id: 'p151-ex5',
+                container: 'cards-p151-154',
+                badge: '課本 P.151 例 5',
+                title: '底數相同的乘方相乘 (aᵐ × aⁿ = aᵐ⁺ⁿ)',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">5<span class="msup">2</span> × 5<span class="msup">4</span> = 5<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['6']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${pfrac(1,2,3)} × ${pfrac(1,2,5)} = ${pfrac(1,2)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['8']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">5<span class="msup">2</span> × 5<span class="msup">4</span> = 5<span class="msup">2+4</span> = 5<span class="msup">6</span></span>，所以 □ 中填 <strong>6</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${pfrac(1,2,3)} × ${pfrac(1,2,5)} = ${pfrac(1,2,'3+5')} = ${pfrac(1,2,8)}</span>，所以 □ 中填 <strong>8</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const a = Math.floor(Math.random() * 4) + 2;
+                    const b = Math.floor(Math.random() * 5) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">7<span class="msup">${a}</span> × 7<span class="msup">${b}</span> = 7<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(a + b)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${pfrac(1,3,b)} × ${pfrac(1,3,a)} = ${pfrac(1,3)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(a + b)]
+                            }
+                        ],
+                        solHtml: `底數相同相乘，指數相加：<span class="math-expr">${a} + ${b} = <strong>${a + b}</strong></span>。`
+                    };
+                }
+            },
+            {
+                id: 'p151-prac5',
+                container: 'cards-p151-154',
+                badge: '課本 P.151 隨堂練習',
+                title: '底數相同的乘方相乘練習',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">(−6)<span class="msup">3</span> × (−6)<span class="msup">4</span> = (−6)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['7']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(2,3,2)} × ${npfrac(2,3,5)} = ${npfrac(2,3)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['7']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">(−6)<span class="msup">3</span> × (−6)<span class="msup">4</span> = (−6)<span class="msup">3+4</span> = (−6)<span class="msup">7</span></span>，□ = <strong>7</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${npfrac(2,3,2)} × ${npfrac(2,3,5)} = ${npfrac(2,3,'2+5')} = ${npfrac(2,3,7)}</span>，□ = <strong>7</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const m = Math.floor(Math.random() * 5) + 2;
+                    const n = Math.floor(Math.random() * 5) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">(−8)<span class="msup">${m}</span> × (−8)<span class="msup">${n}</span> = (−8)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(m + n)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${npfrac(3,5,n)} × ${npfrac(3,5,m)} = ${npfrac(3,5)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(m + n)]
+                            }
+                        ],
+                        solHtml: `指數相加：<span class="math-expr">${m} + ${n} = <strong>${m + n}</strong></span>。`
+                    };
+                }
+            },
+            {
+                id: 'p152-ex6',
+                container: 'cards-p151-154',
+                badge: '課本 P.152 例 6',
+                title: '底數相同的乘方相除 (aᵐ ÷ aⁿ = aᵐ⁻ⁿ)',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">(−2)<span class="msup">5</span> ÷ (−2)<span class="msup">2</span> = (−2)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['3']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${pfrac(3,4,6)} ÷ ${pfrac(3,4,2)} = ${pfrac(3,4)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['4']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">(−2)<span class="msup">5</span> ÷ (−2)<span class="msup">2</span> = (−2)<span class="msup">5−2</span> = (−2)<span class="msup">3</span></span>，所以 □ 中填 <strong>3</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${pfrac(3,4,6)} ÷ ${pfrac(3,4,2)} = ${pfrac(3,4,'6−2')} = ${pfrac(3,4,4)}</span>，所以 □ 中填 <strong>4</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const n = Math.floor(Math.random() * 3) + 2;
+                    const m = n + Math.floor(Math.random() * 5) + 2;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">(−3)<span class="msup">${m}</span> ÷ (−3)<span class="msup">${n}</span> = (−3)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(m - n)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${pfrac(2,5,m+1)} ÷ ${pfrac(2,5,n)} = ${pfrac(2,5)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(m + 1 - n)]
+                            }
+                        ],
+                        solHtml: `(1) <span class="math-expr">${m} − ${n} = <strong>${m - n}</strong></span>；(2) <span class="math-expr">${m + 1} − ${n} = <strong>${m + 1 - n}</strong></span>。`
+                    };
+                }
+            },
+            {
+                id: 'p152-prac6',
+                container: 'cards-p151-154',
+                badge: '課本 P.152 隨堂練習',
+                title: '底數相同的乘方相除練習',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">(−9)<span class="msup">8</span> ÷ (−9)<span class="msup">2</span> = (−9)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['6']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(2,5,7)} ÷ ${npfrac(2,5,4)} = ${npfrac(2,5)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['3']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">(−9)<span class="msup">8</span> ÷ (−9)<span class="msup">2</span> = (−9)<span class="msup">8−2</span> = (−9)<span class="msup">6</span></span>，□ = <strong>6</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${npfrac(2,5,7)} ÷ ${npfrac(2,5,4)} = ${npfrac(2,5,'7−4')} = ${npfrac(2,5,3)}</span>，□ = <strong>3</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const n = Math.floor(Math.random() * 4) + 2;
+                    const m = n + Math.floor(Math.random() * 5) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">(−7)<span class="msup">${m}</span> ÷ (−7)<span class="msup">${n}</span> = (−7)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(m - n)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${npfrac(4,7,m)} ÷ ${npfrac(4,7,n-1)} = ${npfrac(4,7)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(m - (n - 1))]
+                            }
+                        ],
+                        solHtml: `(1) <span class="math-expr">${m} − ${n} = <strong>${m - n}</strong></span>；(2) <span class="math-expr">${m} − ${n - 1} = <strong>${m - n + 1}</strong></span>。`
+                    };
+                }
+            },
+            {
+                id: 'p153-ex7',
+                container: 'cards-p151-154',
+                badge: '課本 P.153 例 7',
+                title: '乘方的乘方 ((aᵐ)ⁿ = aᵐˣⁿ)',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">(5<span class="msup">4</span>)<span class="msup">2</span> = 5<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['8']
+                        },
+                        {
+                            html: `(2) <span class="math-expr"><span class="mbracket">${pfrac(5,3,2)}</span><span class="mfrac-sup">3</span> = ${pfrac(5,3)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['6']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">(5<span class="msup">4</span>)<span class="msup">2</span> = 5<span class="msup">4</span> × 5<span class="msup">4</span> = 5<span class="msup">4×2</span> = 5<span class="msup">8</span></span>，所以 □ 中填 <strong>8</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr"><span class="mbracket">${pfrac(5,3,2)}</span><span class="mfrac-sup">3</span> = ${pfrac(5,3,'2×3')} = ${pfrac(5,3,6)}</span>，所以 □ 中填 <strong>6</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const m = Math.floor(Math.random() * 4) + 3;
+                    const n = Math.floor(Math.random() * 4) + 2;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">(6<span class="msup">${m}</span>)<span class="msup">${n}</span> = 6<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(m * n)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr"><span class="mbracket">${pfrac(4,3,n)}</span><span class="mfrac-sup">${m}</span> = ${pfrac(4,3)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(m * n)]
+                            }
+                        ],
+                        solHtml: `乘方的乘方，指數相乘：<span class="math-expr">${m} × ${n} = <strong>${m * n}</strong></span>。`
+                    };
+                }
+            },
+            {
+                id: 'p153-prac7',
+                container: 'cards-p151-154',
+                badge: '課本 P.153 隨堂練習',
+                title: '乘方的乘方練習',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">[ (−7)<span class="msup">5</span> ]<span class="msup">3</span> = (−7)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['15']
+                        },
+                        {
+                            html: `(2) <span class="math-expr"><span class="mbracket">${npfrac(2,7,2)}</span><span class="mfrac-sup">4</span> = ${npfrac(2,7)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['8']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">[ (−7)<span class="msup">5</span> ]<span class="msup">3</span> = (−7)<span class="msup">5×3</span> = (−7)<span class="msup">15</span></span>，□ = <strong>15</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr"><span class="mbracket">${npfrac(2,7,2)}</span><span class="mfrac-sup">4</span> = ${npfrac(2,7,'2×4')} = ${npfrac(2,7,8)}</span>，□ = <strong>8</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const m = Math.floor(Math.random() * 5) + 3;
+                    const n = Math.floor(Math.random() * 4) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">[ (−5)<span class="msup">${m}</span> ]<span class="msup">${n}</span> = (−5)<input data-idx="0" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(m * n)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr"><span class="mbracket">${npfrac(3,8,n)}</span><span class="mfrac-sup">${m}</span> = ${npfrac(3,8)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(m * n)]
+                            }
+                        ],
+                        solHtml: `指數相乘：<span class="math-expr">${m} × ${n} = <strong>${m * n}</strong></span>。`
+                    };
+                }
+            },
+            {
+                id: 'p154-ex8',
+                container: 'cards-p151-154',
+                badge: '課本 P.154 例 8',
+                title: '兩數相乘的乘方 ((a × b)ᵐ = aᵐ × bᵐ)',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">(7 × 11)<span class="msup">4</span> = 7<input data-idx="0" placeholder="□" class="ans-box sup-input"> × 11<input data-idx="1" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['4', '4']
+                        },
+                        {
+                            html: `(2) <span class="math-expr"><span class="mparen">${frac(1,2)} × ${frac(1,3)}</span><span class="mfrac-sup">5</span> = ${pfrac(1,2)}<input data-idx="2" placeholder="□" class="ans-box frac-sup-input"> × ${pfrac(1,3)}<input data-idx="3" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['5', '5']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">(7 × 11)<span class="msup">4</span> = 7<span class="msup">4</span> × 11<span class="msup">4</span></span>，所以 □ 中皆填 <strong>4</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr"><span class="mparen">${frac(1,2)} × ${frac(1,3)}</span><span class="mfrac-sup">5</span> = ${pfrac(1,2,5)} × ${pfrac(1,3,5)}</span>，所以 □ 中皆填 <strong>5</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e1 = Math.floor(Math.random() * 5) + 3;
+                    const e2 = Math.floor(Math.random() * 5) + 4;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">(5 × 13)<span class="msup">${e1}</span> = 5<input data-idx="0" placeholder="□" class="ans-box sup-input"> × 13<input data-idx="1" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(e1), String(e1)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr"><span class="mparen">${frac(2,5)} × ${frac(3,7)}</span><span class="mfrac-sup">${e2}</span> = ${pfrac(2,5)}<input data-idx="2" placeholder="□" class="ans-box frac-sup-input"> × ${pfrac(3,7)}<input data-idx="3" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(e2), String(e2)]
+                            }
+                        ],
+                        solHtml: `(1) □ 皆填 <strong>${e1}</strong>；(2) □ 皆填 <strong>${e2}</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p154-prac8',
+                container: 'cards-p151-154',
+                badge: '課本 P.154 隨堂練習',
+                title: '兩數相乘的乘方練習',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">[ 3 × (−10) ]<span class="msup">6</span> = 3<input data-idx="0" placeholder="□" class="ans-box sup-input"> × (−10)<input data-idx="1" placeholder="□" class="ans-box sup-input"></span>`,
+                            answers: ['6', '6']
+                        },
+                        {
+                            html: `(2) <span class="math-expr"><span class="mbracket">${npfrac(3,2)} × ${frac(7,5)}</span><span class="mfrac-sup">3</span> = ${npfrac(3,2)}<input data-idx="2" placeholder="□" class="ans-box frac-sup-input"> × ${pfrac(7,5)}<input data-idx="3" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['3', '3']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">[ 3 × (−10) ]<span class="msup">6</span> = 3<span class="msup">6</span> × (−10)<span class="msup">6</span></span>，所以 □ 中皆填 <strong>6</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr"><span class="mbracket">${npfrac(3,2)} × ${frac(7,5)}</span><span class="mfrac-sup">3</span> = ${npfrac(3,2,3)} × ${pfrac(7,5,3)}</span>，所以 □ 中皆填 <strong>3</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e1 = Math.floor(Math.random() * 5) + 4;
+                    const e2 = Math.floor(Math.random() * 4) + 3;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">[ 7 × (−4) ]<span class="msup">${e1}</span> = 7<input data-idx="0" placeholder="□" class="ans-box sup-input"> × (−4)<input data-idx="1" placeholder="□" class="ans-box sup-input"></span>`,
+                                answers: [String(e1), String(e1)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr"><span class="mbracket">${npfrac(4,5)} × ${frac(2,3)}</span><span class="mfrac-sup">${e2}</span> = ${npfrac(4,5)}<input data-idx="2" placeholder="□" class="ans-box frac-sup-input"> × ${pfrac(2,3)}<input data-idx="3" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(e2), String(e2)]
+                            }
+                        ],
+                        solHtml: `(1) □ 皆填 <strong>${e1}</strong>；(2) □ 皆填 <strong>${e2}</strong>。`
+                    };
+                }
+            },
+
+            // ---------------- P.156 例9 & 隨堂練習 ----------------
+            {
+                id: 'p156-ex9',
+                container: 'cards-p156',
+                badge: '課本 P.156 例 9',
+                title: '指數律的綜合應用',
+                prompt: '計算下列各式的值。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">(2<span class="msup">2</span> × 5)<span class="msup">4</span> ÷ (5<span class="msup">2</span>)<span class="msup">2</span> = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['256']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(10,7,8)} × ${pfrac(7,5,8)} ÷ (−2)<span class="msup">5</span> = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-8']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = (2<span class="msup">2×4</span> × 5<span class="msup">4</span>) ÷ 5<span class="msup">2×2</span> = 2<span class="msup">8</span> × 5<span class="msup">4</span> ÷ 5<span class="msup">4</span> = 2<span class="msup">8</span> × 5<span class="msup">4−4</span> = 2<span class="msup">8</span> × 5<span class="msup">0</span> = 256 × 1 = <strong>256</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = <span class="mparen">−${frac(10,7)} × ${frac(7,5)}</span><span class="mfrac-sup">8</span> ÷ (−2)<span class="msup">5</span> = (−2)<span class="msup">8</span> ÷ (−2)<span class="msup">5</span> = (−2)<span class="msup">8−5</span> = (−2)<span class="msup">3</span> = <strong>−8</strong></span></div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `(1) [類似題] <span class="math-expr">(2<span class="msup">3</span> × 7)<span class="msup">2</span> ÷ 7<span class="msup">2</span> = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['64']
+                        },
+                        {
+                            html: `(2) [類似題] <span class="math-expr">${npfrac(15,4,6)} × ${pfrac(4,5,6)} ÷ (−3)<span class="msup">3</span> = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['-27']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = 2<span class="msup">6</span> × 7<span class="msup">2</span> ÷ 7<span class="msup">2</span> = 2<span class="msup">6</span> × 7<span class="msup">0</span> = <strong>64</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = <span class="mparen">−${frac(15,4)} × ${frac(4,5)}</span><span class="mfrac-sup">6</span> ÷ (−3)<span class="msup">3</span> = (−3)<span class="msup">6</span> ÷ (−3)<span class="msup">3</span> = (−3)<span class="msup">3</span> = <strong>−27</strong></span></div>
+                    `
+                })
+            },
+            {
+                id: 'p156-prac9',
+                container: 'cards-p156',
+                badge: '課本 P.156 隨堂練習',
+                title: '指數律的應用練習',
+                prompt: '計算下列各式的值（若答案為分數，請以「分子/分母」格式作答）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">3<span class="msup">4</span> × 3<span class="msup">6</span> ÷ (3<span class="msup">3</span>)<span class="msup">2</span> = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['81']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(4,3,7)} × ${npfrac(9,8,7)} ÷ ${pfrac(3,2,5)} = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['9/4']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = 3<span class="msup">4+6</span> ÷ 3<span class="msup">3×2</span> = 3<span class="msup">10</span> ÷ 3<span class="msup">6</span> = 3<span class="msup">10−6</span> = 3<span class="msup">4</span> = <strong>81</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = <span class="mbracket">${npfrac(4,3)} × ${npfrac(9,8)}</span><span class="mfrac-sup">7</span> ÷ ${pfrac(3,2,5)} = ${pfrac(3,2,7)} ÷ ${pfrac(3,2,5)} = ${pfrac(3,2,'7−5')} = ${pfrac(3,2,2)} = <strong>${frac(9,4)}</strong></span></div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `(1) [類似題] <span class="math-expr">2<span class="msup">5</span> × 2<span class="msup">4</span> ÷ (2<span class="msup">2</span>)<span class="msup">3</span> = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['8']
+                        },
+                        {
+                            html: `(2) [類似題] <span class="math-expr">${npfrac(3,5,6)} × ${npfrac(25,9,6)} ÷ ${pfrac(5,3,4)} = </span> <input data-idx="1" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['25/9']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">原式 = 2<span class="msup">9</span> ÷ 2<span class="msup">6</span> = 2<span class="msup">3</span> = <strong>8</strong></span></div>
+                        <div><strong>(2)</strong> <span class="math-expr">原式 = ${pfrac(5,3,6)} ÷ ${pfrac(5,3,4)} = ${pfrac(5,3,2)} = <strong>${frac(25,9)}</strong></span></div>
+                    `
+                })
+            },
+
+            // ---------------- P.158 ~ P.159 自我評量 第 1 ~ 4 題 ----------------
+            {
+                id: 'p158-q1',
+                container: 'cards-p158',
+                badge: '課本 P.158 自我評量 第 1 題 (15分)',
+                title: '分數乘方與零次方',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${pfrac(11,13,4)} = ${frac(`11<input data-idx="0" placeholder="□" class="ans-box sup-input">`, `13<input data-idx="1" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                            answers: ['4', '4']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(4,9,7)} = −${frac(`4<input data-idx="2" placeholder="□" class="ans-box sup-input">`, `9<input data-idx="3" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                            answers: ['7', '7']
+                        },
+                        {
+                            html: `(3) <span class="math-expr">${npfrac(3,2)}<input data-idx="4" placeholder="□" class="ans-box frac-sup-input"> = 1</span>`,
+                            answers: ['0']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> <span class="math-expr">${pfrac(11,13,4)} = ${frac(sup(11,4), sup(13,4))}</span>，□ 中皆填 <strong>4</strong>。</div>
+                        <div><strong>(2)</strong> <span class="math-expr">${npfrac(4,9,7)} = −${frac(sup(4,7), sup(9,7))}</span>，□ 中皆填 <strong>7</strong>。</div>
+                        <div><strong>(3)</strong> 任何不為 0 的數的 0 次方為 1，所以 □ 中填 <strong>0</strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e1 = Math.floor(Math.random() * 5) + 5;
+                    const e2 = Math.floor(Math.random() * 4) * 2 + 3; // 奇數
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">${pfrac(7,15,e1)} = ${frac(`7<input data-idx="0" placeholder="□" class="ans-box sup-input">`, `15<input data-idx="1" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                                answers: [String(e1), String(e1)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${npfrac(5,8,e2)} = −${frac(`5<input data-idx="2" placeholder="□" class="ans-box sup-input">`, `8<input data-idx="3" placeholder="□" class="ans-box sup-input">`)}</span>`,
+                                answers: [String(e2), String(e2)]
+                            },
+                            {
+                                html: `(3) [類似題] <span class="math-expr">${npfrac(9,7)}<input data-idx="4" placeholder="□" class="ans-box frac-sup-input"> = 1</span>`,
+                                answers: ['0']
+                            }
+                        ],
+                        solHtml: `(1) 填 <strong>${e1}</strong>；(2) 填 <strong>${e2}</strong>；(3) 填 <strong>0</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p158-q2',
+                container: 'cards-p158',
+                badge: '課本 P.158 自我評量 第 2 題 (20分)',
+                title: '乘方的比較大小',
+                prompt: '比較下列各組數的大小（請選擇 > 或 <）。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${pfrac(5,7,12)} <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> ${pfrac(5,7,13)}</span>`,
+                            answers: ['>']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">2.5<span class="msup">45</span> <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 2.5<span class="msup">46</span></span>`,
+                            answers: ['<']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> 因為 <span class="math-expr">${pfrac(5,7,13)} = ${pfrac(5,7,12)} × ${frac(5,7)}</span>，而 <span class="math-expr">${frac(5,7)} &lt; 1</span>，所以 <strong><span class="math-expr">${pfrac(5,7,12)} &gt; ${pfrac(5,7,13)}</span></strong>。</div>
+                        <div><strong>(2)</strong> 因為 <span class="math-expr">2.5<span class="msup">46</span> = 2.5<span class="msup">45</span> × 2.5</span>，而 <span class="math-expr">2.5 &gt; 1</span>，所以 <strong><span class="math-expr">2.5<span class="msup">45</span> &lt; 2.5<span class="msup">46</span></span></strong>。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e = Math.floor(Math.random() * 20) + 15;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">${pfrac(4,9,e)} <select data-idx="0" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> ${pfrac(4,9,e+1)}</span>`,
+                                answers: ['>']
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">3.2<span class="msup">${e}</span> <select data-idx="1" class="ans-box w-16"><option value="">?</option><option value=">">&gt;</option><option value="<">&lt;</option></select> 3.2<span class="msup">${e+1}</span></span>`,
+                                answers: ['<']
+                            }
+                        ],
+                        solHtml: `(1) 底數 <span class="math-expr">${frac(4,9)} &lt; 1</span>，填 <strong>&gt;</strong>；(2) 底數 <span class="math-expr">3.2 &gt; 1</span>，填 <strong>&lt;</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p158-q3',
+                container: 'cards-p158',
+                badge: '課本 P.158 自我評量 第 3 題 (40分)',
+                title: '指數律四大公式檢測',
+                prompt: '在下列 □ 中填入適當的數，使等號成立。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) <span class="math-expr">${npfrac(3,7,5)} × ${npfrac(3,7,3)} = ${npfrac(3,7)}<input data-idx="0" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['8']
+                        },
+                        {
+                            html: `(2) <span class="math-expr">${npfrac(2,5,7)} ÷ ${npfrac(2,5)} = ${npfrac(2,5)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['6']
+                        },
+                        {
+                            html: `(3) <span class="math-expr"><span class="mbracket">${npfrac(10,13,6)}</span><span class="mfrac-sup">2</span> = ${npfrac(10,13)}<input data-idx="2" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['12']
+                        },
+                        {
+                            html: `(4) <span class="math-expr"><span class="mparen">${frac(5,4)} × ${frac(11,3)}</span><span class="mfrac-sup">5</span> = ${pfrac(5,4)}<input data-idx="3" placeholder="□" class="ans-box frac-sup-input"> × ${pfrac(11,3)}<input data-idx="4" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                            answers: ['5', '5']
+                        }
+                    ],
+                    solHtml: `
+                        <div><strong>(1)</strong> 指數相加：<span class="math-expr">5 + 3 = <strong>8</strong></span></div>
+                        <div><strong>(2)</strong> 注意沒寫指數代表 1 次方！指數相減：<span class="math-expr">7 − 1 = <strong>6</strong></span></div>
+                        <div><strong>(3)</strong> 指數相乘：<span class="math-expr">6 × 2 = <strong>12</strong></span></div>
+                        <div><strong>(4)</strong> 次方分配：□ 中皆填 <strong>5</strong></div>
+                    `
+                }),
+                getSimilar: () => {
+                    const a = Math.floor(Math.random() * 4) + 4;
+                    const b = Math.floor(Math.random() * 3) + 2;
+                    return {
+                        subItems: [
+                            {
+                                html: `(1) [類似題] <span class="math-expr">${npfrac(2,9,a)} × ${npfrac(2,9,b)} = ${npfrac(2,9)}<input data-idx="0" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(a + b)]
+                            },
+                            {
+                                html: `(2) [類似題] <span class="math-expr">${npfrac(4,7,a+3)} ÷ ${npfrac(4,7)} = ${npfrac(4,7)}<input data-idx="1" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(a + 2)]
+                            },
+                            {
+                                html: `(3) [類似題] <span class="math-expr"><span class="mbracket">${npfrac(8,11,a)}</span><span class="mfrac-sup">${b}</span> = ${npfrac(8,11)}<input data-idx="2" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(a * b)]
+                            },
+                            {
+                                html: `(4) [類似題] <span class="math-expr"><span class="mparen">${frac(7,3)} × ${frac(8,5)}</span><span class="mfrac-sup">${a}</span> = ${pfrac(7,3)}<input data-idx="3" placeholder="□" class="ans-box frac-sup-input"> × ${pfrac(8,5)}<input data-idx="4" placeholder="□" class="ans-box frac-sup-input"></span>`,
+                                answers: [String(a), String(a)]
+                            }
+                        ],
+                        solHtml: `(1) <span class="math-expr">${a}+${b}=<strong>${a+b}</strong></span>；(2) <span class="math-expr">${a+3}−1=<strong>${a+2}</strong></span>；(3) <span class="math-expr">${a}×${b}=<strong>${a*b}</strong></span>；(4) 皆填 <strong>${a}</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p159-q4',
+                container: 'cards-p158',
+                badge: '課本 P.159 自我評量 第 4 題 (15分)',
+                title: '指數律合併與零次方應用',
+                prompt: '計算下列算式的值。',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `<span class="math-expr">${pfrac(10,3,6)} × ${npfrac(3,2,6)} ÷ (−5)<span class="msup">6</span> = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                            answers: ['1']
+                        }
+                    ],
+                    solHtml: `
+                        <div><span class="math-expr">原式 = <span class="mbracket">${frac(10,3)} × ${npfrac(3,2)}</span><span class="mfrac-sup">6</span> ÷ (−5)<span class="msup">6</span></span></div>
+                        <div><span class="math-expr">= (−5)<span class="msup">6</span> ÷ (−5)<span class="msup">6</span> = (−5)<span class="msup">6−6</span> = (−5)<span class="msup">0</span> = <strong>1</strong></span></div>
+                    `
+                }),
+                getSimilar: () => {
+                    const e = Math.floor(Math.random() * 4) + 5;
+                    return {
+                        subItems: [
+                            {
+                                html: `[類似題] <span class="math-expr">${pfrac(14,5,e)} × ${npfrac(5,2,e)} ÷ (−7)<span class="msup">${e}</span> = </span> <input data-idx="0" placeholder="請填答案" class="ans-box w-28">`,
+                                answers: ['1']
+                            }
+                        ],
+                        solHtml: `<span class="math-expr">原式 = <span class="mbracket">${frac(14,5)} × ${npfrac(5,2)}</span><span class="mfrac-sup">${e}</span> ÷ (−7)<span class="msup">${e}</span> = (−7)<span class="msup">${e}</span> ÷ (−7)<span class="msup">${e}</span> = (−7)<span class="msup">0</span> = <strong>1</strong></span>`
+                    };
+                }
+            },
+
+            // ---------------- P.160 扉選素養 01 & 02 ----------------
+            {
+                id: 'p160-q1',
+                container: 'cards-p160',
+                badge: '課本 P.160 扉選素養 01',
+                title: '小妍的捷運常客回饋金計算',
+                prompt: '小妍某月上學天數為 22 天，其中上學與放學皆以同一張悠遊卡搭乘臺北捷運往返，且單程票價皆為 30 元。若此月未再使用該張悠遊卡搭乘臺北捷運到其他地方，試問小妍下個月可獲得的回饋金為多少元？',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `步驟 1：小妍此月搭乘捷運次數 = 22 × 2 = <input data-idx="0" placeholder="□" class="ans-box w-16"> 次（對應回饋比例 <input data-idx="1" placeholder="□" class="ans-box w-16"> %）`,
+                            answers: ['44', '25']
+                        },
+                        {
+                            html: `步驟 2：下個月可獲得回饋金 = <input data-idx="2" placeholder="請填金額" class="ans-box w-28"> 元`,
+                            answers: ['330']
+                        }
+                    ],
+                    solHtml: `
+                        <div>1. 小妍此月搭乘捷運的次數為 <span class="math-expr">22 × 2 = <strong>44</strong></span> 次（落在 41~50 次區間，現金回饋比例為 <strong>25%</strong>）。</div>
+                        <div>2. 下個月可獲得的回饋金為 <span class="math-expr">30 × 44 × ${frac(25,100)} = <strong>330</strong></span> 元。</div>
+                    `
+                }),
+                getSimilar: () => {
+                    const days = 21;
+                    const trips = 42;
+                    const price = 35;
+                    const rebate = Math.round(price * trips * 0.25);
+                    return {
+                        subItems: [
+                            {
+                                html: `[類似題] 若上學 ${days} 天往返共 <input data-idx="0" placeholder="□" class="ans-box w-16"> 次（回饋 <input data-idx="1" placeholder="□" class="ans-box w-16"> %），單程票價 ${price} 元`,
+                                answers: [String(trips), '25']
+                            },
+                            {
+                                html: `可獲得回饋金（四捨五入）= <input data-idx="2" placeholder="請填金額" class="ans-box w-28"> 元`,
+                                answers: [String(rebate)]
+                            }
+                        ],
+                        solHtml: `搭乘 <span class="math-expr">${days} × 2 = 42</span> 次（回饋 25%），回饋金 = <span class="math-expr">${price} × 42 × ${frac(25,100)} = 367.5</span> ➔ 四捨五入為 <strong>${rebate} 元</strong>。`
+                    };
+                }
+            },
+            {
+                id: 'p160-q2',
+                container: 'cards-p160',
+                badge: '課本 P.160 扉選素養 02',
+                title: '小翊的通勤方案決策比較',
+                prompt: '若小翊每次搭乘臺北捷運的乘車票價為 40 元，且下個月預計搭乘臺北捷運 38 次，試問小翊下個月選擇常客優惠方案（回饋金需列入考量）划算？還是通勤月票方案（1200元）划算？',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `步驟 1：常客優惠扣掉 20% 回饋後實付 = <span class="math-expr">40 × 38 × <span class="mparen">1 − ${frac(20,100)}</span> =</span> <input data-idx="0" placeholder="請填金額" class="ans-box w-24"> 元`,
+                            answers: ['1216']
+                        },
+                        {
+                            html: `步驟 2：與 1200 元月票相比，選擇 <select data-idx="1" class="ans-box w-40"><option value="">請選擇方案</option><option value="通勤月票方案">通勤月票方案</option><option value="常客優惠方案">常客優惠方案</option></select> 比較划算！`,
+                            answers: ['通勤月票方案']
+                        }
+                    ],
+                    solHtml: `
+                        <div>1. 搭乘 38 次落在 31~40 次區間（回饋 20%），常客優惠方案實際花費：<span class="math-expr">40 × 38 × <span class="mparen">1 − ${frac(20,100)}</span> = <strong>1216</strong></span> 元。</div>
+                        <div>2. 通勤月票方案固定 <strong>1200 元</strong>。因為 <span class="math-expr">1216 &gt; 1200</span>，故選擇 <strong>通勤月票方案</strong> 比較划算！</div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `[類似題] 若小翊單程 35 元、搭乘 36 次（回饋 20%），常客優惠實付 = <input data-idx="0" placeholder="請填金額" class="ans-box w-24"> 元`,
+                            answers: ['1008']
+                        },
+                        {
+                            html: `與 1200 元月票相比，選擇 <select data-idx="1" class="ans-box w-40"><option value="">請選擇方案</option><option value="通勤月票方案">通勤月票方案</option><option value="常客優惠方案">常客優惠方案</option></select> 比較划算！`,
+                            answers: ['常客優惠方案']
+                        }
+                    ],
+                    solHtml: `<span class="math-expr">35 × 36 × <span class="mparen">1 − ${frac(20,100)}</span> = <strong>1008</strong></span> 元 &lt; 1200 元，故選擇 <strong>常客優惠方案</strong> 比較划算！`
+                })
+            },
+
+            // ---------------- P.161 一題多解互動作答與類似題 ----------------
+            {
+                id: 'p161-multi',
+                container: 'cards-p161',
+                badge: '課本 P.161 一題多解實作',
+                title: '三數比大小與「與 1 的差」類似題挑戰',
+                prompt: '完成課本三種解法的關鍵填空，並挑戰下方「與 1 同差」的進階類似題！',
+                getOriginal: () => ({
+                    subItems: [
+                        {
+                            html: `(1) 同分母法：<span class="math-expr">${frac(2,5)} = ${frac('<input data-idx="0" placeholder="□" class="ans-box w-14">', 50)} ， ${frac(7,10)} = ${frac('<input data-idx="1" placeholder="□" class="ans-box w-14">', 50)} ， ${frac(22,25)} = ${frac('<input data-idx="2" placeholder="□" class="ans-box w-14">', 50)}</span>`,
+                            answers: ['20', '35', '44']
+                        },
+                        {
+                            html: `(2) 與 1 的差法：<span class="math-expr">${frac(2,5)} = 1 − ${frac('<input data-idx="3" placeholder="□" class="ans-box w-14">', 5)} ， ${frac(7,10)} = 1 − ${frac(3, 10)} ， ${frac(22,25)} = 1 − ${frac('<input data-idx="4" placeholder="□" class="ans-box w-14">', 25)}</span>，故三數中最大數為 <input data-idx="5" placeholder="分子/分母" class="ans-box w-24">`,
+                            answers: ['3', '3', '22/25']
+                        }
+                    ],
+                    solHtml: `
+                        <div>(1) 通分成分母 50：分子依序為 <strong>20、35、44</strong>。</div>
+                        <div>(2) 三數與 1 都相差分子為 <strong>3</strong> 的分數（<span class="math-expr">${frac(3,5)} &gt; ${frac(3,10)} &gt; ${frac(3,25)}</span>），減愈少剩愈大，故最大數為 <strong><span class="math-expr">${frac(22,25)}</span></strong>。</div>
+                    `
+                }),
+                getSimilar: () => ({
+                    subItems: [
+                        {
+                            html: `[類似題] 比較 <span class="math-expr">${frac(5,7)} 、 ${frac(9,11)} 、 ${frac(13,15)}</span> 三數大小（分子與分母皆相差 <input data-idx="0" placeholder="□" class="ans-box w-14">）`,
+                            answers: ['2']
+                        },
+                        {
+                            html: `因為 <span class="math-expr">1 − ${frac(2,7)} &lt; 1 − ${frac(2,11)} &lt; 1 − ${frac(2,15)}</span>，所以三數中最大的是 <input data-idx="1" placeholder="分子/分母" class="ans-box w-24">，最小的是 <input data-idx="2" placeholder="分子/分母" class="ans-box w-24">`,
+                            answers: ['13/15', '5/7']
+                        }
+                    ],
+                    solHtml: `三數皆可寫成 <span class="math-expr">1 − ${frac(2,7)}</span>、<span class="math-expr">1 − ${frac(2,11)}</span>、<span class="math-expr">1 − ${frac(2,15)}</span>（差皆為 <strong>2</strong>）。因為 <span class="math-expr">${frac(2,15)}</span> 最小，被扣掉最少，所以最大的是 <strong><span class="math-expr">${frac(13,15)}</span></strong>，最小的是 <strong><span class="math-expr">${frac(5,7)}</span></strong>。`
+                })
+            }
+        ];
+
+        // 記錄每題目前的標準答案與模式
+        const activeQuestionData = {};
+
+        function renderAllQuestionCards() {
+            questionBank.forEach(q => {
+                const container = document.getElementById(q.container);
+                if (!container) return;
+                const card = document.createElement('div');
+                card.id = `card-${q.id}`;
+                card.className = "bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
+                container.appendChild(card);
+                loadQuestionMode(q.id, 'original');
+            });
+        }
+
+        function loadQuestionMode(qId, mode) {
+            const q = questionBank.find(item => item.id === qId);
+            if (!q) return;
+            const data = mode === 'original' ? q.getOriginal() : q.getSimilar();
+            activeQuestionData[qId] = {
+                mode,
+                answers: data.subItems.flatMap(s => s.answers),
+                solHtml: data.solHtml
+            };
+
+            const card = document.getElementById(`card-${qId}`);
+            const subHtml = data.subItems.map(s => `
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-slate-800 font-medium leading-relaxed">
+                    ${s.html}
+                </div>
+            `).join('');
+
+            card.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">${q.badge}</span>
+                            <h4 class="font-bold text-slate-900 text-sm sm:text-base">${q.title}</h4>
+                        </div>
+                        <span id="status-${qId}" class="text-xs font-bold text-slate-400">${mode === 'original' ? '📘 課本原題' : '🎲 動態類似題'}</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600">${q.prompt}</p>
+                    <div class="space-y-2.5" id="inputs-${qId}">
+                        ${subHtml}
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-2 border-t border-slate-200/80">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <button onclick="checkCardAnswer('${qId}')" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow transition">✅ 批改答案</button>
+                            <button onclick="toggleCardSol('${qId}')" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold transition">💡 步驟詳解</button>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            ${mode === 'similar' ? `<button onclick="loadQuestionMode('${qId}', 'original')" class="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition">↩ 回課本原題</button>` : ''}
+                            <button onclick="loadQuestionMode('${qId}', 'similar')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow transition">🎲 練習類似題</button>
+                        </div>
+                    </div>
+
+                    <div id="sol-${qId}" class="sol-panel ${allSolutionsExpanded ? '' : 'hidden'} bg-indigo-50/90 border border-indigo-200 rounded-xl p-3.5 text-xs sm:text-sm text-slate-800 space-y-1.5">
+                        <div class="font-bold text-indigo-900">📖 完整解析：</div>
+                        ${data.solHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkCardAnswer(qId) {
+            const info = activeQuestionData[qId];
+            if (!info) return;
+            const container = document.getElementById(`inputs-${qId}`);
+            const inputs = container.querySelectorAll('[data-idx]');
+            let allCorrect = true;
+
+            inputs.forEach(inp => {
+                const idx = parseInt(inp.getAttribute('data-idx'));
+                const expected = (info.answers[idx] || '').trim();
+                const userVal = inp.value.trim().replace(/\s+/g, '');
+                if (userVal === expected) {
+                    inp.classList.remove('wrong');
+                    inp.classList.add('correct');
+                } else {
+                    inp.classList.remove('correct');
+                    inp.classList.add('wrong');
+                    allCorrect = false;
+                }
+            });
+
+            const statusEl = document.getElementById(`status-${qId}`);
+            if (allCorrect) {
+                statusEl.innerHTML = '<span class="text-emerald-600 font-black">🎉 全對通過！太棒了！</span>';
+                markCompleted(qId);
+            } else {
+                statusEl.innerHTML = '<span class="text-rose-600 font-bold">⚠️ 紅色框答案有誤，請再試一次或看詳解喔！</span>';
+            }
+            document.getElementById(`sol-${qId}`).classList.remove('hidden');
+        }
+
+        function toggleCardSol(qId) {
+            const sol = document.getElementById(`sol-${qId}`);
+            sol.classList.toggle('hidden');
+        }
+
+        // 初始化所有視覺實驗室與題庫
+        window.onload = function () {
+            updateFracLab();
+            setCompareLab(0.6, '3/5 (即 0.6)');
+            renderLawAnimation();
+            renderAllQuestionCards();
+            renderSelfCheck(selfCheckItems);
+            renderSpotError(5, 2, 6);
+            updateMrtSim();
+            switchMultiMethod(1);
+        };
+    </script>
+</body>
+</html>
