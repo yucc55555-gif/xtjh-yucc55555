@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教師專屬註冊通道 - 七上數學金庸武俠RPG線上測驗</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-stone-950 text-stone-100 min-h-screen flex flex-col font-serif selection:bg-amber-600 selection:text-white">
+
+  <!-- 頂部導覽列 -->
+  <header class="bg-gradient-to-r from-stone-900 via-red-950 to-stone-900 border-b-2 border-amber-600/80 px-4 py-3 shadow-lg">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-bold text-xl border-2 border-amber-300 shadow">
+          📜
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold tracking-wider text-amber-200">
+            七上數學第二章《分數的運算》
+          </h1>
+          <div class="text-[11px] text-amber-400/80">教師專屬註冊通道 (非任課教師請勿外傳)</div>
+        </div>
+      </div>
+
+      <a href="index.html" class="px-3 py-1.5 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-amber-300 border border-stone-600 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-arrow-left"></i> 回測驗系統首頁
+      </a>
+    </div>
+  </header>
+
+  <!-- 主內容容器 -->
+  <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-8 flex items-center justify-center">
+
+    <div class="w-full">
+      <!-- 安全提醒卡片 -->
+      <div class="mb-6 p-4 rounded-xl bg-amber-950/40 border border-amber-600/50 flex items-start gap-3 text-amber-200 text-xs leading-relaxed">
+        <i class="fa-solid fa-shield-halved text-lg text-amber-400 mt-0.5"></i>
+        <div>
+          <span class="font-bold text-amber-300">安全與權限提示：</span>
+          本網址為獨立之任課教師帳號註冊通道，已自學生作答首頁完全隔離。請老師自行妥善保管本網址，請勿將此註冊連結提供給學生，以保障學生成績隱私與作答防弊。
+        </div>
+      </div>
+
+      <!-- 註冊主卡片 -->
+      <div id="register-card" class="bg-stone-900/95 rounded-3xl p-6 md:p-10 border-2 border-amber-600/80 shadow-2xl relative">
+        <div class="flex items-center gap-3 pb-5 border-b border-stone-800 mb-6">
+          <span class="text-3xl">🎓</span>
+          <div>
+            <h2 class="text-2xl font-bold text-amber-300">任課教師帳號註冊</h2>
+            <p class="text-xs text-stone-400">註冊完成後資料將自動登錄於 Google 試算表 Teachers 工作表</p>
+          </div>
+        </div>
+
+        <form id="standalone-teacher-reg-form" class="space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-stone-300 mb-1">
+                教師代號 (ID) <span class="text-red-400">*</span>
+              </label>
+              <input type="text" id="reg-id" placeholder="如 T01 或 math_wang" required
+                class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 font-mono text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-stone-300 mb-1">
+                教師姓名 / 稱謂 <span class="text-red-400">*</span>
+              </label>
+              <input type="text" id="reg-name" placeholder="如 王小明老師" required
+                class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 text-sm">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-stone-300 mb-1">
+                設定登入密碼 <span class="text-red-400">*</span>
+              </label>
+              <input type="password" id="reg-pwd" placeholder="請設定 4 位以上密碼" required minlength="4"
+                class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-stone-300 mb-1">
+                確認登入密碼 <span class="text-red-400">*</span>
+              </label>
+              <input type="password" id="reg-pwd-confirm" placeholder="請再次輸入密碼" required minlength="4"
+                class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 text-sm">
+            </div>
+          </div>
+
+          <!-- 勾選任教班級 (701~730，最多5班) -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold text-stone-300">
+                勾選任教班級 (全七年級 30 班，<span class="text-amber-400 font-bold">最多可選 5 班</span>) <span class="text-red-400">*</span>
+              </label>
+              <span id="selected-count-badge" class="text-xs text-stone-400 font-mono">
+                已選擇 0 / 5 班
+              </span>
+            </div>
+
+            <div id="class-checkboxes-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-2 max-h-56 overflow-y-auto p-3 rounded-2xl bg-stone-950 border border-stone-800">
+              <!-- 由 JS 自動填入 701 ~ 730 -->
+            </div>
+            <p class="text-[11px] text-stone-500 mt-1">※ 若需跨班授課，勾選後即可於成績後台一鍵切換不同任教班級名冊與診斷報告。</p>
+          </div>
+
+          <div class="pt-4 flex items-center justify-between border-t border-stone-800">
+            <a href="index.html" class="px-5 py-2.5 rounded-xl text-xs bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-600 transition">
+              取消並返回
+            </a>
+            <button type="submit" id="submit-reg-btn" class="btn-wuxia-gold px-8 py-3 rounded-xl text-sm font-bold tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-cloud-arrow-up"></i> 確認註冊並登錄試算表
+            </button>
+          </div>
+        </form>
+
+        <!-- 註冊成功展示卡片 (初始隱藏) -->
+        <div id="reg-success-view" class="hidden text-center py-6 space-y-6">
+          <div class="w-20 h-20 rounded-full bg-green-950 border-2 border-green-500 text-green-400 flex items-center justify-center text-4xl mx-auto shadow-lg">
+            ✓
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-bold text-green-300">教師帳號註冊成功！</h3>
+            <p class="text-xs text-stone-400 mt-1">資料已即時同步寫入 Google 雲端試算表</p>
+          </div>
+
+          <div class="max-w-md mx-auto p-4 rounded-2xl bg-stone-950 border border-stone-800 text-left text-xs space-y-2">
+            <div class="flex justify-between">
+              <span class="text-stone-400">教師代號：</span>
+              <span id="success-id" class="text-amber-300 font-mono font-bold"></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-stone-400">教師姓名：</span>
+              <span id="success-name" class="text-white font-bold"></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-stone-400">任教班級：</span>
+              <span id="success-classes" class="text-amber-400 font-bold"></span>
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <a href="index.html" class="btn-wuxia-gold inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold shadow-xl">
+              <i class="fa-solid fa-right-to-bracket"></i> 前往測驗系統登入 ➔
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="py-4 border-t border-stone-800 text-center text-xs text-stone-500">
+    國中七年級第一學期 數學習作第二章《分數的運算》RPG 線上測驗系統 · 教師獨立管理通道
+  </footer>
+
+  <!-- 載入 API 服務層 -->
+  <script src="js/api.js"></script>
+  <script>
+    // 初始化班級勾選清單 (701 ~ 730)
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('class-checkboxes-grid');
+      if (grid) {
+        let html = '';
+        for (let i = 1; i <= 30; i++) {
+          const c = `7${String(i).padStart(2, '0')}`;
+          html += `
+            <label class="flex items-center gap-2 p-2 rounded-xl bg-stone-800/80 hover:bg-stone-700 cursor-pointer text-xs font-mono text-stone-200 transition">
+              <input type="checkbox" name="teacher_class" value="${c}" onchange="handleClassCheckbox(this)" class="accent-amber-500 rounded">
+              <span>${c} 班</span>
+            </label>
+          `;
+        }
+        grid.innerHTML = html;
+      }
+
+      // 監聽註冊送出
+      const form = document.getElementById('standalone-teacher-reg-form');
+      if (form) {
+        form.addEventListener('submit', handleStandaloneRegister);
+      }
+    });
+
+    // 班級上限驗證 (最多 5 班)
+    function handleClassCheckbox(checkbox) {
+      const checked = document.querySelectorAll('input[name="teacher_class"]:checked');
+      if (checked.length > 5) {
+        checkbox.checked = false;
+        alert('⚠️ 任教班級最多只能選擇 5 個班級！');
+      }
+      updateBadge();
+    }
+
+    function updateBadge() {
+      const checked = document.querySelectorAll('input[name="teacher_class"]:checked');
+      const badge = document.getElementById('selected-count-badge');
+      if (badge) {
+        badge.innerText = `已選擇 ${checked.length} / 5 班`;
+        badge.className = checked.length > 0 
+          ? 'text-xs text-amber-400 font-mono font-bold' 
+          : 'text-xs text-stone-400 font-mono';
+      }
+    }
+
+    // 處理註冊
+    async function handleStandaloneRegister(e) {
+      e.preventDefault();
+
+      const teacherId = document.getElementById('reg-id').value.trim();
+      const name = document.getElementById('reg-name').value.trim();
+      const pwd = document.getElementById('reg-pwd').value.trim();
+      const pwdConfirm = document.getElementById('reg-pwd-confirm').value.trim();
+
+      if (pwd !== pwdConfirm) {
+        alert('兩次輸入的密碼不一致，請重新確認！');
+        return;
+      }
+
+      const checked = Array.from(document.querySelectorAll('input[name="teacher_class"]:checked')).map(b => b.value);
+      if (checked.length === 0) {
+        alert('請至少勾選一個任教班級！');
+        return;
+      }
+      if (checked.length > 5) {
+        alert('任教班級最多只能選擇 5 個班級！');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submit-reg-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 正在登錄試算表中...';
+      }
+
+      try {
+        const res = await window.apiService.request('registerTeacher', {
+          teacherId,
+          name,
+          password: pwd,
+          classes: checked
+        });
+
+        if (res.success && res.teacher) {
+          // 註冊成功，切換至成功畫面
+          document.getElementById('standalone-teacher-reg-form').classList.add('hidden');
+          const successView = document.getElementById('reg-success-view');
+          successView.classList.remove('hidden');
+
+          document.getElementById('success-id').innerText = res.teacher.teacherId;
+          document.getElementById('success-name').innerText = res.teacher.name;
+          document.getElementById('success-classes').innerText = (res.teacher.classes || checked).map(c => c + '班').join('、');
+        } else {
+          alert('註冊失敗：' + (res.error || '請檢查後再試！'));
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 確認註冊並登錄試算表';
+          }
+        }
+      } catch (err) {
+        alert('連線失敗，請檢查網路連線或稍後再試！');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 確認註冊並登錄試算表';
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -157,12 +157,11 @@
             </form>
           </div>
 
-          <!-- 首次使用註冊提示 -->
+          <!-- 教師登入安全提示 -->
           <div class="mt-6 pt-4 border-t border-stone-800 text-center">
-            <p class="text-xs text-stone-400 mb-2">第一次使用本系統的任課教師？</p>
-            <button onclick="openTeacherRegisterModal()" class="text-amber-400 hover:text-amber-300 text-sm font-bold underline">
-              <i class="fa-solid fa-user-plus"></i> 首次登入請先點此註冊 (可選任教5班)
-            </button>
+            <p class="text-[11px] text-stone-500">
+              <i class="fa-solid fa-shield-halved"></i> 學生請由左側登入。教師請以已註冊之代號密碼登入；初次使用請由教師專屬通道辦理。
+            </p>
           </div>
         </div>
       </div>
@@ -351,54 +350,7 @@
     </div>
   </div>
 
-  <!-- ======================================================== -->
-  <!-- 模態視窗 3: 教師初次登入註冊 (選取最多 5 班) -->
-  <!-- ======================================================== -->
-  <div id="teacher-reg-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-stone-900 border-2 border-amber-600 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
-      <div class="flex items-center justify-between pb-3 border-b border-stone-800 mb-4">
-        <h3 class="text-xl font-bold text-amber-300">
-          <i class="fa-solid fa-id-card"></i> 教師首次註冊
-        </h3>
-        <button onclick="closeTeacherRegisterModal()" class="text-stone-400 hover:text-white">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
 
-      <form id="teacher-reg-form" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-stone-300 mb-1">教師代號 (ID) <span class="text-red-400">*</span></label>
-          <input type="text" id="reg-teacher-id" placeholder="如 T001" required
-            class="w-full px-4 py-2 rounded-xl bg-stone-800 border border-stone-700 text-white text-sm">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-stone-300 mb-1">教師姓名 <span class="text-red-400">*</span></label>
-          <input type="text" id="reg-teacher-name" placeholder="如 張老師" required
-            class="w-full px-4 py-2 rounded-xl bg-stone-800 border border-stone-700 text-white text-sm">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-stone-300 mb-1">自訂登入密碼 <span class="text-red-400">*</span></label>
-          <input type="password" id="reg-teacher-pwd" placeholder="請設定密碼" required
-            class="w-full px-4 py-2 rounded-xl bg-stone-800 border border-stone-700 text-white text-sm">
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="text-xs font-bold text-stone-300">勾選任教班級 (最多 5 班) <span class="text-red-400">*</span></label>
-            <span id="selected-class-count-badge" class="text-xs text-stone-400">已選擇 0 / 5 班</span>
-          </div>
-          <div id="teacher-classes-checkboxes" class="grid grid-cols-3 sm:grid-cols-5 gap-2 max-h-56 overflow-y-auto p-2 rounded-xl bg-stone-950 border border-stone-800"></div>
-        </div>
-
-        <div class="pt-4 flex justify-end gap-3">
-          <button type="button" onclick="closeTeacherRegisterModal()" class="px-4 py-2 rounded-xl text-xs bg-stone-800 text-stone-300">取消</button>
-          <button type="submit" class="btn-wuxia-gold px-6 py-2 rounded-xl text-xs font-bold">確認註冊並登入</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- ======================================================== -->
   <!-- 模態視窗 4: 教師檢視個別學生完整紀錄 -->
