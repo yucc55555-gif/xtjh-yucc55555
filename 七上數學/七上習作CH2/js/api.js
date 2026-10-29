@@ -5,9 +5,15 @@
 
 class ApiService {
   constructor() {
+    this.defaultGasUrl = 'https://script.google.com/macros/s/AKfycbwMOYotVfGZHoLUDG6Q8ohYJ6y_W0HtaCWgA3XsE2lW5FaL_72QNsPX4oSxMV2QQ2pj/exec';
     this.storageKey = 'GAS_WEB_APP_URL';
     this.mockKey = 'WUXIA_MATH_MOCK_DB';
-    this.gasUrl = localStorage.getItem(this.storageKey) || '';
+    const savedUrl = localStorage.getItem(this.storageKey);
+    this.gasUrl = (savedUrl && savedUrl.trim()) ? savedUrl.trim() : this.defaultGasUrl;
+    // 預設將固定網址寫入 localStorage
+    if (!savedUrl) {
+      localStorage.setItem(this.storageKey, this.defaultGasUrl);
+    }
     this.initMockDb();
   }
 
@@ -97,16 +103,12 @@ class ApiService {
 
   // 設定與檢查 GAS Web App URL
   setGasUrl(url) {
-    this.gasUrl = (url || '').trim();
-    if (this.gasUrl) {
-      localStorage.setItem(this.storageKey, this.gasUrl);
-    } else {
-      localStorage.removeItem(this.storageKey);
-    }
+    this.gasUrl = (url || '').trim() || this.defaultGasUrl;
+    localStorage.setItem(this.storageKey, this.gasUrl);
   }
 
   getGasUrl() {
-    return this.gasUrl;
+    return this.gasUrl || this.defaultGasUrl;
   }
 
   isGasConfigured() {

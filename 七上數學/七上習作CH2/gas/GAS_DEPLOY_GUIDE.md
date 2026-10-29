@@ -49,12 +49,10 @@
 
 ## 步驟四：將網址填入 RPG 測驗系統
 
-1. 開啟本系統網頁 `index.html`。
-2. 點擊首頁右上角或設定按鈕 **「⚙️ 雲端試算表設定」**。
-3. 將剛才複製的 **Web app URL** 貼入輸入框中。
-4. 點擊 **「測試連線並儲存」**：
-   - 系統會自動測試 ping 並初始化試算表四張工作表。
-   - 顯示「✅ 連線成功」即代表系統已完美與 Google 試算表同步！
+系統現已預設固定設置您的專屬 Web App URL：
+`https://script.google.com/macros/s/AKfycbwMOYotVfGZHoLUDG6Q8ohYJ6y_W0HtaCWgA3XsE2lW5FaL_72QNsPX4oSxMV2QQ2pj/exec`
+
+打開 `index.html` 即可直接連線 Google 試算表使用！若日後重新發布新版本 Web App，亦可點擊右上角「⚙️ 雲端試算表設定」進行更新更換。
 
 > 💡 **離線與單機備援提示**：
-> 如果您暫時還沒有設置 Google 試算表，系統預設會啟用 **「本機離線模式 (LocalStorage)」**，所有學生測驗、教師註冊選班、成績查詢與錯題本功能依然 100% 可以正常運作與體驗！
+> 若在無網路環境下，系統會自動無縫切換為「本機離線模式 (LocalStorage)」，所有學生測驗、教師選班與錯題複習依然可順暢使用！

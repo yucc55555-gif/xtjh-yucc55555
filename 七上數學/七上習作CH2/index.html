@@ -90,9 +90,11 @@
           <form id="student-login-form" class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-bold text-stone-300 mb-1">班級 <span class="text-red-400">*</span></label>
-                <input type="text" id="student-class" placeholder="如 701" required
-                  class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 font-mono text-sm">
+                <label class="block text-xs font-bold text-stone-300 mb-1">班級 (701~730) <span class="text-red-400">*</span></label>
+                <select id="student-class" required
+                  class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-amber-200 focus:outline-none focus:border-amber-500 font-mono text-sm">
+                  <option value="">請選擇班級</option>
+                </select>
               </div>
               <div>
                 <label class="block text-xs font-bold text-stone-300 mb-1">座號 <span class="text-red-400">*</span></label>
@@ -387,7 +389,7 @@
             <label class="text-xs font-bold text-stone-300">勾選任教班級 (最多 5 班) <span class="text-red-400">*</span></label>
             <span id="selected-class-count-badge" class="text-xs text-stone-400">已選擇 0 / 5 班</span>
           </div>
-          <div id="teacher-classes-checkboxes" class="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 rounded-xl bg-stone-950 border border-stone-800"></div>
+          <div id="teacher-classes-checkboxes" class="grid grid-cols-3 sm:grid-cols-5 gap-2 max-h-56 overflow-y-auto p-2 rounded-xl bg-stone-950 border border-stone-800"></div>
         </div>
 
         <div class="pt-4 flex justify-end gap-3">
@@ -428,7 +430,7 @@
 
         <div>
           <label class="block text-xs font-bold text-stone-300 mb-1">Web 應用程式網址 (Web app URL)</label>
-          <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec"
+          <input type="text" id="gas-url-input" value="https://script.google.com/macros/s/AKfycbwMOYotVfGZHoLUDG6Q8ohYJ6y_W0HtaCWgA3XsE2lW5FaL_72QNsPX4oSxMV2QQ2pj/exec"
             class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white font-mono text-xs">
         </div>
 

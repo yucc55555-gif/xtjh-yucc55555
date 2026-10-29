@@ -101,6 +101,17 @@ function initEventListeners() {
     studentForm.addEventListener('submit', handleStudentLogin);
   }
 
+  // 自動填充學生班級下拉選單 (701~730 共30班)
+  const studentClassSelect = document.getElementById('student-class');
+  if (studentClassSelect) {
+    let optionsHtml = '<option value="">請選擇班級 (701~730)</option>';
+    for (let i = 1; i <= 30; i++) {
+      const c = `7${String(i).padStart(2, '0')}`;
+      optionsHtml += `<option value="${c}">${c} 班</option>`;
+    }
+    studentClassSelect.innerHTML = optionsHtml;
+  }
+
   // 教師登入
   const teacherForm = document.getElementById('teacher-login-form');
   if (teacherForm) {
@@ -1050,12 +1061,15 @@ function openTeacherRegisterModal() {
   const modal = document.getElementById('teacher-reg-modal');
   if (!modal) return;
 
-  // 渲染可選班級多選框 (701~715)
+  // 渲染可選班級多選框 (701~730 共 30 班)
   const classCheckboxContainer = document.getElementById('teacher-classes-checkboxes');
   if (classCheckboxContainer) {
-    const classList = ['701', '702', '703', '704', '705', '706', '707', '708', '709', '710', '711', '712', '713', '714', '715'];
+    const classList = [];
+    for (let i = 1; i <= 30; i++) {
+      classList.push(`7${String(i).padStart(2, '0')}`);
+    }
     classCheckboxContainer.innerHTML = classList.map(c => `
-      <label class="flex items-center gap-2 p-2 rounded bg-stone-800 hover:bg-stone-700 cursor-pointer text-xs font-mono text-stone-200">
+      <label class="flex items-center gap-1.5 p-2 rounded bg-stone-800 hover:bg-stone-700 cursor-pointer text-xs font-mono text-stone-200">
         <input type="checkbox" name="teacher_class" value="${c}" onchange="checkTeacherClassCount(this)" class="accent-amber-500 rounded">
         <span>${c} 班</span>
       </label>
