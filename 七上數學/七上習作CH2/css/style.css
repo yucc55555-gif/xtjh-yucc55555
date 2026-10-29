@@ -1,0 +1,180 @@
+/* 國中七上數學第二章金庸武俠 RPG 線上測驗系統 - 自訂樣式表 */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=ZCOOL+KuaiLe&display=swap');
+
+:root {
+  --color-primary: #8b1e1e; /* 丹紅 / 硃砂 */
+  --color-gold: #d4af37;    /* 金色 */
+  --color-ink: #1a1a1a;     /* 墨黑 */
+  --color-paper: #fbf7ee;   /* 古籍宣紙黃 */
+  --color-jade: #2e7d32;    /* 翡翠綠 */
+  --color-wood: #4e342e;    /* 檀木褐 */
+}
+
+body {
+  font-family: 'Noto Serif TC', 'PingFang TC', 'Microsoft JhengHei', serif;
+  background-color: #121820;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* 宣紙古風卷軸背景 */
+.bg-scroll {
+  background-color: #fbf8ef;
+  background-image: 
+    radial-gradient(#eeddbb 15%, transparent 16%),
+    radial-gradient(#eeddbb 15%, transparent 16%);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+  border: 3px solid #8c6d46;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 40px rgba(180, 140, 80, 0.2);
+}
+
+/* 華麗金屬古典邊框 */
+.wuxia-border {
+  border: 2px solid #c5a059;
+  position: relative;
+}
+.wuxia-border::before, .wuxia-border::after {
+  content: "❖";
+  position: absolute;
+  color: #c5a059;
+  font-size: 14px;
+}
+.wuxia-border::before { top: -8px; left: -8px; }
+.wuxia-border::after { bottom: -8px; right: -8px; }
+
+/* 武俠按鈕 */
+.btn-wuxia {
+  background: linear-gradient(135deg, #a72828 0%, #701010 100%);
+  color: #fce8a6;
+  border: 1px solid #d4af37;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all 0.2s ease;
+}
+.btn-wuxia:hover {
+  background: linear-gradient(135deg, #c03232 0%, #851414 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4), 0 0 15px rgba(212, 175, 55, 0.4);
+}
+.btn-wuxia:active {
+  transform: translateY(1px);
+}
+
+.btn-wuxia-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #aa8018 100%);
+  color: #1a1a1a;
+  border: 1px solid #ffe58f;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+.btn-wuxia-gold:hover {
+  background: linear-gradient(135deg, #e6c14c 0%, #bf9223 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4), 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+/* 血條動態效果 */
+.hp-bar-fill {
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 戰鬥動畫 */
+@keyframes shakeAnimation {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-8px, 4px) rotate(-1deg); }
+  40% { transform: translate(8px, -4px) rotate(1deg); }
+  60% { transform: translate(-6px, 2px) rotate(0deg); }
+  80% { transform: translate(6px, -2px) rotate(1deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.shake {
+  animation: shakeAnimation 0.4s ease-in-out;
+}
+
+@keyframes attackPlayerAnim {
+  0% { transform: translateX(0); }
+  40% { transform: translateX(40px) scale(1.1); }
+  100% { transform: translateX(0); }
+}
+
+.attack-player {
+  animation: attackPlayerAnim 0.3s ease-out;
+}
+
+@keyframes attackBossAnim {
+  0% { transform: translateX(0); }
+  40% { transform: translateX(-40px) scale(1.1); }
+  100% { transform: translateX(0); }
+}
+
+.attack-boss {
+  animation: attackBossAnim 0.3s ease-out;
+}
+
+@keyframes hitFlashAnim {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(2.5) drop-shadow(0 0 15px red); }
+  100% { filter: brightness(1); }
+}
+
+.hit-flash {
+  animation: hitFlashAnim 0.4s ease-in-out;
+}
+
+/* 浮動傷害數字 */
+.floating-damage {
+  position: absolute;
+  font-weight: 900;
+  font-size: 24px;
+  animation: floatUpFade 0.9s forwards ease-out;
+  pointer-events: none;
+  z-index: 50;
+}
+@keyframes floatUpFade {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { transform: translateY(-25px) scale(1.3); }
+  100% { opacity: 0; transform: translateY(-45px) scale(1); }
+}
+
+/* KaTeX 公式美化調整 */
+.katex {
+  font-size: 1.15em !important;
+  color: inherit;
+}
+.katex-display {
+  margin: 0.6em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* 關卡卡片懸浮光暈 */
+.stage-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.stage-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+/* 自訂捲軸樣式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: #a78044;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c5a059;
+}

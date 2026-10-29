@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>國中七上數學第二章《分數的運算》金庸武俠 RPG 線上測驗系統</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX CSS & JS for Math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-stone-950 text-stone-100 min-h-screen flex flex-col font-serif selection:bg-amber-600 selection:text-white">
+
+  <!-- 頂部古典導覽列 -->
+  <header class="bg-gradient-to-r from-stone-900 via-red-950 to-stone-900 border-b-2 border-amber-600/80 px-4 py-3 sticky top-0 z-40 shadow-lg">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-bold text-xl border-2 border-amber-300 shadow">
+          ☯
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold tracking-wider text-amber-200">
+            七上數學第二章《分數的運算》
+          </h1>
+          <div class="text-[11px] text-amber-400/80">金庸武俠年代試煉 · 線上測驗與成績登錄系統</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- 雲端試算表連線狀態 -->
+        <div id="gas-status-badge" onclick="openGasModal()" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-900 text-yellow-200 border border-yellow-600 cursor-pointer hover:opacity-90">
+          <i class="fa-solid fa-hard-drive"></i> 本機離線模式 (點擊串接試算表)
+        </div>
+
+        <!-- 音效開關 -->
+        <button id="audio-toggle-btn" class="px-3 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-600">
+          <i class="fa-solid fa-volume-high"></i> 音效開
+        </button>
+
+        <!-- 設定按鈕 -->
+        <button id="gas-setting-btn" title="設定 Google 試算表 GAS 網址" class="p-2 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-amber-300 border border-stone-600">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容容器 -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6">
+
+    <!-- ======================================================== -->
+    <!-- 視圖 1: 首頁 (學生登入 & 教師登入入口) -->
+    <!-- ======================================================== -->
+    <div id="view-home" class="py-8">
+      <!-- 英雄氣派宣傳橫幅 -->
+      <div class="text-center mb-10">
+        <div class="inline-block px-4 py-1 rounded-full bg-amber-950/80 text-amber-400 border border-amber-700 text-xs font-bold mb-3 tracking-widest">
+          ⚔️ 國中數學素養與會考戰技大修煉 ⚔️
+        </div>
+        <h2 class="text-3xl md:text-5xl font-black text-amber-100 tracking-wide mb-3 drop-shadow">
+          金庸俠客行 · 算理破萬陣
+        </h2>
+        <p class="text-stone-300 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+          從春秋越女之神劍，行至明清華山之絕巔。融會貫通因數、倍數、公因公倍、分數四則與乘方指數律，每題作答即時逐步回饋，踏上武林盟主之路！
+        </p>
+      </div>
+
+      <!-- 登入雙卡片 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- 學生試煉入口 -->
+        <div class="bg-stone-900/90 rounded-2xl p-6 md:p-8 border-2 border-amber-600/80 shadow-2xl relative">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-stone-800">
+            <span class="text-3xl">🥋</span>
+            <div>
+              <h3 class="text-xl font-bold text-amber-300">少俠修煉入口</h3>
+              <p class="text-xs text-stone-400">學生請輸入班級與座號登入開始挑戰</p>
+            </div>
+          </div>
+
+          <form id="student-login-form" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-stone-300 mb-1">班級 <span class="text-red-400">*</span></label>
+                <input type="text" id="student-class" placeholder="如 701" required
+                  class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 font-mono text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-stone-300 mb-1">座號 <span class="text-red-400">*</span></label>
+                <input type="number" id="student-seat" min="1" max="50" placeholder="如 15" required
+                  class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 font-mono text-sm">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-stone-300 mb-1">俠客稱號 / 姓名 (選填)</label>
+              <input type="text" id="student-name" placeholder="預設為班級座號少俠"
+                class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-stone-300 mb-1">所屬宗門</label>
+              <select id="student-sect"
+                class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-amber-200 focus:outline-none focus:border-amber-500 text-sm">
+                <option value="武當派">武當派 (太極以柔克剛，通分化簡)</option>
+                <option value="少林派">少林派 (易筋金剛掌，因倍溯本求源)</option>
+                <option value="華山派">華山派 (獨孤九劍，指數乘方連綿)</option>
+                <option value="桃花島">桃花島 (奇門八卦術，生活素養通盤算計)</option>
+                <option value="大理段氏">大理段氏 (六脈神劍，除法逆算百步穿楊)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="w-full btn-wuxia-gold py-3 rounded-xl font-bold text-sm tracking-widest mt-6">
+              <i class="fa-solid fa-khanda"></i> 登上征程 · 進入試煉
+            </button>
+          </form>
+        </div>
+
+        <!-- 教師掌門入口 -->
+        <div class="bg-stone-900/90 rounded-2xl p-6 md:p-8 border border-stone-700 shadow-2xl relative flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-stone-800">
+              <span class="text-3xl">📜</span>
+              <div>
+                <h3 class="text-xl font-bold text-amber-200">宗師督導入口</h3>
+                <p class="text-xs text-stone-400">任課老師登入查詢班級成績與作答診斷</p>
+              </div>
+            </div>
+
+            <form id="teacher-login-form" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-stone-300 mb-1">教師代號 (ID) <span class="text-red-400">*</span></label>
+                <input type="text" id="teacher-id" placeholder="如 T001" required
+                  class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 font-mono text-sm">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-stone-300 mb-1">登入密碼 <span class="text-red-400">*</span></label>
+                <input type="password" id="teacher-pwd" placeholder="請輸入密碼" required
+                  class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-amber-500 text-sm">
+              </div>
+
+              <button type="submit" class="w-full btn-wuxia py-3 rounded-xl font-bold text-sm tracking-widest mt-6">
+                <i class="fa-solid fa-lock-open"></i> 教師登入
+              </button>
+            </form>
+          </div>
+
+          <!-- 首次使用註冊提示 -->
+          <div class="mt-6 pt-4 border-t border-stone-800 text-center">
+            <p class="text-xs text-stone-400 mb-2">第一次使用本系統的任課教師？</p>
+            <button onclick="openTeacherRegisterModal()" class="text-amber-400 hover:text-amber-300 text-sm font-bold underline">
+              <i class="fa-solid fa-user-plus"></i> 首次登入請先點此註冊 (可選任教5班)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 視圖 2: 學生修煉大地圖 -->
+    <!-- ======================================================== -->
+    <div id="view-student-map" class="hidden space-y-6">
+      <!-- 學生狀態橫幅 -->
+      <div id="student-user-card"></div>
+
+      <!-- 地圖標題 -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-amber-200">金庸武林試煉地圖</h2>
+          <p class="text-xs text-stone-400">依小說歷史年代排序，逐一挑戰各章習作習題！</p>
+        </div>
+        <div class="text-xs text-stone-400">
+          章節通關條件：得分達 60 分以上
+        </div>
+      </div>
+
+      <!-- 五大關卡卡片列表 -->
+      <div id="stage-map-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 視圖 3: 戰鬥答題試煉場 -->
+    <!-- ======================================================== -->
+    <div id="view-battle" class="hidden">
+      <div id="battle-arena-container" class="max-w-4xl mx-auto"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 視圖 4: 學生歷史戰績清單 -->
+    <!-- ======================================================== -->
+    <div id="view-student-history" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-amber-200">歷史修煉戰績</h2>
+          <p class="text-xs text-stone-400">記錄歷次測驗分數、耗時與完整作答內容</p>
+        </div>
+        <button onclick="showView('view-student-map')" class="btn-wuxia px-4 py-2 rounded-xl text-xs font-bold">
+          <i class="fa-solid fa-arrow-left"></i> 返回地圖
+        </button>
+      </div>
+
+      <div id="history-records-list" class="space-y-4"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 視圖 5: 學生錯題複習庫 (錯題本) -->
+    <!-- ======================================================== -->
+    <div id="view-student-mistakes" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-red-300">思過崖 · 錯題修煉本</h2>
+          <p class="text-xs text-stone-400">針對歷次測驗答錯之題目進行專屬複習與突破</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="retest-mistakes-btn" onclick="startRetestAllMistakes()" class="btn-wuxia-gold px-4 py-2 rounded-xl text-xs font-bold">
+            <i class="fa-solid fa-fire"></i> 啟動錯題全軍突破
+          </button>
+          <button onclick="showView('view-student-map')" class="btn-wuxia px-4 py-2 rounded-xl text-xs font-bold">
+            <i class="fa-solid fa-arrow-left"></i> 返回地圖
+          </button>
+        </div>
+      </div>
+
+      <div id="mistakes-records-list" class="space-y-4"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 視圖 6: 教師管理儀表板 -->
+    <!-- ======================================================== -->
+    <div id="view-teacher-dashboard" class="hidden space-y-6">
+      <!-- 頂部教師橫幅與功能列 -->
+      <div class="p-6 bg-gradient-to-r from-stone-900 via-amber-950/70 to-stone-900 rounded-2xl border border-amber-600/70 text-white flex flex-wrap items-center justify-between gap-4 shadow-xl">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🎓</span>
+            <h2 id="dashboard-teacher-name" class="text-2xl font-bold text-amber-200">任課教師</h2>
+            <span class="text-xs px-2.5 py-0.5 rounded bg-amber-900 text-amber-300 border border-amber-600">宗師督導</span>
+          </div>
+          <p class="text-xs text-stone-300 mt-1">查詢任課班級學生測驗成績、個別考卷作答明細與常見迷思診斷</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- 班級切換下拉選單 (最多5班) -->
+          <div class="flex items-center gap-2 bg-stone-900 px-3 py-1.5 rounded-xl border border-stone-700">
+            <span class="text-xs text-stone-400">目前檢視：</span>
+            <select id="teacher-class-select" class="bg-transparent text-amber-300 font-bold text-sm focus:outline-none"></select>
+          </div>
+
+          <button onclick="exportClassCsv()" class="btn-wuxia-gold px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2">
+            <i class="fa-solid fa-file-csv"></i> 匯出成績 CSV
+          </button>
+
+          <button onclick="logout()" class="px-3 py-2 rounded-xl text-xs bg-stone-900 hover:bg-black text-stone-400 hover:text-white border border-stone-700">
+            <i class="fa-solid fa-right-from-bracket"></i> 登出
+          </button>
+        </div>
+      </div>
+
+      <!-- 班級數據指標卡 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-5 rounded-2xl bg-stone-900 border border-stone-800">
+          <div class="text-xs text-stone-400 font-bold">班級登記人數</div>
+          <div id="stat-total-students" class="text-3xl font-black text-amber-300 mt-1">--</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-stone-900 border border-stone-800">
+          <div class="text-xs text-stone-400 font-bold">完成測驗總卷數</div>
+          <div id="stat-total-exams" class="text-3xl font-black text-white mt-1">--</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-stone-900 border border-stone-800">
+          <div class="text-xs text-stone-400 font-bold">班級平均成績</div>
+          <div id="stat-class-avg" class="text-3xl font-black text-green-400 mt-1">--</div>
+        </div>
+      </div>
+
+      <!-- 主體雙欄：學生名冊 & 班級易錯題診斷 -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 學生名冊表格 (佔 2 欄) -->
+        <div class="lg:col-span-2 bg-stone-900 rounded-2xl border border-stone-800 overflow-hidden shadow-xl">
+          <div class="p-4 bg-stone-950 border-b border-stone-800 flex items-center justify-between">
+            <h3 class="text-base font-bold text-amber-200">
+              <i class="fa-solid fa-users"></i> 班級學生名冊與作答表現
+            </h3>
+            <span class="text-xs text-stone-400">點擊查看每位學生作答詳情</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="text-xs text-stone-400 bg-stone-950/50 border-b border-stone-800">
+                  <th class="p-4">座號</th>
+                  <th class="p-4">學生姓名</th>
+                  <th class="p-4">武學等級</th>
+                  <th class="p-4">平均表現</th>
+                  <th class="p-4">未克服錯題</th>
+                  <th class="p-4 text-right">操作</th>
+                </tr>
+              </thead>
+              <tbody id="teacher-students-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 班級易錯題排行榜 (佔 1 欄) -->
+        <div class="bg-stone-900 rounded-2xl border border-stone-800 p-5 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-stone-800 mb-4">
+              <h3 class="text-base font-bold text-red-300">
+                <i class="fa-solid fa-triangle-exclamation"></i> 全班易錯題排行榜
+              </h3>
+              <span class="text-[11px] text-stone-400">迷思概念診斷</span>
+            </div>
+            <p class="text-xs text-stone-400 mb-4">
+              統計該班答錯率最高之習作題型，方便老師課堂精準點評：
+            </p>
+
+            <div id="teacher-error-ranking-container" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 模態視窗 1: 及時逐步解析回饋 (答題後即時彈出) -->
+  <!-- ======================================================== -->
+  <div id="explanation-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-stone-900 border-2 border-amber-600 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div id="explanation-content"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 模態視窗 2: 完整考卷檢視 (學生歷程 & 教師檢視) -->
+  <!-- ======================================================== -->
+  <div id="full-exam-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-stone-900 border-2 border-amber-600 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div id="full-exam-content"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 模態視窗 3: 教師初次登入註冊 (選取最多 5 班) -->
+  <!-- ======================================================== -->
+  <div id="teacher-reg-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-stone-900 border-2 border-amber-600 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-800 mb-4">
+        <h3 class="text-xl font-bold text-amber-300">
+          <i class="fa-solid fa-id-card"></i> 教師首次註冊
+        </h3>
+        <button onclick="closeTeacherRegisterModal()" class="text-stone-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="teacher-reg-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-stone-300 mb-1">教師代號 (ID) <span class="text-red-400">*</span></label>
+          <input type="text" id="reg-teacher-id" placeholder="如 T001" required
+            class="w-full px-4 py-2 rounded-xl bg-stone-800 border border-stone-700 text-white text-sm">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-stone-300 mb-1">教師姓名 <span class="text-red-400">*</span></label>
+          <input type="text" id="reg-teacher-name" placeholder="如 張老師" required
+            class="w-full px-4 py-2 rounded-xl bg-stone-800 border border-stone-700 text-white text-sm">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-stone-300 mb-1">自訂登入密碼 <span class="text-red-400">*</span></label>
+          <input type="password" id="reg-teacher-pwd" placeholder="請設定密碼" required
+            class="w-full px-4 py-2 rounded-xl bg-stone-800 border border-stone-700 text-white text-sm">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-stone-300">勾選任教班級 (最多 5 班) <span class="text-red-400">*</span></label>
+            <span id="selected-class-count-badge" class="text-xs text-stone-400">已選擇 0 / 5 班</span>
+          </div>
+          <div id="teacher-classes-checkboxes" class="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 rounded-xl bg-stone-950 border border-stone-800"></div>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3">
+          <button type="button" onclick="closeTeacherRegisterModal()" class="px-4 py-2 rounded-xl text-xs bg-stone-800 text-stone-300">取消</button>
+          <button type="submit" class="btn-wuxia-gold px-6 py-2 rounded-xl text-xs font-bold">確認註冊並登入</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 模態視窗 4: 教師檢視個別學生完整紀錄 -->
+  <!-- ======================================================== -->
+  <div id="student-detail-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-stone-900 border-2 border-amber-600 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div id="student-detail-content"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 模態視窗 5: 雲端試算表 GAS Web App 設定 -->
+  <!-- ======================================================== -->
+  <div id="gas-config-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-stone-900 border-2 border-amber-600 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-800 mb-4">
+        <h3 class="text-lg font-bold text-amber-300">
+          <i class="fa-solid fa-cloud"></i> Google 試算表 GAS 串接設定
+        </h3>
+        <button onclick="closeGasModal()" class="text-stone-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <p class="text-xs text-stone-300 leading-relaxed">
+          請依照資料夾中的 <span class="text-amber-400 font-bold">gas/GAS_DEPLOY_GUIDE.md</span> 說明手冊，在 Google 雲端試算表部署 Web 應用程式後，將取得的網址貼在下方：
+        </p>
+
+        <div>
+          <label class="block text-xs font-bold text-stone-300 mb-1">Web 應用程式網址 (Web app URL)</label>
+          <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec"
+            class="w-full px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white font-mono text-xs">
+        </div>
+
+        <div class="p-3 rounded-lg bg-stone-950 border border-stone-800 text-xs text-stone-400 space-y-1">
+          <div>💡 留空並儲存即恢復為「本機離線模式」。</div>
+          <div>💡 部署時存取權限務必設定為「所有人 (Anyone)」。</div>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-3">
+          <button type="button" onclick="closeGasModal()" class="px-4 py-2 rounded-xl text-xs bg-stone-800 text-stone-300">取消</button>
+          <button type="button" onclick="saveGasUrl()" class="btn-wuxia-gold px-6 py-2 rounded-xl text-xs font-bold">儲存設定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 頁尾版權宣告 -->
+  <footer class="mt-auto py-6 border-t border-stone-800/80 text-center text-xs text-stone-500">
+    國中七年級第一學期 數學習作第二章《分數的運算》RPG 線上測驗系統 · 支援 Google Apps Script 雲端試算表登錄
+  </footer>
+
+  <!-- 載入題庫與應用程式腳本 -->
+  <script src="data/questions.js"></script>
+  <script src="js/rpg.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
