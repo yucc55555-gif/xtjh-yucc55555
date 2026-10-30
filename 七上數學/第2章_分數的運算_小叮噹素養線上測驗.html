@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小叮噹百寶袋數學素養測驗｜七上第2章 分數的運算</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* ===== 小叮噹（Doraemon）卡通主題色彩與字體設定 ===== */
+    :root {
+      --dora-blue: #00A0E9;
+      --dora-blue-dark: #0073B1;
+      --dora-blue-deep: #00365C;
+      --dora-red: #E60012;
+      --dora-red-dark: #A8000D;
+      --dora-yellow: #FFD700;
+      --dora-yellow-dark: #D49B00;
+      --dora-pink: #FF6B9E;
+      --dora-pink-dark: #C8376D;
+      --dora-dorayaki: #D97724;
+      --dora-dorayaki-dark: #9A4D0C;
+      --dora-green: #22C55E;
+      --dora-green-dark: #15803D;
+      --dora-white: #FFFFFF;
+      --dora-cream: #FFFDF5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", "Heiti TC", sans-serif;
+      color: #002B49;
+      /* 小叮噹藍天＋百寶袋圓點卡通背景 */
+      background-color: #7AD7F0;
+      background-image:
+        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 45px, transparent 47px),
+        radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 60px, transparent 62px),
+        radial-gradient(circle at 82% 12%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.65) 55px, transparent 57px),
+        radial-gradient(rgba(255, 255, 255, 0.35) 3px, transparent 3px),
+        linear-gradient(180deg, #0098E5 0%, #4DC4F4 42%, #B5ECFF 100%);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 34px 34px, 100% 100%;
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== 卡通立體外框與小叮噹四次元口袋卡片 ===== */
+    .dora-card {
+      background: var(--dora-white);
+      border: 4px solid var(--dora-blue-deep);
+      border-radius: 28px;
+      box-shadow: 0 8px 0 var(--dora-blue-deep), 0 14px 28px rgba(0, 54, 92, 0.22);
+      position: relative;
+    }
+
+    .dora-pocket-panel {
+      background: var(--dora-cream);
+      border: 3.5px solid var(--dora-blue-deep);
+      border-radius: 22px;
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.9), 0 5px 0 var(--dora-blue-deep);
+    }
+
+    /* ===== 小叮噹紅色項圈分隔條 ===== */
+    .dora-collar-bar {
+      background: linear-gradient(180deg, #FF2A3C 0%, #E60012 60%, #B8000E 100%);
+      border-top: 3.5px solid var(--dora-blue-deep);
+      border-bottom: 3.5px solid var(--dora-blue-deep);
+      height: 18px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ===== 3. 所有按鈕的小叮噹卡通風格樣式 ===== */
+    .dora-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 800;
+      border: 3.5px solid var(--dora-blue-deep);
+      border-radius: 9999px;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.12s ease, filter 0.15s ease;
+      user-select: none;
+      position: relative;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+      font-size: 15px;
+    }
+
+    /* 按鈕左上角卡通反光高光 */
+    .dora-btn::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 14px;
+      right: 14px;
+      height: 32%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+      border-radius: 9999px;
+      pointer-events: none;
+    }
+
+    .dora-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.05);
+    }
+
+    .dora-btn:active:not(:disabled) {
+      transform: translateY(4px) scale(0.99);
+    }
+
+    .dora-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* 款式 A：金色鈴鐺主按鈕 */
+    .dora-btn-bell {
+      background: linear-gradient(180deg, #FFEE55 0%, #FFD700 55%, #F5B700 100%);
+      color: var(--dora-blue-deep);
+      box-shadow: 0 5px 0 var(--dora-yellow-dark), 0 8px 14px rgba(0, 54, 92, 0.25);
+    }
+    .dora-btn-bell:active:not(:disabled) {
+      box-shadow: 0 1px 0 var(--dora-yellow-dark);
+    }
+
+    /* 款式 B：小叮噹百寶藍按鈕 */
+    .dora-btn-blue {
+      background: linear-gradient(180deg, #29B6F6 0%, #00A0E9 55%, #0288D1 100%);
+      color: #FFFFFF;
+      text-shadow: 0 1.5px 0 var(--dora-blue-deep);
+      box-shadow: 0 5px 0 var(--dora-blue-dark), 0 8px 14px rgba(0, 54, 92, 0.22);
+    }
+    .dora-btn-blue:active:not(:disabled) {
+      box-shadow: 0 1px 0 var(--dora-blue-dark);
+    }
+
+    /* 款式 C：任意門粉紅按鈕 */
+    .dora-btn-door {
+      background: linear-gradient(180deg, #FF8FB3 0%, #FF6B9E 50%, #EC407A 100%);
+      background-color: #FF6B9E;
+      color: #FFFFFF;
+      text-shadow: 0 1.5px 0 #880E4F;
+      box-shadow: 0 5px 0 var(--dora-pink-dark), 0 8px 14px rgba(0, 54, 92, 0.22);
+    }
+    .dora-btn-door:active:not(:disabled) {
+      box-shadow: 0 1px 0 var(--dora-pink-dark);
+    }
+
+    /* 款式 D：紅項圈重點按鈕 */
+    .dora-btn-red {
+      background: linear-gradient(180deg, #FF4D5A 0%, #E60012 55%, #C6000F 100%);
+      color: #FFFFFF;
+      text-shadow: 0 1.5px 0 #6A0008;
+      box-shadow: 0 5px 0 var(--dora-red-dark), 0 8px 14px rgba(0, 54, 92, 0.22);
+    }
+    .dora-btn-red:active:not(:disabled) {
+      box-shadow: 0 1px 0 var(--dora-red-dark);
+    }
+
+    /* 款式 E：銅鑼燒提示按鈕 */
+    .dora-btn-dorayaki {
+      background: linear-gradient(180deg, #FBBF24 0%, #D97724 65%, #B45309 100%);
+      color: #FFFFFF;
+      text-shadow: 0 1.5px 0 #5C2804;
+      box-shadow: 0 5px 0 var(--dora-dorayaki-dark), 0 8px 14px rgba(0, 54, 92, 0.22);
+    }
+    .dora-btn-dorayaki:active:not(:disabled) {
+      box-shadow: 0 1px 0 var(--dora-dorayaki-dark);
+    }
+
+    /* 款式 F：四次元白肚兜按鈕（題號切換與次要操作） */
+    .dora-btn-pocket {
+      background: linear-gradient(180deg, #FFFFFF 0%, #EAF8FF 100%);
+      color: var(--dora-blue-deep);
+      box-shadow: 0 5px 0 #5CA9D6, 0 7px 12px rgba(0, 54, 92, 0.16);
+    }
+    .dora-btn-pocket:active:not(:disabled) {
+      box-shadow: 0 1px 0 #5CA9D6;
+    }
+    .dora-btn-pocket.active-q {
+      background: linear-gradient(180deg, #FFEE55 0%, #FFD700 100%);
+      border-color: var(--dora-red);
+      box-shadow: 0 5px 0 var(--dora-red-dark), 0 0 0 3px #FFF;
+    }
+
+    /* ===== 選項按鈕（百寶袋道具卡樣式） ===== */
+    .dora-option-btn {
+      width: 100%;
+      text-align: left;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F2FAFF 100%);
+      border: 3.5px solid var(--dora-blue-deep);
+      border-radius: 20px;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.14s ease;
+      box-shadow: 0 5px 0 #549EC9;
+      position: relative;
+    }
+
+    .dora-option-btn:hover:not(.locked) {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, #FFFDF0 0%, #FFF5C0 100%);
+      border-color: var(--dora-blue-deep);
+      box-shadow: 0 7px 0 var(--dora-yellow-dark);
+    }
+
+    .dora-option-btn:active:not(.locked) {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 var(--dora-yellow-dark);
+    }
+
+    .dora-option-btn.selected {
+      background: linear-gradient(180deg, #FFF9DB 0%, #FFEC99 100%);
+      border-color: var(--dora-red);
+      box-shadow: 0 5px 0 var(--dora-red-dark);
+    }
+
+    .dora-option-btn.correct-choice {
+      background: linear-gradient(180deg, #DCFCE7 0%, #BBF7D0 100%);
+      border-color: #15803D;
+      box-shadow: 0 5px 0 #15803D;
+    }
+
+    .dora-option-btn.wrong-choice {
+      background: linear-gradient(180deg, #FEE2E2 0%, #FECACA 100%);
+      border-color: var(--dora-red);
+      box-shadow: 0 5px 0 var(--dora-red-dark);
+    }
+
+    /* 選項左方的鈴鐺徽章 */
+    .bell-badge {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 30%, #FFF380, #FFD700 65%, #E09F00 100%);
+      border: 3px solid var(--dora-blue-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      color: var(--dora-blue-deep);
+      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15), 0 2px 0 rgba(0, 54, 92, 0.25);
+      position: relative;
+    }
+
+    /* ===== 數學分數排版樣式 ===== */
+    .math-frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 3px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .math-frac > .num {
+      border-bottom: 2px solid currentColor;
+      padding: 0 5px 1px;
+      font-size: 0.92em;
+    }
+    .math-frac > .den {
+      padding: 1px 5px 0;
+      font-size: 0.92em;
+    }
+    .math-expr {
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-weight: 700;
+      padding: 0 2px;
+    }
+
+    /* 短除法表格 */
+    .short-div-table {
+      border-collapse: collapse;
+      font-family: "Cambria Math", "Times New Roman", monospace;
+      font-weight: 700;
+      font-size: 16px;
+      margin: 8px 0;
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 8px 14px;
+      display: inline-block;
+      border: 2.5px solid #93C5FD;
+    }
+    .short-div-table td {
+      padding: 3px 10px;
+      text-align: right;
+    }
+    .short-div-table tr.div-row td.div-num {
+      border-left: 2.5px solid var(--dora-blue-deep);
+      border-bottom: 2.5px solid var(--dora-blue-deep);
+    }
+
+    /* 動畫效果 */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(2deg); }
+    }
+    .animate-float {
+      animation: floatSlow 3.6s ease-in-out infinite;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: translateY(10px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .step-appear {
+      animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+  </style>
+</head>
+<body class="pb-16">
+
+  <!-- 頂部裝飾：漂浮竹蜻蜓與白雲小叮噹主題橫幅 -->
+  <header class="max-w-5xl mx-auto pt-5 px-4">
+    <div class="dora-card overflow-hidden bg-gradient-to-b from-[#00A0E9] via-[#12B2F8] to-[#008CD6] text-white">
+      <div class="p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <!-- 左側：小叮噹卡通純 SVG 頭像＋百寶袋標誌 -->
+        <div class="flex items-center gap-4">
+          <div class="relative w-24 h-24 md:w-28 md:h-28 flex-shrink-0 animate-float">
+            <!-- 原創小叮噹風格 SVG 角色圖示 -->
+            <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-lg">
+              <!-- 竹蜻蜓 -->
+              <rect x="57" y="2" width="6" height="14" rx="2" fill="#FFD700" stroke="#00365C" stroke-width="2.5"/>
+              <ellipse cx="60" cy="4" rx="26" ry="4.5" fill="#FFE55C" stroke="#00365C" stroke-width="2.5"/>
+              <circle cx="60" cy="4" r="4" fill="#FF9800" stroke="#00365C" stroke-width="2"/>
+              <!-- 藍色圓頭 -->
+              <circle cx="60" cy="60" r="46" fill="#00A0E9" stroke="#00365C" stroke-width="4"/>
+              <!-- 白色臉龐 -->
+              <ellipse cx="60" cy="68" rx="38" ry="33" fill="#FFFFFF" stroke="#00365C" stroke-width="3.5"/>
+              <!-- 大眼睛 -->
+              <ellipse cx="49" cy="43" rx="10" ry="12.5" fill="#FFFFFF" stroke="#00365C" stroke-width="3"/>
+              <ellipse cx="71" cy="43" rx="10" ry="12.5" fill="#FFFFFF" stroke="#00365C" stroke-width="3"/>
+              <!-- 眼珠與高光 -->
+              <ellipse cx="52" cy="44" rx="3.8" ry="5.2" fill="#00365C"/>
+              <ellipse cx="68" cy="44" rx="3.8" ry="5.2" fill="#00365C"/>
+              <circle cx="53" cy="42" r="1.6" fill="#FFFFFF"/>
+              <circle cx="67" cy="42" r="1.6" fill="#FFFFFF"/>
+              <!-- 紅鼻子 -->
+              <circle cx="60" cy="54" r="7.5" fill="#E60012" stroke="#00365C" stroke-width="3"/>
+              <circle cx="57.5" cy="51.5" r="2.3" fill="#FF9AA2"/>
+              <!-- 人中與開心微笑 -->
+              <line x1="60" y1="61.5" x2="60" y2="77" stroke="#00365C" stroke-width="3" stroke-linecap="round"/>
+              <path d="M 38 72 Q 60 92 82 72" fill="none" stroke="#00365C" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- 六根鬍鬚 -->
+              <line x1="25" y1="58" x2="43" y2="62" stroke="#00365C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="23" y1="66" x2="42" y2="66" stroke="#00365C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="25" y1="74" x2="43" y2="70" stroke="#00365C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="95" y1="58" x2="77" y2="62" stroke="#00365C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="97" y1="66" x2="78" y2="66" stroke="#00365C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="95" y1="74" x2="77" y2="70" stroke="#00365C" stroke-width="2.6" stroke-linecap="round"/>
+              <!-- 紅項圈 -->
+              <rect x="26" y="96" width="68" height="10" rx="5" fill="#E60012" stroke="#00365C" stroke-width="3"/>
+              <!-- 金色鈴鐺 -->
+              <circle cx="60" cy="105" r="10.5" fill="#FFD700" stroke="#00365C" stroke-width="3"/>
+              <line x1="50" y1="103" x2="70" y2="103" stroke="#00365C" stroke-width="2.2"/>
+              <circle cx="60" cy="108" r="2.4" fill="#00365C"/>
+              <line x1="60" y1="110" x2="60" y2="115" stroke="#00365C" stroke-width="2.2"/>
+            </svg>
+          </div>
+
+          <div>
+            <div class="inline-flex items-center gap-2 bg-[#FFD700] text-[#00365C] font-black text-xs md:text-sm px-3 py-1 rounded-full border-2 border-[#00365C] shadow-sm mb-1.5">
+              <span>🔔 115國中數學 1 上（七年級）</span>
+              <span>｜</span>
+              <span>第 2 章 分數的運算</span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-black tracking-wide drop-shadow-[0_3px_0_#00365C]">
+              小叮噹百寶袋・數學素養線上大測驗
+            </h1>
+            <p class="text-sm md:text-base text-white/95 font-bold mt-1">
+              結合課本與習作全章附件（2-1 因數與倍數 ～ 2-4 指數律 ＆ 音樂符號素養實踐）
+            </p>
+          </div>
+        </div>
+
+        <!-- 右側：銅鑼燒計分板與百寶袋進度 -->
+        <div class="bg-white/95 text-[#00365C] border-4 border-[#00365C] rounded-2xl px-4 py-3 shadow-[0_5px_0_#00365C] flex items-center gap-4 min-w-[235px]">
+          <div class="text-center">
+            <div class="text-xs font-extrabold text-[#0073B1]">目前已獲銅鑼燒</div>
+            <div class="text-2xl font-black text-[#E60012] flex items-center justify-center gap-1 mt-0.5">
+              <span id="scoreDisplay">0</span>
+              <span class="text-sm font-bold text-[#00365C]">/ 100 分</span>
+            </div>
+          </div>
+          <div class="h-10 w-[3px] bg-[#00365C]/20 rounded-full"></div>
+          <div class="text-center">
+            <div class="text-xs font-extrabold text-[#0073B1]">作答進度</div>
+            <div class="text-lg font-black text-[#00365C] mt-0.5">
+              <span id="answeredCount">0</span> / <span id="totalCount">6</span> 題
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 小叮噹紅色項圈＋中間立體鈴鐺裝飾條 -->
+      <div class="dora-collar-bar">
+        <div class="w-8 h-8 rounded-full bg-[#FFD700] border-3 border-[#00365C] shadow flex flex-col items-center justify-center -mt-0.5" style="border: 3px solid #00365C;">
+          <div class="w-5 h-[2px] bg-[#00365C] mt-1"></div>
+          <div class="w-2 h-2 rounded-full bg-[#00365C] mt-0.5"></div>
+        </div>
+      </div>
+
+      <!-- 題號導覽列（全部採用小叮噹百寶袋卡通按鈕） -->
+      <div class="bg-[#E6F7FF] px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2" id="questionNavButtons">
+          <!-- 由 JS 動態生成 6 顆百寶袋題號按鈕 -->
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openOverviewModal()" class="dora-btn dora-btn-door text-xs md:text-sm py-2 px-4">
+            🚪 任意門：全章評量總覽
+          </button>
+          <button onclick="resetAllQuiz()" class="dora-btn dora-btn-red text-xs md:text-sm py-2 px-4">
+            🔄 時光布：重新測驗
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主測驗內容區 -->
+  <main class="max-w-5xl mx-auto mt-6 px-4">
+    <div class="dora-card p-5 md:p-8 bg-white">
+
+      <!-- 題目頂部資訊欄：章節標籤、法寶名稱、附件來源 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b-4 border-dashed border-[#B3E5FC]">
+        <div class="flex flex-wrap items-center gap-2">
+          <span id="qBadgeUnit" class="bg-[#00A0E9] text-white font-black text-xs md:text-sm px-3.5 py-1.5 rounded-full border-2 border-[#00365C] shadow-[0_3px_0_#00365C]">
+            2-1 因數與倍數
+          </span>
+          <span id="qBadgeGadget" class="bg-[#FFD700] text-[#00365C] font-black text-xs md:text-sm px-3.5 py-1.5 rounded-full border-2 border-[#00365C] shadow-[0_3px_0_#00365C]">
+            🔮 登場道具：記憶吐司＆時光保險箱
+          </span>
+        </div>
+        <div id="qBadgeSource" class="text-xs md:text-sm font-extrabold text-[#005A8C] bg-[#F0F9FF] px-3 py-1.5 rounded-xl border-2 border-[#90CAF9]">
+          📄 參考附件：課本 2-1 例11 ＆ 習作 p.33 精熟練習
+        </div>
+      </div>
+
+      <!-- 素養題目情境卡片（小叮噹四次元口袋造型） -->
+      <div class="mt-5 dora-pocket-panel p-5 md:p-6">
+        <div class="flex items-start gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-[#00A0E9] text-white border-3 border-[#00365C] flex items-center justify-center font-black text-lg flex-shrink-0 shadow-[0_4px_0_#00365C]" style="border: 3px solid #00365C;">
+            <span id="qNumberCircle">Q1</span>
+          </div>
+          <div class="flex-1">
+            <h2 id="qTitle" class="text-xl md:text-2xl font-black text-[#00365C] leading-snug">
+              題目載入中...
+            </h2>
+            <div id="qStoryBox" class="mt-3 text-base md:text-[17px] text-[#002B49] leading-relaxed space-y-3 font-medium">
+              <!-- 題幹 HTML -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 視覺化線索圖表區（依題目顯示小叮噹道具資訊卡/表格/樂譜） -->
+        <div id="qVisualAid" class="mt-4"></div>
+      </div>
+
+      <!-- 小叮噹解題錦囊（銅鑼燒提示按鈕與提示區） -->
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="text-sm font-extrabold text-[#005A8C] flex items-center gap-1.5">
+          <span>👇 請選擇一個正確的百寶袋選項，再點擊金色鈴鐺按鈕送出作答：</span>
+        </div>
+        <button id="hintBtn" onclick="toggleHint()" class="dora-btn dora-btn-dorayaki text-xs md:text-sm py-2 px-4">
+          🥞 吃顆銅鑼燒看解題提示
+        </button>
+      </div>
+
+      <!-- 隱藏提示框 -->
+      <div id="hintBox" class="hidden mt-3 bg-[#FFFBEB] border-3 border-[#D97724] rounded-2xl p-4 text-sm md:text-base font-bold text-[#78350F] shadow-[0_4px_0_#D97724]" style="border: 3px solid #D97724;">
+        <div class="flex items-start gap-2.5">
+          <span class="text-xl">💡</span>
+          <div id="hintContent"></div>
+        </div>
+      </div>
+
+      <!-- 選項列表區 -->
+      <div id="optionsContainer" class="mt-4 grid grid-cols-1 gap-3.5">
+        <!-- 由 JS 動態渲染 A, B, C, D 卡通按鈕 -->
+      </div>
+
+      <!-- 作答與題目切換控制列（全部為小叮噹卡通風格按鈕） -->
+      <div class="mt-6 pt-5 border-t-4 border-[#E1F5FE] flex flex-wrap items-center justify-between gap-3">
+        <button id="prevBtn" onclick="changeQuestion(-1)" class="dora-btn dora-btn-blue">
+          ⬅️ 竹蜻蜓：上一題
+        </button>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="submitBtn" onclick="submitCurrentAnswer()" class="dora-btn dora-btn-bell text-base md:text-lg px-7 py-3">
+            🔔 搖響鈴鐺：確定作答
+          </button>
+          <button id="retryQuestionBtn" onclick="retryCurrentQuestion()" class="hidden dora-btn dora-btn-pocket text-sm">
+            🔁 重做本題
+          </button>
+        </div>
+
+        <button id="nextBtn" onclick="changeQuestion(1)" class="dora-btn dora-btn-blue">
+          下一題：任意門 ➡️
+        </button>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- 作答後顯示區塊：1. 逐步詳解 ＆ 2. 評量重心及題目重點                   -->
+      <!-- ===================================================================== -->
+      <div id="postAnswerSection" class="hidden mt-8 space-y-6">
+
+        <!-- 作答結果回饋橫幅 -->
+        <div id="resultBanner" class="rounded-2xl p-4 md:p-5 border-4 border-[#00365C] shadow-[0_6px_0_#00365C] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div id="resultIcon" class="w-14 h-14 rounded-2xl border-3 border-[#00365C] flex items-center justify-center text-3xl bg-white shadow" style="border: 3px solid #00365C;">
+              🎉
+            </div>
+            <div>
+              <h3 id="resultHeading" class="text-lg md:text-xl font-black text-[#00365C]">
+                太棒了！小叮噹送你一顆黃金銅鑼燒！
+              </h3>
+              <p id="resultSubtext" class="text-sm md:text-base font-bold text-[#00365C]/90 mt-0.5">
+                請接著觀看下方的「逐步詳解」與「評量重心及題目重點」巩固觀念喔！
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="scrollToSection('stepByStepCard')" class="dora-btn dora-btn-blue text-xs md:text-sm py-2 px-3.5">
+              📖 1. 看逐步詳解
+            </button>
+            <button onclick="scrollToSection('assessmentFocusCard')" class="dora-btn dora-btn-door text-xs md:text-sm py-2 px-3.5">
+              🎯 2. 看評量重心與重點
+            </button>
+          </div>
+        </div>
+
+        <!-- 區塊 1：作答之後的「逐步詳解」(Step-by-Step Solution) -->
+        <section id="stepByStepCard" class="dora-pocket-panel p-5 md:p-6 bg-gradient-to-b from-[#F0FAFF] to-[#FFFFFF]">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b-3 border-[#B3E5FC]" style="border-bottom: 3px solid #B3E5FC;">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-[#00A0E9] text-white border-2 border-[#00365C] flex items-center justify-center font-black text-lg shadow-[0_3px_0_#00365C]">1</span>
+              <div>
+                <h3 class="text-lg md:text-xl font-black text-[#00365C]">
+                  百寶袋逐步詳解（Step-by-Step 解題推導）
+                </h3>
+                <p class="text-xs md:text-sm font-bold text-[#0073B1]">
+                  可點擊「下一步驟」逐層推導，或點擊「一次展開全部步驟」檢視完整算式
+                </p>
+              </div>
+            </div>
+
+            <!-- 逐步詳解控制按鈕（小叮噹卡通按鈕） -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="nextStepBtn" onclick="revealNextStep()" class="dora-btn dora-btn-bell text-xs md:text-sm py-2 px-4">
+                ✨ 拿出下一步法寶（<span id="stepProgressText">1/3</span>）
+              </button>
+              <button id="showAllStepsBtn" onclick="revealAllSteps()" class="dora-btn dora-btn-pocket text-xs md:text-sm py-2 px-4">
+                📂 一次展開全部步驟
+              </button>
+            </div>
+          </div>
+
+          <!-- 步驟容器 -->
+          <div id="stepsListContainer" class="mt-4 space-y-4">
+            <!-- 由 JS 動態填入 Step 1, Step 2, Step 3... -->
+          </div>
+        </section>
+
+        <!-- 區塊 2：說明此題測驗的「評量重心及題目重點」 -->
+        <section id="assessmentFocusCard" class="dora-pocket-panel p-5 md:p-6 bg-gradient-to-b from-[#FFFDF2] to-[#FFFFFF] border-[#00365C]">
+          <div class="flex items-center gap-2.5 pb-4 border-b-3 border-[#FDE68A]" style="border-bottom: 3px solid #FDE68A;">
+            <span class="w-9 h-9 rounded-xl bg-[#FF6B9E] text-white border-2 border-[#00365C] flex items-center justify-center font-black text-lg shadow-[0_3px_0_#00365C]">2</span>
+            <div>
+              <h3 class="text-lg md:text-xl font-black text-[#00365C]">
+                此題測驗的「評量重心」及「題目重點」分析
+              </h3>
+              <p class="text-xs md:text-sm font-bold text-[#B45309]">
+                對照十二年國教數學素養指標與附件課本／習作命題核心
+              </p>
+            </div>
+          </div>
+
+          <div id="assessmentFocusContent" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- 由 JS 動態渲染：評量重心、題目重點、課綱指標、常見迷思 -->
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 任意門：全章評量總覽與成績結算彈窗 -->
+  <div id="overviewModal" class="fixed inset-0 bg-[#00223B]/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="dora-card max-w-3xl w-full max-h-[90vh] overflow-y-auto bg-white p-6 md:p-7">
+      <div class="flex items-center justify-between pb-4 border-b-4 border-[#00A0E9]">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🚪</span>
+          <h3 class="text-xl md:text-2xl font-black text-[#00365C]">
+            任意門：第 2 章《分數的運算》素養測驗總覽與評量架構
+          </h3>
+        </div>
+        <button onclick="closeOverviewModal()" class="dora-btn dora-btn-red text-xs py-1.5 px-3.5">
+          ✖ 關閉視窗
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 text-sm md:text-base text-[#002B49]">
+        <div class="bg-[#E6F7FF] border-3 border-[#00365C] rounded-2xl p-4 font-bold" style="border: 3px solid #00365C;">
+          本測驗完整參考資料夾中 6 份附件（課本 2-1～2-4、習作第 2 章、數學新視界《音樂的符號》與扉選素養），設計 6 道貼近生活情境的小叮噹百寶袋素養題：
+        </div>
+
+        <div id="modalSummaryList" class="space-y-3">
+          <!-- 由 JS 動態生成各題作答狀態與評量重心摘要 -->
+        </div>
+      </div>
+
+      <div class="mt-6 pt-4 border-t-2 border-slate-200 flex justify-end gap-3">
+        <button onclick="closeOverviewModal()" class="dora-btn dora-btn-bell">
+          🔔 返回繼續作答
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 題庫資料：完整涵蓋資料夾內第2章所有附件（2-1, 2-2, 2-3, 2-4, 習作素養, 音樂符號）
+    // =========================================================================
+    const QUIZ_DATA = [
+      {
+        id: 1,
+        unit: "2-1 因數與倍數",
+        gadget: "🔮 登場道具：記憶吐司 ＆ 時光保險箱",
+        source: "📄 參考附件：06_課本 2-1 (p.89-102 例11) ＆ 02_習作 (p.33 精熟練習)",
+        title: "小叮噹「時光保險箱」的標準分解式與倍數密碼",
+        storyHtml: `
+          <p>大雄把藏有黃金銅鑼燒的「時光保險箱」密碼忘記了！小叮噹從四次元百寶袋拿出「記憶吐司」幫他找回兩條關鍵數學線索：</p>
+          <ul class="list-disc pl-6 space-y-1.5 font-semibold text-[#00365C]">
+            <li><strong>【線索一：主密碼】</strong> 保險箱的主密碼是四位數 <span class="math-expr">abcd</span>，它是利用正整數 <span class="math-expr">2268</span> 的標準分解式 <span class="math-expr">2<sup>a</sup> × b<sup>c</sup> × d</span> 所設定的。</li>
+            <li><strong>【線索二：驗證碼】</strong> 保險箱的驗證碼是一個四位數 <span class="math-expr">6△☆□</span>（千位數為 6、百位數為 △、十位數為 ☆、個位數為 □）。已知在 <span class="math-expr">△、☆、□</span> 中分別填入三個與 6 相異且彼此<strong>相異</strong>的數字，使得此四位數可以同時被 <strong>3、4、5</strong> 三個數整除，且驗證碼為滿足條件的<strong>最小</strong>四位數。</li>
+          </ul>
+          <p class="font-extrabold text-[#E60012]">請問「主密碼 <span class="math-expr">abcd</span>」與「驗證碼 <span class="math-expr">6△☆□</span>」分別為何？</p>
+        `,
+        visualHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3.5 rounded-xl border-2 border-[#00A0E9]">
+            <div class="bg-[#F0F9FF] p-3 rounded-lg border border-[#90CAF9]">
+              <div class="text-xs font-black text-[#0073B1] mb-1">🔐 第一道鎖（標準分解式密碼）</div>
+              <div class="text-base font-black text-[#00365C]">2268 ＝ 2<sup>a</sup> × b<sup>c</sup> × d ➔ 密碼 abcd</div>
+              <div class="text-xs font-bold text-slate-600 mt-1">（提示：標準分解式的底數為由小到大排列的相異質因數）</div>
+            </div>
+            <div class="bg-[#FFFDF0] p-3 rounded-lg border border-[#FCD34D]">
+              <div class="text-xs font-black text-[#B45309] mb-1">🛡️ 第二道鎖（3、4、5 倍數判別）</div>
+              <div class="text-base font-black text-[#00365C]">四位數 6 △ ☆ □（四個數字皆相異）</div>
+              <div class="text-xs font-bold text-slate-600 mt-1">同時被 3、4、5 整除的「最小」四位數</div>
+            </div>
+          </div>
+        `,
+        hint: "先用短除法將 2268 分解成質因數連乘積；接著看四位數 6△☆□：同時是 4 和 5 的倍數，個位數 □ 必為 0！再從 4 的倍數（末兩位 ☆0）與 3 的倍數（數字和 6+△+☆+0）找出最小的 △ 與 ☆。",
+        options: [
+          { label: "A", text: "主密碼為 2347，驗證碼為 6120" },
+          { label: "B", text: "主密碼為 2347，驗證碼為 6020" },
+          { label: "C", text: "主密碼為 2437，驗證碼為 6120" },
+          { label: "D", text: "主密碼為 2437，驗證碼為 6960" }
+        ],
+        correctIndex: 0,
+        steps: [
+          {
+            title: "步驟 1：利用短除法求出 2268 的標準分解式，解開主密碼 abcd",
+            content: `
+              <p>將 <span class="math-expr">2268</span> 依序除以質因數 <span class="math-expr">2、3、7</span>：</p>
+              <div class="my-2 p-3 bg-white rounded-xl border-2 border-[#BAE6FD] font-mono text-sm md:text-base font-bold text-[#00365C]">
+                2268 ÷ 2 ＝ 1134<br>
+                1134 ÷ 2 ＝ 567<br>
+                567 ÷ 3 ＝ 189 ➔ 189 ÷ 3 ＝ 63 ➔ 63 ÷ 3 ＝ 21 ➔ 21 ÷ 3 ＝ 7
+              </div>
+              <p>將質因數由小到大排列並寫成指數形式，得標準分解式：</p>
+              <p class="text-base md:text-lg font-black text-[#0073B1] my-1">2268 ＝ 2<sup>2</sup> × 3<sup>4</sup> × 7 ＝ 2<sup>a</sup> × b<sup>c</sup> × d</p>
+              <p>對照位置可得 <span class="math-expr">a＝2、b＝3、c＝4、d＝7</span>，因此主密碼 <span class="math-expr">abcd</span> 為 <strong class="text-[#E60012]">2347</strong>。</p>
+            `
+          },
+          {
+            title: "步驟 2：運用「5 的倍數」與「4 的倍數」判別法，鎖定個位數 □ 與十位數 ☆",
+            content: `
+              <ul class="list-disc pl-5 space-y-1.5">
+                <li>因為四位數 <span class="math-expr">6△☆□</span> 是 <strong>5 的倍數</strong>，所以個位數 <span class="math-expr">□</span> 只能是 <span class="math-expr">0</span> 或 <span class="math-expr">5</span>。</li>
+                <li>又因為此數是 <strong>4 的倍數</strong>（必為偶數），個位數不可能是奇數 <span class="math-expr">5</span>，故確定 <strong class="text-[#0073B1]">□ ＝ 0</strong>。</li>
+                <li>4 的倍數判別法看「末兩位數 <span class="math-expr">☆0</span>」：<span class="math-expr">00、20、40、60、80</span> 皆為 4 的倍數；但題目規定四個數字相異（不可與 <span class="math-expr">□＝0</span> 或千位數 <span class="math-expr">6</span> 重複），因此 <span class="math-expr">☆</span> 可能為 <strong class="text-[#0073B1]">2、4、8</strong>。</li>
+              </ul>
+            `
+          },
+          {
+            title: "步驟 3：運用「3 的倍數」判別法並找出滿足條件的最小四位數",
+            content: `
+              <p>因為 <span class="math-expr">6△☆0</span> 是 <strong>3 的倍數</strong>，所以各個數字總和 <span class="math-expr">6 ＋ △ ＋ ☆ ＋ 0</span> 必須是 3 的倍數（即 <span class="math-expr">△ ＋ ☆</span> 為 3 的倍數）。</p>
+              <p class="mt-1">為了使四位數 <span class="math-expr">6△☆0</span> <strong>最小</strong>，百位數 <span class="math-expr">△</span> 應越小越好：</p>
+              <ul class="list-disc pl-5 mt-1 space-y-1">
+                <li>由於數字 <span class="math-expr">0</span> 已經填在個位數 <span class="math-expr">□</span>，所以百位數 <span class="math-expr">△</span> 最小可嘗試填入 <strong class="text-[#0073B1]">1</strong>。</li>
+                <li>當 <span class="math-expr">△ ＝ 1</span> 時，從 <span class="math-expr">☆ ∈ {2, 4, 8}</span> 中選擇最小且能讓 <span class="math-expr">1 ＋ ☆</span> 為 3 的倍數者，可得 <strong class="text-[#0073B1]">☆ ＝ 2</strong>（因為 <span class="math-expr">1 ＋ 2 ＝ 3</span> 是 3 的倍數）。</li>
+              </ul>
+              <p class="mt-2 font-black text-[#15803D]">✅ 結論：最小四位數驗證碼為 6120，正確答案選 (A)！（註：若選 6020 則 0 重複且非 3 的倍數；6960 則是最大四位數且 6 重複）</p>
+            `
+          }
+        ],
+        assessmentFocus: {
+          coreCompetency: "N-7-1 質數與合數、質因數分解與標準分解式；N-7-2 因數與倍數及常用倍數判別法（2、3、4、5、9、11）。",
+          focusDescription: "評量學生能否將「密碼設定」的真實生活情境轉譯為「標準分解式的唯一性」，並能綜合運用 3、4、5 的倍數判別法進行邏輯推理與極值（最小值）篩選。",
+          keyPoints: [
+            "標準分解式必須滿足：(1) 底數皆為質數、(2) 底數由小排到大、(3) 相同質因數合併寫成指數形式。",
+            "多重倍數條件判別順序：先從限制最嚴格的個位數（2、5 的倍數）下手，再看末兩位（4 的倍數），最後用數字和（3 或 9 的倍數）決定百位數。"
+          ],
+          commonPitfalls: "學生常將『底數與指數的位置』看反（把 3⁴ 的底數 3 與指數 4 寫成 43），或在求最小四位數時忽略『數字彼此相異』的限制而誤填 0。"
+        }
+      },
+      {
+        id: 2,
+        unit: "2-2 最大公因數與最小公倍數",
+        gadget: "🚁 登場道具：迷你叮噹 ＆ 時光巡邏船",
+        source: "📄 參考附件：07_課本 2-2 (p.120-127 挑錯題) ＆ 02_習作 (p.37, p.51 第4題)",
+        title: "22 世紀未來百貨的「機械貓編組」與「巡邏船會合週期」",
+        storyHtml: `
+          <p>小叮噹帶大雄搭時光機來到 22 世紀未來百貨公司，參加兩項數學闖關任務：</p>
+          <ul class="list-disc pl-6 space-y-1.5 font-semibold text-[#00365C]">
+            <li><strong>【任務一：分組闖關】</strong> 營隊裡有藍色機械貓 <span class="math-expr">105</span> 隻、紅色迷你叮噹 <span class="math-expr">75</span> 隻。關主規定兩種機器人要<strong>分開編組</strong>（同組必須是同一種機器人），但<strong>每一組的機器人數量要一樣多</strong>，且為了加速闖關，總組數要<strong>越少越好</strong>（且低於 20 組）。請問全部共可分成幾組？</li>
+            <li><strong>【任務二：時光巡邏船會合】</strong> 甲、乙、丙三艘時光巡邏船同時從時光站 <span class="math-expr">A</span> 點出發：甲船每 <span class="math-expr">15</span> 分鐘繞圓周一圈回到 <span class="math-expr">A</span> 點，乙船每 <span class="math-expr">25</span> 分鐘繞圓周一圈回到 <span class="math-expr">A</span> 點，丙船沿直徑每 <span class="math-expr">5</span> 分鐘來回一趟回到 <span class="math-expr">A</span> 點。請問出發後最快幾分鐘，三艘船會再次同時在 <span class="math-expr">A</span> 點相遇？</li>
+          </ul>
+        `,
+        visualHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3.5 rounded-xl border-2 border-[#00A0E9]">
+            <div class="bg-[#F0F9FF] p-3 rounded-lg border border-[#90CAF9]">
+              <div class="text-xs font-black text-[#0073B1] mb-1">🤖 任務一：分開編組（每組數量相同）</div>
+              <div class="text-sm font-bold text-[#00365C]">機械貓 105 隻 ｜ 迷你叮噹 75 隻</div>
+              <div class="text-xs font-extrabold text-[#E60012] mt-1">⚠️ 注意：題目問的是「共可分成幾組」，不是每組幾隻喔！</div>
+            </div>
+            <div class="bg-[#FFFDF0] p-3 rounded-lg border border-[#FCD34D]">
+              <div class="text-xs font-black text-[#B45309] mb-1">🛸 任務二：圓周與直徑週期相遇</div>
+              <div class="text-sm font-bold text-[#00365C]">甲船：15 分/趟 ｜ 乙船：25 分/趟 ｜ 丙船：5 分/趟</div>
+              <div class="text-xs font-bold text-slate-600 mt-1">三船同時由 A 點出發，最快幾分鐘後再於 A 點相會？</div>
+            </div>
+          </div>
+        `,
+        hint: "任務一：要讓總組數最少，代表「每組的機器人數量」要最多，先求 (105, 75) 找出每組幾隻，再分別相除相加求出總組數！任務二：求三個週期 15、25、5 的最小公倍數 [15, 25, 5]。",
+        options: [
+          { label: "A", text: "任務一共可分成 15 組；任務二最快在 75 分鐘後相遇" },
+          { label: "B", text: "任務一共可分成 12 組；任務二最快在 75 分鐘後相遇" },
+          { label: "C", text: "任務一共可分成 12 組；任務二最快在 150 分鐘後相遇" },
+          { label: "D", text: "任務一共可分成 15 組；任務二最快在 25 分鐘後相遇" }
+        ],
+        correctIndex: 1,
+        steps: [
+          {
+            title: "步驟 1：求 105 與 75 的最大公因數，找出「每組最多幾隻」",
+            content: `
+              <p>因為每組數量要一樣多，且要把 <span class="math-expr">105</span> 隻機械貓與 <span class="math-expr">75</span> 隻迷你叮噹剛好分完，所以「每組數量」是 <span class="math-expr">105</span> 和 <span class="math-expr">75</span> 的公因數。總組數要最少，代表每組數量要最大：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">( 105 , 75 ) ＝ 3 × 5 ＝ 15（隻／組）</p>
+              <p class="text-sm font-bold text-[#E60012]">💡 課本 p.127 挑錯題關鍵提醒：最大公因數 15 代表「每組最多 15 隻」，千萬不能直接當成「分成 15 組」！</p>
+            `
+          },
+          {
+            title: "步驟 2：分別計算兩種機器人的組數並相加",
+            content: `
+              <ul class="list-disc pl-5 space-y-1">
+                <li>藍色機械貓可分成：<span class="math-expr">105 ÷ 15 ＝ 7</span>（組）</li>
+                <li>紅色迷你叮噹可分成：<span class="math-expr">75 ÷ 15 ＝ 5</span>（組）</li>
+                <li>全部總組數為：<span class="math-expr">7 ＋ 5 ＝</span> <strong class="text-[#0073B1]">12（組）</strong>（符合低於 20 組的條件）。</li>
+              </ul>
+            `
+          },
+          {
+            title: "步驟 3：求 [ 15 , 25 , 5 ] 的最小公倍數，計算三船再次相遇時間",
+            content: `
+              <p>甲、乙、丙三艘巡邏船回到 <span class="math-expr">A</span> 點的時間分別為 <span class="math-expr">15、25、5</span> 的倍數。因此三船再度同時在 <span class="math-expr">A</span> 點相遇的最快時間，即為三數的最小公倍數：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">[ 15 , 25 , 5 ] ＝ 5 × 3 × 5 ＝ 75（分鐘）</p>
+              <p class="mt-2 font-black text-[#15803D]">✅ 結論：任務一共分成 12 組，任務二最快 75 分鐘後相遇，正確答案選 (B)！</p>
+            `
+          }
+        ],
+        assessmentFocus: {
+          coreCompetency: "N-7-2 最大公因數與最小公倍數的意義、短除法運算及日常生活情境應用問題（分裝編組問題、週期重逢問題）。",
+          focusDescription: "評量學生能否區辨「分割平分情境（求最大公因數）」與「週期重逢情境（求最小公倍數）」，並能正確詮釋最大公因數在應用題中的單位意義。",
+          keyPoints: [
+            "當題目出現「分成大小相同、每組一樣多、不剩下」時，每組的數量（或邊長、間距）為最大公因數。",
+            "當題目出現「每幾分鐘一趟、同時出發再度同時相遇」時，經過的時間為各週期的最小公倍數。"
+          ],
+          commonPitfalls: "如課本 p.127 挑錯題小妍的錯誤示範：算出 (105, 75) = 15 後，誤以為答案就是『15 組』，忘了 15 的單位是『人/隻』，必須再用 105÷15 + 75÷15 = 7 + 5 = 12 組！"
+        }
+      },
+      {
+        id: 3,
+        unit: "2-3 分數的四則運算（逆推應用）",
+        gadget: "🔦 登場道具：縮小燈 ＆ 元氣銅鑼燒飲",
+        source: "📄 參考附件：08_課本 2-3 (p.142 例11 無人機＆隨堂練習果汁連瓶重)",
+        title: "大雄喝了幾分之幾？「連瓶秤重」的分數四則逆推挑戰",
+        storyHtml: `
+          <p>小叮噹給了大雄一瓶滿滿的「元氣銅鑼燒風味飲」，放在電子磅秤上，<strong>飲料連同特製小叮噹造型瓶子共重 <span class="math-expr">930</span> 公克</strong>。</p>
+          <p>大雄因為太口渴，一口氣喝掉了整瓶飲料的 <span class="math-frac"><span class="num">2</span><span class="den">3</span></span> 瓶後，再把<strong>剩餘的飲料連同瓶子</strong>放到電子磅秤上，顯示重量變為 <strong><span class="math-expr">430</span> 公克</strong>。</p>
+          <p class="font-extrabold text-[#E60012]">請問這個「特製小叮噹造型空瓶子」本身的重量是多少公克？</p>
+        `,
+        visualHtml: `
+          <div class="grid grid-cols-3 gap-2.5 text-center bg-white p-3.5 rounded-xl border-2 border-[#00A0E9]">
+            <div class="bg-[#E6F7FF] p-2.5 rounded-lg border border-[#90CAF9]">
+              <div class="text-lg">🍾 滿瓶狀態</div>
+              <div class="text-xs font-bold text-slate-600">全部飲料 ＋ 空瓶</div>
+              <div class="text-base md:text-lg font-black text-[#00365C] mt-1">930 公克</div>
+            </div>
+            <div class="bg-[#FFF9DB] p-2.5 rounded-lg border border-[#FCD34D]">
+              <div class="text-lg">🥤 喝掉 <span class="math-frac"><span class="num">2</span><span class="den">3</span></span> 瓶後</div>
+              <div class="text-xs font-bold text-slate-600">剩 <span class="math-frac"><span class="num">1</span><span class="den">3</span></span> 飲料 ＋ 空瓶</div>
+              <div class="text-base md:text-lg font-black text-[#B45309] mt-1">430 公克</div>
+            </div>
+            <div class="bg-[#FFE4E6] p-2.5 rounded-lg border border-[#FDA4AF]">
+              <div class="text-lg">🫙 空瓶子重量</div>
+              <div class="text-xs font-bold text-slate-600">只有瓶子本身</div>
+              <div class="text-base md:text-lg font-black text-[#E60012] mt-1">？ 公克</div>
+            </div>
+          </div>
+        `,
+        hint: "瓶子的重量不會因為大雄喝飲料而改變！所以「930 － 430」減少的重量，完完全全就是被喝掉的「2/3 瓶飲料」的重量喔！",
+        options: [
+          { label: "A", text: "150 公克" },
+          { label: "B", text: "180 公克" },
+          { label: "C", text: "250 公克" },
+          { label: "D", text: "280 公克" }
+        ],
+        correctIndex: 1,
+        steps: [
+          {
+            title: "步驟 1：利用兩次秤重之差，找出被喝掉的飲料實際重量",
+            content: `
+              <p>因為「空瓶子」的重量在喝飲料前後都維持不變，所以總重量減少的部分，就是被喝掉的飲料重量：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">喝掉的飲料重量 ＝ 930 － 430 ＝ 500（公克）</p>
+            `
+          },
+          {
+            title: "步驟 2：利用分數除法，由部分量（2/3 瓶）逆推整瓶飲料淨重",
+            content: `
+              <p>這 <span class="math-expr">500</span> 公克的飲料，剛好占了整瓶飲料原重的 <span class="math-frac"><span class="num">2</span><span class="den">3</span></span>（即 <span class="math-expr">飲料原重 × <span class="math-frac"><span class="num">2</span><span class="den">3</span></span> ＝ 500</span>）。</p>
+              <p>除以一個分數等於乘以它的倒數：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                飲料原本淨重 ＝ 500 ÷ <span class="math-frac"><span class="num">2</span><span class="den">3</span></span> ＝ 500 × <span class="math-frac"><span class="num">3</span><span class="den">2</span></span> ＝ 750（公克）
+              </p>
+            `
+          },
+          {
+            title: "步驟 3：由滿瓶總重扣除整瓶飲料淨重，求出空瓶重量",
+            content: `
+              <p>一開始「滿瓶飲料 ＋ 空瓶 ＝ 930 公克」，扣掉飲料淨重 <span class="math-expr">750</span> 公克：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">空瓶子重量 ＝ 930 － 750 ＝ 180（公克）</p>
+              <p class="mt-2 font-black text-[#15803D]">✅ 結論：特製小叮噹造型空瓶子重 180 公克，正確答案選 (B)！</p>
+            `
+          }
+        ],
+        assessmentFocus: {
+          coreCompetency: "N-7-3 數的四則運算與分數乘除應用（含不動量消去法與已知部分量求全體量的分數除法逆推）。",
+          focusDescription: "評量學生在面對含「容器重量＋內容物重量」的複合量情境時，能否先透過減法消去不變量（空瓶重），再利用分數除法還原基準量（全部果汁重）。",
+          keyPoints: [
+            "差量分析法：（滿瓶連瓶重）－（剩餘連瓶重）＝ 減少的內容物重量（消去空瓶重）。",
+            "基準量逆推：若已知全體的 a/b 為 K，則全體量 ＝ K ÷ (a/b) ＝ K × (b/a)。"
+          ],
+          commonPitfalls: "學生常直接把總重 930 公克乘以 (1 - 2/3) 誤以為連瓶子也會一起被喝掉 2/3，或者在最後一步算出飲料原重 750 公克後忘了用 930 - 750 求空瓶重。"
+        }
+      },
+      {
+        id: 4,
+        unit: "2-3 分數四則運算（素養實踐決策）",
+        gadget: "🛍️ 登場道具：百寶袋超商折價券 ＆ 銅鑼燒派對",
+        source: "📄 參考附件：02_習作 (p.53 素養實踐：來來超商 vs 好康超商) ＆ 09_課本 (p.160 扉選素養)",
+        title: "「第二件 5 折」對決「買 3 送 1」！小叮噹採購派對點心哪間最省？",
+        storyHtml: `
+          <p>為了慶祝大雄數學考高分，小叮噹拿著媽媽列的清單去超商採購派對點心：</p>
+          <p class="bg-[#FFF9DB] border-2 border-[#F59E0B] rounded-xl px-4 py-2 font-black text-[#78350F] inline-block">
+            📋 採購清單：① 益美銅鑼燒紅茶（原價 20 元）× 10 瓶 ＆ ② 利頓鈴鐺奶茶（原價 20 元）× 13 瓶
+          </p>
+          <p>鎮上的兩間超商紛紛推出夏季促銷方案：</p>
+          <ul class="list-disc pl-6 space-y-1.5 font-semibold text-[#00365C]">
+            <li><strong>【來來未來超商】：「同價位飲品 第二件 5 折」</strong>（每買兩件同價位飲品，第一件原價，第二件享原價的 <span class="math-frac"><span class="num">1</span><span class="den">2</span></span>；不同品項只要同價位即可混搭湊對）。</li>
+            <li><strong>【好康百寶超商】：「同種飲品 買 3 送 1」</strong>（每買 3 件相同品項的飲品，就免費加送 1 件同種飲品；不同品項不可混搭）。</li>
+          </ul>
+          <p class="font-extrabold text-[#E60012]">如果小叮噹想在「同一間超商」買齊清單上的所有飲品（10 瓶紅茶 ＋ 13 瓶奶茶），請問下列哪一個決策分析完全正確？</p>
+        `,
+        visualHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3.5 rounded-xl border-2 border-[#00A0E9]">
+            <div class="bg-[#E6F7FF] p-3 rounded-lg border-2 border-[#0288D1]">
+              <div class="font-black text-[#00365C] text-base">🏪 來來未來超商</div>
+              <div class="text-sm font-extrabold text-[#E60012] mt-0.5">同價位飲品・第二件 5 折</div>
+              <div class="text-xs font-bold text-slate-600 mt-1">買 2 瓶花 <span class="math-expr">1<span class="math-frac"><span class="num">1</span><span class="den">2</span></span></span> 瓶的錢 ➔ 平均每瓶為原價的 <span class="math-frac"><span class="num">3</span><span class="den">4</span></span>（可跨品項同價位混搭！）</div>
+            </div>
+            <div class="bg-[#FFF0F6] p-3 rounded-lg border-2 border-[#EC407A]">
+              <div class="font-black text-[#00365C] text-base">🏪 好康百寶超商</div>
+              <div class="text-sm font-extrabold text-[#C8376D] mt-0.5">同種飲品・買 3 送 1</div>
+              <div class="text-xs font-bold text-slate-600 mt-1">拿 4 瓶花 3 瓶的錢 ➔ 平均每瓶也是原價的 <span class="math-frac"><span class="num">3</span><span class="den">4</span></span>（須同種飲品滿 4 瓶才折！）</div>
+            </div>
+          </div>
+        `,
+        hint: "雖然兩種優惠湊滿一組時，每瓶平均價錢都是原價的 3/4（即每瓶優惠價 20 × 3/4 ＝ 15 元），但要注意「能不能混搭」以及「湊不滿一組而必須用原價 20 元購買的落單瓶數」！",
+        options: [
+          { label: "A", text: "兩間超商折扣後每瓶平均皆為原價的 3/4，所以兩間總花費相同，都是 345 元" },
+          { label: "B", text: "在【來來未來超商】購買總花費較少，共 350 元（比好康百寶超商省 10 元）" },
+          { label: "C", text: "在【好康百寶超商】購買總花費較少，共 340 元（比來來未來超商省 10 元）" },
+          { label: "D", text: "在【來來未來超商】需花 360 元，在【好康百寶超商】需花 350 元" }
+        ],
+        correctIndex: 1,
+        steps: [
+          {
+            title: "步驟 1：先用分數除法算出兩間超商「湊滿優惠組」時的每瓶折數",
+            content: `
+              <ul class="list-disc pl-5 space-y-1.5">
+                <li><strong>【來來未來超商（第二件 5 折）】</strong>：第一件原價（<span class="math-expr">1</span>），第二件 5 折（原價的 <span class="math-frac"><span class="num">1</span><span class="den">2</span></span>），也就是用 <span class="math-expr">1<span class="math-frac"><span class="num">1</span><span class="den">2</span></span></span> 瓶的價錢買到 <span class="math-expr">2</span> 瓶：<br>
+                <span class="math-expr">1<span class="math-frac"><span class="num">1</span><span class="den">2</span></span> ÷ 2 ＝ <span class="math-frac"><span class="num">3</span><span class="den">2</span></span> × <span class="math-frac"><span class="num">1</span><span class="den">2</span></span> ＝ <span class="math-frac"><span class="num">3</span><span class="den">4</span></span></span>（相當於每瓶優惠價為原價的 <span class="math-frac"><span class="num">3</span><span class="den">4</span></span>，即 <span class="math-expr">20 × <span class="math-frac"><span class="num">3</span><span class="den">4</span></span> ＝ 15</span> 元）。</li>
+                <li><strong>【好康百寶超商（買 3 送 1）】</strong>：用 <span class="math-expr">3</span> 瓶的價錢買到 <span class="math-expr">4</span> 瓶：<br>
+                <span class="math-expr">3 ÷ 4 ＝ <span class="math-frac"><span class="num">3</span><span class="den">4</span></span></span>（湊滿 4 瓶時，相當於每瓶優惠價也是原價的 <span class="math-frac"><span class="num">3</span><span class="den">4</span></span>，即 <span class="math-expr">15</span> 元）。</li>
+              </ul>
+            `
+          },
+          {
+            title: "步驟 2：計算【來來未來超商】的實際總花費（同價位可一起湊對）",
+            content: `
+              <p>紅茶 10 瓶與奶茶 13 瓶都是 20 元（同價位可混搭），合計共買 <span class="math-expr">10 ＋ 13 ＝ 23</span> 瓶。</p>
+              <p>每 2 瓶湊一組，共有 <strong>22 瓶享優惠價</strong>，只剩 <strong>1 瓶原價</strong>：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                來來總花費 ＝ 20 × <span class="math-frac"><span class="num">3</span><span class="den">4</span></span> × 22 ＋ 20 × 1 ＝ 330 ＋ 20 ＝ 350（元）
+              </p>
+            `
+          },
+          {
+            title: "步驟 3：計算【好康百寶超商】的實際總花費（同種飲品須各自湊滿 4 瓶）",
+            content: `
+              <p>好康超商規定「同種飲品」須湊滿 4 瓶才享折扣：</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li><strong>益美紅茶 10 瓶</strong> ＝ 8 瓶優惠價 ＋ 2 瓶原價 ＝ <span class="math-expr">20 × <span class="math-frac"><span class="num">3</span><span class="den">4</span></span> × 8 ＋ 20 × 2 ＝ 120 ＋ 40 ＝ 160（元）</span></li>
+                <li><strong>利頓奶茶 13 瓶</strong> ＝ 12 瓶優惠價 ＋ 1 瓶原價 ＝ <span class="math-expr">20 × <span class="math-frac"><span class="num">3</span><span class="den">4</span></span> × 12 ＋ 20 × 1 ＝ 180 ＋ 20 ＝ 200（元）</span></li>
+              </ul>
+              <p class="my-1.5 font-black text-[#C8376D] text-base">好康總花費 ＝ 160 ＋ 200 ＝ 360（元）</p>
+              <p class="mt-2 font-black text-[#15803D]">✅ 結論：在【來來未來超商】購買只需 350 元，比好康百寶超商（360 元）省 10 元，正確答案選 (B)！</p>
+            `
+          }
+        ],
+        assessmentFocus: {
+          coreCompetency: "N-7-3 分數四則運算在真實消費決策中的應用（整合閱讀素養與財務素養）。",
+          focusDescription: "此題源自習作第 2 章 p.53【素養實踐】壓軸題，評量學生能否看穿商業促銷話術（「第二件5折」與「買3送1」表面折數雖同為 3/4，但湊組門檻與餘數計價方式不同），進而做出最有利的消費決策。",
+          keyPoints: [
+            "將促銷文字轉化為分數算式：第二件 5 折 ➔ (1 + 1/2) ÷ 2 = 3/4；買 3 送 1 ➔ 3 ÷ (3+1) = 3/4。",
+            "精算「未滿一組的餘數」：來來超商 2 瓶一組且可混搭，只有 1 瓶落單原價；好康超商 4 瓶一組且不可混搭，共有 2 + 1 = 3 瓶落單原價。"
+          ],
+          commonPitfalls: "許多學生算完 Q1、Q2 發現兩家折數都是 3/4，就直接用 23 × 20 × (3/4) 誤以為兩家花費一樣多，忽略了『不成組的商品必須以原價購買』的生活限制！"
+        }
+      },
+      {
+        id: 5,
+        unit: "2-4 指數律與乘方應用",
+        gadget: "🧪 登場道具：加倍藥水（バイバイン）",
+        source: "📄 參考附件：09_課本 2-4 (p.155-159) ＆ 02_習作 2-4 (p.46-47 精熟練習2)",
+        title: "小叮噹「加倍藥水」的能量轉換率與巨量位數判斷",
+        storyHtml: `
+          <p>小叮噹為了研究「加倍藥水（バイバイン）」的能量倍增規律，在實驗室寫下了兩道指數律算式：</p>
+          <ul class="list-disc pl-6 space-y-2 font-semibold text-[#00365C]">
+            <li><strong>【實驗一：能量轉換率 <span class="math-expr">E</span>】</strong><br>
+              計算 <span class="math-expr">E ＝ ( <span class="math-frac"><span class="num">10</span><span class="den">3</span></span> )<sup>6</sup> × ( －<span class="math-frac"><span class="num">3</span><span class="den">2</span></span> )<sup>6</sup> ÷ ( －5 )<sup>6</sup></span> 的值。
+            </li>
+            <li><strong>【實驗二：粒子總數 <span class="math-expr">A</span> 是幾位數？】</strong><br>
+              已知經過反應後，容器中微型粒子的總數為 <span class="math-expr">A ＝ 4<sup>6</sup> × 5<sup>11</sup></span> 個，請利用指數律判斷 <span class="math-expr">A</span> 展開後是一個<strong>幾位數</strong>？
+            </li>
+          </ul>
+        `,
+        visualHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3.5 rounded-xl border-2 border-[#00A0E9]">
+            <div class="bg-[#F0F9FF] p-3 rounded-lg border border-[#90CAF9]">
+              <div class="text-xs font-black text-[#0073B1] mb-1">⚡ 指數律公式百寶箱</div>
+              <div class="text-sm font-bold text-[#00365C] space-y-0.5">
+                <div>① <span class="math-expr">a<sup>m</sup> × b<sup>m</sup> ＝ ( a × b )<sup>m</sup></span></div>
+                <div>② <span class="math-expr">a<sup>m</sup> ÷ a<sup>n</sup> ＝ a<sup>m－n</sup></span>（當 <span class="math-expr">a ≠ 0</span> 時，<span class="math-expr">a<sup>0</sup> ＝ 1</span>）</div>
+              </div>
+            </div>
+            <div class="bg-[#FFFDF0] p-3 rounded-lg border border-[#FCD34D]">
+              <div class="text-xs font-black text-[#B45309] mb-1">🔢 判斷位數秘訣（湊 10 的次方）</div>
+              <div class="text-sm font-bold text-[#00365C]">
+                將 <span class="math-expr">4<sup>6</sup></span> 化為以 <span class="math-expr">2</span> 為底數的乘方，再與 <span class="math-expr">5<sup>11</sup></span> 湊成 <span class="math-expr">(2 × 5)<sup>11</sup> ＝ 10<sup>11</sup></span>！
+              </div>
+            </div>
+          </div>
+        `,
+        hint: "實驗一：前兩項指數都是 6，可先合併底數相乘 [(10/3) × (-3/2)]⁶ ＝ (-5)⁶，再除以 (-5)⁶ 得到 (-5)⁰，注意任何非零數的 0 次方等於 1！實驗二：4⁶ ＝ (2²)⁶ ＝ 2¹² ＝ 2 × 2¹¹。",
+        options: [
+          { label: "A", text: "E ＝ 1，且粒子總數 A 是 12 位數" },
+          { label: "B", text: "E ＝ －1，且粒子總數 A 是 12 位數" },
+          { label: "C", text: "E ＝ 1，且粒子總數 A 是 11 位數" },
+          { label: "D", text: "E ＝ 0，且粒子總數 A 是 12 位數" }
+        ],
+        correctIndex: 0,
+        steps: [
+          {
+            title: "步驟 1：運用指數律 aᵐ × bᵐ ＝ (a × b)ᵐ 與 a⁰ ＝ 1 計算 E",
+            content: `
+              <p>觀察 <span class="math-expr">E ＝ ( <span class="math-frac"><span class="num">10</span><span class="den">3</span></span> )<sup>6</sup> × ( －<span class="math-frac"><span class="num">3</span><span class="den">2</span></span> )<sup>6</sup> ÷ ( －5 )<sup>6</sup></span>，前兩項的次方都是 <span class="math-expr">6</span>，可先把底數相乘：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                E ＝ [ <span class="math-frac"><span class="num">10</span><span class="den">3</span></span> × ( －<span class="math-frac"><span class="num">3</span><span class="den">2</span></span> ) ]<sup>6</sup> ÷ ( －5 )<sup>6</sup> ＝ ( －5 )<sup>6</sup> ÷ ( －5 )<sup>6</sup>
+              </p>
+              <p>再由同底數相除指數相減，以及零指數規定（當 <span class="math-expr">a ≠ 0</span> 時，<span class="math-expr">a<sup>0</sup> ＝ 1</span>）：</p>
+              <p class="my-1.5 font-black text-[#E60012] text-base">
+                ( －5 )<sup>6－6</sup> ＝ ( －5 )<sup>0</sup> ＝ 1
+              </p>
+            `
+          },
+          {
+            title: "步驟 2：運用乘方的乘方 (aᵐ)ⁿ ＝ aᵐˣⁿ，將 A 改寫成 2 與 5 的次方",
+            content: `
+              <p>因為 <span class="math-expr">4 ＝ 2<sup>2</sup></span>，所以：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                A ＝ 4<sup>6</sup> × 5<sup>11</sup> ＝ ( 2<sup>2</sup> )<sup>6</sup> × 5<sup>11</sup> ＝ 2<sup>2×6</sup> × 5<sup>11</sup> ＝ 2<sup>12</sup> × 5<sup>11</sup>
+              </p>
+            `
+          },
+          {
+            title: "步驟 3：湊出 (2 × 5)¹¹ ＝ 10¹¹，判斷 A 的總位數",
+            content: `
+              <p>將 <span class="math-expr">2<sup>12</sup></span> 拆成 <span class="math-expr">2<sup>1</sup> × 2<sup>11</sup></span>，再與 <span class="math-expr">5<sup>11</sup></span> 結合成 <span class="math-expr">10<sup>11</sup></span>：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                A ＝ 2 × 2<sup>11</sup> × 5<sup>11</sup> ＝ 2 × ( 2 × 5 )<sup>11</sup> ＝ 2 × 10<sup>11</sup>
+              </p>
+              <p><span class="math-expr">2 × 10<sup>11</sup></span> 代表最前面的數字 <span class="math-expr">2</span> 後面緊跟著 <span class="math-expr">11</span> 個 <span class="math-expr">0</span>，因此總共是 <span class="math-expr">1 ＋ 11 ＝</span> <strong class="text-[#0073B1]">12 位數</strong>！</p>
+              <p class="mt-2 font-black text-[#15803D]">✅ 結論：E ＝ 1 且 A 是 12 位數，正確答案選 (A)！</p>
+            `
+          }
+        ],
+        assessmentFocus: {
+          coreCompetency: "N-7-6 數的乘方；N-7-7 指數律（同底數乘除、乘方的乘方、積的乘方與零次方 a⁰ = 1）。",
+          focusDescription: "結合課本 2-4 自我評量第 4 題與習作 2-4 精熟練習第 2 題，評量學生能否靈活逆用指數律進行分數底數約分化簡，並藉由『2 與 5 配對湊 10』的策略解決大數的位數判斷問題。",
+          keyPoints: [
+            "遇到複雜分數的高次方相乘時，先檢查指數是否相同，利用 aᵐ × bᵐ = (a × b)ᵐ 先約分再算次方。",
+            "判斷 2ᵐ × 5ⁿ 是幾位數時，先抽出較小次方配對成 10ᵏ（代表後面有 k 個 0），再看前面剩下的數字是幾位數。"
+          ],
+          commonPitfalls: "1. 看到 (-5)⁰ 容易直覺誤選 0 或 -1（只要底數不為 0，0 次方一律為 +1）。2. 看到 2 × 10¹¹ 誤以為是 11 位數（忘了把最前面的數字 2 算進去，應為 1 + 11 = 12 位數）。"
+        }
+      },
+      {
+        id: 6,
+        unit: "跨領域素養：音樂的符號與分數",
+        gadget: "🎻 登場道具：靜香的小提琴 ＆ 胖虎演唱會樂譜",
+        source: "📄 參考附件：10_課本第2章 數學新視界《音樂的符號》(p.162-163)",
+        title: "靜香的樂譜修復任務：拍號、附點音符與休止符的分數運算",
+        storyHtml: `
+          <p>靜香正在練習音樂會曲目，樂譜開頭標示的拍號為 <strong>「<span class="math-frac"><span class="num">3</span><span class="den">4</span></span> 拍」</strong>（讀作三四拍，代表<strong>「每一小節有 3 拍，以四分音符為 1 拍」</strong>）。</p>
+          <p>根據課本《數學新視界：音樂的符號》中的分數規則：</p>
+          <ul class="list-disc pl-6 space-y-1 font-semibold text-[#00365C]">
+            <li><strong>四分音符（♩）</strong>：長度為全音符的 <span class="math-frac"><span class="num">1</span><span class="den">4</span></span>，在三四拍中代表 <strong><span class="math-expr">1</span> 拍</strong>。</li>
+            <li><strong>八分音符（♪）</strong>：長度為全音符的 <span class="math-frac"><span class="num">1</span><span class="den">8</span></span>（即四分音符的 <span class="math-frac"><span class="num">1</span><span class="den">2</span></span>），代表 <strong><span class="math-frac"><span class="num">1</span><span class="den">2</span></span> 拍</strong>。</li>
+            <li><strong>附點音符（例如 ♩.）</strong>：在音符右方加上一個小圓點，代表<strong>將原音符長度再增加 <span class="math-frac"><span class="num">1</span><span class="den">2</span></span></strong>（即原音符長度的 <span class="math-expr">1 ＋ <span class="math-frac"><span class="num">1</span><span class="den">2</span></span></span> 倍）。</li>
+          </ul>
+          <p class="font-extrabold text-[#E60012]">某一個「<span class="math-frac"><span class="num">3</span><span class="den">4</span></span> 拍」的小節被胖虎弄髒了，目前只看得到 <strong>1 個「附點四分音符（♩.）」</strong> 與 <strong>1 個「八分音符（♪）」</strong>。請問這個小節還差幾拍才完整？應該補上哪一個休止符？</p>
+        `,
+        visualHtml: `
+          <div class="bg-[#FFFDF5] p-4 rounded-xl border-2 border-[#00365C] shadow-inner">
+            <div class="text-xs font-black text-[#0073B1] mb-2">🎼 靜香的三四拍（3/4 拍）待修復小節示意圖（每小節總和須為 3 拍）：</div>
+            <div class="flex flex-wrap items-center justify-center gap-3 md:gap-5 bg-white py-3 px-4 rounded-lg border-2 border-[#90CAF9] text-[#00365C]">
+              <div class="text-center px-3 py-1 bg-[#E6F7FF] rounded-lg border border-[#00A0E9]">
+                <div class="text-xl font-black leading-none">3<br><span class="border-t-2 border-[#00365C] inline-block px-1">4</span></div>
+                <div class="text-xs font-bold mt-1">拍號(3拍/小節)</div>
+              </div>
+              <div class="text-2xl font-black text-slate-400">｜</div>
+              <div class="text-center">
+                <div class="text-2xl font-black">♩<span class="text-[#E60012]">.</span></div>
+                <div class="text-xs font-bold text-[#0073B1]">附點四分音符</div>
+              </div>
+              <div class="text-xl font-black text-[#00A0E9]">＋</div>
+              <div class="text-center">
+                <div class="text-2xl font-black">♪</div>
+                <div class="text-xs font-bold text-[#0073B1]">八分音符</div>
+              </div>
+              <div class="text-xl font-black text-[#00A0E9]">＋</div>
+              <div class="text-center px-3 py-1.5 bg-[#FFE4E6] rounded-lg border-2 border-dashed border-[#E60012]">
+                <div class="text-lg font-black text-[#E60012]">❓ 休止符</div>
+                <div class="text-xs font-bold text-[#A8000D]">還差幾拍？</div>
+              </div>
+              <div class="text-2xl font-black text-slate-400">｜</div>
+            </div>
+          </div>
+        `,
+        hint: "四分音符是 1 拍，所以「附點四分音符」＝ 1 ＋ 1×(1/2) ＝ 1 又 1/2 拍；再加上 1 個八分音符（1/2 拍），算出目前已經有幾拍，最後用每小節 3 拍去減！",
+        options: [
+          { label: "A", text: "還差 1/2 拍，應補上 1 個「八分休止符」" },
+          { label: "B", text: "還差 1 拍，應補上 1 個「四分休止符」" },
+          { label: "C", text: "還差 1 又 1/2 拍，應補上 1 個「附點四分休止符」" },
+          { label: "D", text: "目前剛好滿 3 拍，不需要補任何休止符" }
+        ],
+        correctIndex: 1,
+        steps: [
+          {
+            title: "步驟 1：計算「附點四分音符（♩.）」所占的拍數",
+            content: `
+              <p>在「<span class="math-frac"><span class="num">3</span><span class="den">4</span></span> 拍」中，四分音符（♩）為 <span class="math-expr">1</span> 拍。根據附點音符規則「將原音符長度再增加 <span class="math-frac"><span class="num">1</span><span class="den">2</span></span>」：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                附點四分音符 ＝ 四分音符 ＋ 八分音符 ＝ 1 ＋ <span class="math-frac"><span class="num">1</span><span class="den">2</span></span> ＝ 1<span class="math-frac"><span class="num">1</span><span class="den">2</span></span>（拍）
+              </p>
+            `
+          },
+          {
+            title: "步驟 2：加上「八分音符（♪）」算出目前已有的拍數",
+            content: `
+              <p>1 個八分音符（♪）占 <span class="math-frac"><span class="num">1</span><span class="den">2</span></span> 拍，將小節內已有的兩個音符拍數相加：</p>
+              <p class="my-1.5 font-black text-[#0073B1] text-base">
+                目前已演奏拍數 ＝ 1<span class="math-frac"><span class="num">1</span><span class="den">2</span></span> ＋ <span class="math-frac"><span class="num">1</span><span class="den">2</span></span> ＝ 2（拍）
+              </p>
+            `
+          },
+          {
+            title: "步驟 3：由每小節總拍數 3 拍扣除已有拍數，對應正確休止符",
+            content: `
+              <p>因為「<span class="math-frac"><span class="num">3</span><span class="den">4</span></span> 拍」每一小節必須剛好滿 <span class="math-expr">3</span> 拍，所以還差：</p>
+              <p class="my-1.5 font-black text-[#E60012] text-base">
+                剩餘拍數 ＝ 3 － 2 ＝ 1（拍）
+              </p>
+              <p>在三四拍中，代表暫停 <strong>1 拍</strong> 的符號正是 <strong>「四分休止符（𝄽）」</strong>！</p>
+              <p class="mt-2 font-black text-[#15803D]">✅ 結論：還差 1 拍，應補上 1 個「四分休止符」，正確答案選 (B)！</p>
+            `
+          }
+        ],
+        assessmentFocus: {
+          coreCompetency: "N-7-3 分數的加減與乘法運算；跨領域連結【藝術領域・音樂符號】與【閱讀素養】（課本 p.162-163 數學新視界）。",
+          focusDescription: "評量學生能否閱讀跨領域文本（五線譜拍號、音符時值、附點音符定義），將抽象的音樂符號轉譯為分數加減乘除算式，體驗數學與音樂節奏的緊密關聯。",
+          keyPoints: [
+            "拍號 3/4（三四拍）不可當成一般數值 0.75，其音樂意義為『以四分音符為 1 拍，每小節有 3 拍』。",
+            "附點音符的分數意義：原音符長度 × (1 + 1/2) ＝ 原音符長度 × (3/2)。"
+          ],
+          commonPitfalls: "學生常誤以為『四分音符』在任何拍號下都是 1/4 拍（實際上四分音符是『全音符的 1/4』，在三四拍與四四拍中皆計為 1 拍），或忘記附點是增加『原音符的一半』。"
+        }
+      }
+    ];
+
+    // =========================================================================
+    // 狀態管理
+    // =========================================================================
+    let currentQIndex = 0;
+    // 記錄每題的選擇、是否已送出、目前展開到第幾個步驟
+    let userState = QUIZ_DATA.map(() => ({
+      selectedOption: null,
+      submitted: false,
+      isCorrect: false,
+      revealedSteps: 0,
+      hintOpen: false
+    }));
+
+    // =========================================================================
+    // 初始化與渲染函式
+    // =========================================================================
+    function initQuiz() {
+      document.getElementById("totalCount").textContent = QUIZ_DATA.length;
+      renderNavButtons();
+      renderCurrentQuestion();
+      updateScoreBoard();
+    }
+
+    function renderNavButtons() {
+      const navContainer = document.getElementById("questionNavButtons");
+      navContainer.innerHTML = "";
+      QUIZ_DATA.forEach((q, idx) => {
+        const st = userState[idx];
+        const btn = document.createElement("button");
+        let statusEmoji = "🔔";
+        if (st.submitted) {
+          statusEmoji = st.isCorrect ? "✅" : "💡";
+        }
+        btn.className = `dora-btn dora-btn-pocket text-xs md:text-sm py-1.5 px-3.5 ${idx === currentQIndex ? "active-q" : ""}`;
+        btn.innerHTML = `<span>${statusEmoji} 第 ${idx + 1} 題</span>`;
+        btn.onclick = () => {
+          currentQIndex = idx;
+          renderNavButtons();
+          renderCurrentQuestion();
+        };
+        navContainer.appendChild(btn);
+      });
+    }
+
+    function renderCurrentQuestion() {
+      const q = QUIZ_DATA[currentQIndex];
+      const st = userState[currentQIndex];
+
+      // 更新頂部標籤與題幹
+      document.getElementById("qBadgeUnit").textContent = q.unit;
+      document.getElementById("qBadgeGadget").textContent = q.gadget;
+      document.getElementById("qBadgeSource").textContent = q.source;
+      document.getElementById("qNumberCircle").textContent = `Q${q.id}`;
+      document.getElementById("qTitle").textContent = q.title;
+      document.getElementById("qStoryBox").innerHTML = q.storyHtml;
+      document.getElementById("qVisualAid").innerHTML = q.visualHtml;
+
+      // 更新提示框
+      document.getElementById("hintContent").textContent = q.hint;
+      const hintBox = document.getElementById("hintBox");
+      if (st.hintOpen) {
+        hintBox.classList.remove("hidden");
+      } else {
+        hintBox.classList.add("hidden");
+      }
+
+      // 渲染選項按鈕
+      const optionsContainer = document.getElementById("optionsContainer");
+      optionsContainer.innerHTML = "";
+      q.options.forEach((opt, optIdx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        let stateClasses = "";
+        let statusTagHtml = "";
+
+        if (st.submitted) {
+          stateClasses += " locked";
+          if (optIdx === q.correctIndex) {
+            stateClasses += " correct-choice";
+            statusTagHtml = `<span class="ml-auto bg-[#15803D] text-white text-xs font-black px-3 py-1 rounded-full border-2 border-[#00365C] shrink-0">✔ 正確解答</span>`;
+          } else if (optIdx === st.selectedOption && !st.isCorrect) {
+            stateClasses += " wrong-choice";
+            statusTagHtml = `<span class="ml-auto bg-[#E60012] text-white text-xs font-black px-3 py-1 rounded-full border-2 border-[#00365C] shrink-0">✖ 你的選擇</span>`;
+          }
+        } else if (st.selectedOption === optIdx) {
+          stateClasses += " selected";
+          statusTagHtml = `<span class="ml-auto bg-[#FFD700] text-[#00365C] text-xs font-black px-3 py-1 rounded-full border-2 border-[#00365C] shrink-0">🔔 已選取</span>`;
+        }
+
+        btn.className = `dora-option-btn ${stateClasses}`;
+        btn.innerHTML = `
+          <div class="bell-badge">${opt.label}</div>
+          <div class="text-base md:text-[17px] font-extrabold text-[#002B49] leading-snug flex-1">${opt.text}</div>
+          ${statusTagHtml}
+        `;
+
+        btn.onclick = () => {
+          if (st.submitted) return;
+          st.selectedOption = optIdx;
+          renderCurrentQuestion();
+        };
+
+        optionsContainer.appendChild(btn);
+      });
+
+      // 更新底部導覽按鈕狀態
+      document.getElementById("prevBtn").disabled = currentQIndex === 0;
+      document.getElementById("nextBtn").disabled = currentQIndex === QUIZ_DATA.length - 1;
+
+      const submitBtn = document.getElementById("submitBtn");
+      const retryBtn = document.getElementById("retryQuestionBtn");
+      if (st.submitted) {
+        submitBtn.classList.add("hidden");
+        retryBtn.classList.remove("hidden");
+      } else {
+        submitBtn.classList.remove("hidden");
+        retryBtn.classList.add("hidden");
+      }
+
+      // 渲染作答後詳解與評量重心區塊
+      const postSection = document.getElementById("postAnswerSection");
+      if (st.submitted) {
+        postSection.classList.remove("hidden");
+        renderResultBanner(q, st);
+        renderStepByStepSection(q, st);
+        renderAssessmentFocusSection(q);
+      } else {
+        postSection.classList.add("hidden");
+      }
+    }
+
+    function toggleHint() {
+      const st = userState[currentQIndex];
+      st.hintOpen = !st.hintOpen;
+      renderCurrentQuestion();
+    }
+
+    function submitCurrentAnswer() {
+      const st = userState[currentQIndex];
+      const q = QUIZ_DATA[currentQIndex];
+
+      if (st.selectedOption === null) {
+        alert("🔔 小叮噹提醒：請先點擊選擇一個選項（A、B、C 或 D），再搖響鈴鐺送出作答喔！");
+        return;
+      }
+
+      st.submitted = true;
+      st.isCorrect = st.selectedOption === q.correctIndex;
+      // 作答後預設先展開第 1 步詳解，讓學生可以逐步點擊或一次全開
+      st.revealedSteps = 1;
+
+      renderNavButtons();
+      renderCurrentQuestion();
+      updateScoreBoard();
+
+      setTimeout(() => {
+        scrollToSection("postAnswerSection");
+      }, 120);
+    }
+
+    function retryCurrentQuestion() {
+      userState[currentQIndex] = {
+        selectedOption: null,
+        submitted: false,
+        isCorrect: false,
+        revealedSteps: 0,
+        hintOpen: false
+      };
+      renderNavButtons();
+      renderCurrentQuestion();
+      updateScoreBoard();
+    }
+
+    function changeQuestion(delta) {
+      const nextIdx = currentQIndex + delta;
+      if (nextIdx >= 0 && nextIdx < QUIZ_DATA.length) {
+        currentQIndex = nextIdx;
+        renderNavButtons();
+        renderCurrentQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    // =========================================================================
+    // 渲染：作答結果橫幅、1. 逐步詳解、2. 評量重心與題目重點
+    // =========================================================================
+    function renderResultBanner(q, st) {
+      const banner = document.getElementById("resultBanner");
+      const icon = document.getElementById("resultIcon");
+      const heading = document.getElementById("resultHeading");
+      const subtext = document.getElementById("resultSubtext");
+
+      const correctOpt = q.options[q.correctIndex];
+      const chosenOpt = q.options[st.selectedOption];
+
+      if (st.isCorrect) {
+        banner.className = "rounded-2xl p-4 md:p-5 border-4 border-[#00365C] shadow-[0_6px_0_#00365C] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-r from-[#BBF7D0] via-[#DCFCE7] to-[#FEF08A]";
+        icon.textContent = "🎉";
+        heading.textContent = `答對了！正確答案就是 (${correctOpt.label})！小叮噹送你銅鑼燒！`;
+        subtext.textContent = "太厲害了！快往下看「逐步詳解」與「評量重心及題目重點」，看看自己的解題思路是不是跟小叮噹一模一樣！";
+      } else {
+        banner.className = "rounded-2xl p-4 md:p-5 border-4 border-[#00365C] shadow-[0_6px_0_#00365C] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-r from-[#FECACA] via-[#FEE2E2] to-[#FEF3C7]";
+        icon.textContent = "💡";
+        heading.textContent = `別氣餒！你選了 (${chosenOpt.label})，但正確答案是 (${correctOpt.label}) 喔！`;
+        subtext.textContent = "小叮噹已經把百寶袋裡的「逐步詳解」與「常見迷思提醒」打開了，跟著 Step 1 一步一步推導就能完全搞懂！";
+      }
+    }
+
+    function renderStepByStepSection(q, st) {
+      const totalSteps = q.steps.length;
+      const revealed = st.revealedSteps;
+
+      const nextStepBtn = document.getElementById("nextStepBtn");
+      const showAllStepsBtn = document.getElementById("showAllStepsBtn");
+
+      if (revealed >= totalSteps) {
+        nextStepBtn.disabled = true;
+        nextStepBtn.innerHTML = `✅ 已展開全部步驟 (${totalSteps}/${totalSteps})`;
+        if (showAllStepsBtn) {
+          showAllStepsBtn.innerHTML = `🔄 收回至第 1 步（重新逐步推導）`;
+        }
+      } else {
+        nextStepBtn.disabled = false;
+        nextStepBtn.innerHTML = `✨ 拿出下一步法寶（顯示第 ${revealed + 1}/${totalSteps} 步）`;
+        if (showAllStepsBtn) {
+          showAllStepsBtn.innerHTML = `📂 一次展開全部步驟`;
+        }
+      }
+
+      const container = document.getElementById("stepsListContainer");
+      container.innerHTML = "";
+
+      for (let i = 0; i < revealed; i++) {
+        const stepObj = q.steps[i];
+        const card = document.createElement("div");
+        card.id = `stepCard_${i + 1}`;
+        card.className = "step-appear bg-white border-3 border-[#00365C] rounded-2xl p-4 md:p-5 shadow-[0_4px_0_#0073B1]";
+        card.style.border = "3px solid #00365C";
+        card.innerHTML = `
+          <div class="flex items-center gap-2.5 mb-2.5">
+            <span class="bg-[#FFD700] text-[#00365C] font-black text-xs md:text-sm px-3 py-1 rounded-full border-2 border-[#00365C]">
+              Step ${i + 1} / ${totalSteps}
+            </span>
+            <h4 class="text-base md:text-lg font-black text-[#00365C]">${stepObj.title}</h4>
+          </div>
+          <div class="text-sm md:text-base text-[#002B49] leading-relaxed pl-1 font-medium">
+            ${stepObj.content}
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    function revealNextStep() {
+      const q = QUIZ_DATA[currentQIndex];
+      const st = userState[currentQIndex];
+      if (st.revealedSteps < q.steps.length) {
+        st.revealedSteps++;
+        renderStepByStepSection(q, st);
+        const latestCard = document.getElementById(`stepCard_${st.revealedSteps}`);
+        if (latestCard) {
+          latestCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+    }
+
+    function revealAllSteps() {
+      const q = QUIZ_DATA[currentQIndex];
+      const st = userState[currentQIndex];
+      if (st.revealedSteps < q.steps.length) {
+        st.revealedSteps = q.steps.length;
+      } else {
+        st.revealedSteps = 1;
+      }
+      renderStepByStepSection(q, st);
+    }
+
+    function renderAssessmentFocusSection(q) {
+      const af = q.assessmentFocus;
+      const container = document.getElementById("assessmentFocusContent");
+
+      const keyPointsList = af.keyPoints
+        .map(pt => `<li class="flex items-start gap-2"><span class="text-[#00A0E9] font-black">✔</span><span>${pt}</span></li>`)
+        .join("");
+
+      container.innerHTML = `
+        <!-- 左欄：評量重心與課綱核心 -->
+        <div class="bg-white border-3 border-[#00365C] rounded-2xl p-4 shadow-[0_4px_0_#00365C] space-y-3" style="border: 3px solid #00365C;">
+          <div class="inline-flex items-center gap-1.5 bg-[#00A0E9] text-white text-xs font-black px-3 py-1 rounded-full border-2 border-[#00365C]">
+            🎯 測驗評量重心（Assessment Focus）
+          </div>
+          <div class="text-xs md:text-sm font-extrabold text-[#005A8C] bg-[#F0F9FF] p-2.5 rounded-xl border border-[#BAE6FD]">
+            <strong>對應課綱指標：</strong>${af.coreCompetency}
+          </div>
+          <p class="text-sm md:text-base font-bold text-[#002B49] leading-relaxed">
+            ${af.focusDescription}
+          </p>
+        </div>
+
+        <!-- 右欄：題目重點與常見迷思概念 -->
+        <div class="bg-white border-3 border-[#00365C] rounded-2xl p-4 shadow-[0_4px_0_#00365C] space-y-3" style="border: 3px solid #00365C;">
+          <div class="inline-flex items-center gap-1.5 bg-[#FFD700] text-[#00365C] text-xs font-black px-3 py-1 rounded-full border-2 border-[#00365C]">
+            🔑 題目重點與破題關鍵（Key Concepts）
+          </div>
+          <ul class="text-sm md:text-base font-bold text-[#002B49] space-y-1.5 leading-relaxed">
+            ${keyPointsList}
+          </ul>
+          <div class="mt-2 bg-[#FFF1F2] border-2 border-[#FB7185] rounded-xl p-3 text-xs md:text-sm font-bold text-[#9F1239]">
+            <strong>⚠️ 學生常見迷思警示：</strong>${af.commonPitfalls}
+          </div>
+        </div>
+      `;
+    }
+
+    function updateScoreBoard() {
+      const answered = userState.filter(s => s.submitted).length;
+      const correctCount = userState.filter(s => s.submitted && s.isCorrect).length;
+      // 共 6 題，滿分 100 分（前 4 題各 16 分，後 2 題各 18 分，全對 100 分）
+      let score = 0;
+      userState.forEach((s, idx) => {
+        if (s.submitted && s.isCorrect) {
+          score += idx >= 4 ? 18 : 16;
+        }
+      });
+
+      document.getElementById("answeredCount").textContent = answered;
+      document.getElementById("scoreDisplay").textContent = score;
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function openOverviewModal() {
+      const list = document.getElementById("modalSummaryList");
+      list.innerHTML = "";
+
+      QUIZ_DATA.forEach((q, idx) => {
+        const st = userState[idx];
+        let badge = `<span class="bg-slate-200 text-slate-700 text-xs font-black px-2.5 py-1 rounded-full">尚未作答</span>`;
+        if (st.submitted) {
+          badge = st.isCorrect
+            ? `<span class="bg-[#DCFCE7] text-[#15803D] border border-[#15803D] text-xs font-black px-2.5 py-1 rounded-full">✔ 答對</span>`
+            : `<span class="bg-[#FEE2E2] text-[#E60012] border border-[#E60012] text-xs font-black px-2.5 py-1 rounded-full">✖ 待複習</span>`;
+        }
+
+        const item = document.createElement("div");
+        item.className = "p-3.5 rounded-2xl border-2 border-[#00365C] bg-[#F8FDFF] flex flex-col md:flex-row items-start md:items-center justify-between gap-3";
+        item.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-black text-[#0073B1]">第 ${q.id} 題｜${q.unit}</span>
+              ${badge}
+            </div>
+            <div class="font-extrabold text-[#00365C]">${q.title}</div>
+            <div class="text-xs font-bold text-slate-600">${q.source}</div>
+          </div>
+          <button onclick="jumpToQuestionFromModal(${idx})" class="dora-btn dora-btn-blue text-xs py-1.5 px-3.5 shrink-0">
+            🚪 傳送至此題
+          </button>
+        `;
+        list.appendChild(item);
+      });
+
+      document.getElementById("overviewModal").classList.remove("hidden");
+    }
+
+    function closeOverviewModal() {
+      document.getElementById("overviewModal").classList.add("hidden");
+    }
+
+    function jumpToQuestionFromModal(idx) {
+      currentQIndex = idx;
+      closeOverviewModal();
+      renderNavButtons();
+      renderCurrentQuestion();
+    }
+
+    function resetAllQuiz() {
+      userState = QUIZ_DATA.map(() => ({
+        selectedOption: null,
+        submitted: false,
+        isCorrect: false,
+        revealedSteps: 0,
+        hintOpen: false
+      }));
+      currentQIndex = 0;
+      renderNavButtons();
+      renderCurrentQuestion();
+      updateScoreBoard();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // 啟動測驗
+    initQuiz();
+  </script>
+</body>
+</html>
