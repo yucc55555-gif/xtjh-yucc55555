@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小叮噹國中數學｜歷屆基會考 RPG 線上測驗系統</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 小叮噹晴空與飄浮雲朵裝飾背景 -->
+  <div class="sky-decorations" aria-hidden="true">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <!-- 頂部小叮噹紅項圈與黃金鈴鐺導覽列 -->
+  <header class="dora-navbar">
+    <div class="navbar-inner">
+      <div class="brand-logo" id="brand-logo-home" title="回到小叮噹冒險主頁">
+        <div class="brand-avatar" id="brand-dora-svg"></div>
+        <div class="brand-title-wrap">
+          <div class="brand-title">
+            <span>🔔 小叮噹國中數學 RPG 歷屆基會考</span>
+          </div>
+          <div class="brand-subtitle">
+            全六冊 7上～9下・59 個章節・1,187 題完整收錄・小叮噹人物逐步解析・GAS 雲端成績試算表
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div id="gas-status-pill" class="gas-status-pill connected" title="點擊檢視或測試 Google Apps Script 試算表連線">
+          ☁️ GAS 試算表已設定連動
+        </div>
+        <div id="nav-user-slot" class="nav-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主應用程式渲染容器 -->
+  <main class="main-container" id="app-root">
+    <div class="pocket-card" style="text-align:center; padding:48px 20px;">
+      <div style="font-size:1.3rem; font-weight:900; color:#0077B6;">
+        🔔 正在打開小叮噹的四次元百寶袋題庫（共 1,187 題）...
+      </div>
+    </div>
+  </main>
+
+  <!-- 題庫資料 (全 6 冊 1,187 題 + 原圖截圖 + 小叮噹人物逐步解析) -->
+  <script src="questions_data.js"></script>
+  <!-- 小叮噹角色 SVG 與對話解析產生器 -->
+  <script src="characters.js"></script>
+  <!-- RPG 測驗與師生平台核心邏輯 -->
+  <script src="app.js"></script>
+</body>
+</html>

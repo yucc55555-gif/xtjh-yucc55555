@@ -1,0 +1,1154 @@
+/* ==========================================================================
+   小叮噹 (哆啦A夢) 國中數學歷屆基會考 RPG 線上測驗系統 - 卡通主題樣式表
+   ========================================================================== */
+
+:root {
+  --dora-blue: #00A0E9;
+  --dora-blue-dark: #0077B6;
+  --dora-blue-light: #E0F5FF;
+  --dora-sky: #BAE6FD;
+  --dora-red: #E60012;
+  --dora-red-dark: #A8000D;
+  --dora-bell: #FFD700;
+  --dora-bell-dark: #D99B00;
+  --dora-door: #FF5C8D;
+  --dora-door-dark: #C81E56;
+  --dora-dorayaki: #D97724;
+  --dora-green: #10B981;
+  --dora-green-dark: #047857;
+  --dora-ink: #1E293B;
+  --dora-white: #FFFFFF;
+  --dora-cream: #FFFDF7;
+  --cartoon-border: 3px solid #1E293B;
+  --cartoon-shadow: 0 5px 0 #1E293B;
+  --cartoon-shadow-sm: 0 3px 0 #1E293B;
+  --cartoon-shadow-lg: 0 8px 0 #1E293B;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", "Heiti TC", sans-serif;
+  color: var(--dora-ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* 小叮噹晴空與四次元百寶袋圓點卡通背景 */
+  background-color: #7DD3FC;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 28%),
+    radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 24%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 35%),
+    radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2px),
+    linear-gradient(180deg, #38BDF8 0%, #93C5FD 48%, #E0F2FE 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px, 100% 100%;
+  background-attachment: fixed;
+}
+
+/* 飄浮雲朵與小叮噹道具背景裝飾 */
+.sky-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  border-radius: 999px;
+  box-shadow: 0 6px 0 rgba(0, 119, 182, 0.2);
+  opacity: 0.85;
+  animation: floatCloud 22s ease-in-out infinite alternate;
+}
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  border-bottom: none;
+  border-radius: 50%;
+}
+.cloud-1 { width: 130px; height: 46px; top: 8%; left: 4%; animation-duration: 18s; }
+.cloud-1::before { width: 58px; height: 44px; top: -26px; left: 20px; }
+.cloud-1::after { width: 42px; height: 34px; top: -18px; left: 66px; }
+
+.cloud-2 { width: 160px; height: 52px; top: 14%; right: 6%; animation-duration: 24s; }
+.cloud-2::before { width: 70px; height: 50px; top: -30px; left: 26px; }
+.cloud-2::after { width: 50px; height: 38px; top: -20px; left: 84px; }
+
+.cloud-3 { width: 110px; height: 40px; bottom: 12%; left: 7%; animation-duration: 20s; }
+.cloud-3::before { width: 48px; height: 36px; top: -22px; left: 18px; }
+.cloud-3::after { width: 36px; height: 28px; top: -14px; left: 54px; }
+
+@keyframes floatCloud {
+  0% { transform: translateX(0px) translateY(0px); }
+  100% { transform: translateX(28px) translateY(-10px); }
+}
+
+/* 頂部小叮噹紅項圈與黃金鈴鐺導覽列 */
+.dora-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, #00A8F3 0%, #008FD6 100%);
+  border-bottom: 4px solid #1E293B;
+  box-shadow: 0 8px 0 var(--dora-red), 0 12px 0 #1E293B;
+  padding: 10px 20px;
+}
+
+.navbar-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-avatar {
+  width: 54px;
+  height: 54px;
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  border-radius: 50%;
+  box-shadow: var(--cartoon-shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.brand-title-wrap {
+  color: #FFFFFF;
+  text-shadow: 2px 2px 0 #1E293B, -1px -1px 0 #1E293B, 1px -1px 0 #1E293B, -1px 1px 0 #1E293B;
+}
+
+.brand-title {
+  font-size: 1.38rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-subtitle {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #FEF08A;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   卡通小叮噹按鈕樣式 (鈴鐺金、小叮噹藍、任意門粉、項圈紅、竹蜻蜓綠)
+   ========================================================================== */
+.dora-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 900;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 3px solid #1E293B;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.15s ease;
+  user-select: none;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.dora-btn::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 14px;
+  right: 14px;
+  height: 32%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.dora-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+}
+
+.dora-btn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #1E293B !important;
+}
+
+.dora-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* 黃金鈴鐺按鈕 */
+.dora-btn-bell {
+  background: linear-gradient(180deg, #FFE54C 0%, #FFB800 100%);
+  color: #1E293B;
+  box-shadow: 0 5px 0 #9E6B00, 0 7px 0 #1E293B;
+}
+
+/* 小叮噹天空藍按鈕 */
+.dora-btn-blue {
+  background: linear-gradient(180deg, #22B8FF 0%, #008FD6 100%);
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 #1E293B;
+  box-shadow: 0 5px 0 #005885, 0 7px 0 #1E293B;
+}
+
+/* 任意門粉紅按鈕 */
+.dora-btn-pink {
+  background: linear-gradient(180deg, #FF7AA2 0%, #F43F75 100%);
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 #1E293B;
+  box-shadow: 0 5px 0 #9D174D, 0 7px 0 #1E293B;
+}
+
+/* 紅項圈按鈕 */
+.dora-btn-red {
+  background: linear-gradient(180deg, #FF3B4B 0%, #D90011 100%);
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 #1E293B;
+  box-shadow: 0 5px 0 #7F000A, 0 7px 0 #1E293B;
+}
+
+/* 記憶吐司/草地綠按鈕 */
+.dora-btn-green {
+  background: linear-gradient(180deg, #34D399 0%, #059669 100%);
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 #1E293B;
+  box-shadow: 0 5px 0 #065F46, 0 7px 0 #1E293B;
+}
+
+/* 百寶袋純白按鈕 */
+.dora-btn-white {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
+  color: #1E293B;
+  box-shadow: 0 4px 0 #94A3B8, 0 6px 0 #1E293B;
+}
+
+.dora-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.86rem;
+}
+
+.dora-btn-lg {
+  padding: 14px 28px;
+  font-size: 1.12rem;
+}
+
+/* ==========================================================================
+   主容器與四次元百寶袋卡片 (Pocket Card)
+   ========================================================================== */
+.main-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 26px auto 60px;
+  padding: 0 16px;
+}
+
+.pocket-card {
+  background: #FFFFFF;
+  border: 4px solid #1E293B;
+  border-radius: 28px;
+  box-shadow: 0 10px 0 #0077B6, 0 14px 0 #1E293B;
+  padding: 26px;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.pocket-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 3px dashed #93C5FD;
+}
+
+.pocket-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #0077B6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 角色狀態徽章 */
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFBEB;
+  border: 3px solid #1E293B;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: 900;
+  font-size: 0.92rem;
+  box-shadow: var(--cartoon-shadow-sm);
+}
+
+.gas-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border: 2px solid #1E293B;
+  background: #FEF9C3;
+  cursor: pointer;
+}
+.gas-status-pill.connected {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+/* ==========================================================================
+   登入與註冊首頁 (學生入口 vs 老師入口)
+   ========================================================================== */
+.portal-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hero-banner {
+  background: linear-gradient(135deg, #00A0E9 0%, #0284C7 60%, #1D4ED8 100%);
+  border: 4px solid #1E293B;
+  border-radius: 28px;
+  padding: 28px;
+  color: #FFFFFF;
+  box-shadow: 0 10px 0 #1E293B;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bell-collar {
+  height: 14px;
+  background: var(--dora-red);
+  border-top: 3px solid #1E293B;
+  border-bottom: 3px solid #1E293B;
+  margin: 18px -28px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-bell-icon {
+  width: 44px;
+  height: 44px;
+  background: radial-gradient(circle at 35% 30%, #FFF7AE 0%, #FFD700 55%, #D99B00 100%);
+  border: 3px solid #1E293B;
+  border-radius: 50%;
+  box-shadow: 0 4px 0 #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.role-tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 1.08rem;
+  font-weight: 900;
+  border-radius: 18px;
+  border: 3px solid #1E293B;
+  background: #F1F5F9;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 0 #1E293B;
+}
+
+.role-tab.active-student {
+  background: var(--dora-bell);
+  color: #1E293B;
+  transform: translateY(-2px);
+}
+
+.role-tab.active-teacher {
+  background: var(--dora-door);
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 #1E293B;
+  transform: translateY(-2px);
+}
+
+/* 表單元件 */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 900;
+  font-size: 0.96rem;
+  margin-bottom: 6px;
+  color: #0F172A;
+}
+
+.dora-input,
+.dora-select {
+  width: 100%;
+  padding: 11px 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  border: 3px solid #1E293B;
+  border-radius: 14px;
+  background: #F8FAFC;
+  color: #0F172A;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.dora-input:focus,
+.dora-select:focus {
+  outline: none;
+  background: #FFFFFF;
+  border-color: var(--dora-blue);
+  box-shadow: 0 0 0 4px rgba(0, 160, 233, 0.25);
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* 老師註冊：每個年級 30 個班級勾選器 + 其他自訂 5 班 */
+.class-picker-box {
+  background: #F0F9FF;
+  border: 3px solid #1E293B;
+  border-radius: 18px;
+  padding: 14px;
+  margin-top: 8px;
+}
+
+.grade-subtabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.grade-subtab {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2.5px solid #1E293B;
+  background: #FFFFFF;
+  font-weight: 900;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.grade-subtab.active {
+  background: var(--dora-blue);
+  color: #FFFFFF;
+}
+
+.class-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+  max-height: 210px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+@media (max-width: 560px) {
+  .class-checkbox-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.class-check-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 4px;
+  border: 2px solid #1E293B;
+  border-radius: 10px;
+  background: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.12s;
+}
+
+.class-check-item input {
+  accent-color: var(--dora-red);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.class-check-item.checked {
+  background: var(--dora-bell);
+  border-color: #1E293B;
+  box-shadow: 0 2px 0 #1E293B;
+  transform: translateY(-1px);
+}
+
+.custom-class-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   任意門 RPG 闖關大廳 (年級切換 + 章節關卡卡片)
+   ========================================================================== */
+.student-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: linear-gradient(90deg, #FFFBEB 0%, #FEF3C7 50%, #E0F2FE 100%);
+  border: 4px solid #1E293B;
+  border-radius: 24px;
+  padding: 16px 22px;
+  margin-bottom: 22px;
+  box-shadow: var(--cartoon-shadow);
+}
+
+.Grade-tabs-bar {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 860px) {
+  .Grade-tabs-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grade-door-tab {
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  border-radius: 18px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #1E293B;
+  transition: all 0.15s ease;
+}
+
+.grade-door-tab:hover {
+  transform: translateY(-2px);
+  background: #F0F9FF;
+}
+
+.grade-door-tab.active {
+  background: linear-gradient(180deg, #FF7AA2 0%, #F43F75 100%);
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 #1E293B;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 #1E293B;
+}
+
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+  gap: 18px;
+}
+
+.chapter-stage-card {
+  background: #FFFFFF;
+  border: 3.5px solid #1E293B;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 6px 0 #0284C7, 0 9px 0 #1E293B;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  transition: transform 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.chapter-stage-card:hover {
+  transform: translateY(-4px);
+}
+
+.stage-code-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--dora-blue);
+  color: #FFFFFF;
+  font-weight: 900;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 2px solid #1E293B;
+}
+
+.stage-stars {
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+}
+
+.stage-name {
+  font-size: 1.16rem;
+  font-weight: 900;
+  color: #0F172A;
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   RPG 戰鬥畫面 (雙血條舞台 + 題目數學與原卷圖形 + 選項 + 小叮噹逐步解析)
+   ========================================================================== */
+.rpg-arena-banner {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 48%, #1E3A8A 100%);
+  border: 4px solid #1E293B;
+  border-radius: 24px;
+  padding: 18px 22px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  box-shadow: var(--cartoon-shadow);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .rpg-arena-banner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+.fighter-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fighter-box.boss-side {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.fighter-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 3px solid #FFD700;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 0 #000000;
+}
+
+.hp-bar-outer {
+  width: 100%;
+  max-width: 240px;
+  height: 18px;
+  background: #334155;
+  border: 2.5px solid #FFFFFF;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.hp-bar-inner {
+  height: 100%;
+  transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hp-hero {
+  background: linear-gradient(90deg, #22C55E, #4ADE80);
+}
+
+.hp-boss {
+  background: linear-gradient(90deg, #EF4444, #FB923C);
+}
+
+.vs-badge {
+  background: var(--dora-bell);
+  color: #1E293B;
+  font-weight: 900;
+  font-size: 1.15rem;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 3px solid #1E293B;
+  box-shadow: 0 4px 0 #1E293B;
+}
+
+/* 題目內容與數學排版 */
+.question-box {
+  background: var(--dora-cream);
+  border: 3.5px solid #1E293B;
+  border-radius: 22px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 0 0 3px #E0F2FE;
+}
+
+.question-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.exam-tag-badge {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 2px solid #B91C1C;
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.question-stem-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.85;
+  color: #0F172A;
+  word-break: break-word;
+}
+
+/* 數學公式組件 (分數、根號、線段上標、弧) */
+.mfrac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0 4px;
+  font-family: "Times New Roman", serif;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.mfrac .mnum {
+  border-bottom: 2px solid currentColor;
+  padding: 0 4px 1px;
+  font-size: 0.92em;
+}
+.mfrac .mden {
+  padding: 1px 4px 0;
+  font-size: 0.92em;
+}
+
+.msqrt {
+  display: inline-flex;
+  align-items: baseline;
+  vertical-align: baseline;
+  margin: 0 2px;
+  font-family: "Times New Roman", serif;
+}
+.msqrt .mrad {
+  border-top: 2px solid currentColor;
+  padding: 0 3px;
+}
+
+.mbar {
+  border-top: 2px solid currentColor;
+  padding-top: 1px;
+  margin: 0 2px;
+  font-family: "Times New Roman", serif;
+  display: inline-block;
+  line-height: 1.1;
+}
+
+.marc {
+  font-family: "Times New Roman", serif;
+  font-weight: 700;
+  margin: 0 2px;
+}
+
+/* 原卷題目與詳解附圖區 */
+.question-figs-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin: 16px 0 8px;
+}
+
+.question-fig-img {
+  max-width: 100%;
+  max-height: 310px;
+  border: 3px solid #1E293B;
+  border-radius: 16px;
+  background: #FFFFFF;
+  padding: 8px;
+  box-shadow: var(--cartoon-shadow-sm);
+  cursor: zoom-in;
+  transition: transform 0.15s ease;
+}
+
+.question-fig-img:hover {
+  transform: scale(1.02);
+}
+
+/* 四個選項按鈕格 */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 680px) {
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.option-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  border-radius: 20px;
+  border: 3.5px solid #1E293B;
+  background: #FFFFFF;
+  box-shadow: 0 5px 0 #0284C7, 0 7px 0 #1E293B;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0F172A;
+  transition: all 0.14s ease;
+}
+
+.option-card-btn:hover:not(:disabled) {
+  background: #E0F2FE;
+  transform: translateY(-2px);
+}
+
+.option-letter-bell {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFF7AE 0%, #FFD700 65%, #D99B00 100%);
+  border: 2.5px solid #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.12rem;
+  color: #1E293B;
+  flex-shrink: 0;
+  box-shadow: 0 2px 0 #1E293B;
+}
+
+.option-card-btn.correct-choice {
+  background: #D1FAE5 !important;
+  border-color: #047857 !important;
+  box-shadow: 0 5px 0 #047857 !important;
+}
+.option-card-btn.correct-choice .option-letter-bell {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.option-card-btn.wrong-choice {
+  background: #FEE2E2 !important;
+  border-color: #B91C1C !important;
+  box-shadow: 0 5px 0 #B91C1C !important;
+}
+.option-card-btn.wrong-choice .option-letter-bell {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   小叮噹人物口氣：及時逐步解析回饋區 (Step-by-Step Feedback)
+   ========================================================================== */
+.dora-feedback-panel {
+  background: linear-gradient(180deg, #F0F9FF 0%, #FFFBEB 100%);
+  border: 4px solid #1E293B;
+  border-radius: 24px;
+  padding: 22px;
+  margin-top: 16px;
+  box-shadow: 0 8px 0 #1E293B;
+  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.95) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.feedback-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: 3px solid #1E293B;
+  margin-bottom: 16px;
+  font-weight: 900;
+  font-size: 1.12rem;
+}
+
+.feedback-banner.is-correct {
+  background: #A7F3D0;
+  color: #064E3B;
+}
+
+.feedback-banner.is-wrong {
+  background: #FECACA;
+  color: #7F1D1D;
+}
+
+.step-dialogue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.step-dialogue-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  border-radius: 20px;
+  padding: 14px 18px;
+  box-shadow: var(--cartoon-shadow-sm);
+  animation: popIn 0.22s ease;
+}
+
+.char-avatar-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  width: 68px;
+}
+
+.char-avatar-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid #1E293B;
+  background: #E0F2FE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.char-name-tag {
+  font-size: 0.8rem;
+  font-weight: 900;
+  background: var(--dora-bell);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 2px solid #1E293B;
+}
+
+.step-speech-content {
+  flex: 1;
+}
+
+.step-gadget-badge {
+  display: inline-block;
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 2px solid #0369A1;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+.step-intro-voice {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.step-math-box {
+  background: #FFFDF7;
+  border-left: 4px solid var(--dora-blue);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.8;
+  color: #0F172A;
+}
+
+/* ==========================================================================
+   資料表格、歷史完整考卷彈窗 (Modal)
+   ========================================================================== */
+.dora-table-wrap {
+  overflow-x: auto;
+  border: 3px solid #1E293B;
+  border-radius: 18px;
+  background: #FFFFFF;
+}
+
+.dora-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.dora-table th {
+  background: var(--dora-blue);
+  color: #FFFFFF;
+  font-weight: 900;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 3px solid #1E293B;
+}
+
+.dora-table td {
+  padding: 11px 14px;
+  border-bottom: 2px solid #E2E8F0;
+  font-weight: 700;
+}
+
+.dora-table tr:hover td {
+  background: #F0F9FF;
+}
+
+/* Modal 彈窗 */
+.dora-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(3px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.dora-modal-box {
+  background: #FFFFFF;
+  border: 4px solid #1E293B;
+  border-radius: 28px;
+  box-shadow: 0 12px 0 var(--dora-blue-dark), 0 16px 0 #1E293B;
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dora-modal-header {
+  background: linear-gradient(90deg, var(--dora-blue) 0%, #0284C7 100%);
+  color: #FFFFFF;
+  padding: 16px 22px;
+  border-bottom: 4px solid #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dora-modal-body {
+  padding: 22px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #FFFBEB;
+  border: 3px solid #1E293B;
+  border-radius: 18px;
+  padding: 14px 18px;
+  box-shadow: var(--cartoon-shadow-sm);
+}
+
+.stat-card-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #475569;
+}
+
+.stat-card-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--dora-blue-dark);
+  margin-top: 4px;
+}
+
+.hidden {
+  display: none !important;
+}

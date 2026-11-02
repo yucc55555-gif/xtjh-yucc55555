@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>【教師專屬註冊入口】小叮噹國中數學｜歷屆基會考 RPG 線上測驗系統</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    // 標記此頁面為教師專屬註冊入口（學生端 index.html 已隱藏老師註冊按鈕）
+    window.DORA_TEACHER_REGISTER_PAGE = true;
+  </script>
+</head>
+<body>
+  <!-- 小叮噹晴空與飄浮雲朵裝飾背景 -->
+  <div class="sky-decorations" aria-hidden="true">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <!-- 頂部小叮噹紅項圈與黃金鈴鐺導覽列 -->
+  <header class="dora-navbar">
+    <div class="navbar-inner">
+      <div class="brand-logo" id="brand-logo-home" title="小叮噹國中數學教師註冊與管理專區">
+        <div class="brand-avatar" id="brand-dora-svg"></div>
+        <div class="brand-title-wrap">
+          <div class="brand-title">
+            <span>🎓 小叮噹國中數學 RPG｜教師專屬註冊與管理後台</span>
+          </div>
+          <div class="brand-subtitle">
+            教師首次註冊＆任課班級設定（每學年30班勾選最多5班＋自訂其他最多5班）・GAS 試算表即時連動
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="dora-btn dora-btn-white dora-btn-sm" style="text-decoration:none;">
+          🎒 前往學生測驗首頁
+        </a>
+        <div id="gas-status-pill" class="gas-status-pill connected" title="點擊檢視或測試 Google Apps Script 試算表連線">
+          ☁️ GAS 試算表已設定連動
+        </div>
+        <div id="nav-user-slot" class="nav-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主應用程式渲染容器 -->
+  <main class="main-container" id="app-root">
+    <div class="pocket-card" style="text-align:center; padding:48px 20px;">
+      <div style="font-size:1.3rem; font-weight:900; color:#0077B6;">
+        🔔 正在載入小叮噹教師專屬註冊系統...
+      </div>
+    </div>
+  </main>
+
+  <!-- 題庫資料 -->
+  <script src="questions_data.js"></script>
+  <!-- 小叮噹角色 SVG 與對話解析產生器 -->
+  <script src="characters.js"></script>
+  <!-- RPG 測驗與師生平台核心邏輯 -->
+  <script src="app.js"></script>
+</body>
+</html>
