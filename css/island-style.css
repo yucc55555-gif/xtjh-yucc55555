@@ -1,0 +1,629 @@
+/* ============================================================================
+   JDPS-SS 風格：七年級數學探險島 3D 低多邊形立體海島視覺與精緻 UI
+   ============================================================================ */
+
+:root {
+  --primary-color: #e63946;
+  --secondary-color: #2a9d8f;
+  --accent-color: #f4a261;
+  --gold-color: #f77f00;
+  --dark-navy: #1d3557;
+  --ocean-blue: #38a3a5;
+  --sea-deep: #57cc99;
+  --island-green: #80ed99;
+  --sand-yellow: #fefae0;
+  --border-color: #e2e8f0;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 32px rgba(0,0,0,0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  background: #eef2f6;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* 頂部海賊導航條 (仿 JDPS 簡潔頂部) */
+.grand-header {
+  background: #ffffff;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-badge {
+  background: #2a9d8f;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand-title {
+  font-size: 19px;
+  font-weight: 900;
+  color: var(--dark-navy);
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-tag {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-header-clean {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-header-clean:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+/* 畫面主框架：左側控制台 + 右側島嶼大地圖 (如同 JDPS-SS 畫面架構) */
+.app-layout {
+  display: grid;
+  grid-template-columns: 410px 1fr;
+  height: calc(100vh - 66px);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   左側浮動控制台 (仿照 JDPS-SS Shane 面板)
+   ========================================================================== */
+.left-dashboard {
+  background: #f8fafc;
+  border-right: 2px solid #e2e8f0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 16px;
+}
+
+/* 學生身分大卡 */
+.student-id-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e2e8f0;
+}
+
+.id-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-sphere {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 3px solid #f4a261;
+  padding: 2px;
+  background: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(244, 162, 97, 0.25);
+}
+
+.id-info .stu-name {
+  font-size: 20px;
+  font-weight: 900;
+  color: #1e293b;
+}
+
+.id-info .stu-meta {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.id-info .stu-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0284c7;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+
+/* 冒險進度與星數條 */
+.progress-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progress-strip .p-val {
+  color: var(--primary-color);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+/* 四大章節群島導航標籤 (改為三大群島按鈕) */
+.island-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.island-tab-btn {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.island-tab-btn:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.island-tab-btn.active {
+  border-color: #2a9d8f;
+  background: #f0fdfa;
+  box-shadow: 0 4px 8px rgba(42, 157, 143, 0.15);
+}
+
+.island-tab-btn .tab-icon {
+  font-size: 22px;
+}
+
+.island-tab-btn .tab-name {
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+  margin-top: 4px;
+}
+
+.island-tab-btn .tab-progress {
+  font-size: 10px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* 當前單元關卡垂直清單 (仿照左側關卡條列卡) */
+.stage-unit-header {
+  margin-top: 6px;
+}
+
+.unit-tag {
+  font-size: 12px;
+  font-weight: 800;
+  color: #2a9d8f;
+  text-transform: uppercase;
+}
+
+.unit-main-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1e293b;
+  margin-top: 2px;
+}
+
+.stages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.stage-list-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stage-list-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.12);
+  transform: translateX(4px);
+}
+
+.stage-list-card.active {
+  border-color: var(--primary-color);
+  background: #fff8f8;
+}
+
+.stage-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-circle-num {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 14px;
+  color: #475569;
+  background: #f8fafc;
+}
+
+.stage-list-card.done .stage-circle-num {
+  border-color: #2a9d8f;
+  background: #2a9d8f;
+  color: white;
+}
+
+.stage-info-text .st-name {
+  font-size: 14px;
+  font-weight: 900;
+  color: #1e293b;
+}
+
+.stage-info-text .st-unit {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.stage-action-pill {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.stage-action-pill.next-stop {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+/* ==========================================================================
+   右側大地圖：3D 低多邊形航海王島嶼視覺
+   ========================================================================== */
+.map-canvas-wrapper {
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #b8e2f2 0%, #8acbe5 60%, #68b5d5 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 碧海浪花與航道網格 */
+.sea-waves-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(rgba(255,255,255,0.4) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(255,255,255,0.3) 1.5px, transparent 1.5px);
+  background-size: 48px 48px;
+  background-position: 0 0, 24px 24px;
+  opacity: 0.6;
+}
+
+/* 航道 SVG 路徑層 */
+.sea-routes-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 右上方課本切換標誌 (縮減體積並貼緊右上角，半透明磨砂，滑鼠滑過穿透) */
+.curriculum-banner {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 6px 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 4;
+  border: 1px solid rgba(255,255,255,0.7);
+  pointer-events: auto;
+}
+
+.curriculum-banner .c-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--dark-navy);
+}
+
+/* 航行中的千陽號/夥伴地圖角色 */
+.sailing-ship-avatar {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #f4a261;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  z-index: 20;
+  transform: translate(-50%, -50%);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sailing-ship-avatar::after {
+  content: '目前位置';
+  position: absolute;
+  bottom: -22px;
+  background: #1e293b;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   仿 JDPS-SS 3D 低多邊形島嶼地標按鈕 (立體浮島與地標卡片)
+   ========================================================================== */
+.island-landmark-node {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.island-landmark-node:hover {
+  transform: translate(-50%, -58%) scale(1.06);
+  z-index: 30;
+}
+
+/* 3D 浮島底座 SVG 容器 */
+.island-3d-base {
+  width: 140px;
+  height: 90px;
+  filter: drop-shadow(0 14px 18px rgba(29, 53, 87, 0.22));
+}
+
+/* 懸浮於島嶼上方的標籤膠囊 (支援 top/bottom/left/right 避免重疊) */
+.island-pin-card {
+  position: absolute;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 30px;
+  padding: 4px 14px 4px 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s;
+  z-index: 10;
+}
+
+.island-pin-card.pos-top {
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.island-pin-card.pos-bottom {
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.island-pin-card.pos-left {
+  top: 50%;
+  right: 110%;
+  transform: translateY(-50%);
+}
+
+.island-pin-card.pos-right {
+  top: 50%;
+  left: 110%;
+  transform: translateY(-50%);
+}
+
+.island-landmark-node:hover .island-pin-card {
+  border-color: var(--primary-color);
+  background: #fff0f1;
+}
+
+.island-landmark-node.active .island-pin-card {
+  border-color: #2a9d8f;
+  background: #f0fdfa;
+}
+
+.pin-num-badge {
+  background: var(--primary-color);
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.pin-info-box {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* 島嶼名稱 */
+.pin-island-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 【關鍵需求】島嶼名稱底下寫清楚單元名稱，例如 1-1負數與數線 */
+.pin-unit-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: #0369a1;
+  background: #e0f2fe;
+  padding: 1px 6px;
+  border-radius: 6px;
+  margin-top: 2px;
+  display: inline-block;
+}
+
+/* 地圖底部控制條 (縮放、重設、寶箱) */
+.map-bottom-controls {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.treasure-box-pill {
+  background: linear-gradient(135deg, #f77f00 0%, #d62828 100%);
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 8px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 14px rgba(247, 127, 0, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s;
+  animation: treasureBounce 1.5s infinite;
+}
+
+@keyframes treasureBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.04); }
+}
+
+.treasure-box-pill:hover {
+  transform: translateY(-2px);
+}
+
+.zoom-tool-group {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255,255,255,0.8);
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+/* 響應式調整 */
+@media (max-width: 1080px) {
+  .app-layout {
+    grid-template-columns: 360px 1fr;
+  }
+}
+@media (max-width: 860px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+  .map-canvas-wrapper {
+    height: 520px;
+  }
+}

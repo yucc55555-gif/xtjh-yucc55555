@@ -1,0 +1,740 @@
+:root {
+  --primary-color: #e63946;
+  --primary-hover: #d62828;
+  --secondary-color: #2a9d8f;
+  --accent-color: #f4a261;
+  --gold-color: #f77f00;
+  --dark-navy: #1d3557;
+  --ocean-blue: #457b9d;
+  --light-bg: #f8f9fa;
+  --island-sand: #fefae0;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-main: #2b2d42;
+  --text-muted: #6c757d;
+  --success-green: #38b000;
+  --danger-red: #d90429;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 24px rgba(0,0,0,0.12);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #e9ecef;
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* 頂端海賊導航列 */
+.grand-header {
+  background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%);
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  font-size: 30px;
+  background: #f4a261;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: #f1faee;
+  opacity: 0.85;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-pill {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+
+.btn-header {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-header:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+/* 主畫面容器 */
+.app-container {
+  max-width: 1380px;
+  margin: 18px auto;
+  padding: 0 16px;
+}
+
+/* 學生登入遮罩 Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(29, 53, 87, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 16px;
+}
+
+.login-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  border-top: 6px solid var(--primary-color);
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--dark-navy);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #334155;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+}
+
+.character-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.char-btn {
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  text-align: center;
+  cursor: pointer;
+  background: #f8fafc;
+  transition: all 0.2s;
+}
+
+.char-btn.active {
+  border-color: var(--primary-color);
+  background: #fff0f1;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.char-btn .char-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 4px;
+}
+
+.char-btn .char-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.btn-primary-action {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #e63946 0%, #d62828 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(230, 57, 70, 0.4);
+}
+
+/* 主佈局：左側資訊卡 + 右側島嶼大地圖 (如同 JDPS-SS 畫面架構) */
+.main-dashboard {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 20px;
+}
+
+/* 學生資訊面板 (左側) */
+.student-panel {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-md);
+  height: fit-content;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1.5px dashed #e2e8f0;
+}
+
+.avatar-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-color);
+  padding: 2px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-info .p-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark-navy);
+}
+
+.profile-info .p-tag {
+  font-size: 12px;
+  background: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: #475569;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.stat-box {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--secondary-color);
+}
+
+.stat-box .stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.stat-box .stat-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--dark-navy);
+  margin-top: 2px;
+}
+
+.quick-nav-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-nav-outline {
+  padding: 10px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-nav-outline:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* 右側群島大地圖區塊 */
+.island-map-container {
+  background: #a8dadc;
+  background-image: 
+    radial-gradient(#457b9d 1px, transparent 1px),
+    radial-gradient(#457b9d 1px, #a8dadc 1px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  position: relative;
+  min-height: 640px;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+}
+
+.map-banner {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  padding: 10px 18px;
+  border-radius: 30px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: var(--dark-navy);
+}
+
+/* 關卡島嶼節點 */
+.stage-node {
+  position: absolute;
+  width: 140px;
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  border: 3px solid #f4a261;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.stage-node:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 14px 24px rgba(0,0,0,0.22);
+  border-color: var(--primary-color);
+  z-index: 10;
+}
+
+.stage-node .badge-num {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-color);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.stage-node .node-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stage-node .node-stars {
+  color: #f77f00;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* 學習講義與測驗區 (View Modal) */
+.content-modal {
+  background: white;
+  border-radius: var(--radius-lg);
+  max-width: 880px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  padding: 28px;
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  background: #f1f5f9;
+  border: none;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 題目作答元件 (國中數學科教科書標準印刷格式) */
+.question-card {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.q-badge {
+  display: inline-block;
+  background: var(--ocean-blue);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.q-prompt {
+  font-family: "Cambria Math", "Times New Roman", "KaTeX_Main", "STIX Two Math", "Noto Serif TC", "Microsoft JhengHei", serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  color: #0f172a;
+  letter-spacing: 0.02em;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #2563eb;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-item {
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-family: "Cambria Math", "Times New Roman", "KaTeX_Main", "STIX Two Math", "Noto Serif TC", serif;
+  letter-spacing: 0.02em;
+}
+
+.option-item:hover {
+  border-color: var(--secondary-color);
+  background: #f0fdfa;
+}
+
+.option-item.selected {
+  border-color: var(--primary-color);
+  background: #fff0f1;
+  font-weight: 700;
+}
+
+/* 國中數學印刷數學式與上標 */
+.math-tex, sup, sup.tb-sup, sup.math-sup, .math-sup {
+  font-family: "Cambria Math", "Times New Roman", "KaTeX_Math", serif;
+  font-style: normal;
+  font-weight: 700;
+}
+
+sup, sup.tb-sup, sup.math-sup, .math-sup {
+  font-size: 0.72em;
+  vertical-align: 0.55em;
+  line-height: 0;
+  margin-left: 1px;
+}
+
+/* 直式分數印刷排版 */
+.tb-frac {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: -0.55em;
+  text-align: center;
+  padding: 0 4px;
+  font-family: "Times New Roman", "Cambria Math", serif;
+  font-size: 0.95em;
+  line-height: 1.1;
+}
+
+.tb-frac-num {
+  border-bottom: 1.5px solid #1e293b;
+  padding: 0 2px 1px 2px;
+  display: block;
+  font-size: 0.88em;
+}
+
+.tb-frac-den {
+  padding: 1px 2px 0 2px;
+  display: block;
+  font-size: 0.88em;
+}
+
+/* 數學符號工具列 (針對填充題) */
+.math-keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+}
+
+.sym-btn {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sym-btn:hover {
+  background: #e2e8f0;
+}
+
+/* 拖曳配合題樣式 */
+.match-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.match-left, .match-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.match-card {
+  padding: 12px 14px;
+  background: white;
+  border: 2px dashed #94a3b8;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.match-option-card {
+  cursor: grab;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  user-select: none;
+}
+
+.match-option-card:active {
+  cursor: grabbing;
+}
+
+.match-option-card.dragging {
+  opacity: 0.4;
+  border-color: var(--primary-color);
+}
+
+.match-option-card.selected-source {
+  border-color: var(--primary-color);
+  background: #fff0f1;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+}
+
+.match-slot-card {
+  border: 2px dashed #3b82f6;
+  background: #eff6ff;
+  cursor: pointer;
+}
+
+.match-slot-card.drag-over {
+  border-color: #1d4ed8;
+  background: #dbeafe;
+}
+
+/* 航海王角色解析回饋卡片 */
+.feedback-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border-left: 6px solid var(--primary-color);
+  background: #fff8f8;
+  animation: fadeIn 0.3s;
+}
+
+.feedback-character {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.feedback-speech {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.feedback-steps {
+  background: white;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-top: 8px;
+  border: 1px solid #fed7aa;
+}
+
+.feedback-steps li {
+  margin-bottom: 6px;
+  list-style: none;
+}
+
+/* 證書視窗 */
+.cert-card {
+  background: #fffdf5;
+  border: 8px double #d4af37;
+  padding: 32px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.cert-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #854d0e;
+  letter-spacing: 2px;
+}
+
+/* 響應式微調 */
+@media (max-width: 900px) {
+  .main-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

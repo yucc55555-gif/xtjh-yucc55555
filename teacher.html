@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教師管理後台 - 七年級數學探險島</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: #f1f5f9;
+    }
+    .teacher-nav {
+      background: #1e293b;
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .teacher-container {
+      max-width: 1400px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+    .filter-card {
+      background: white;
+      padding: 18px 24px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .data-table th, .data-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+    }
+    .data-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #334155;
+    }
+    .stat-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .stat-badge.pass { background: #dcfce7; color: #166534; }
+    .stat-badge.fail { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+
+  <!-- 教師導航條 -->
+  <nav class="teacher-nav">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 24px;">👨‍🏫</span>
+      <div>
+        <div style="font-weight: 800; font-size: 17px;">七年級數學探險島・教師專屬後台</div>
+        <div style="font-size: 12px; color: #94a3b8;" id="teacherSchoolClassInfo">載入中...</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <button class="btn-header" onclick="loadDashboardData()" style="cursor:pointer; background:#334155; color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700;">🔄 重新同步試算表</button>
+      <a href="index.html" class="btn-header" style="text-decoration:none;">➔ 前往學生學習島嶼</a>
+      <button class="btn-header" onclick="logoutTeacher()">登出</button>
+    </div>
+  </nav>
+
+  <!-- 教師登入遮罩 Modal -->
+  <div class="modal-overlay" id="teacherLoginModal" style="display: none;">
+    <div class="login-card" style="border-top-color: var(--secondary-color);">
+      <div class="login-title">👨‍🏫 教師後台登入</div>
+      <div class="login-desc">請輸入您的教師帳號密碼以查詢班級學生學習歷程。</div>
+
+      <div class="form-group">
+        <label>教師帳號</label>
+        <input type="text" id="tLoginUser" class="form-control" placeholder="請輸入帳號" value="teacher01">
+      </div>
+      <div class="form-group">
+        <label>密碼</label>
+        <input type="password" id="tLoginPass" class="form-control" placeholder="請輸入密碼" value="1234">
+      </div>
+
+      <button class="btn-primary-action" onclick="submitTeacherLogin()">登入教師後台</button>
+      <div style="text-align: center; margin-top: 14px;">
+        <a href="register-teacher.html" style="font-size: 13px; color: var(--secondary-color); font-weight:700;">
+          還沒有帳號？點此前往「教師專屬註冊網頁」
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main class="teacher-container">
+    
+    <!-- 篩選列 -->
+    <div class="filter-card">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-weight:700; font-size:14px; color:#334155;">選擇任課班級：</span>
+        <select id="classFilterSelect" class="form-control" style="width: auto; padding: 6px 12px;" onchange="onClassFilterChange()">
+          <!-- 動態載入此教師的 5 個班級 -->
+        </select>
+      </div>
+
+      <div class="tab-bar" style="margin-bottom: 0; border-bottom: none;">
+        <button class="tab-btn active" id="tabStudents" onclick="switchTeacherTab('students')">👥 學生學習歷程</button>
+        <button class="tab-btn" id="tabExams" onclick="switchTeacherTab('exams')">📝 歷次試卷與成績</button>
+        <button class="tab-btn" id="tabWrongStats" onclick="switchTeacherTab('wrongStats')">📊 班級錯題統計與診斷</button>
+      </div>
+    </div>
+
+    <!-- 1. 學生歷程分頁 -->
+    <div id="viewStudents">
+      <div style="background: white; border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm);">
+        <h3 style="margin-bottom: 14px; color: var(--dark-navy);">班級學生清單與探險進度</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>班級</th>
+              <th>座號</th>
+              <th>姓名</th>
+              <th>冒險夥伴</th>
+              <th>通關關卡數</th>
+              <th>累計經驗值</th>
+              <th>累計懸賞金</th>
+              <th>最後活動時間</th>
+              <th>檢視</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2. 歷次試卷與作答卷完整內容分頁 -->
+    <div id="viewExams" style="display: none;">
+      <div style="background: white; border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm);">
+        <h3 style="margin-bottom: 14px; color: var(--dark-navy);">全班測驗試卷與作答完整歷程</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>提交時間</th>
+              <th>班級/座號</th>
+              <th>姓名</th>
+              <th>關卡名稱</th>
+              <th>得分</th>
+              <th>對題數</th>
+              <th>花費時間</th>
+              <th>完整作答卷</th>
+            </tr>
+          </thead>
+          <tbody id="examsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. 錯題統計分頁 -->
+    <div id="viewWrongStats" style="display: none;">
+      <div style="background: white; border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm);">
+        <h3 style="margin-bottom: 14px; color: var(--danger-red);">班級高頻錯題排行與觀念診斷</h3>
+        <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">
+          系統自動統整全班在各關卡答錯次數最多的題目，協助老師精準進行課堂考點補強！
+        </p>
+        <div id="wrongStatsContainer"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 檢視單一試卷完整作答 Modal -->
+  <div class="modal-overlay" id="examDetailModal" style="display: none;">
+    <div class="content-modal">
+      <button class="modal-close-btn" onclick="closeModal('examDetailModal')">✕</button>
+      <h3 style="margin-bottom: 6px; color: var(--dark-navy);" id="detailExamTitle">學生完整作答卷</h3>
+      <div style="font-size: 13px; color: #64748b; margin-bottom: 16px;" id="detailExamMeta"></div>
+      <div id="detailExamAnswers"></div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/curriculum-data.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    let currentTeacher = null;
+    let dashboardData = { students: [], exams: [], wrongQuestions: [] };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkTeacherAuth();
+    });
+
+    function checkTeacherAuth() {
+      currentTeacher = dataService.getCurrentTeacher();
+      if (!currentTeacher) {
+        document.getElementById('teacherLoginModal').style.display = 'flex';
+      } else {
+        initTeacherView();
+      }
+    }
+
+    async function submitTeacherLogin() {
+      const u = document.getElementById('tLoginUser').value.trim();
+      const p = document.getElementById('tLoginPass').value;
+      try {
+        currentTeacher = await dataService.loginTeacher(u, p);
+        document.getElementById('teacherLoginModal').style.display = 'none';
+        initTeacherView();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function logoutTeacher() {
+      dataService.logoutTeacher();
+      window.location.reload();
+    }
+
+    async function initTeacherView() {
+      document.getElementById('teacherSchoolClassInfo').textContent = 
+        `${currentTeacher.school} ｜ 任課班級：${currentTeacher.classes.join(', ')} ｜ 教師：${currentTeacher.name}`;
+
+      // 班級下拉選單
+      const sel = document.getElementById('classFilterSelect');
+      sel.innerHTML = '<option value="ALL">全部任課班級 (最多5班)</option>' + 
+        currentTeacher.classes.map(c => `<option value="${c}">${c} 班</option>`).join('');
+
+      await loadDashboardData();
+    }
+
+    async function loadDashboardData() {
+      const selClass = document.getElementById('classFilterSelect').value;
+      dashboardData = await dataService.queryTeacherDashboardData(currentTeacher, selClass);
+      renderStudentsTable();
+      renderExamsTable();
+      renderWrongStats();
+    }
+
+    function onClassFilterChange() {
+      loadDashboardData();
+    }
+
+    function switchTeacherTab(tab) {
+      document.getElementById('viewStudents').style.display = (tab === 'students') ? 'block' : 'none';
+      document.getElementById('viewExams').style.display = (tab === 'exams') ? 'block' : 'none';
+      document.getElementById('viewWrongStats').style.display = (tab === 'wrongStats') ? 'block' : 'none';
+
+      document.getElementById('tabStudents').classList.toggle('active', tab === 'students');
+      document.getElementById('tabExams').classList.toggle('active', tab === 'exams');
+      document.getElementById('tabWrongStats').classList.toggle('active', tab === 'wrongStats');
+    }
+
+    function renderStudentsTable() {
+      const tbody = document.getElementById('studentTableBody');
+      if (dashboardData.students.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#94a3b8;">目前尚無學生紀錄</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = dashboardData.students.map(s => {
+        const partner = ONE_PIECE_CHARACTERS.find(c => c.id === s.characterId) || ONE_PIECE_CHARACTERS[0];
+        return `
+          <tr>
+            <td><strong>${s.className} 班</strong></td>
+            <td>${s.seatNo} 號</td>
+            <td><strong>${s.name}</strong></td>
+            <td>${partner.emoji} ${partner.name}</td>
+            <td><span class="stat-badge pass">${(s.completedStages || []).length} 關</span></td>
+            <td>${s.exp || 0} EXP</td>
+            <td style="color:var(--gold-color); font-weight:700;">฿ ${(s.bounty || 0).toLocaleString()}</td>
+            <td style="font-size:12px; color:#64748b;">${s.lastActive || '-'}</td>
+            <td>
+              <button class="btn-nav-outline" style="padding:4px 8px; font-size:12px;" onclick="viewStudentExams('${s.name}')">
+                📜 歷次試卷
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function viewStudentExams(studentName) {
+      switchTeacherTab('exams');
+      const filtered = dashboardData.exams.filter(e => e.studentName === studentName);
+      const tbody = document.getElementById('examsTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#94a3b8;">該生（${studentName}）尚無測驗提交紀錄</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = filtered.map((e, idx) => `
+        <tr>
+          <td style="font-size:12px; color:#64748b;">${e.timestamp}</td>
+          <td>${e.className}班 ${e.seatNo}號</td>
+          <td><strong>${e.studentName}</strong></td>
+          <td>${e.stageTitle}</td>
+          <td><strong style="color: ${e.passed ? 'var(--primary-color)' : 'var(--danger-red)'}; font-size:16px;">${e.score} 分</strong></td>
+          <td>${e.correctCount} / ${e.totalQuestions}</td>
+          <td>${e.durationSec} 秒</td>
+          <td>
+            <button class="btn-nav-outline" style="padding:4px 10px; font-size:12px;" onclick="viewExamDetail(${dashboardData.exams.indexOf(e)})">
+              🔍 查看作答卷
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderExamsTable() {
+      const tbody = document.getElementById('examsTableBody');
+      if (dashboardData.exams.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#94a3b8;">尚無測驗提交紀錄</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = dashboardData.exams.map((e, idx) => `
+        <tr>
+          <td style="font-size:12px; color:#64748b;">${e.timestamp}</td>
+          <td>${e.className}班 ${e.seatNo}號</td>
+          <td><strong>${e.studentName}</strong></td>
+          <td>${e.stageTitle}</td>
+          <td><strong style="color: ${e.passed ? 'var(--primary-color)' : 'var(--danger-red)'}; font-size:16px;">${e.score} 分</strong></td>
+          <td>${e.correctCount} / ${e.totalQuestions}</td>
+          <td>${e.durationSec} 秒</td>
+          <td>
+            <button class="btn-nav-outline" style="padding:4px 10px; font-size:12px;" onclick="viewExamDetail(${idx})">
+              🔍 查看作答卷
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function viewExamDetail(idx) {
+      const e = dashboardData.exams[idx];
+      if (!e) return;
+
+      document.getElementById('detailExamTitle').textContent = `${e.stageTitle} - 完整作答卷`;
+      document.getElementById('detailExamMeta').textContent = 
+        `學生：${e.school} ${e.className}班 ${e.seatNo}號 ${e.studentName} ｜ 得分：${e.score} 分 ｜ 作答時間：${e.timestamp}`;
+
+      const container = document.getElementById('detailExamAnswers');
+      container.innerHTML = (e.answersDetail || []).map((a, i) => `
+        <div class="review-item ${a.isCorrect ? 'correct' : 'wrong'}">
+          <div style="font-weight:700; font-size:13px; color:var(--dark-navy);">第 ${i+1} 題（考點：${a.concept}）</div>
+          <div style="font-size:14px; margin:4px 0;">${a.prompt}</div>
+          <div style="font-size:13px;">學生答案：<strong style="color:${a.isCorrect ? 'var(--success-green)' : 'var(--danger-red)'}">${a.userAnswer}</strong></div>
+          <div style="font-size:13px; color:var(--success-green);">正確解答：<strong>${a.correctAnswer}</strong></div>
+        </div>
+      `).join('');
+
+      document.getElementById('examDetailModal').style.display = 'flex';
+    }
+
+    function renderWrongStats() {
+      const container = document.getElementById('wrongStatsContainer');
+      const wrongs = dashboardData.wrongQuestions;
+
+      if (wrongs.length === 0) {
+        container.innerHTML = '<p style="color:#64748b;">全班太優秀了！目前沒有錯題紀錄！</p>';
+        return;
+      }
+
+      // 依考點與題目統計錯題次數
+      const statMap = {};
+      wrongs.forEach(w => {
+        const key = `${w.stageTitle} - ${w.concept}`;
+        if (!statMap[key]) {
+          statMap[key] = {
+            stageTitle: w.stageTitle,
+            concept: w.concept,
+            prompt: w.prompt,
+            correctAnswer: w.correctAnswer,
+            count: 0,
+            students: []
+          };
+        }
+        statMap[key].count++;
+        statMap[key].students.push(`${w.className}班 ${w.seatNo}號 ${w.studentName}`);
+      });
+
+      const sorted = Object.values(statMap).sort((a, b) => b.count - a.count);
+
+      container.innerHTML = sorted.map((item, idx) => `
+        <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:800; color:var(--danger-red); font-size:15px;">
+              #${idx+1} 觀念：${item.concept}（${item.stageTitle}）
+            </span>
+            <span style="background:var(--danger-red); color:white; font-size:12px; font-weight:800; padding:3px 10px; border-radius:12px;">
+              答錯 ${item.count} 人次
+            </span>
+          </div>
+          <div style="font-size:14px; margin:8px 0; color:#1e293b;"><strong>題目：</strong>${item.prompt}</div>
+          <div style="font-size:13px; color:var(--success-green); font-weight:700;"><strong>正解：</strong>${item.correctAnswer}</div>
+          <div style="font-size:12px; color:#64748b; margin-top:8px;">
+            <strong>答錯學生名單：</strong> ${Array.from(new Set(item.students)).join('、 ')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+  </script>
+</body>
+</html>
