@@ -678,7 +678,13 @@ class DataService {
   getCurrentTeacher() {
     try {
       const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_TEACHER);
-      return raw ? JSON.parse(raw) : null;
+      if (!raw) return null;
+      const t = JSON.parse(raw);
+      if (t && t.classes && typeof parseTeacherClasses === 'function') {
+        t.classes = parseTeacherClasses(t.classes);
+        localStorage.setItem(STORAGE_KEYS.CURRENT_TEACHER, JSON.stringify(t));
+      }
+      return t;
     } catch {
       return null;
     }
@@ -690,10 +696,16 @@ class DataService {
 
   // 老師查詢任課學校與班級的資料 (支援從雲端 GAS 拉取最新資料並與本機整合)
   async queryTeacherDashboardData(teacher, selectedClass = 'ALL') {
+    const normalizedClasses = typeof parseTeacherClasses === 'function'
+      ? parseTeacherClasses(teacher.classes)
+      : (teacher.classes || []);
+    teacher.classes = normalizedClasses;
+    localStorage.setItem(STORAGE_KEYS.CURRENT_TEACHER, JSON.stringify(teacher));
+
     if (this.isGasConfigured()) {
       const res = await this.postToGas('queryTeacherData', {
         school: teacher.school,
-        classes: teacher.classes
+        classes: normalizedClasses
       });
       if (res && res.ok) {
         if (Array.isArray(res.students)) this.saveLocalList(STORAGE_KEYS.STUDENTS_DB, res.students);
@@ -702,7 +714,7 @@ class DataService {
       }
     }
 
-    const allowedClasses = (teacher.classes || []).map(c => String(c).trim().toLowerCase());
+    const allowedClasses = normalizedClasses.map(c => String(c).trim().toLowerCase());
     const cleanTeacherSchool = String(teacher.school || '').trim().toLowerCase();
 
     const filterByClass = item => {
@@ -746,6 +758,19 @@ class DataService {
       }
     });
 
+    // 標準化所有試卷的 stageId 並依據試卷紀錄校正每位學生的成就
+    exams.forEach(e => {
+      if (typeof normalizeStageId === 'function') {
+        e.stageId = normalizeStageId(e.stageId, e.stageTitle);
+      }
+    });
+
+    students.forEach(s => {
+      if (typeof reconcileStudentFromExams === 'function') {
+        reconcileStudentFromExams(s, exams);
+      }
+    });
+
     students.sort((a, b) => a.className.localeCompare(b.className) || Number(a.seatNo) - Number(b.seatNo));
 
     return {
@@ -780,11 +805,40 @@ class DataService {
           const cloudExams = res.exams.filter(isCurrentStudent);
           const localExams = this.getLocalList(STORAGE_KEYS.EXAMS_DB);
           const examMap = new Map();
-          cloudExams.forEach(e => examMap.set(e.examId, e));
-          localExams.forEach(e => {
-            if (!examMap.has(e.examId)) examMap.set(e.examId, e);
+          cloudExams.forEach(e => {
+            if (typeof normalizeStageId === 'function') {
+              e.stageId = normalizeStageId(e.stageId, e.stageTitle);
+            }
+            examMap.set(e.examId, e);
           });
-          this.saveLocalList(STORAGE_KEYS.EXAMS_DB, Array.from(examMap.values()));
+          localExams.forEach(e => {
+            if (!examMap.has(e.examId)) {
+              if (typeof normalizeStageId === 'function') {
+                e.stageId = normalizeStageId(e.stageId, e.stageTitle);
+              }
+              examMap.set(e.examId, e);
+            }
+          });
+          const allExams = Array.from(examMap.values());
+          this.saveLocalList(STORAGE_KEYS.EXAMS_DB, allExams);
+
+          // 核心修復：依據雲端與本機完整試卷重新核算學生的關卡、星星、EXP 與懸賞金！
+          if (typeof reconcileStudentFromExams === 'function') {
+            reconcileStudentFromExams(stu, allExams);
+            localStorage.setItem(STORAGE_KEYS.CURRENT_STUDENT, JSON.stringify(stu));
+            
+            const students = this.getLocalList(STORAGE_KEYS.STUDENTS_DB);
+            const idx = students.findIndex(s => s.studentKey === stu.studentKey);
+            if (idx !== -1) {
+              students[idx] = stu;
+            } else {
+              students.push(stu);
+            }
+            this.saveLocalList(STORAGE_KEYS.STUDENTS_DB, students);
+
+            // 回寫雲端學生名冊，讓老師後台與試算表亦同步取得最新成就！
+            this.postToGas('upsertStudent', { student: stu });
+          }
         }
 
         // 2. 合併錯題庫

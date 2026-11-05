@@ -98,6 +98,19 @@ function initApp() {
   if (!currentStudent) {
     showStudentLoginModal();
   } else {
+    // 學生端自動連線雲端試算表校正並同步歷次完整進度
+    if (dataService.isGasConfigured()) {
+      dataService.syncStudentCloudData(currentStudent).then(() => {
+        const refreshed = dataService.getCurrentStudent();
+        if (refreshed) {
+          currentStudent = refreshed;
+          refreshStudentProfileUI();
+          renderUnitTabs();
+          renderLeftStagesList();
+          render3DIslandMap();
+        }
+      });
+    }
     refreshStudentProfileUI();
   }
 

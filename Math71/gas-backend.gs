@@ -120,7 +120,7 @@ function handleSubmitExam(ss, stu, exam, wrongItems) {
     stu.className,
     stu.seatNo,
     stu.name,
-    exam.stageId,
+    "'" + exam.stageId,
     exam.stageTitle,
     exam.score,
     exam.correctCount,
@@ -226,12 +226,43 @@ function handleLoginTeacher(ss, username, password) {
   return createJsonResponse({ ok: false, error: '帳號或密碼不符' });
 }
 
+// 班級格式相容解析器 (自動分解如 701702705730 或 701,702 等多種輸入形式)
+function parseClassesHelper(raw) {
+  var list = [];
+  if (Array.isArray(raw)) {
+    for (var i = 0; i < raw.length; i++) {
+      var sub = parseClassesHelper(raw[i]);
+      for (var j = 0; j < sub.length; j++) list.push(sub[j]);
+    }
+  } else if (typeof raw === 'string') {
+    var s = raw.trim();
+    if (!s) return [];
+    if (/[,、\s\/;]/.test(s)) {
+      var parts = s.split(/[,、\s\/;]+/);
+      for (var p = 0; p < parts.length; p++) {
+        if (parts[p].trim()) list.push(parts[p].trim());
+      }
+    } else if (s.length >= 6 && s.length % 3 === 0 && /^\d+$/.test(s)) {
+      var m = s.match(/\d{3}/g);
+      if (m) {
+        for (var k = 0; k < m.length; k++) list.push(m[k]);
+      } else {
+        list.push(s);
+      }
+    } else {
+      list.push(s);
+    }
+  }
+  return list;
+}
+
 // 5. 老師查詢班級學生歷程、成績與錯題
 function handleQueryTeacherData(ss, school, classes) {
   var classSet = {};
   var cleanSchool = String(school || '').trim().toLowerCase();
-  for (var c = 0; c < (classes || []).length; c++) {
-    classSet[String(classes[c]).trim().toLowerCase()] = true;
+  var parsedClasses = parseClassesHelper(classes);
+  for (var c = 0; c < parsedClasses.length; c++) {
+    classSet[String(parsedClasses[c]).trim().toLowerCase()] = true;
   }
 
   // 查詢學生名冊

@@ -283,3 +283,96 @@ const PRESET_SCHOOLS = [
   '信義國中',
   '明德國中'
 ];
+
+// 通用班級格式相容解析器 (自動分解如 701702705730 或 701,702 等多種格式)
+function parseTeacherClasses(raw) {
+  let list = [];
+  if (Array.isArray(raw)) {
+    raw.forEach(r => list.push(...parseTeacherClasses(r)));
+  } else if (typeof raw === 'string') {
+    const s = raw.trim();
+    if (!s) return [];
+    // 1. 包含分隔符號 (逗號、頓號、空白、斜線、分號)
+    if (/[,、\s\/;]/.test(s)) {
+      list = s.split(/[,、\s\/;]+/).map(c => c.trim()).filter(Boolean);
+    } 
+    // 2. 連續 3 碼班級字串 (例如 701702705730)
+    else if (s.length >= 6 && s.length % 3 === 0 && /^\d+$/.test(s)) {
+      list = s.match(/\d{3}/g) || [s];
+    }
+    // 3. 常見 7 開頭連續班級 (例如 701702 或 701702705)
+    else if (/^(7\d{2})+$/.test(s)) {
+      list = s.match(/7\d{2}/g) || [s];
+    }
+    else {
+      list = [s];
+    }
+  }
+  return Array.from(new Set(list.map(c => String(c).trim()).filter(Boolean)));
+}
+
+// 關卡 ID 標準化轉換器 (相容 Google 試算表自動將 1-1、2-1 等代號轉換為日期的問題)
+function normalizeStageId(rawStage, stageTitle = '') {
+  if (!rawStage) return '';
+  const s = String(rawStage).trim();
+  if (/^(\d+-\d+|exam-\d+)$/i.test(s)) return s;
+  if (stageTitle) {
+    const tm = stageTitle.match(/第?(\d+-\d+)/);
+    if (tm) return tm[1];
+    const em = stageTitle.match(/第(\d+)次段考/);
+    if (em) return 'exam-' + em[1];
+  }
+  const d = new Date(s);
+  if (!isNaN(d.getTime())) {
+    return (d.getMonth() + 1) + '-' + d.getDate();
+  }
+  return s;
+}
+
+// 依據試卷作答紀錄重新核算並校正學生累積成就 (通關數、星星、EXP、懸賞金)
+function reconcileStudentFromExams(student, exams) {
+  if (!student) return student;
+  const cleanSchool = String(student.school || '').trim().toLowerCase();
+  const cleanClass = String(student.className || '').trim().toLowerCase();
+  const cleanSeat = Number(student.seatNo);
+
+  const studentExams = (exams || []).filter(e => {
+    return String(e.school || '').trim().toLowerCase() === cleanSchool &&
+           String(e.className || '').trim().toLowerCase() === cleanClass &&
+           Number(e.seatNo) === cleanSeat;
+  });
+
+  const passedStages = new Set(student.completedStages || []);
+  const stageStars = { ...(student.stageStars || {}) };
+  const stageBestScores = { ...(student.stageBestScores || {}) };
+
+  let totalExp = 0;
+  let totalBounty = 0;
+
+  studentExams.forEach(e => {
+    const stageId = normalizeStageId(e.stageId, e.stageTitle);
+    const score = Number(e.score || 0);
+    const passed = e.passed === true || e.passed === '是' || score >= 60;
+
+    if (passed && stageId) {
+      passedStages.add(stageId);
+      const stars = score === 100 ? 3 : score >= 80 ? 2 : score >= 60 ? 1 : 0;
+      stageStars[stageId] = Math.max(stageStars[stageId] || 0, stars);
+      stageBestScores[stageId] = Math.max(stageBestScores[stageId] || 0, score);
+    }
+  });
+
+  passedStages.forEach(stId => {
+    const bestScore = stageBestScores[stId] || 60;
+    totalExp += Math.round(100 * (bestScore / 100));
+    totalBounty += Math.round(3000000 * (bestScore / 100));
+  });
+
+  student.completedStages = Array.from(passedStages);
+  student.stageStars = stageStars;
+  student.stageBestScores = stageBestScores;
+  student.exp = Math.max(student.exp || 0, totalExp);
+  student.bounty = Math.max(student.bounty || 0, totalBounty);
+
+  return student;
+}

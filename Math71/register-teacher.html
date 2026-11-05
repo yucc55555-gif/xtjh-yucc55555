@@ -116,17 +116,23 @@
 
     function addClassTag() {
       const input = document.getElementById('classInput');
-      const val = (input.value || '').trim();
-      if (!val) return;
-      if (selectedClasses.includes(val)) {
-        alert('此班級已在清單中囉！');
-        return;
+      const rawVal = (input.value || '').trim();
+      if (!rawVal) return;
+      const parsed = typeof parseTeacherClasses === 'function' ? parseTeacherClasses(rawVal) : [rawVal];
+      let added = false;
+      parsed.forEach(val => {
+        if (!selectedClasses.includes(val)) {
+          if (selectedClasses.length < 5) {
+            selectedClasses.push(val);
+            added = true;
+          }
+        }
+      });
+      if (!added && parsed.every(v => selectedClasses.includes(v))) {
+        alert('所填班級已在清單中囉！');
+      } else if (selectedClasses.length >= 5 && parsed.length > 1) {
+        alert('已達到最多 5 個班級限制！');
       }
-      if (selectedClasses.length >= 5) {
-        alert('依系統規則，一位老師最多只能選擇 5 個班級！');
-        return;
-      }
-      selectedClasses.push(val);
       input.value = '';
       renderClassTags();
     }
