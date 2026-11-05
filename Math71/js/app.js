@@ -685,7 +685,7 @@ function showStudentLoginModal() {
 }
 
 async function submitStudentLogin() {
-  const school = document.getElementById('loginSchool').value.trim() || '建德國中';
+  const school = document.getElementById('loginSchool').value.trim() || 'xtjh';
   const className = document.getElementById('loginClass').value.trim() || '701';
   const seatNo = document.getElementById('loginSeat').value.trim() || '01';
   const name = document.getElementById('loginName').value.trim();

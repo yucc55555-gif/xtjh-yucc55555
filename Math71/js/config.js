@@ -5,6 +5,7 @@
 const APP_CONFIG = {
   appName: '偉大航道數學探險隊',
   subtitle: '康軒版｜國中七年級上學期數學',
+  defaultSchool: 'xtjh',
   version: '2.0.0',
   // 預設 GAS Web App URL (已固定設定您的 Google Apps Script 網址)
   defaultGasUrl: 'https://script.google.com/macros/s/AKfycbyQYbAf8YqEIiza2QOd4lXQaxrcY5M9EKIJgyZH5704PkhoXYAz4plpmL8mhg90AWyllQ/exec',
@@ -270,6 +271,7 @@ const PIRATE_RANKS = [
 
 // 預設學校選項 (學生也可自行輸入任何學校)
 const PRESET_SCHOOLS = [
+  'xtjh',
   '建德國中',
   '暖暖國中',
   '中正國中',

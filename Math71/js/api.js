@@ -45,7 +45,7 @@ class DataService {
         username: 'teacher01',
         password: '1234',
         name: '紅髮傑克老師',
-        school: '建德國中',
+        school: 'xtjh',
         classes: ['701', '702', '703'],
         createdAt: '2026-10-01T08:00:00.000Z'
       }
@@ -53,8 +53,8 @@ class DataService {
 
     const demoStudents = [
       {
-        studentKey: '建德國中_701_01',
-        school: '建德國中',
+        studentKey: 'xtjh_701_01',
+        school: 'xtjh',
         className: '701',
         seatNo: '01',
         name: '王小明',
@@ -67,8 +67,8 @@ class DataService {
         lastActive: '2026-11-04 14:20'
       },
       {
-        studentKey: '建德國中_701_05',
-        school: '建德國中',
+        studentKey: 'xtjh_701_05',
+        school: 'xtjh',
         className: '701',
         seatNo: '05',
         name: '林美玲',
@@ -81,8 +81,8 @@ class DataService {
         lastActive: '2026-11-04 15:10'
       },
       {
-        studentKey: '建德國中_701_12',
-        school: '建德國中',
+        studentKey: 'xtjh_701_12',
+        school: 'xtjh',
         className: '701',
         seatNo: '12',
         name: '陳冠宇',
@@ -95,8 +95,8 @@ class DataService {
         lastActive: '2026-11-03 19:45'
       },
       {
-        studentKey: '建德國中_702_03',
-        school: '建德國中',
+        studentKey: 'xtjh_702_03',
+        school: 'xtjh',
         className: '702',
         seatNo: '03',
         name: '張雅筑',
@@ -113,8 +113,8 @@ class DataService {
     const demoExams = [
       {
         examId: 'EX_DEMO_1001',
-        studentKey: '建德國中_701_01',
-        school: '建德國中',
+        studentKey: 'xtjh_701_01',
+        school: 'xtjh',
         className: '701',
         seatNo: '01',
         studentName: '王小明',
@@ -138,8 +138,8 @@ class DataService {
       },
       {
         examId: 'EX_DEMO_1002',
-        studentKey: '建德國中_701_01',
-        school: '建德國中',
+        studentKey: 'xtjh_701_01',
+        school: 'xtjh',
         className: '701',
         seatNo: '01',
         studentName: '王小明',
@@ -163,8 +163,8 @@ class DataService {
       },
       {
         examId: 'EX_DEMO_1003',
-        studentKey: '建德國中_701_12',
-        school: '建德國中',
+        studentKey: 'xtjh_701_12',
+        school: 'xtjh',
         className: '701',
         seatNo: '12',
         studentName: '陳冠宇',
@@ -188,8 +188,8 @@ class DataService {
       },
       {
         examId: 'EX_DEMO_1004',
-        studentKey: '建德國中_701_12',
-        school: '建德國中',
+        studentKey: 'xtjh_701_12',
+        school: 'xtjh',
         className: '701',
         seatNo: '12',
         studentName: '陳冠宇',
@@ -216,8 +216,8 @@ class DataService {
     const demoWrong = [
       {
         id: 'WR_DEMO_1',
-        studentKey: '建德國中_701_01',
-        school: '建德國中',
+        studentKey: 'xtjh_701_01',
+        school: 'xtjh',
         className: '701',
         seatNo: '01',
         studentName: '王小明',
@@ -233,8 +233,8 @@ class DataService {
       },
       {
         id: 'WR_DEMO_2',
-        studentKey: '建德國中_701_12',
-        school: '建德國中',
+        studentKey: 'xtjh_701_12',
+        school: 'xtjh',
         className: '701',
         seatNo: '12',
         studentName: '陳冠宇',
@@ -250,8 +250,8 @@ class DataService {
       },
       {
         id: 'WR_DEMO_3',
-        studentKey: '建德國中_701_12',
-        school: '建德國中',
+        studentKey: 'xtjh_701_12',
+        school: 'xtjh',
         className: '701',
         seatNo: '12',
         studentName: '陳冠宇',
@@ -267,8 +267,8 @@ class DataService {
       },
       {
         id: 'WR_DEMO_4',
-        studentKey: '建德國中_701_12',
-        school: '建德國中',
+        studentKey: 'xtjh_701_12',
+        school: 'xtjh',
         className: '701',
         seatNo: '12',
         studentName: '陳冠宇',
@@ -401,7 +401,16 @@ class DataService {
   getCurrentStudent() {
     try {
       const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_STUDENT);
-      return raw ? JSON.parse(raw) : null;
+      if (!raw) return null;
+      const stu = JSON.parse(raw);
+      if (stu && (stu.school === '建德國中' || !stu.school)) {
+        stu.school = 'xtjh';
+        if (stu.studentKey && stu.studentKey.startsWith('建德國中_')) {
+          stu.studentKey = stu.studentKey.replace('建德國中_', 'xtjh_');
+        }
+        localStorage.setItem(STORAGE_KEYS.CURRENT_STUDENT, JSON.stringify(stu));
+      }
+      return stu;
     } catch {
       return null;
     }
