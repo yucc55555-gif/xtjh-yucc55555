@@ -33,6 +33,11 @@ public class BroadcastOverlayService extends Service {
         new Thread(this::longPollingLoop, "NTJHS-CloudPoll").start();
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
     private void startForegroundNotification() {
         String chId = "ntjhs_silent_broadcast";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
